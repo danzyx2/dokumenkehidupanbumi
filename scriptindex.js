@@ -1,26 +1,3 @@
-// Smooth Scroll untuk navigasi halaman yang sama
-document.querySelectorAll('nav ul li a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        const targetUrl = this.getAttribute('href');
-
-        // Cek apakah link mengarah ke halaman yang berbeda (misalnya, pantai.html)
-        if (targetUrl.includes('.html')) {
-            window.location.href = targetUrl;  // Pindah halaman jika .html
-        } else {
-            // Jika hanya scroll ke bagian halaman
-            e.preventDefault();
-            const targetId = targetUrl.substring(1); // Hilangkan '#' dari href
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 50, // Adjust sesuai kebutuhan
-                    behavior: 'smooth'
-                });
-            }
-        }
-    });
-});
 
 // Galeri gambar interaktif
 const galleryImages = document.querySelectorAll('.gallery img');
