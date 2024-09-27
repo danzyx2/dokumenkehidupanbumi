@@ -57,3 +57,53 @@ galleryImages.forEach(image => {
         });
     });
 });
+
+/*document.addEventListener('DOMContentLoaded', function() {
+    const galleryContainer = document.querySelector('.gallery-container');
+
+    // Membuat tombol scroll ke kanan
+    const scrollRightButton = document.createElement('button');
+    scrollRightButton.textContent = 'Scroll Kanan';
+    scrollRightButton.onclick = () => {
+        galleryContainer.scrollBy({ left: 200, behavior: 'smooth' });
+    };
+
+    // Membuat tombol scroll ke kiri
+    const scrollLeftButton = document.createElement('button');
+    scrollLeftButton.textContent = 'Scroll Kiri';
+    scrollLeftButton.onclick = () => {
+        galleryContainer.scrollBy({ left: -200, behavior: 'smooth' });
+    };
+
+
+
+    // Menambahkan tombol ke galeri
+    galleryContainer.parentNode.insertBefore(scrollLeftButton, galleryContainer);
+    galleryContainer.parentNode.insertBefore(scrollRightButton, galleryContainer.nextSibling);
+});*/
+
+document.addEventListener('DOMContentLoaded', function() {
+    const galleryContainer = document.querySelector('.gallery-container');
+
+    // Membuat tombol scroll ke kanan
+    const scrollRightButton = document.createElement('button');
+    scrollRightButton.textContent = 'Scroll Kanan';
+    scrollRightButton.onclick = () => {
+        galleryContainer.scrollBy({ left: 200, behavior: 'smooth' });
+    };
+    scrollRightButton.style.backgroundColor = 'black'; // Mengubah warna latar belakang tombol
+    scrollRightButton.style.color = 'white'; // Mengubah warna teks tombol
+
+    // Membuat tombol scroll ke kiri
+    const scrollLeftButton = document.createElement('button');
+    scrollLeftButton.textContent = 'Scroll Kiri';
+    scrollLeftButton.onclick = () => {
+        galleryContainer.scrollBy({ left: -200, behavior: 'smooth' });
+    };
+    scrollLeftButton.style.backgroundColor = 'black'; // Mengubah warna latar belakang tombol
+    scrollLeftButton.style.color = 'black'; // Mengubah warna teks tombol
+
+    // Menambahkan tombol ke galeri
+    galleryContainer.parentNode.insertBefore(scrollLeftButton, galleryContainer);
+    galleryContainer.parentNode.insertBefore(scrollRightButton, galleryContainer.nextSibling);
+});
