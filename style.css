@@ -2,6 +2,17 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+}
+
+.halaman1 {
+    background-color: #1b1d1b;
+}
+
+.halaman2 {
+    background-color: #ffffff;
+}
+
+.halaman3 {
     background-color: #ffffff;
 }
 
@@ -19,7 +30,7 @@ body {
 
 .header nav ul li {
     display: inline-block;
-    margin: 0 15px;
+    margin: 10px 15px;
 }
 
 .header nav ul li a {
@@ -31,8 +42,8 @@ body {
 }
 
 .header1 {
-    background-color: #0e6580;
-    color: rgb(12, 5, 5);
+    background-color: #282f31;
+    color: rgb(255, 255, 255);
     padding: 20px;
     text-align: center;
 }
@@ -269,4 +280,23 @@ video {
     margin: 0; /* Menghapus margin default */
     color: white; /* Pastikan warna kontras dengan latar belakang */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Tambahkan bayangan untuk visibilitas */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Untuk memusatkan secara horizontal */
+    align-items: center; /* Untuk memusatkan secara vertical (jika tinggi kontainer diatur) */
+    height: 5vh; /* Contoh untuk memusatkan secara vertikal di seluruh halaman */
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: rgb(255, 255, 255);
+    background-color: #ff313c;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
 }
