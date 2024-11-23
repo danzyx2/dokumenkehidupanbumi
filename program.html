@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Dokumentasi Kehidupan Bumi</title>
+    <title>Coding Kehidupan Bumi</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="favicon.ico" rel="icon">
+    <link href="icon-10.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,58 +102,179 @@
 
     <!-- ISI PROGRAM Start -->
     <!-- ISI PROGRAM (tempat untuk menulis code di sini) -->
-    <div class="container my-5">
-        <!-- Mengubah warna teks pada <h2> -->
-        <h2 class="text-primary mb-4" style="color: #ff6347;">Code Python</h2> <!-- Warna font diubah menjadi Tomat -->
+    <body>
+        <!-- Table of Contents Start -->
+        <div class="container my-5">
+            <h2 class="text-primary mb-4">Daftar Isi Coding</h2>
         
-        <!-- Mengubah warna font di dalam <pre> dan <code> -->
-        <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
-            <code style="color: #d3d3d3;"> <!-- Warna font diubah menjadi putih -->
-                // Ini adalah contoh kode JavaScript
-                function greet(name) {
-                    return 'Hello, ' + name + '!';
-                }
-    
-                console.log(greet('Kehidupan Bumi'));
-            </code>
-        </pre>
-    </div>
-
-    <div class="container my-5">
-        <!-- Mengubah warna teks pada <h2> -->
-        <h2 class="text-primary mb-4" style="color: #ff6347;">Code Python</h2> <!-- Warna font diubah menjadi Tomat -->
+            <!-- Kolom Pencarian -->
+            <input type="text" id="searchInput" class="form-control mb-4" placeholder="Cari Daftar...">
         
-        <!-- Mengubah warna font di dalam <pre> dan <code> -->
-        <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
-            <code style="color: #d3d3d3;"> <!-- Warna font diubah menjadi putih -->
-                // Ini adalah contoh kode JavaScript
-                function greet(name) {
-                    return 'Hello, ' + name + '!';
-                }
-    
-                console.log(greet('Kehidupan Bumi'));
-            </code>
-        </pre>
-    </div>
-
-    <div class="container my-5">
-        <!-- Mengubah warna teks pada <h2> -->
-        <h2 class="text-primary mb-4" style="color: #ff6347;">Code Python</h2> <!-- Warna font diubah menjadi Tomat -->
+            <!-- Daftar Isi -->
+            <ul id="contentList">
+                <li><a href="#faktorial">Menghitung Faktorial</a></li>
+                <li><a href="#fibonacci">Menghitung Bilangan Fibonacci</a></li>
+                <li><a href="#ratarata">Menghitung Rata-rata dari Daftar Angka</a></li>
+                <li><a href="#konversiSuhu">Mengonversi Suhu</a></li>
+                <li><a href="#inputPengguna">Mengambil Input Pengguna</a></li>
+                <li><a href="#fileIO">Membaca dan Menulis File</a></li>
+                <li><a href="#jumlahKata">Menghitung Jumlah Kata dalam Kalimat</a></li>
+                <li><a href="#pythonCode">Code Python</a></li>
+            </ul>
+        </div>
         
-        <!-- Mengubah warna font di dalam <pre> dan <code> -->
-        <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
-            <code style="color: #d3d3d3;"> <!-- Warna font diubah menjadi putih -->
-                // Ini adalah contoh kode JavaScript
-                function greet(name) {
-                    return 'Hello, ' + name + '!';
-                }
+        <!-- JavaScript untuk Pencarian Daftar -->
+        <script>
+            // Ambil elemen input dan daftar isi
+            const searchInput = document.getElementById('searchInput');
+            const contentList = document.getElementById('contentList');
+            const items = contentList.getElementsByTagName('li');
+        
+            // Fungsi untuk menyaring daftar berdasarkan input pencarian
+            searchInput.addEventListener('input', function() {
+                const query = searchInput.value.toLowerCase(); // Ambil nilai input dan ubah ke huruf kecil
+        
+                // Loop melalui semua item daftar
+                Array.from(items).forEach(function(item) {
+                    const text = item.textContent.toLowerCase(); // Ambil teks dalam item dan ubah ke huruf kecil
+                    if (text.includes(query)) {
+                        item.style.display = ''; // Tampilkan item jika cocok dengan query
+                    } else {
+                        item.style.display = 'none'; // Sembunyikan item jika tidak cocok
+                    }
+                });
+            });
+        </script>
+        
+        <!-- Table of Contents End -->
     
-                console.log(greet('Kehidupan Bumi'));
-            </code>
-        </pre>
-    </div>
+        <!-- ISI PROGRAM Start -->
+        <div class="container my-5" id="faktorial">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Faktorial</h2>
+            <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
+                <code style="color: #d3d3d3;">
+    python
+    def faktorial(n):
+        if n < 0:
+            return "Faktorial tidak terdefinisi untuk bilangan negatif."
+        elif n == 0:
+            return 1
+        else:
+            hasil = 1
+            for i in range(1, n + 1):
+                hasil *= i
+            return hasil
     
-
+    # Contoh penggunaan
+    print(faktorial(5))  # Output: 120
+                </code>
+            </pre>
+        </div>
+    
+        <div class="container my-5" id="fibonacci">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Bilangan Fibonacci</h2>
+            <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
+                <code style="color: #d3d3d3;">
+    python
+    def fibonacci(n):
+        fib_series = []
+        a, b = 0, 1
+        while a < n:
+            fib_series.append(a)
+            a, b = b, a + b
+        return fib_series
+    
+    # Contoh penggunaan
+    print(fibonacci(100))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+                </code>
+            </pre>
+        </div>
+    
+        <div class="container my-5" id="ratarata">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Rata-rata dari Daftar Angka</h2>
+            <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
+                <code style="color: #d3d3d3;">
+    python
+    def rata_rata(angka):
+        if len(angka) == 0:
+            return 0
+        return sum(angka) / len(angka)
+    
+    # Contoh penggunaan
+    print(rata_rata([10, 20, 30, 40, 50]))  # Output: 30.0
+                </code>
+            </pre>
+        </div>
+    
+        <div class="container my-5" id="konversiSuhu">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">Mengonversi Suhu</h2>
+            <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
+                <code style="color: #d3d3d3;">
+    python
+    def celsius_ke_fahrenheit(celsius):
+        return (celsius * 9/5) + 32
+    
+    # Contoh penggunaan
+    print(celsius_ke_fahrenheit(25))  # Output: 77.0
+                </code>
+            </pre>
+        </div>
+    
+        <div class="container my-5" id="inputPengguna">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">Mengambil Input Pengguna</h2>
+            <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
+                <code style="color: #d3d3d3;">
+    python
+    nama = input("Masukkan nama Anda: ")
+    print(f"Halo, {nama}!")
+                </code>
+            </pre>
+        </div>
+    
+        <div class="container my-5" id="fileIO">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">Membaca dan Menulis File</h2>
+            <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
+                <code style="color: #d3d3d3;">
+    python
+    # Menulis ke file
+    with open('contoh.txt', 'w') as f:
+        f.write("Ini adalah contoh file.\n")
+    
+    # Membaca dari file
+    with open('contoh.txt', 'r') as f:
+        isi = f.read()
+        print(isi)
+                </code>
+            </pre>
+        </div>
+    
+        <div class="container my-5" id="jumlahKata">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Jumlah Kata dalam Kalimat</h2>
+            <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
+                <code style="color: #d3d3d3;">
+    python
+    def hitung_jumlah_kata(kalimat):
+        return len(kalimat.split())
+    
+    # Contoh penggunaan
+    print(hitung_jumlah_kata("Ini adalah kalimat contoh."))  # Output: 5
+                </code>
+            </pre>
+        </div>
+    
+        <div class="container my-5" id="pythonCode">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">Code Python</h2>
+            <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
+                <code style="color: #d3d3d3;">
+                    // Ini adalah contoh kode JavaScript
+                    function greet(name) {
+                        return 'Hello, ' + name + '!';
+                    }
+        
+                    console.log(greet('Kehidupan Bumi'));
+                </code>
+            </pre>
+        </div>
     <!-- ISI PROGRAM End -->
 
     <!-- Footer Start -->
