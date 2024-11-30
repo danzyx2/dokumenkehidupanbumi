@@ -578,3 +578,107 @@
 .footer .copyright a:hover {
     color: var(--primary);
 }
+
+.contenty {
+    padding: 40px;
+    text-align: center;
+}
+
+.galleryt {
+    display: flex; /* Mengatur gambar dalam baris */
+    flex-wrap: wrap; /* Membiarkan gambar berpindah baris jika ruang tidak cukup */
+    justify-content: center; /* Memusatkan gambar */
+}
+
+.galleryt img {
+    width: calc(33.33% - 10px); /* Mengatur lebar gambar menjadi 1/3 dari kontainer */
+    height: auto; /* Mempertahankan rasio aspek gambar */
+    max-height: 117px; /* Atur tinggi maksimum untuk memastikan semua gambar dalam orientasi lanskap */
+    object-fit: cover; /* Memastikan gambar mengisi area yang tersedia */
+    margin: 5px; /* Spasi antar gambar */
+    border-radius: 8px; /* Sudut melengkung pada gambar */
+}
+
+.gallerys {
+    overflow-x: auto; /* Mengizinkan scroll horizontal */
+    white-space: nowrap; /* Menjaga gambar dalam satu baris */
+}
+
+.gallerys {
+    display: inline-block; /* Mengatur gambar dalam satu baris */
+}
+
+.galleryt img {
+    max-width: 200px; /* Ukuran maksimum untuk gambar */
+    margin: 10px; /* Spasi antar gambar */
+    height: 100px; /* Mempertahankan rasio aspek */
+}
+
+
+
+#progressBar {
+width: 100%;
+height: 10px;
+background-color: #0d1117;
+transition: width 1s ease-in-out;
+overflow: hidden;
+}
+
+#progressBar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background-color: #2EB872;
+    transition: width 1s ease-in-out;
+}
+
+
+/* Gaya untuk tombol dengan warna primer */
+.btn-primary {
+    background-color: #2EB872;
+    color: white;
+    
+    border-radius: 4px;
+}
+
+/* Gaya untuk elemen <pre> */
+pre { 
+    background-color: #0d1117;  /* Latar belakang hitam */
+    padding: 0; /* Menghapus padding agar menempel dengan tombol */
+    border-radius: 8px;
+    position: relative;
+   
+}
+
+/* Gaya untuk tombol .btn-primarys */
+.btn-primarys {
+    background-color: #6a6a6a; /* Warna hijau tombol */
+    color: white;
+    width: 100%; /* Tombol mengisi lebar penuh elemen <pre> */
+    height: 100%; /* Tombol mengisi tinggi penuh elemen <pre> */
+    border-radius: 4px;
+    display: flex; /* Menggunakan flexbox untuk menyusun teks di dalam tombol */
+    justify-content: center; /* Menyusun teks di tengah secara horizontal */
+    align-items: center; /* Menyusun teks di tengah secara vertikal */
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Efek hover pada tombol */
+.btn-primarys:hover {
+    background-color: #6a6a6a00; /* Mengubah warna saat hover */
+}
+
+/* Efek loading */
+.loading-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%; /* Dimulai dengan 0% */
+    background-color: #28a745; /* Warna hijau untuk loading */
+    transition: width 1s ease-out; /* Animasi untuk lebar */
+}
