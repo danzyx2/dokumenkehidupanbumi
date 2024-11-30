@@ -101,3 +101,109 @@
     
 })(jQuery);
 
+// Galeri gambar interaktif
+const galleryImages = document.querySelectorAll('.gallery img');
+
+galleryImages.forEach(image => {
+    image.addEventListener('click', () => {
+        // Buat overlay besar untuk menampilkan gambar
+        const overlay = document.createElement('div');
+        overlay.classList.add('overlay');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100vw';
+        overlay.style.height = '100vh';
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        overlay.style.display = 'flex';
+        overlay.style.justifyContent = 'center';
+        overlay.style.alignItems = 'center';
+        overlay.style.zIndex = '1000';
+
+        // Gambar besar
+        const largeImage = document.createElement('img');
+        largeImage.src = image.src;
+        largeImage.style.maxWidth = '80%';
+        largeImage.style.maxHeight = '80%';
+        overlay.appendChild(largeImage);
+
+        // Menambahkan overlay ke body
+        document.body.appendChild(overlay);
+
+        // Klik pada overlay untuk menutup
+        overlay.addEventListener('click', () => {
+            document.body.removeChild(overlay);
+        });
+    });
+});
+
+
+/*function copyCode() {
+    var copyText = document.getElementById("code-to-copy");
+    var range = document.createRange();
+    range.selectNode(copyText);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand("copy");
+    console.log("Kode berhasil disalin!");
+}
+
+
+
+function changeBackground() {
+    // Ambil elemen <pre> dengan id 'codeBlock'
+    var codeBlock = document.getElementById('codeBlock');
+    
+    // Ubah latar belakang menjadi hijau
+    codeBlock.style.backgroundColor = '#28a745';  // Hijau
+}
+
+
+/*const copyButton =
+document.getElementById('copyButton');
+const progressBar =
+document.getElementById('progressBar');
+const copyText =
+document.getElementById('code-to-copy');
+
+copyButton.addEventListener('click', () => {
+    function copyCode() {
+        var range = document.createRange();
+        range.selectNode(copyText);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand("copy");
+    }
+
+    copyCode();
+    progressBar.style.width = '100%';
+    setTimeout(() => {
+        progressBar.style.width = '0%';
+    }, 1000);
+});*/
+
+
+function copyCode() {
+    // Menambahkan animasi loading
+    var loadingBar = document.getElementById("loadingBar");
+    
+    // Mengubah lebar loading dari 0% menjadi 100%
+    loadingBar.style.width = '100%';
+
+    // Menunggu 1 detik agar animasi selesai, kemudian mengubah latar belakang
+    setTimeout(function() {
+        // Menyalin teks
+        var copyText = document.getElementById("code-to-copy");
+        var range = document.createRange();
+        range.selectNode(copyText);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand("copy");
+        console.log("Kode berhasil disalin!");
+
+        // Mengubah latar belakang menjadi hijau setelah animasi selesai
+        var codeBlock = document.getElementById('codeBlock');
+        codeBlock.style.backgroundColor = '#28a745';  // Hijau
+    }, 1000); // Waktu tunggu 1 detik untuk animasi loading selesai
+}
+

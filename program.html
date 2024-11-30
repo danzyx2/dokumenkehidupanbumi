@@ -151,9 +151,9 @@
         <!-- ISI PROGRAM Start -->
         <div class="container my-5" id="faktorial">
             <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Faktorial</h2>
+            <div id="code-to-copy">
             <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
                 <code style="color: #d3d3d3;">
-                    <div id="code-to-copy">
     python
     def faktorial(n):
         if n < 0:
@@ -170,12 +170,12 @@
     print(faktorial(5))  # Output: 120
                 </code>
             </pre>
-<button class="btn btn-primary" onclick="copyCode()">Copy</button>
             </div>
         </div>
-    
+
         <div class="container my-5" id="fibonacci">
             <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Bilangan Fibonacci</h2>
+            <div id="co">
             <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
                 <code style="color: #d3d3d3;">
     python
@@ -186,15 +186,18 @@
             fib_series.append(a)
             a, b = b, a + b
         return fib_series
-    
+
     # Contoh penggunaan
     print(fibonacci(100))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+
                 </code>
             </pre>
+            </div>
         </div>
-    
+
         <div class="container my-5" id="ratarata">
             <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Rata-rata dari Daftar Angka</h2>
+            <div id="code-to-copy">
             <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
                 <code style="color: #d3d3d3;">
     python
@@ -202,29 +205,34 @@
         if len(angka) == 0:
             return 0
         return sum(angka) / len(angka)
-    
+
     # Contoh penggunaan
     print(rata_rata([10, 20, 30, 40, 50]))  # Output: 30.0
+
                 </code>
             </pre>
+            </div>
         </div>
-    
+
         <div class="container my-5" id="konversiSuhu">
             <h2 class="text-primary mb-4" style="color: #ff6347;">Mengonversi Suhu</h2>
+            <div id="code-to-copy">
             <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
                 <code style="color: #d3d3d3;">
     python
     def celsius_ke_fahrenheit(celsius):
         return (celsius * 9/5) + 32
-    
+
     # Contoh penggunaan
     print(celsius_ke_fahrenheit(25))  # Output: 77.0
                 </code>
             </pre>
+            </div>
         </div>
-    
+
         <div class="container my-5" id="inputPengguna">
             <h2 class="text-primary mb-4" style="color: #ff6347;">Mengambil Input Pengguna</h2>
+            <div id="code-to-copy">
             <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
                 <code style="color: #d3d3d3;">
     python
@@ -232,52 +240,69 @@
     print(f"Halo, {nama}!")
                 </code>
             </pre>
+            </div>
         </div>
-    
+
         <div class="container my-5" id="fileIO">
             <h2 class="text-primary mb-4" style="color: #ff6347;">Membaca dan Menulis File</h2>
+            <div id="code-to-copy">
             <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
                 <code style="color: #d3d3d3;">
     python
     # Menulis ke file
     with open('contoh.txt', 'w') as f:
         f.write("Ini adalah contoh file.\n")
-    
+                    
     # Membaca dari file
     with open('contoh.txt', 'r') as f:
         isi = f.read()
         print(isi)
                 </code>
             </pre>
+            </div>
         </div>
-    
+
         <div class="container my-5" id="jumlahKata">
             <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Jumlah Kata dalam Kalimat</h2>
+            <div id="code-to-copy">
             <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
                 <code style="color: #d3d3d3;">
     python
     def hitung_jumlah_kata(kalimat):
         return len(kalimat.split())
-    
+
     # Contoh penggunaan
     print(hitung_jumlah_kata("Ini adalah kalimat contoh."))  # Output: 5
                 </code>
             </pre>
+            </div>
         </div>
     
-        <div class="container my-5" id="pythonCode">
-            <h2 class="text-primary mb-4" style="color: #ff6347;">Code Python</h2>
+        <div class="container my-5" id="faktorial">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Faktorial</h2>
+            <div id="code-to-copy">
             <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
                 <code style="color: #d3d3d3;">
-                    // Ini adalah contoh kode JavaScript
-                    function greet(name) {
-                        return 'Hello, ' + name + '!';
-                    }
-        
-                    console.log(greet('Kehidupan Bumi'));
+    python
+    def faktorial(n):
+        if n < 0:
+            return "Faktorial tidak terdefinisi untuk bilangan negatif."
+        elif n == 0:
+            return 1
+        else:
+            hasil = 1
+            for i in range(1, n + 1):
+                hasil *= i
+            return hasil
+    
+    # Contoh penggunaan
+    print(faktorial(5))  # Output: 120
                 </code>
             </pre>
+            </div>
         </div>
+    
+        
     <!-- ISI PROGRAM End -->
 
     <!-- Footer Start -->
