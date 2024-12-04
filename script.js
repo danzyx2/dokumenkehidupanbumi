@@ -1,109 +1,129 @@
-// Smooth Scroll untuk navigasi halaman yang sama
-document.querySelectorAll('nav ul li a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        const targetUrl = this.getAttribute('href');
+let move_speed = 3, grativy = 0.5;
+let bird = document.querySelector('.bird');
+let img = document.getElementById('bird-1');
+let sound_point = new Audio('point.mp3');
+let sound_die = new Audio('die.mp3');
 
-        // Cek apakah link mengarah ke halaman yang berbeda (misalnya, pantai.html)
-        if (targetUrl.includes('.html')) {
-            window.location.href = targetUrl;  // Pindah halaman jika .html
-        } else {
-            // Jika hanya scroll ke bagian halaman
-            e.preventDefault();
-            const targetId = targetUrl.substring(1); // Hilangkan '#' dari href
-            const targetElement = document.getElementById(targetId);
+// getting bird element properties
+let bird_props = bird.getBoundingClientRect();
 
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 50, // Adjust sesuai kebutuhan
-                    behavior: 'smooth'
-                });
-            }
-        }
-    });
-});
+// This method returns DOMReact -> top, right, bottom, left, x, y, width and height
+let background = document.querySelector('.background').getBoundingClientRect();
 
-// Galeri gambar interaktif
-const galleryImages = document.querySelectorAll('.gallery img');
+let score_val = document.querySelector('.score_val');
+let message = document.querySelector('.message');
+let score_title = document.querySelector('.score_title');
 
-galleryImages.forEach(image => {
-    image.addEventListener('click', () => {
-        // Buat overlay besar untuk menampilkan gambar
-        const overlay = document.createElement('div');
-        overlay.classList.add('overlay');
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100vw';
-        overlay.style.height = '100vh';
-        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-        overlay.style.display = 'flex';
-        overlay.style.justifyContent = 'center';
-        overlay.style.alignItems = 'center';
-        overlay.style.zIndex = '1000';
+let game_state = 'Start';
+img.style.display = 'none';
+message.classList.add('messageStyle');
 
-        // Gambar besar
-        const largeImage = document.createElement('img');
-        largeImage.src = image.src;
-        largeImage.style.maxWidth = '80%';
-        largeImage.style.maxHeight = '80%';
-        overlay.appendChild(largeImage);
-
-        // Menambahkan overlay ke body
-        document.body.appendChild(overlay);
-
-        // Klik pada overlay untuk menutup
-        overlay.addEventListener('click', () => {
-            document.body.removeChild(overlay);
+document.addEventListener('keydown', (e) => {
+    
+    if(e.key == 'Enter' && game_state != 'Play'){
+        document.querySelectorAll('.pipe_sprite').forEach((e) => {
+            e.remove();
         });
-    });
+        img.style.display = 'block';
+        bird.style.top = '40vh';
+        game_state = 'Play';
+        message.innerHTML = '';
+        score_title.innerHTML = 'Score : ';
+        score_val.innerHTML = '0';
+        message.classList.remove('messageStyle');
+        play();
+    }
 });
 
-/*document.addEventListener('DOMContentLoaded', function() {
-    const galleryContainer = document.querySelector('.gallery-container');
+function play(){
+    function move(){
+        if(game_state != 'Play') return;
 
-    // Membuat tombol scroll ke kanan
-    const scrollRightButton = document.createElement('button');
-    scrollRightButton.textContent = 'Scroll Kanan';
-    scrollRightButton.onclick = () => {
-        galleryContainer.scrollBy({ left: 200, behavior: 'smooth' });
-    };
+        let pipe_sprite = document.querySelectorAll('.pipe_sprite');
+        pipe_sprite.forEach((element) => {
+            let pipe_sprite_props = element.getBoundingClientRect();
+            bird_props = bird.getBoundingClientRect();
 
-    // Membuat tombol scroll ke kiri
-    const scrollLeftButton = document.createElement('button');
-    scrollLeftButton.textContent = 'Scroll Kiri';
-    scrollLeftButton.onclick = () => {
-        galleryContainer.scrollBy({ left: -200, behavior: 'smooth' });
-    };
+            if(pipe_sprite_props.right <= 0){
+                element.remove();
+            }else{
+                if(bird_props.left < pipe_sprite_props.left + pipe_sprite_props.width && bird_props.left + bird_props.width > pipe_sprite_props.left && bird_props.top < pipe_sprite_props.top + pipe_sprite_props.height && bird_props.top + bird_props.height > pipe_sprite_props.top){
+                    game_state = 'End';
+                    message.innerHTML = 'Game Over'.fontcolor('red') + '<br>Press Enter To Restart';
+                    message.classList.add('messageStyle');
+                    img.style.display = 'none';
+                    sound_die.play();
+                    return;
+                }else{
+                    if(pipe_sprite_props.right < bird_props.left && pipe_sprite_props.right + move_speed >= bird_props.left && element.increase_score == '1'){
+                        score_val.innerHTML =+ score_val.innerHTML + 1;
+                        sound_point.play();
+                    }
+                    element.style.left = pipe_sprite_props.left - move_speed + 'px';
+                }
+            }
+        });
+        requestAnimationFrame(move);
+    }
+    requestAnimationFrame(move);
 
+    let bird_dy = 0;
+    function apply_gravity(){
+        if(game_state != 'Play') return;
+        bird_dy = bird_dy + grativy;
+        document.addEventListener('keydown', (e) => {
+            if(e.key == 'ArrowUp' || e.key == ' '){
+                img.src = 'icon-2.png';
+                bird_dy = -7.6;
+            }
+        });
 
+        document.addEventListener('keyup', (e) => {
+            if(e.key == 'ArrowUp' || e.key == ' '){
+                img.src = 'icon-1.png';
+            }
+        });
 
-    // Menambahkan tombol ke galeri
-    galleryContainer.parentNode.insertBefore(scrollLeftButton, galleryContainer);
-    galleryContainer.parentNode.insertBefore(scrollRightButton, galleryContainer.nextSibling);
-});*/
+        if(bird_props.top <= 0 || bird_props.bottom >= background.bottom){
+            game_state = 'End';
+            message.style.left = '28vw';
+            window.location.reload();
+            message.classList.remove('messageStyle');
+            return;
+        }
+        bird.style.top = bird_props.top + bird_dy + 'px';
+        bird_props = bird.getBoundingClientRect();
+        requestAnimationFrame(apply_gravity);
+    }
+    requestAnimationFrame(apply_gravity);
 
-document.addEventListener('DOMContentLoaded', function() {
-    const galleryContainer = document.querySelector('.gallery-container');
+    let pipe_seperation = 0;
 
-    // Membuat tombol scroll ke kanan
-    const scrollRightButton = document.createElement('button');
-    scrollRightButton.textContent = 'Scroll Kanan';
-    scrollRightButton.onclick = () => {
-        galleryContainer.scrollBy({ left: 200, behavior: 'smooth' });
-    };
-    scrollRightButton.style.backgroundColor = 'black'; // Mengubah warna latar belakang tombol
-    scrollRightButton.style.color = 'white'; // Mengubah warna teks tombol
+    let pipe_gap = 35;
 
-    // Membuat tombol scroll ke kiri
-    const scrollLeftButton = document.createElement('button');
-    scrollLeftButton.textContent = 'Scroll Kiri';
-    scrollLeftButton.onclick = () => {
-        galleryContainer.scrollBy({ left: -200, behavior: 'smooth' });
-    };
-    scrollLeftButton.style.backgroundColor = 'black'; // Mengubah warna latar belakang tombol
-    scrollLeftButton.style.color = 'black'; // Mengubah warna teks tombol
+    function create_pipe(){
+        if(game_state != 'Play') return;
 
-    // Menambahkan tombol ke galeri
-    galleryContainer.parentNode.insertBefore(scrollLeftButton, galleryContainer);
-    galleryContainer.parentNode.insertBefore(scrollRightButton, galleryContainer.nextSibling);
-});
+        if(pipe_seperation > 115){
+            pipe_seperation = 0;
+
+            let pipe_posi = Math.floor(Math.random() * 43) + 8;
+            let pipe_sprite_inv = document.createElement('div');
+            pipe_sprite_inv.className = 'pipe_sprite';
+            pipe_sprite_inv.style.top = pipe_posi - 70 + 'vh';
+            pipe_sprite_inv.style.left = '100vw';
+
+            document.body.appendChild(pipe_sprite_inv);
+            let pipe_sprite = document.createElement('div');
+            pipe_sprite.className = 'pipe_sprite';
+            pipe_sprite.style.top = pipe_posi + pipe_gap + 'vh';
+            pipe_sprite.style.left = '100vw';
+            pipe_sprite.increase_score = '1';
+
+            document.body.appendChild(pipe_sprite);
+        }
+        pipe_seperation++;
+        requestAnimationFrame(create_pipe);
+    }
+    requestAnimationFrame(create_pipe);
+}
