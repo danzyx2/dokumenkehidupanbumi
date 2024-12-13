@@ -1,0 +1,85 @@
+<DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        
+        .login-container {
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        input[type="password"] {
+            width: 100%;
+            height: 30px;
+            margin-bottom: 20px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            width: 100%;
+            height: 40px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #3e8e41;
+        }
+        
+        #pesan-erreur {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="form-login">
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <button id="btn-login">Masuk</button>
+        </form>
+        <div id="pesan-erreur"></div>
+    </div>
+
+    <script>
+        const formLogin = document.getElementById('form-login');
+        const passwordInput = document.getElementById('password');
+        const pesanErreur = document.getElementById('pesan-erreur');
+        const passwordBenar = 'rahasia'; // ganti dengan password yang diinginkan
+
+        formLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = passwordInput.value.trim();
+            if (password === passwordBenar) {
+                //alert('Login berhasil!');
+                window.location.href = 'contact.html';
+                // tambahkan kode untuk mengalihkan ke halaman utama
+            } else {
+                pesanErreur.innerText = 'Password salah!';
+            }
+        });
+    </script>
+</body>
+</html>

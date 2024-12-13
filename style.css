@@ -818,3 +818,62 @@ pre {
     font-weight: bold;
     color: white;
 }
+
+
+
+
+.schedule-container {
+    
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;  /* Mengurangi jarak antara countdown dan jadwal sholat */
+}
+
+.schedule-container h2 {
+    font-size: 2.5rem;
+    color: #FFD700; /* Warna emas untuk judul */
+    margin-bottom: 15px;  /* Mengurangi jarak bawah judul */
+}
+
+.schedule-item p {
+    margin: 5px 0;  /* Mengurangi jarak antara waktu dan nama sholat */
+    font-size: 1.2rem;
+}
+
+.d-flex {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.schedule-item {
+    text-align: center;
+    padding: 10px;
+    margin: 5px;
+    background-color: rgba(255, 255, 255, 0.7); /* Transparan agar latar belakang tetap terlihat */
+    border-radius: 5px;
+}
+
+.schedule-item p {
+    margin: 0;  /* Mengurangi jarak antar teks di dalam setiap item */
+}
+
+/* Responsif untuk perangkat kecil */
+@media (max-width: 768px) {
+    .schedule-container {
+        padding: 15px;
+    }
+    .schedule-container h2 {
+        font-size: 1.8rem;
+    }
+    .schedule-item p {
+        font-size: 1rem;
+    }
+}
+
+
+/*jadwal sholat*/
+.jadwalsholat {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(ramadhan.png) center center no-repeat;
+    background-size: cover;
+}
