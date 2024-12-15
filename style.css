@@ -142,10 +142,10 @@
 
 
 /*** Header ***/
-.header-bg {
+/*.header-bg {
     background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(bg-1.jpg) center center no-repeat;
     background-size: cover;
-}
+}*/
 
 .btn-play {
     position: relative;
@@ -875,5 +875,17 @@ pre {
 /*jadwal sholat*/
 .jadwalsholat {
     background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(ramadhan.png) center center no-repeat;
+    background-size: cover;
+}
+
+/*** Header ***/
+/*.header-bg {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(bg-1.jpg) center center no-repeat;
+    background-size: cover;
+}*/
+
+/*header event boboiboy*/
+.header-bg {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(icon-4.jpg) center center no-repeat;
     background-size: cover;
 }
