@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Event Kehidupan Bumi</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="icon-10.png" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Quicksand:wght@600;700&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="animate.min.css" rel="stylesheet">
+    <link href="lightbox.min.css" rel="stylesheet">
+    <link href="owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-light p-0 wow fadeIn" data-wow-delay="0.1s">
+        <div class="row gx-0 d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                    <small class="fa fa-map-marker-alt text-primary me-2"></small>
+                    <small>Indonesia</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center py-3">
+                    <small class="far fa-clock text-primary me-2"></small>
+                    <small>Only 24 Jam</small>
+                </div>
+            </div>
+            <div class="col-lg-5 px-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                    <small class=""></small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center">
+                    <a class="btn btn-sm-square bg-white text-primary me-0" href=""><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light py-lg-0 px-4 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+        <a href="index.html" class="navbar-brand p-0">
+            <img class="img-fluid me-3" src="icon-10.png" alt="Icon">
+            <h1 class="m-0 text-primary">Kehidupan Bumi Official</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse py-4 py-lg-0" id="navbarCollapse">
+            <div class="navbar-nav ms-auto">
+                <a href="index.html" class="nav-item nav-link active">Home</a>
+                <a href="about.html" class="nav-item nav-link">About</a>
+                <a href="https://www.youtube.com/@kehidupanbumi7332" class="nav-item nav-link">Saluran</a>
+            </div>
+            <a href="https://www.youtube.com/@kehidupanbumi7332" class="btn btn-primary">Berlangganan<i class="fa fa-arrow-right ms-3"></i></a>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid header-bg-event py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <h1 class="display-4 text-white mb-3 animated slideInDown">Boboiboy Galaxy Gentar</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Event</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- ISI PROGRAM Start -->
+    
+    <style>
+        /* Styling untuk tombol play yang mirip dengan YouTube */
+        
+
+        .btn-play span {
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn-play:hover {
+            background-color: #cc0000;
+        }
+
+        /* Tambahan untuk header dengan background gelap dan teks putih */
+        .custom-header-bg {
+            background: #181818;
+            color: white;
+            padding: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between; /* Memposisikan konten menyamping */
+            align-items: center;
+            width: 100%;
+        }
+
+        .custom-header-bg h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0; /* Menghapus margin bawah untuk header */
+        }
+
+        .custom-header-bg h6 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        /* Penataan pada modal untuk video */
+        .modal-content {
+            background-color: #181818;
+            border-radius: 8px;
+        }
+
+        .modal-header .btn-close {
+            border: none;
+            color: white;
+        }
+
+        /* Mengubah ukuran iframe agar mengisi lebar modal */
+        .modal-body iframe {
+            width: 100%;
+            height: 400px; /* Menetapkan tinggi iframe */
+        }
+
+        /* Membatasi style untuk layout header pada kolom pertama */
+        .video-container {
+            display: flex;
+            flex-direction: row; /* Menyusun konten secara horizontal */
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Penataan untuk kolom header */
+        .video-container .header-content {
+            flex: 1;
+        }
+
+        .video-container .button-content {
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+        }
+
+    </style>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Kolom untuk Video Header dan Tombol Play -->
+            <div class="col-lg-12 p-0 wow fadeIn" data-wow-delay="0.1s">
+                <!-- Container untuk header dengan latar belakang gelap -->
+                <div class="custom-header-bg p-4">
+                    <!-- Kontainer untuk Header dan Tombol Play -->
+                    <div class="video-container">
+                        <!-- Judul Video -->
+                        <div class="header-content">
+                            <h1 class="text-light ">Berjuang Tanpa Gentar</h1>
+                        </div>
+
+                        <!-- Kontainer untuk Tombol Play dan Episode -->
+                        <div class="button-content">
+                            <button type="button" class="btn-play" data-bs-toggle="modal"
+                                data-src="https://www.youtube.com/embed/mZYoaMGaQTo?si=6A0d-owocq6fW1nu" data-bs-target="#videoModal">
+                                <span></span> <!-- Icon Play -->
+                            </button>
+                            <!-- Teks Episode (EP-1) -->
+                            <h6 class="text-white m-0 ms-4">EP-1</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Kolom untuk Video Header dan Tombol Play -->
+            <div class="col-lg-12 p-0 wow fadeIn" data-wow-delay="0.1s">
+                <!-- Container untuk header dengan latar belakang gelap -->
+                <div class="custom-header-bg p-4">
+                    <!-- Kontainer untuk Header dan Tombol Play -->
+                    <div class="video-container">
+                        <!-- Judul Video -->
+                        <div class="header-content">
+                            <h1 class="text-light ">Wira Dalam Bahaya</h1>
+                        </div>
+
+                        <!-- Kontainer untuk Tombol Play dan Episode -->
+                        <div class="button-content">
+                            <button type="button" class="btn-play" data-bs-toggle="modal"
+                                data-src="https://www.youtube.com/embed/xMqUdP4AHQE?si=zKQJFlG-NQ0abH8C" data-bs-target="#videoModal">
+                                <span></span> <!-- Icon Play -->
+                            </button>
+                            <!-- Teks Episode (EP-1) -->
+                            <h6 class="text-white m-0 ms-4">EP-2</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Kolom untuk Video Header dan Tombol Play -->
+            <div class="col-lg-12 p-0 wow fadeIn" data-wow-delay="0.1s">
+                <!-- Container untuk header dengan latar belakang gelap -->
+                <div class="custom-header-bg p-4">
+                    <!-- Kontainer untuk Header dan Tombol Play -->
+                    <div class="video-container">
+                        <!-- Judul Video -->
+                        <div class="header-content">
+                            <h1 class="text-light ">Segera Hadir</h1>
+                        </div>
+
+                        <!-- Kontainer untuk Tombol Play dan Episode -->
+                        <div class="button-content">
+                            <button type="button" class="btn-play" data-bs-toggle="modal"
+                                data-src="https://www.youtube.com/embed/xMqUdP4AHQE?si=zKQJFlG-NQ0abH8C" data-bs-target="#videoModal">
+                                <span></span> <!-- Icon Play -->
+                            </button>
+                            <!-- Teks Episode (EP-1) -->
+                            <h6 class="text-white m-0 ms-4">EP-3</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Kolom untuk Video Header dan Tombol Play -->
+            <div class="col-lg-12 p-0 wow fadeIn" data-wow-delay="0.1s">
+                <!-- Container untuk header dengan latar belakang gelap -->
+                <div class="custom-header-bg p-4">
+                    <!-- Kontainer untuk Header dan Tombol Play -->
+                    <div class="video-container">
+                        <!-- Judul Video -->
+                        <div class="header-content">
+                            <h1 class="text-light ">Segera Hadir</h1>
+                        </div>
+
+                        <!-- Kontainer untuk Tombol Play dan Episode -->
+                        <div class="button-content">
+                            <button type="button" class="btn-play" data-bs-toggle="modal"
+                                data-src="https://www.youtube.com/embed/xMqUdP4AHQE?si=zKQJFlG-NQ0abH8C" data-bs-target="#videoModal">
+                                <span></span> <!-- Icon Play -->
+                            </button>
+                            <!-- Teks Episode (EP-1) -->
+                            <h6 class="text-white m-0 ms-4">EP-4</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Kolom untuk Video Header dan Tombol Play -->
+            <div class="col-lg-12 p-0 wow fadeIn" data-wow-delay="0.1s">
+                <!-- Container untuk header dengan latar belakang gelap -->
+                <div class="custom-header-bg p-4">
+                    <!-- Kontainer untuk Header dan Tombol Play -->
+                    <div class="video-container">
+                        <!-- Judul Video -->
+                        <div class="header-content">
+                            <h1 class="text-light ">Segera Hadir</h1>
+                        </div>
+
+                        <!-- Kontainer untuk Tombol Play dan Episode -->
+                        <div class="button-content">
+                            <button type="button" class="btn-play" data-bs-toggle="modal"
+                                data-src="https://www.youtube.com/embed/xMqUdP4AHQE?si=zKQJFlG-NQ0abH8C" data-bs-target="#videoModal">
+                                <span></span> <!-- Icon Play -->
+                            </button>
+                            <!-- Teks Episode (EP-1) -->
+                            <h6 class="text-white m-0 ms-4">EP-5</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Kolom untuk Video Header dan Tombol Play -->
+            <div class="col-lg-12 p-0 wow fadeIn" data-wow-delay="0.1s">
+                <!-- Container untuk header dengan latar belakang gelap -->
+                <div class="custom-header-bg p-4">
+                    <!-- Kontainer untuk Header dan Tombol Play -->
+                    <div class="video-container">
+                        <!-- Judul Video -->
+                        <div class="header-content">
+                            <h1 class="text-light ">Segera Hadir</h1>
+                        </div>
+
+                        <!-- Kontainer untuk Tombol Play dan Episode -->
+                        <div class="button-content">
+                            <button type="button" class="btn-play" data-bs-toggle="modal"
+                                data-src="https://www.youtube.com/embed/xMqUdP4AHQE?si=zKQJFlG-NQ0abH8C" data-bs-target="#videoModal">
+                                <span></span> <!-- Icon Play -->
+                            </button>
+                            <!-- Teks Episode (EP-1) -->
+                            <h6 class="text-white m-0 ms-4">EP-6</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal untuk Memutar Video -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="videoIframe" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script>
+        // JavaScript untuk Menangani Tombol Play dan Video Modal
+        const playButtons = document.querySelectorAll('.btn-play');
+
+        // Menambahkan event listener untuk setiap tombol play
+        playButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Ambil URL video yang disimpan dalam atribut data-src
+                const videoSrc = this.getAttribute('data-src');
+                
+                // Masukkan URL video ke iframe di dalam modal
+                const modalIframe = document.getElementById('videoIframe');
+                modalIframe.src = videoSrc;
+            });
+        });
+
+        // Pastikan video dihentikan setelah modal ditutup
+        const modal = document.getElementById('videoModal');
+        modal.addEventListener('hidden.bs.modal', function() {
+            const modalIframe = document.getElementById('videoIframe');
+            modalIframe.src = ''; // Hentikan video dengan menghapus src
+        });
+    </script>
+        
+    <!-- ISI PROGRAM End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid footer-bg-event bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Quick Links</h5>
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                    <a class="btn btn-link" href="">Our Services</a>
+                    <a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">Support</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Popular Links</h5>
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                    <a class="btn btn-link" href="">Our Services</a>
+                    <a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">Support</a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="https://www.youtube.com/@kehidupanbumi7332">Kehidupan Bumi Official</a>, All Right Reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="wow.min.js"></script>
+    <script src="easing.min.js"></script>
+    <script src="waypoints.min.js"></script>
+    <script src="counterup.min.js"></script>
+    <script src="owl.carousel.min.js"></script>
+    <script src="lightbox.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="main.js"></script>
+</body>
+
+</html>

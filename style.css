@@ -519,7 +519,7 @@
 
 /*** Footer ***/
 .footer {
-    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(../img/bg-2.jpg) center center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(icon-4.jpg) center center no-repeat;
     background-size: cover;
 }
 
@@ -884,8 +884,30 @@ pre {
     background-size: cover;
 }*/
 
+.header-bg-program {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(bg-1.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+.header-bg-download {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(ramadhan.png) center center no-repeat;
+    background-size: cover;
+}
+
 /*header event boboiboy*/
 .header-bg {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(icon-4.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+.header-bg-event {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(icon-4.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+/*Footer Area*/
+
+.footer-bg-event {
     background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(icon-4.jpg) center center no-repeat;
     background-size: cover;
 }

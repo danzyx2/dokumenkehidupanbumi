@@ -321,7 +321,7 @@
 </head>
 
 <body>
-    <!-- Spinner Start -->
+    <!-- Spinner Start --
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
@@ -406,97 +406,497 @@
     <!-- Page Header End -->
 
 
-    <!-- Service Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5 mb-5 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="col-lg-6">
-                    <p><span class="text-primary me-2">#</span>Dokumentasi</p>
-                    <h1 class="display-5 mb-0">Dokumentasi <span class="text-primary">Kehidupan Bumi</span> Official</h1>
-                </div>
-            </div>
-                <div class="row g-4">
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <a class="animal-item" href="https://drive.google.com/your-file-link" target="_blank">
-                                    <div class="position-relative">
-                                        <img class="img-fluid" src="animal-md-1.jpg" alt="">
-                                        <div class="animal-text p-4">
-                                            <p class="text-white small text-uppercase mb-0">Wisata</p>
-                                            <h5 class="text-white mb-0">KEINDAHAN BANDUNG</h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-12">
-                                <a class="animal-item" href="https://drive.google.com/your-file-link" target="_blank">
-                                    <div class="position-relative">
-                                        <img class="img-fluid" src="animal-lg-1.jpg" alt="">
-                                        <div class="animal-text p-4">
-                                            <p class="text-white small text-uppercase mb-0">Wisata</p>
-                                            <h5 class="text-white mb-0">KEINDAHAN BANDUNG</h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <a class="animal-item" href="https://drive.google.com/your-file-link" target="_blank">
-                                    <div class="position-relative">
-                                        <img class="img-fluid" src="animal-lg-2.jpg" alt="">
-                                        <div class="animal-text p-4">
-                                            <p class="text-white small text-uppercase mb-0">Wisata</p>
-                                            <h5 class="text-white mb-0">KEINDAHAN BANDUNG</h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-12">
-                                <a class="animal-item" href="https://drive.google.com/your-file-link" target="_blank">
-                                    <div class="position-relative">
-                                        <img class="img-fluid" src="animal-md-2.jpg" alt="">
-                                        <div class="animal-text p-4">
-                                            <p class="text-white small text-uppercase mb-0">Wisata</p>
-                                            <h5 class="text-white mb-0">KEINDAHAN BANDUNG</h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <a class="animal-item" href="https://drive.google.com/your-file-link" target="_blank">
-                                    <div class="position-relative">
-                                        <img class="img-fluid" src="animal-md-3.jpg" alt="">
-                                        <div class="animal-text p-4">
-                                            <p class="text-white small text-uppercase mb-0">Wisata</p>
-                                            <h5 class="text-white mb-0">KEINDAHAN BANDUNG</h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-12">
-                                <a class="animal-item" href="https://drive.google.com/your-file-link" target="_blank">
-                                    <div class="position-relative">
-                                        <img class="img-fluid" src="animal-lg-3.jpg" alt="">
-                                        <div class="animal-text p-4">
-                                            <p class="text-white small text-uppercase mb-0">Wisata</p>
-                                            <h5 class="text-white mb-0">KEINDAHAN BANDUNG</h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- isi tabel tabungan -->
+<style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+
+
+h1 {
+  color: #333;
+  margin-bottom: 5px;
+}
+
+
+
+.clock {
+  font-size: 1.2em;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.quote {
+  font-style: italic;
+  color: #555;
+  background-color: #f0f8ff;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.progress-container {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  height: 10px;
+}
+
+#progressBar {
+  height: 15px;
+  width: 0;
+  background-color: #4caf50;
+  transition: width 0.4s ease;
+}
+
+#progressText {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.input-container {
+  display: flex;
+  gap: 5px;
+}
+
+#taskInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  padding: 8px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+
+#taskList,
+#historyList {
+  margin-top: 20px;
+  max-height: 9900px;           /* Menentukan tinggi maksimal area daftar tugas */
+  overflow-y: auto;            /* Menambahkan scroll jika konten melebihi tinggi */
+  margin-top: 20px;
+  padding: 0;
+  list-style-type: none;
+  text-align: left;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px; /* Perbesar padding untuk lebih ruang */
+  background-color: #f9f9f9;
+  margin-bottom: 12px; /* Beri jarak antar tugas */
+  border-radius: 8px; /* Perbesar border-radius untuk sudut yang lebih halus */
+  border: 2px solid #ddd; /* Perbesar border */
+  box-sizing: border-box; /* Agar padding dan border tidak mempengaruhi ukuran total */
+}
+
+.task-item span {
+  display: inline-block;
+  max-width: 70%; /* Atur lebar teks tugas */
+  word-wrap: break-word; /* Membungkus teks jika terlalu panjang */
+  vertical-align: middle;
+  padding-right: 10px; /* Memberi ruang antara teks dan tombol */
+}
+
+.task-item button {
+  margin-left: 10px; /* Memberikan jarak antara tombol */
+  padding: 8px 12px;
+  font-size: 1em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.task-item button:hover {
+  background-color: #d32f2f;
+}
+
+.task-item .complete-btn {
+  background-color: #4caf50;
+}
+
+.task-item .complete-btn:hover {
+  background-color: #388e3c;
+}
+
+.task-item .delete-btn {
+  background-color: #ff5252; /* Warna merah untuk tombol hapus */
+  color: #fff;
+}
+
+.task-item .delete-btn:hover {
+  background-color: #d32f2f; /* Warna lebih gelap saat dihover */
+}
+.history-btn {
+  background-color: #e0e0e0; /* Warna abu-abu */
+  color: #333;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px; /* Memberi jarak dengan elemen di atasnya */
+  transition: background-color 0.3s;
+}
+
+.history-btn:hover {
+  background-color: #bdbdbd; /* Warna abu-abu lebih gelap saat dihover */
+}
+#historyList {
+  display: none; /* Sembunyikan riwayat secara default */
+  margin-top: 20px;
+}
+
+/*tabel tabungan*/
+.table-container {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3f433f;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+
+</style>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <div id="clock" class="clock"></div>
+        <div class="quote" id="quote"></div>
+        <div class="progress-container">
+            <div id="progressBar"></div>
         </div>
+        <p id="progressText">0% Selesai</p>
+        
+        <div class="input-container">
+            <input type="text" id="taskInput" placeholder="Tambahkan tugas baru...">
+            <button onclick="addTask()">Tambah</button>
+        </div>
+        
+        <div id="taskList"></div>
+        <button class="history-btn" onclick="viewHistory()">Lihat Riwayat Hari Kemarin</button>
+
+        <div id="historyList"></div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    displayTasks();
+    displayQuote();
+    updateProgress();
+    updateClock();
+    setInterval(updateClock, 1000); // Perbarui jam setiap detik
+});
+
+const quotes = [
+    "Hari ini adalah kesempatan baru untuk berkembang.",
+    "Tugas kecil yang selesai lebih baik daripada tugas besar yang tidak dilakukan.",
+    "Jangan menunda pekerjaanmu, selesaikan hari ini!",
+    "Langkah kecil menuju tujuan adalah langkah maju.",
+    "Setiap tugas yang selesai membawa Anda lebih dekat ke tujuan.",
+    "Setiap hari adalah kesempatan untuk menjadi lebih baik.",
+    "Fokus pada apa yang bisa Anda kendalikan.",
+    "Ketekunan adalah kunci menuju kesuksesan.",
+    "Keberhasilan datang kepada mereka yang gigih.",
+    "Ambil waktu untuk mengisi ulang energi dan kembali lebih kuat.",
+    "Fortis Fortuna Adiuvat"
+];
+
+function displayQuote() {
+    const quoteElement = document.getElementById("quote");
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    quoteElement.textContent = `"${randomQuote}"`;
+}
+
+function updateClock() {
+    const clockElement = document.getElementById("clock");
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+function getFormattedDate(daysOffset = 0) {
+    const date = new Date();
+    date.setDate(date.getDate() + daysOffset);
+    return date.toISOString().split('T')[0];
+}
+
+function addTask() {
+    const taskInput = document.getElementById("taskInput");
+    const taskText = taskInput.value.trim();
+
+    if (taskText) {
+        const tasks = JSON.parse(localStorage.getItem(getFormattedDate())) || [];
+        tasks.push({ text: taskText, completed: false });
+        localStorage.setItem(getFormattedDate(), JSON.stringify(tasks));
+        taskInput.value = "";
+        displayTasks();
+    }
+}
+
+function displayTasks() {
+    const taskList = document.getElementById("taskList");
+    taskList.innerHTML = "";
+    const tasks = JSON.parse(localStorage.getItem(getFormattedDate())) || [];
+
+    tasks.forEach((task, index) => {
+        const taskItem = document.createElement("div");
+        taskItem.className = "task-item";
+
+        const taskText = document.createElement("span");
+        taskText.textContent = task.text;
+        if (task.completed) taskText.style.textDecoration = "line-through";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Hapus";
+        deleteButton.classList.add("delete-btn");  // Tambahkan kelas delete-btn
+        deleteButton.onclick = () => removeTask(index);
+
+        const completeButton = document.createElement("button");
+        completeButton.textContent = "Selesai";
+        completeButton.classList.add("complete-btn");
+        completeButton.onclick = () => toggleComplete(index);
+
+        taskItem.appendChild(taskText);
+        taskItem.appendChild(completeButton);
+        taskItem.appendChild(deleteButton);
+
+        taskList.appendChild(taskItem);
+    });
+    updateProgress();
+}
+
+
+function removeTask(index) {
+    const tasks = JSON.parse(localStorage.getItem(getFormattedDate())) || [];
+    tasks.splice(index, 1);
+    localStorage.setItem(getFormattedDate(), JSON.stringify(tasks));
+    displayTasks();
+}
+
+function toggleComplete(index) {
+    const tasks = JSON.parse(localStorage.getItem(getFormattedDate())) || [];
+    tasks[index].completed = !tasks[index].completed;
+    localStorage.setItem(getFormattedDate(), JSON.stringify(tasks));
+    displayTasks();
+}
+
+function viewHistory() {
+    const historyList = document.getElementById("historyList");
+    historyList.innerHTML = "<h3>Riwayat Hari Kemarin:</h3>";
+    const yesterdayTasks = JSON.parse(localStorage.getItem(getFormattedDate(-1))) || [];
+
+    if (yesterdayTasks.length > 0) {
+        yesterdayTasks.forEach((task) => {
+            const taskItem = document.createElement("div");
+            taskItem.className = "task-item";
+            taskItem.textContent = task.text;
+            if (task.completed) taskItem.style.textDecoration = "line-through";
+            historyList.appendChild(taskItem);
+        });
+    } else {
+        historyList.innerHTML += "<p>Tidak ada tugas kemarin.</p>";
+    }
+}
+
+function updateProgress() {
+    const tasks = JSON.parse(localStorage.getItem(getFormattedDate())) || [];
+    const completedTasks = tasks.filter(task => task.completed).length;
+    const progress = tasks.length > 0 ? (completedTasks / tasks.length) * 100 : 0;
+
+    document.getElementById("progressBar").style.width = `${progress}%`;
+    document.getElementById("progressText").textContent = `${Math.round(progress)}% Selesai`;
+}
+
+function viewHistory() {
+    const historyList = document.getElementById("historyList");
+    const historyButton = document.querySelector(".history-btn");
+
+    if (historyList.style.display === "none" || !historyList.style.display) {
+        // Tampilkan riwayat
+        historyList.innerHTML = "<h3>Riwayat Hari Kemarin:</h3>";
+        const yesterdayTasks = JSON.parse(localStorage.getItem(getFormattedDate(-1))) || [];
+
+        if (yesterdayTasks.length > 0) {
+            yesterdayTasks.forEach((task) => {
+                const taskItem = document.createElement("div");
+                taskItem.className = "task-item";
+                taskItem.textContent = task.text;
+                if (task.completed) taskItem.style.textDecoration = "line-through";
+                historyList.appendChild(taskItem);
+            });
+        } else {
+            historyList.innerHTML += "<p>Tidak ada tugas kemarin.</p>";
+        }
+
+        historyList.style.display = "block";  // Tampilkan riwayat
+        historyButton.textContent = "Tutup Riwayat";  // Ubah teks tombol
+    } else {
+        // Sembunyikan riwayat
+        historyList.style.display = "none";
+        historyButton.textContent = "Lihat Riwayat Hari Kemarin";  // Ubah kembali teks tombol
+    }
+}
+
+// Menambahkan event listener untuk tombol Enter
+document.getElementById("taskInput").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        addTask();  // Panggil fungsi addTask saat Enter ditekan
+    }
+});
+
+// Fungsi untuk menambahkan tugas
+function addTask() {
+    const input = document.getElementById("taskInput");
+    const taskText = input.value.trim(); // Mengambil teks dari input dan menghapus spasi di awal/akhir
+    if (taskText) {
+        const tasks = JSON.parse(localStorage.getItem(getFormattedDate())) || [];
+        tasks.push({ text: taskText, completed: false });
+        localStorage.setItem(getFormattedDate(), JSON.stringify(tasks));
+        input.value = ""; // Mengosongkan input setelah menambahkan tugas
+        displayTasks();   // Menampilkan ulang daftar tugas
+    }
+}
+
+    </script>
+
+    <!--TABUNGAN TABEL-->
+    
+    <div class="container">
+        <h1>Tabungan Saya</h1>
+
+        <!-- Tabel Tabungan -->
+        <div class="table-container">
+            <table id="transactionTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Transaksi</th>
+                        <th>Jumlah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data transaksi akan ditambahkan secara dinamis -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Input untuk transaksi -->
+        <div class="btn-container">
+            <input type="number" id="amountInput" placeholder="Masukkan jumlah uang" min="1">
+            <button id="depositBtn" onclick="depositMoney()">Tambah ke Tabungan</button>
+            <button id="withdrawBtn" onclick="withdrawMoney()">Ambil dari Tabungan</button>
+        </div>
+
+        <!-- Saldo Tabungan -->
+        <div class="balance" id="balance">
+            Saldo Tabungan: Rp 0
+        </div>
+    </div>
+
+    <script>
+        let balance = 0; // Saldo tabungan
+        let transactionHistory = []; // Riwayat transaksi
+
+        // Fungsi untuk menampilkan saldo dan riwayat transaksi
+        function updateTable() {
+            // Menampilkan saldo
+            document.getElementById('balance').textContent = 'Saldo Tabungan: Rp ' + balance.toLocaleString();
+
+            // Menampilkan riwayat transaksi
+            const tableBody = document.querySelector('#transactionTable tbody');
+            tableBody.innerHTML = '';
+
+            transactionHistory.forEach((transaction, index) => {
+                const row = document.createElement('tr');
+                const numberCell = document.createElement('td');
+                const transactionCell = document.createElement('td');
+                const amountCell = document.createElement('td');
+
+                numberCell.textContent = index + 1;
+                transactionCell.textContent = transaction.type;
+                amountCell.textContent = 'Rp ' + transaction.amount.toLocaleString();
+
+                row.appendChild(numberCell);
+                row.appendChild(transactionCell);
+                row.appendChild(amountCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Fungsi untuk menambahkan uang ke tabungan
+        function depositMoney() {
+            const amountInput = document.getElementById('amountInput');
+            const amount = parseInt(amountInput.value);
+
+            if (amount > 0) {
+                balance += amount;
+                transactionHistory.push({ type: 'Tambah', amount: amount });
+                updateTable();
+                amountInput.value = ''; // Mengosongkan input setelah transaksi
+            } else {
+                alert('Masukkan jumlah uang yang valid!');
+            }
+        }
+
+        // Fungsi untuk mengambil uang dari tabungan
+        function withdrawMoney() {
+            const amountInput = document.getElementById('amountInput');
+            const amount = parseInt(amountInput.value);
+
+            if (amount > 0 && amount <= balance) {
+                balance -= amount;
+                transactionHistory.push({ type: 'Ambil', amount: amount });
+                updateTable();
+                amountInput.value = ''; // Mengosongkan input setelah transaksi
+            } else if (amount > balance) {
+                alert('Saldo tidak cukup!');
+            } else {
+                alert('Masukkan jumlah uang yang valid!');
+            }
+        }
+
+        // Inisialisasi tampilan awal
+        updateTable();
+    </script>
+
         <!--<div class="container-xxl py-5">
             <div class="container">
                <div class="row g-5 mb-5 wow fadeInUp" data-wow-delay="0.1s">
