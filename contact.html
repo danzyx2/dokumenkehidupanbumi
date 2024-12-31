@@ -321,7 +321,7 @@
 </head>
 
 <body>
-    <!-- Spinner Start --
+    <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
@@ -833,57 +833,75 @@ function addTask() {
     <script>
         let balance = 0; // Saldo tabungan
         let transactionHistory = []; // Riwayat transaksi
-
+    
+        // Cek apakah ada data yang tersimpan di localStorage
+        if (localStorage.getItem('balance')) {
+            balance = parseInt(localStorage.getItem('balance')); // Ambil saldo yang tersimpan
+        }
+        if (localStorage.getItem('transactionHistory')) {
+            transactionHistory = JSON.parse(localStorage.getItem('transactionHistory')); // Ambil riwayat transaksi yang tersimpan
+        }
+    
         // Fungsi untuk menampilkan saldo dan riwayat transaksi
         function updateTable() {
             // Menampilkan saldo
             document.getElementById('balance').textContent = 'Saldo Tabungan: Rp ' + balance.toLocaleString();
-
+    
             // Menampilkan riwayat transaksi
             const tableBody = document.querySelector('#transactionTable tbody');
             tableBody.innerHTML = '';
-
+    
             transactionHistory.forEach((transaction, index) => {
                 const row = document.createElement('tr');
                 const numberCell = document.createElement('td');
                 const transactionCell = document.createElement('td');
                 const amountCell = document.createElement('td');
-
+    
                 numberCell.textContent = index + 1;
                 transactionCell.textContent = transaction.type;
                 amountCell.textContent = 'Rp ' + transaction.amount.toLocaleString();
-
+    
                 row.appendChild(numberCell);
                 row.appendChild(transactionCell);
                 row.appendChild(amountCell);
-
+    
                 tableBody.appendChild(row);
             });
         }
-
+    
         // Fungsi untuk menambahkan uang ke tabungan
         function depositMoney() {
             const amountInput = document.getElementById('amountInput');
             const amount = parseInt(amountInput.value);
-
+    
             if (amount > 0) {
                 balance += amount;
                 transactionHistory.push({ type: 'Tambah', amount: amount });
+    
+                // Simpan data ke localStorage
+                localStorage.setItem('balance', balance);
+                localStorage.setItem('transactionHistory', JSON.stringify(transactionHistory));
+    
                 updateTable();
                 amountInput.value = ''; // Mengosongkan input setelah transaksi
             } else {
                 alert('Masukkan jumlah uang yang valid!');
             }
         }
-
+    
         // Fungsi untuk mengambil uang dari tabungan
         function withdrawMoney() {
             const amountInput = document.getElementById('amountInput');
             const amount = parseInt(amountInput.value);
-
+    
             if (amount > 0 && amount <= balance) {
                 balance -= amount;
                 transactionHistory.push({ type: 'Ambil', amount: amount });
+    
+                // Simpan data ke localStorage
+                localStorage.setItem('balance', balance);
+                localStorage.setItem('transactionHistory', JSON.stringify(transactionHistory));
+    
                 updateTable();
                 amountInput.value = ''; // Mengosongkan input setelah transaksi
             } else if (amount > balance) {
@@ -892,10 +910,11 @@ function addTask() {
                 alert('Masukkan jumlah uang yang valid!');
             }
         }
-
+    
         // Inisialisasi tampilan awal
         updateTable();
     </script>
+    
 
         <!--<div class="container-xxl py-5">
             <div class="container">

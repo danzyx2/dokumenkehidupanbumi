@@ -885,29 +885,50 @@ pre {
 }*/
 
 .header-bg-program {
-    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(bg-1.jpg) center center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(program.jpg) center center no-repeat;
     background-size: cover;
 }
 
 .header-bg-download {
-    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(ramadhan.png) center center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(download.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+.header-bg-dokumen {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(dokumentasi.jpg) center center no-repeat;
     background-size: cover;
 }
 
 /*header event boboiboy*/
 .header-bg {
-    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(icon-4.jpg) center center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(event.jpg) center center no-repeat;
     background-size: cover;
 }
 
 .header-bg-event {
-    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(icon-4.jpg) center center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(event.jpg) center center no-repeat;
     background-size: cover;
 }
 
 /*Footer Area*/
 
 .footer-bg-event {
-    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(icon-4.jpg) center center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(event.jpg) center center no-repeat;
     background-size: cover;
 }
+
+.footer-bg-dokumen {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(dokumentasi.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+.footer-bg-download {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(download.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+.footer-bg-program {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(program.jpg) center center no-repeat;
+    background-size: cover;
+}
+
