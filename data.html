@@ -1,54 +1,143 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+        /* Body styling */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #0c0d0c, #2e322f);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
         }
-        
+
+        /* Background image */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('ramadhan.png') no-repeat center center/cover;
+            z-index: -1;
+            filter: blur(8px);
+        }
+
+        /* Login container */
         .login-container {
-            width: 300px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-        
-        input[type="password"] {
             width: 100%;
-            height: 30px;
+            max-width: 400px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Title styling */
+        h2 {
+            font-size: 2.2rem;
             margin-bottom: 20px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-        
-        button {
-            width: 100%;
-            height: 40px;
-            background-color: #4CAF50;
+            font-weight: 700;
             color: #fff;
+        }
+
+        /* Input field styling */
+        .input-field {
+            width: 87%;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-field label {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #000000;
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field input:focus {
+            border-color: #6eff7a;
+        }
+
+        .input-field input:focus + label,
+        .input-field input:valid + label {
+            top: 0;
+            font-size: 12px;
+            color: #6eff7a;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #6eff7a;
+            width: 100%;
+            padding: 10px;
             border: none;
             border-radius: 5px;
+            font-size: 18px;
+            color: #4e4c4c;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        
+
         button:hover {
-            background-color: #3e8e41;
+            background-color: #4CAF50;
         }
-        
+
+        /* Error message styling */
         #pesan-erreur {
             color: red;
-            font-size: 12px;
+            font-size: 140px;
+            margin-top: 15px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .login-container {
+                width: 90%;
+                padding: 25px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .input-field input {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 12px;
+            }
         }
     </style>
 </head>
@@ -56,8 +145,10 @@
     <div class="login-container">
         <h2>Login</h2>
         <form id="form-login">
-            <label for="password">Password:</label>
-            <input type="password" id="password" required>
+            <div class="input-field">
+                <input type="password" id="password" required>
+                <label for="password">Password</label>
+            </div>
             <button id="btn-login">Masuk</button>
         </form>
         <div id="pesan-erreur"></div>
@@ -73,9 +164,7 @@
             e.preventDefault();
             const password = passwordInput.value.trim();
             if (password === passwordBenar) {
-                //alert('Login berhasil!');
-                window.location.href = 'contact.html';
-                // tambahkan kode untuk mengalihkan ke halaman utama
+                window.location.href = 'contact.html'; // ganti dengan halaman tujuan
             } else {
                 pesanErreur.innerText = 'Password salah!';
             }
