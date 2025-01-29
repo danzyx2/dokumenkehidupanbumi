@@ -24,6 +24,7 @@
             justify-content: space-between;
             padding: 20px 0;
             width: 100%;
+            flex-wrap: wrap;
         }
 
         .header img {
@@ -35,6 +36,7 @@
         .header .title {
             flex-grow: 1;
             text-align: center;
+            margin: 10px;
         }
 
         .header .title h1 {
@@ -48,19 +50,35 @@
             color: #aaaaaa;
         }
 
-        /* Menambahkan pengaturan agar "18 anggota" berada di tengah */
-        .header .members {
-            text-align: center; /* memastikan teks berada di tengah */
-            font-size: 14px;
-            color: #aaaaaa;
-            width: 100%; /* membuat div mengambil seluruh lebar */
-            margin-top: 10px; /* memberi sedikit jarak dari teks atas */
+        .header .title p span {
+            font-weight: bold;
         }
 
+        /* Ensure that action items stay in one row on larger screens */
         .actions {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             margin: 20px 0;
+            flex-wrap: nowrap; /* Make sure items don't wrap to a new line */
+            gap: 10px;
+            overflow-x: auto; /* Allows horizontal scroll if items overflow */
+        }
+
+        .action-item {
+            text-align: center;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1 1 18%; /* Flex items adjust to fit the container width */
+            min-width: 150px; /* Ensure that items won't squish together */
+            max-width: 180px; /* Max width to keep items from getting too big */
+        }
+
+        .action-item img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
         }
 
         .actions button {
@@ -71,6 +89,7 @@
             border-radius: 5px;
             font-size: 14px;
             cursor: pointer;
+            width: 100%;
         }
 
         .group-info {
@@ -100,42 +119,105 @@
             color: #aaaaaa;
         }
 
-        .description {
+        .description, .rules {
             margin: 20px 0;
         }
 
-        .description p {
+        .description p, .rules p {
             margin: 10px 0;
             font-size: 14px;
         }
 
-        .description ul {
+        .description ul, .rules ul {
             margin: 10px 0;
             padding-left: 20px;
         }
 
-        .description ul li {
+        .description ul li, .rules ul li {
             margin: 5px 0;
             font-size: 14px;
         }
 
-        .rules {
-            margin: 20px 0;
+        /* New modal for displaying favorite hero info */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
         }
 
-        .rules p {
-            margin: 10px 0;
-            font-size: 14px;
+        .modal-content {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
         }
 
-        .rules ul {
-            margin: 10px 0;
-            padding-left: 20px;
+        .modal-close {
+            background-color: #f44336;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .rules ul li {
-            margin: 5px 0;
-            font-size: 14px;
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header .title h1 {
+                font-size: 24px;
+            }
+
+            .actions {
+                flex-wrap: wrap;
+                justify-content: flex-start; /* Align to the left when wrapping */
+            }
+
+            .action-item {
+                flex: 1 1 22%; /* This ensures that the items remain in a row, 4 per row on tablet */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header .title h1 {
+                font-size: 20px;
+            }
+
+            .actions {
+                flex-wrap: wrap;
+                justify-content: center; /* Center all items */
+            }
+
+            .action-item {
+                flex: 1 1 45%; /* 2 items per row */
+            }
+
+            .action-item img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .actions button {
+                width: auto;
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            .group-info .info p {
+                font-size: 12px;
+            }
+
+            .description p, .rules p {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -143,7 +225,6 @@
     <div class="container">
         <!-- Header Section -->
         <div class="header">
-
             <div class="title">
                 <img alt="Emerald Guardians logo" src="squad.jpg"/>
                 <h1>Emerald Guardians of Dawn</h1>
@@ -154,10 +235,37 @@
 
         <!-- Action Buttons Section -->
         <div class="actions">
-            <button><i class="fas fa-phone"></i> Panggilan</button>
-            <button><i class="fas fa-video"></i> Video</button>
-            <button><i class="fas fa-user-plus"></i> Tambah</button>
-            <button><i class="fas fa-search"></i> Cari</button>
+            <h1>Pengisi Role Emerald Guardians</h1>
+            <div class="action-item">
+                <img alt="Mid Lane" src="https://example.com/mid-lane.png"/>
+                <p>Mid Lane</p>
+                <button onclick="showHeroInfo('Mid Lane', 'Alucard')">User</button>
+            </div>
+            <div class="action-item">
+                <img alt="Exp Lane" src="https://example.com/exp-lane.png"/>
+                <p>Exp Lane</p>
+                <button onclick="showHeroInfo('Exp Lane', 'Lancelot')">User</button>
+            </div>
+            <div class="action-item">
+                <img alt="Gold Lane" src="https://example.com/gold-lane.png"/>
+                <p>Gold Lane</p>
+                <button onclick="showHeroInfo('Gold Lane', 'Granger')">User</button>
+            </div>
+            <div class="action-item">
+                <img alt="Jungle" src="icon-10.png"/>
+                <p>Jungle</p>
+                <button onclick="showHeroInfo('Jungle', 'Hayabusa')">User</button>
+            </div>
+            <div class="action-item">
+                <img alt="Roam" src="https://example.com/jungle.png"/>
+                <p>Roam</p>
+                <button onclick="showHeroInfo('Roam', 'Rafaela')">User</button>
+            </div>
+            <div class="action-item">
+                <img alt="Roam" src="https://example.com/jungle.png"/>
+                <p>All Role</p>
+                <button onclick="showHeroInfo('Roam', 'Rafaela')">User</button>
+            </div>
         </div>
 
         <!-- Group Info Section -->
@@ -166,6 +274,15 @@
             <div class="info">
                 <p>SCOPE TESSERACT#5</p>
                 <p><span>Komunitas • 25 grup</span></p>
+            </div>
+        </div>
+
+        <!-- Modal Section -->
+        <div id="heroModal" class="modal">
+            <div class="modal-content">
+                <h2>Hero Favorit</h2>
+                <p id="heroName"></p>
+                <button class="modal-close" onclick="closeModal()">Tutup</button>
             </div>
         </div>
 
@@ -191,5 +308,19 @@
             </ul>
         </div>
     </div>
+
+    <script>
+        // Function to display the hero info modal
+        function showHeroInfo(lane, hero) {
+            const heroName = document.getElementById('heroName');
+            heroName.textContent = `Hero Favorit di ${lane}: ${hero}`;
+            document.getElementById('heroModal').style.display = 'flex';
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('heroModal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
