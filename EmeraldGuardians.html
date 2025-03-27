@@ -3,324 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emerald Guardians of Dawn</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <title>Squad Mobile Legends</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+   body {
+    font-family: 'Inter', sans-serif;
+    background: #121212; /* Latar belakang gelap */
+    color: #e0e0e0; /* Teks terang yang lebih lembut */
+    margin: 0;
+    padding: 0;
+}
 
-        .container {
-            padding: 20px;
-        }
+/* Efek Hover untuk Member */
+.bg-gray-800 {
+    background-color: #2d2d2d;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Bayangan halus */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 0;
-            width: 100%;
-            flex-wrap: wrap;
-        }
+.bg-gray-800:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(114, 244, 175, 0.5); /* Bayangan hijau muda saat hover */
+    filter: brightness(1.1); /* Menambah kecerahan sedikit */
+}
 
-        .header img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-        }
+/* Efek Hover pada Link Navbar */
+a {
+    color: #b3b3b3; /* Teks terang default yang lebih lembut */
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
-        .header .title {
-            flex-grow: 1;
-            text-align: center;
-            margin: 10px;
-        }
+a:hover {
+    text-decoration: underline;
+    color: #72f4af; /* Warna hijau muda yang lembut */
+    text-shadow: 0 0 5px #72f4af; /* Efek glow lembut pada teks */
+}
 
-        .header .title h1 {
-            margin: 0;
-            font-size: 28px;
-        }
+/* Animasi pada Tombol Hamburger */
+#hamburger-btn svg {
+    transition: transform 0.3s ease;
+}
 
-        .header .title p {
-            margin: 0;
-            font-size: 14px;
-            color: #aaaaaa;
-        }
+#hamburger-btn.open svg:first-child {
+    transform: rotate(90deg);
+}
 
-        .header .title p span {
-            font-weight: bold;
-        }
+#hamburger-btn.open svg:last-child {
+    transform: rotate(45deg);
+}
 
-        /* Ensure that action items stay in one row on larger screens */
-        .actions {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-            flex-wrap: nowrap; /* Make sure items don't wrap to a new line */
-            gap: 10px;
-            overflow-x: auto; /* Allows horizontal scroll if items overflow */
-        }
+/* Efek Latar Belakang Header dengan Blur dan Glow */
+header {
+    background: rgba(0, 0, 0, 0.5); /* Sedikit transparansi untuk latar belakang */
+    backdrop-filter: blur(10px); /* Efek blur pada latar belakang */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7); /* Bayangan halus untuk header */
+}
 
-        .action-item {
-            text-align: center;
-            margin: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1 1 18%; /* Flex items adjust to fit the container width */
-            min-width: 150px; /* Ensure that items won't squish together */
-            max-width: 180px; /* Max width to keep items from getting too big */
-        }
+/* Desain untuk Footer */
+footer {
+    background-color: #1d1d1d; /* Warna latar belakang footer */
+    color: #b3b3b3; /* Teks footer yang lebih lembut */
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.5); /* Bayangan footer */
+}
 
-        .action-item img {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 10px;
-        }
+footer a {
+    color: #72f4af; /* Warna hijau muda untuk link di footer */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
 
-        .actions button {
-            background-color: #1a1a1a;
-            border: 1px solid #1a1a1a;
-            color: #00ff00;
-            padding: 12px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            width: 100%;
-        }
+footer a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 5px #72f4af; /* Efek glow lembut pada link */
+}
 
-        .group-info {
-            display: flex;
-            align-items: center;
-            padding: 10px 0;
-            border-top: 1px solid #333333;
-            border-bottom: 1px solid #333333;
-        }
+/* Efek Glow pada Elemen Teks */
+h1, h2, h3 {
+    color: #e0e0e0; /* Teks putih lembut */
+    text-shadow: 0 0 1px #72f4af, 0 0 2px #72f4af; /* Efek glow hijau muda yang lebih halus */
+}
 
-        .group-info img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-        }
+/* Efek Button */
+button {
+    background-color: #72f4af; /* Warna hijau muda untuk tombol */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-        .group-info .info {
-            margin-left: 10px;
-        }
+button:hover {
+    background-color: #56c98c;
+    box-shadow: 0 4px 10px rgba(114, 244, 175, 0.6); /* Efek cahaya lembut saat hover */
+}
 
-        .group-info .info p {
-            margin: 0;
-            font-size: 14px;
-        }
+/* Menambahkan Efek Animasi ke Menu Hamburger */
+#hamburger-btn {
+    position: relative;
+    z-index: 20;
+}
 
-        .group-info .info p span {
-            color: #aaaaaa;
-        }
+/* Transisi Halus saat Scroll */
+html {
+    scroll-behavior: smooth;
+}
 
-        .description, .rules {
-            margin: 20px 0;
-        }
 
-        .description p, .rules p {
-            margin: 10px 0;
-            font-size: 14px;
-        }
-
-        .description ul, .rules ul {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-
-        .description ul li, .rules ul li {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        /* New modal for displaying favorite hero info */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        .modal-close {
-            background-color: #f44336;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .header .title h1 {
-                font-size: 24px;
-            }
-
-            .actions {
-                flex-wrap: wrap;
-                justify-content: flex-start; /* Align to the left when wrapping */
-            }
-
-            .action-item {
-                flex: 1 1 22%; /* This ensures that the items remain in a row, 4 per row on tablet */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header .title h1 {
-                font-size: 20px;
-            }
-
-            .actions {
-                flex-wrap: wrap;
-                justify-content: center; /* Center all items */
-            }
-
-            .action-item {
-                flex: 1 1 45%; /* 2 items per row */
-            }
-
-            .action-item img {
-                width: 60px;
-                height: 60px;
-            }
-
-            .actions button {
-                width: auto;
-                padding: 10px;
-                font-size: 12px;
-            }
-
-            .group-info .info p {
-                font-size: 12px;
-            }
-
-            .description p, .rules p {
-                font-size: 12px;
-            }
-        }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- Header Section -->
-        <div class="header">
-            <div class="title">
-                <img alt="Emerald Guardians logo" src="squad.jpg"/>
-                <h1>Emerald Guardians of Dawn</h1>
-                <p>Grup di SCOPE TESSERACT#5</p>
-                <p>18 Anggota</p>
+<body class="bg-gradient-to-br from-purple-900 to-blue-900 text-white">
+    <header class="py-6 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Logo di sini -->
+            <div class="flex items-center">
+                <img src="ramadhan.png" alt="Logo Squad MLBB" class="w-12 h-12 rounded-full mr-4">
+                <h1 class="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
+                    Alter Legends
+                </h1>
             </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#about" class="hover:text-pink-300 transition duration-300">Tentang Kami</a></li>
+                    <li><a href="#members" class="hover:text-pink-300 transition duration-300">Anggota</a></li>
+                    <li><a href="#achievements" class="hover:text-pink-300 transition duration-300">Prestasi</a></li>
+                    <li><a href="#contact" class="hover:text-pink-300 transition duration-300">Kontak</a></li>
+                </ul>
+            </nav>
+            <button id="hamburger-btn" class="md:hidden text-white focus:outline-none" aria-label="Buka Menu">
+                <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
+    </header>
+    
 
-        <!-- Action Buttons Section -->
-        <div class="actions">
-            <h1>Pengisi Role Emerald Guardians</h1>
-            <div class="action-item">
-                <img alt="Mid Lane" src="mid.png"/>
-                <p>Mid Lane</p>
-                <button onclick="showHeroInfo('Mid Lane', 'Alucard')">User</button>
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-90 z-50">
+        <div class="bg-gray-900 w-80 h-full absolute right-0 p-6">
+            <div class="flex justify-end mb-4">
+                <button id="mobile-menu-close-btn" class="text-white focus:outline-none" aria-label="Tutup Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
-            <div class="action-item">
-                <img alt="Exp Lane" src="exp.png"/>
-                <p>Exp Lane</p>
-                <button onclick="showHeroInfo('Exp Lane', 'Lancelot')">User</button>
-            </div>
-            <div class="action-item">
-                <img alt="Gold Lane" src="gold.png"/>
-                <p>Gold Lane</p>
-                <button onclick="showHeroInfo('Gold Lane', 'Granger')">User</button>
-            </div>
-            <div class="action-item">
-                <img alt="Jungle" src="jungle.png"/>
-                <p>Jungle</p>
-                <button onclick="showHeroInfo('Jungle', 'Hayabusa')">User</button>
-            </div>
-            <div class="action-item">
-                <img alt="Roam" src="roam.png"/>
-                <p>Roam</p>
-                <button onclick="showHeroInfo('Roam', 'Rafaela')">User</button>
-            </div>
-            <div class="action-item">
-                <img alt="Roam" src="all.png"/>
-                <p>All Role</p>
-                <button onclick="showHeroInfo('Roam', 'Rafaela')">User</button>
-            </div>
-        </div>
-
-        <!-- Group Info Section -->
-        <div class="group-info">
-            <img alt="SCOPE TESSERACT#5 logo" src="https://placehold.co/60x60"/>
-            <div class="info">
-                <p>SCOPE TESSERACT#5</p>
-                <p><span>Komunitas • 25 grup</span></p>
-            </div>
-        </div>
-
-        <!-- Modal Section -->
-        <div id="heroModal" class="modal">
-            <div class="modal-content">
-                <h2>Hero Favorit</h2>
-                <p id="heroName"></p>
-                <button class="modal-close" onclick="closeModal()">Tutup</button>
-            </div>
-        </div>
-
-        <!-- Description Section -->
-        <div class="description">
-            <p>Emerald Guardians adalah <i>tim esports Mobile Legends</i> yang terinspirasi oleh keindahan dan kekuatan zamrud. Kami adalah para pejuang yang tak kenal lelah, siap menguasai Land of Dawn. Dengan strategi yang solid dan permainan yang agresif, kami akan selalu memberikan yang terbaik untuk tim dan penggemar. Setiap anggota tim adalah permata yang berkilau, siap bersinar terang di panggung kompetisi. Bersama-sama, kami akan membuktikan bahwa Emerald Guardians adalah kekuatan yang tak terhentikan.</p>
-            <p>Warna Hijau Zamrud melambangkan:</p>
-            <ul>
-                <li>Vitalitas dan pertumbuhan: Tim selalu bersemangat dan terus berkembang.</li>
-                <li>Kerjasama yang kuat: Tim bekerja sama dengan baik dan harmonis.</li>
-                <li>Kesuksesan dan kemakmuran: Tim memiliki ambisi tinggi untuk meraih prestasi terbaik.</li>
-                <li>Ketenangan dan fokus: Tim mampu menghadapi tekanan dengan tenang.</li>
-            </ul>
-            <p>//Bersinar terang bersama Emerald Guardians//</p>
-        </div>
-
-        <!-- Rules Section -->
-        <div class="rules">
-            <p>Peraturan / <i>Rules</i> <i class="fas fa-star"></i></p>
-            <ul>
-                <li><i class="fas fa-times"></i> Tidak boleh kirim <b>VIRTEX</b></li>
-                <li><i class="fas fa-times-circle"></i> Tidak boleh kirim <b>🚫</b> (opsional)</li>
-            </ul>
+            <nav class="block">
+                <ul class="space-y-4">
+                    <li><a href="#about" class="block text-lg text-white hover:text-pink-300 transition duration-300">Tentang Kami</a></li>
+                    <li><a href="#members" class="block text-lg text-white hover:text-pink-300 transition duration-300">Anggota</a></li>
+                    <li><a href="#achievements" class="block text-lg text-white hover:text-pink-300 transition duration-300">Prestasi</a></li>
+                    <li><a href="#contact" class="block text-lg text-white hover:text-pink-300 transition duration-300">Kontak</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <section id="about" class="mb-16">
+            <h2 class="text-3xl sm:text-4xl font-semibold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">Tentang Kami</h2>
+            <p class="text-gray-300 text-lg text-center">
+                Kami adalah tim Mobile Legends yang berdedikasi dan bersemangat, yang terdiri dari para pemain dengan keterampilan dan semangat yang tinggi.  Kami bertujuan untuk mencapai keunggulan dalam dunia kompetitif Mobile Legends dan membangun komunitas yang suportif.
+            </p>
+        </section>
+
+        <section id="members" class="mb-16">
+            <h2 class="text-3xl sm:text-4xl font-semibold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">Anggota Squad</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center">
+                    <img src="ramadhan.png" alt="Nama Anggota 1" class="w-32 h-32 rounded-full mb-4 border-4 border-black-500">
+                    <h3 class="text-xl font-semibold text-white mb-2">Nama Anggota 1</h3>
+                    <p class="text-gray-400 text-md text-center">Role: Midlaner</p>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center">
+                    <img src="https://via.placeholder.com/150" alt="Nama Anggota 2" class="w-32 h-32 rounded-full mb-4 border-4 border-black-500">
+                    <h3 class="text-xl font-semibold text-white mb-2">Nama Anggota 2</h3>
+                    <p class="text-gray-400 text-md text-center">Role: Jungler</p>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center">
+                    <img src="https://via.placeholder.com/150" alt="Nama Anggota 3" class="w-32 h-32 rounded-full mb-4 border-4 border-black-500">
+                    <h3 class="text-xl font-semibold text-white mb-2">Nama Anggota 3</h3>
+                    <p class="text-gray-400 text-md text-center">Role: Roamer</p>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center">
+                    <img src="https://via.placeholder.com/150" alt="Nama Anggota 3" class="w-32 h-32 rounded-full mb-4 border-4 border-black-500">
+                    <h3 class="text-xl font-semibold text-white mb-2">Nama Anggota 3</h3>
+                    <p class="text-gray-400 text-md text-center">Role: Roamer</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements" class="mb-16">
+            <h2 class="text-3xl sm:text-4xl font-semibold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">Prestasi</h2>
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                <ul class="list-disc list-inside space-y-2">
+                    <li class="text-gray-300 text-lg">Juara 1 - Turnamen Lokal 1</li>
+                    <li class="text-gray-300 text-lg">Juara 2 - Turnamen Regional 2</li>
+                    <li class="text-gray-300 text-lg">Partisipasi - Turnamen Nasional 3</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="contact" class="mb-16">
+            <h2 class="text-3xl sm:text-4xl font-semibold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">Kontak</h2>
+            <p class="text-gray-300 text-lg text-center">
+                Hubungi kami di email@squadmlbb.com atau ikuti kami di media sosial:
+            </p>
+            <div class="flex justify-center mt-4 space-x-4">
+                <a href="#" class="text-pink-300 hover:text-pink-400 transition duration-300 text-2xl" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-pink-300 hover:text-pink-400 transition duration-300 text-2xl" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-pink-300 hover:text-pink-400 transition duration-300 text-2xl" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 py-4 text-center">
+        <p class="text-gray-400 text-md">Hak Cipta &copy; 2025 Squad Mobile Legends.  Semua hak dilindungi.</p>
+    </footer>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script>
-        // Function to display the hero info modal
-        function showHeroInfo(lane, hero) {
-            const heroName = document.getElementById('heroName');
-            heroName.textContent = `Hero Favorit di ${lane}: ${hero}`;
-            document.getElementById('heroModal').style.display = 'flex';
+         const hamburgerBtn = document.getElementById("hamburger-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const mobileMenuCloseBtn = document.getElementById("mobile-menu-close-btn");
+        const hamburgerIcon = document.getElementById("hamburger-icon");
+        const closeIcon = document.getElementById("close-icon");
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle("hidden");
+            hamburgerIcon.classList.toggle("hidden");
+            closeIcon.classList.toggle("hidden");
         }
 
-        // Function to close the modal
-        function closeModal() {
-            document.getElementById('heroModal').style.display = 'none';
+        hamburgerBtn.addEventListener("click", toggleMobileMenu);
+        mobileMenuCloseBtn.addEventListener("click", toggleMobileMenu);
+
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && event.target !== hamburgerBtn) {
+                toggleMobileMenu();
+            }
+        });
+
+        function updateActiveNavLink() {
+            let currentSectionId = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - 100 && window.scrollY < sectionTop + sectionHeight - 100) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
         }
+
+        window.addEventListener('scroll', updateActiveNavLink);
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+
     </script>
 </body>
 </html>
