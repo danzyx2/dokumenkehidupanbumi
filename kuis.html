@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Berhadiah Idul Fitri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: linear-gradient(45deg, #29572a, #000000, #00535e); /* Gradien RGB */
+            background-size: 609% 202%; /* Efek gradien bergerak */
+            animation: gradientShift 10s ease infinite; /* Animasi gradien bergerak */
+            color: #e0e0e0; /* Light text for dark mode */
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .eid-Mubarak {
+            background-image: linear-gradient(45deg, #29572a, #000000, #00535e);
+            animation: gradientShift 20s ease infinite; 
+        }
+        .festive-text {
+            color: #10b981; /* Green color for festive feel */
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        #soal {
+            background-color: #1e2229; /* Dark gray for question background */
+            color: #e0e0e0; /* Light text for the question */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            border: 1px solid #1e2229;
+        }
+        #timer {
+            color: #f87171; /* Red for timer */
+        }
+        #hasil {
+            color: #34d399; /* Green for result */
+        }
+        button {
+            background-color: #3b82f6; /* Blue background for buttons */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #2563eb; /* Darker blue on hover */
+        }
+        button:disabled {
+            background-color: #9ca3af; /* Gray when disabled */
+            cursor: not-allowed;
+        }
+        .flex {
+            gap: 1rem;
+        }
+
+
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="eid-Mubarak h-screen flex justify-center items-center">
+    <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center">
+        <h1 class="text-3xl font-semibold festive-text mb-4">Selamat Hari Raya Idul Fitri!</h1>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Kuis Berhadiah THR</h2>
+        <div id="soal" class="text-lg text-gray-700 mb-6">
+            <p>Tebak, apa itu yang di panaskan bukannya mencair tapi malah membeku?</p> <!-- ISI DENGAN SOAL -->
+        </div>
+        <div id="timer" class="text-red-600 text-xl mb-4">Waktu Tersisa: <span id="countdown"></span></div>
+        <div id="hasil" class="text-green-600 font-semibold mb-4"></div>
+        <div class="flex justify-center space-x-4">
+            <button id="jawab" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Jawab</button>
+            <button id="bantuan" class="bg-yellow-500 hover:bg-yellow-700 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Bantuan</button>
+        </div>
+    </div>
+
+    <script src="jawaban.js"></script>
+</body>
+</html>
+
