@@ -5,16 +5,16 @@ const soalElement = document.getElementById('soal');
         const countdownDisplay = document.getElementById('countdown');
         const timerElement = document.getElementById('timer');
 
-        const jawabanBenar = "soekarno";
+        const jawabanBenar = "telu";
         const linkBenar = "https://www.google.com";
-        const linkBantuan = "https://id.wikipedia.org/wiki/Soekarno";
+        const linkBantuan = "https://youtube.com/@kehidupanbumi7332?feature=shared";
 
         let waktuHabis = false;
         let sudahMenjawabBenar = false;
         let intervalId;
 
         // Set the target date and time
-        const targetDate = new Date("April 2, 2025 20:00:00").getTime();  // Ubah tanggal dan waktu hitung mundur
+        const targetDate = new Date("April 2, 2025 21:00:00").getTime();  // Ubah tanggal dan waktu hitung mundur
 
         function startCountdown() {
             intervalId = setInterval(function() {
