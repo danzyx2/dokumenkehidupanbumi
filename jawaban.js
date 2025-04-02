@@ -7,14 +7,14 @@ const soalElement = document.getElementById('soal');
 
         const jawabanBenar = "soekarno";
         const linkBenar = "https://www.google.com";
-        const linkBantuan = "https://youtube.com/@kehidupanbumi7332?feature=shared";
+        const linkBantuan = "https://id.wikipedia.org/wiki/Soekarno";
 
         let waktuHabis = false;
         let sudahMenjawabBenar = false;
         let intervalId;
 
-        // Set the target date and time (Example: 10th April 2025 at 12:00 PM)
-        const targetDate = new Date("April 2, 2025 20:00:00").getTime();  //ubah TANGGAL WAKTU HITUNG MUNDUR 
+        // Set the target date and time
+        const targetDate = new Date("April 2, 2025 20:00:00").getTime();  // Ubah tanggal dan waktu hitung mundur
 
         function startCountdown() {
             intervalId = setInterval(function() {
@@ -57,7 +57,7 @@ const soalElement = document.getElementById('soal');
             if (jawaban === jawabanBenar) {
                 hasilElement.textContent = "Benar! Anda akan dialihkan...";
                 sudahMenjawabBenar = true;
-                clearInterval(intervalId);
+                clearInterval(intervalId); // Stop the countdown timer when the correct answer is given
                 jawabButton.disabled = true;
                 jawabButton.classList.remove('bg-indigo-500', 'hover:bg-indigo-700');
                 jawabButton.classList.add('bg-gray-400', 'cursor-not-allowed');
