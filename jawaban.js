@@ -5,8 +5,8 @@ const soalElement = document.getElementById('soal');
         const countdownDisplay = document.getElementById('countdown');
         const timerElement = document.getElementById('timer');
 
-        const jawabanBenar = "telu";
-        const linkBenar = "https://www.google.com";
+        const jawabanBenar = "telur";
+        const linkBenar = "https://link.dana.id/danakaget?c=svy53d8nb&r=fkh29J&orderId=20250403101214728715010300166099615490357";
         const linkBantuan = "https://youtube.com/@kehidupanbumi7332?feature=shared";
 
         let waktuHabis = false;
