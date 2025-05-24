@@ -363,7 +363,7 @@ h1 {
     const randomValue = Math.random(); // Angka acak antara 0 dan 1
 
     let crash;
-    if (randomValue < 0.45) { // 40% kemungkinan crash antara 1.01x - 1.5x
+    if (randomValue < 0.40) { // 40% kemungkinan crash antara 1.01x - 1.5x
         crash = 1.01 + Math.random() * 0.99; // 1.01 sampai 1.50
     } else if (randomValue < 0.65) { // 30% kemungkinan crash antara 1.5x - 3x
         crash = 2.01 + Math.random() * 1.49; // 1.51 sampai 3.00
