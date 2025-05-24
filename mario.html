@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platformer Koin Sederhana</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Sembunyikan scrollbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #333;
+            font-family: 'Press Start 2P', cursive; /* Tambahkan font retro jika ingin */
+            color: white;
+        }
+
+        /* Ini akan mengambil font dari Google Fonts. Pastikan ada koneksi internet saat pertama kali dimuat. */
+        /* Namun, jika ingin sepenuhnya statis offline, hapus baris ini dan gunakan font fallback. */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            justify-content: center;
+        }
+
+        canvas {
+            background-color: #87CEEB; /* Sky Blue */
+            border: 5px solid #555;
+            display: block; /* Hapus spasi di bawah canvas */
+            max-width: 95vw; /* Batasi lebar canvas agar responsif */
+            max-height: 95vh; /* Batasi tinggi canvas agar responsif */
+            image-rendering: pixelated; /* Untuk tampilan pixel art */
+        }
+
+        #ui-overlay {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 40px;
+            font-size: 1.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            z-index: 10;
+        }
+
+        #mobile-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 600px;
+            margin-top: 20px;
+            user-select: none; /* Mencegah seleksi teks saat menekan tombol */
+        }
+
+        .control-button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1.5em;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: background-color 0.2s, transform 0.1s;
+            flex: 1; /* Agar tombol mengisi ruang */
+            margin: 0 5px; /* Spasi antar tombol */
+        }
+
+        .control-button.jump {
+            background-color: #007bff; /* Blue */
+        }
+
+        .control-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Sembunyikan kontrol mobile pada desktop */
+        @media (min-width: 768px) {
+            #mobile-controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="ui-overlay">
+            <div>Koin: <span id="coin-count">0</span></div>
+            <div>Nyawa: <span id="lives-count">3</span></div>
+            <div>Level: <span id="level-count">1</span></div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        <div id="mobile-controls">
+            <button class="control-button" id="left-btn">←</button>
+            <button class="control-button" id="right-btn">→</button>
+            <button class="control-button jump" id="jump-btn">↑</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const coinCountElement = document.getElementById('coin-count');
+            const livesCountElement = document.getElementById('lives-count');
+            const levelCountElement = document.getElementById('level-count');
+
+            // Mobile Controls
+            const leftBtn = document.getElementById('left-btn');
+            const rightBtn = document.getElementById('right-btn');
+            const jumpBtn = document.getElementById('jump-btn');
+
+            // --- Game Konfigurasi ---
+            const TILE_SIZE = 32; // Ukuran setiap "kotak" dalam piksel
+            const GRAVITY = 0.8;
+            const PLAYER_SPEED = 4;
+            const JUMP_POWER = -12;
+            const ENEMY_SPEED = 1;
+            const GAME_WIDTH = 800; // Lebar logika game tetap
+            const GAME_HEIGHT = 480; // Tinggi logika game tetap
+
+            // --- Game State ---
+            let player;
+            let currentLevelIndex = 0;
+            let lives = 3;
+            let coins = 0;
+            let gamePaused = true; // Game dimulai dalam keadaan pause
+            let cameraX = 0; // Posisi kamera
+
+            const keys = {
+                left: false,
+                right: false,
+                up: false
+            };
+
+            const levels = [
+                // Level 1
+                [
+                    'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW',
+                    'W                                      W',
+                    'W                                      W',
+                    'W                                      W',
+                    'W            C                         W',
+                    'W                                      W',
+                    'W                         G            W',
+                    'W      P                 XXX           W',
+                    'W    XXXXC                             W',
+                    'W           XXXX       C         E     W',
+                    'W   X              XXXXXX          XXXXX',
+                    'W C                  E                 W',
+                    'WXX           XXXXXXX                  W',
+                    'W         C                            W',
+                    'W                                      W',
+                    'W                                      W',
+                    'WXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+                    'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW'
+                ],
+                // Level 2 (contoh level yang lebih sulit)
+                [
+                    'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW',
+                    'W                                      W',
+                    'W                   C                  W',
+                    'W                                      W',
+                    'W                                      W',
+                    'W                                XXXXX W',
+                    'W       E                              W',
+                    'W       P                              W',
+                    'W  XXXXXXX          C                  W',
+                    'W                                      W',
+                    'W      X X X X X XXXX          E       W',
+                    'W                                      W',
+                    'W                                      W',
+                    'W C C C C C C C C C C C C C C C C C C CW',
+                    'WXXXXXXX         XXXXXX           XXXXXW',
+                    'W                                      W',
+                    'WXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+                    'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW'
+                ]
+            ];
+
+            // Peta simbol ke properti blok
+            const tileTypes = {
+                ' ': { type: 'empty', color: 'transparent' },
+                'W': { type: 'wall', color: '#6B4226' }, // Dinding / Tanah
+                'X': { type: 'platform', color: '#8B4513' }, // Platform
+                'C': { type: 'coin', char: '💰' },
+                'E': { type: 'enemy', char: '💀' },
+                'P': { type: 'player_start', char: '🧍' }, // Simbol untuk posisi awal pemain
+                'G': { type: 'goal', char: '🏁' }
+            };
+
+            // --- Kelas Game Object ---
+
+            class GameObject {
+                constructor(x, y, width, height, type, char = '') {
+                    this.x = x;
+                    this.y = y;
+                    this.width = width;
+                    this.height = height;
+                    this.type = type;
+                    this.char = char;
+                    this.color = type === 'wall' ? '#6B4226' : (type === 'platform' ? '#8B4513' : 'transparent');
+                }
+
+                draw() {
+                    if (this.char) {
+                        ctx.font = `${this.width * 0.8}px serif`;
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(this.char, this.x + this.width / 2 - cameraX, this.y + this.height / 2);
+                    } else if (this.color !== 'transparent') {
+                        ctx.fillStyle = this.color;
+                        ctx.fillRect(this.x - cameraX, this.y, this.width, this.height);
+                    }
+                }
+            }
+
+            class Player extends GameObject {
+                constructor(x, y) {
+                    super(x, y, TILE_SIZE * 0.8, TILE_SIZE * 0.9, 'player', '🧍');
+                    this.dx = 0; // Kecepatan horizontal
+                    this.dy = 0; // Kecepatan vertikal
+                    this.onGround = false;
+                    this.facing = 'right'; // Arah hadap pemain
+                    this.isDying = false; // Status sedang mati
+                    this.respawnTimer = 0;
+                    this.initialX = x; // Untuk respawn
+                    this.initialY = y; // Untuk respawn
+                }
+
+                update(blocks, enemies, coinsArray, goals) {
+                    if (this.isDying) {
+                        this.respawnTimer--;
+                        if (this.respawnTimer <= 0) {
+                            this.respawn();
+                        }
+                        return;
+                    }
+
+                    // Gravitasi
+                    this.dy += GRAVITY;
+
+                    // Gerakan horizontal
+                    this.dx = 0;
+                    if (keys.left) {
+                        this.dx = -PLAYER_SPEED;
+                        this.facing = 'left';
+                    }
+                    if (keys.right) {
+                        this.dx = PLAYER_SPEED;
+                        this.facing = 'right';
+                    }
+
+                    // Lompat
+                    if (keys.up && this.onGround) {
+                        this.dy = JUMP_POWER;
+                        this.onGround = false;
+                    }
+
+                    // Perbarui posisi X
+                    this.x += this.dx;
+                    this.checkCollisionX(blocks);
+
+                    // Perbarui posisi Y
+                    this.y += this.dy;
+                    this.checkCollisionY(blocks);
+
+                    // Deteksi jatuh dari dunia
+                    if (this.y + this.height > GAME_HEIGHT + TILE_SIZE * 2) { // Jatuh lebih jauh dari batas bawah canvas
+                        this.die();
+                    }
+
+                    // Deteksi tabrakan dengan musuh
+                    enemies.forEach(enemy => {
+                        if (this.intersects(enemy)) {
+                            // Jika pemain di atas musuh dan bergerak ke bawah (lompat di atas musuh)
+                            if (this.dy > 0 && (this.y + this.height - this.dy) < enemy.y) {
+                                enemy.die(); // Musuh mati
+                                this.dy = JUMP_POWER / 2; // Pemain memantul
+                            } else {
+                                this.die(); // Pemain mati
+                            }
+                        }
+                    });
+
+                    // Deteksi tabrakan dengan koin
+                    for (let i = coinsArray.length - 1; i >= 0; i--) {
+                        if (this.intersects(coinsArray[i])) {
+                            coins++;
+                            coinCountElement.textContent = coins;
+                            coinsArray.splice(i, 1); // Hapus koin yang sudah diambil
+                        }
+                    }
+
+                    // Deteksi tabrakan dengan tujuan (goal)
+                    goals.forEach(goal => {
+                        if (this.intersects(goal)) {
+                            goToNextLevel();
+                        }
+                    });
+                }
+
+                checkCollisionX(blocks) {
+                    blocks.forEach(block => {
+                        if (this.intersects(block)) {
+                            if (this.dx > 0) { // Bergerak ke kanan, tabrak sisi kiri blok
+                                this.x = block.x - this.width;
+                            } else if (this.dx < 0) { // Bergerak ke kiri, tabrak sisi kanan blok
+                                this.x = block.x + block.width;
+                            }
+                            this.dx = 0; // Hentikan gerakan horizontal
+                        }
+                    });
+                }
+
+                checkCollisionY(blocks) {
+                    this.onGround = false;
+                    blocks.forEach(block => {
+                        if (this.intersects(block)) {
+                            if (this.dy > 0) { // Jatuh, tabrak bagian atas blok
+                                this.y = block.y - this.height;
+                                this.onGround = true;
+                            } else if (this.dy < 0) { // Lompat, tabrak bagian bawah blok
+                                this.y = block.y + block.height;
+                            }
+                            this.dy = 0; // Hentikan gerakan vertikal
+                        }
+                    });
+                }
+
+                intersects(other) {
+                    return this.x < other.x + other.width &&
+                           this.x + this.width > other.x &&
+                           this.y < other.y + other.height &&
+                           this.y + this.height > other.y;
+                }
+
+                die() {
+                    if (this.isDying) return;
+                    lives--;
+                    livesCountElement.textContent = lives;
+                    this.isDying = true;
+                    this.respawnTimer = 60; // 1 detik (60 frame) untuk respawn
+                    showMessage("Anda Mati!", "red");
+                    if (lives <= 0) {
+                        gameOver();
+                    }
+                }
+
+                respawn() {
+                    this.x = this.initialX;
+                    this.y = this.initialY;
+                    this.dx = 0;
+                    this.dy = 0;
+                    this.isDying = false;
+                    this.onGround = false;
+                    showMessage(""); // Hapus pesan mati
+                }
+
+                draw() {
+                    if (this.isDying) {
+                        ctx.globalAlpha = 0.5; // Buat pemain sedikit transparan saat sekarat
+                    }
+                    // Gambar pemain
+                    ctx.font = `${this.width}px serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(this.char, this.x + this.width / 2 - cameraX, this.y + this.height / 2);
+                    ctx.globalAlpha = 1.0;
+                }
+            }
+
+            class Enemy extends GameObject {
+                constructor(x, y) {
+                    super(x, y, TILE_SIZE * 0.8, TILE_SIZE * 0.9, 'enemy', '💀');
+                    this.dx = ENEMY_SPEED; // Kecepatan musuh
+                    this.initialX = x;
+                    this.patrolRange = TILE_SIZE * 5; // Jarak patroli
+                    this.isDying = false;
+                }
+
+                update(blocks) {
+                    if (this.isDying) return;
+
+                    this.x += this.dx;
+
+                    // Periksa tabrakan dengan blok untuk membalik arah
+                    let collided = false;
+                    blocks.forEach(block => {
+                        if (this.intersects(block)) {
+                            collided = true;
+                        }
+                    });
+
+                    // Periksa batas patroli
+                    if (this.dx > 0 && this.x > this.initialX + this.patrolRange) {
+                        this.dx *= -1; // Balik arah
+                    } else if (this.dx < 0 && this.x < this.initialX) {
+                        this.dx *= -1; // Balik arah
+                    }
+
+                    // Jika menabrak blok dari samping, balik arah juga
+                    if (collided) {
+                         this.dx *= -1;
+                         this.x += this.dx; // Pindahkan sedikit agar tidak terus menempel
+                    }
+
+                    // Gravitasi sederhana agar musuh jatuh ke platform
+                    this.y += GRAVITY;
+                    blocks.forEach(block => {
+                        if (this.intersects(block)) {
+                            if (this.y + this.height > block.y && this.y < block.y + block.height) { // Tabrakan vertikal
+                                this.y = block.y - this.height; // Letakkan di atas blok
+                            }
+                        }
+                    });
+                }
+
+                die() {
+                    this.isDying = true;
+                    this.char = '💥'; // Ganti simbol saat mati
+                    setTimeout(() => {
+                        const index = currentEnemies.indexOf(this);
+                        if (index > -1) {
+                            currentEnemies.splice(index, 1);
+                        }
+                    }, 500); // Hapus setelah 0.5 detik
+                }
+            }
+
+            // --- Fungsi Game ---
+
+            function loadLevel(levelData) {
+                const blocks = [];
+                const enemies = [];
+                const coins = [];
+                const goals = [];
+                let playerStartX = 0;
+                let playerStartY = 0;
+
+                for (let row = 0; row < levelData.length; row++) {
+                    for (let col = 0; col < levelData[row].length; col++) {
+                        const tileChar = levelData[row][col];
+                        const tileInfo = tileTypes[tileChar];
+
+                        if (!tileInfo) continue; // Abaikan karakter yang tidak dikenal
+
+                        const x = col * TILE_SIZE;
+                        const y = row * TILE_SIZE;
+
+                        switch (tileInfo.type) {
+                            case 'wall':
+                            case 'platform':
+                                blocks.push(new GameObject(x, y, TILE_SIZE, TILE_SIZE, tileInfo.type));
+                                break;
+                            case 'coin':
+                                coins.push(new GameObject(x, y, TILE_SIZE, TILE_SIZE, tileInfo.type, tileInfo.char));
+                                break;
+                            case 'enemy':
+                                enemies.push(new Enemy(x, y, TILE_SIZE, TILE_SIZE));
+                                break;
+                            case 'player_start':
+                                playerStartX = x;
+                                playerStartY = y;
+                                break;
+                            case 'goal':
+                                goals.push(new GameObject(x, y, TILE_SIZE, TILE_SIZE, tileInfo.type, tileInfo.char));
+                                break;
+                            // 'empty' tidak perlu ditambahkan sebagai objek
+                        }
+                    }
+                }
+                player = new Player(playerStartX, playerStartY);
+                player.initialX = playerStartX;
+                player.initialY = playerStartY;
+                return { blocks, enemies, coins, goals };
+            }
+
+            let currentBlocks = [];
+            let currentEnemies = [];
+            let currentCoins = [];
+            let currentGoals = [];
+
+            function startGame() {
+                lives = 3;
+                coins = 0;
+                currentLevelIndex = 0;
+                gamePaused = false;
+                updateUI();
+                loadAndRenderLevel();
+                showMessage("Tekan 'Mulai' untuk melanjutkan!", "green");
+                // Pesan akan muncul setelah tombol start game muncul.
+                // Jika game dimulai otomatis setelah ini, pesan akan hilang cepat.
+            }
+
+            function loadAndRenderLevel() {
+                const levelData = loadLevel(levels[currentLevelIndex]);
+                currentBlocks = levelData.blocks;
+                currentEnemies = levelData.enemies;
+                currentCoins = levelData.coins;
+                currentGoals = levelData.goals;
+                // Pastikan player diatur ulang posisinya
+                player.x = player.initialX;
+                player.y = player.initialY;
+                player.dx = 0;
+                player.dy = 0;
+                player.onGround = false;
+                cameraX = 0; // Reset kamera untuk level baru
+                updateUI();
+                showMessage(`Level ${currentLevelIndex + 1} Dimulai!`, "green");
+            }
+
+            function goToNextLevel() {
+                currentLevelIndex++;
+                if (currentLevelIndex < levels.length) {
+                    loadAndRenderLevel();
+                    showMessage(`Selamat! Level ${currentLevelIndex} Selesai!`, "green");
+                } else {
+                    gameWin();
+                }
+            }
+
+            function updateUI() {
+                coinCountElement.textContent = coins;
+                livesCountElement.textContent = lives;
+                levelCountElement.textContent = currentLevelIndex + 1;
+            }
+
+            function showMessage(msg, color = 'white') {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = msg;
+                messageElement.style.position = 'absolute';
+                messageElement.style.top = '50%';
+                messageElement.style.left = '50%';
+                messageElement.style.transform = 'translate(-50%, -50%)';
+                messageElement.style.fontSize = '2em';
+                messageElement.style.color = color;
+                messageElement.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                messageElement.style.padding = '20px';
+                messageElement.style.borderRadius = '10px';
+                messageElement.style.zIndex = '100';
+                messageElement.id = 'temp-message';
+                document.body.appendChild(messageElement);
+
+                setTimeout(() => {
+                    const existingMessage = document.getElementById('temp-message');
+                    if (existingMessage) {
+                        existingMessage.remove();
+                    }
+                }, 2000); // Pesan hilang setelah 2 detik
+            }
+
+            function gameOver() {
+                gamePaused = true;
+                showMessage("GAME OVER! Tekan spasi untuk mulai lagi.", "red");
+            }
+
+            function gameWin() {
+                gamePaused = true;
+                showMessage("ANDA MENANG! Selamat!", "gold");
+            }
+
+            // --- Game Loop ---
+            let lastTime = 0;
+            function gameLoop(currentTime) {
+                if (!lastTime) lastTime = currentTime;
+                const deltaTime = currentTime - lastTime;
+                lastTime = currentTime;
+
+                // Memastikan canvas selalu memiliki ukuran yang sesuai dengan logika game
+                // dan responsif terhadap layar
+                const aspectRatio = GAME_WIDTH / GAME_HEIGHT;
+                let newWidth, newHeight;
+
+                if (window.innerWidth / window.innerHeight > aspectRatio) {
+                    newHeight = window.innerHeight * 0.8; // Mengambil 80% tinggi layar
+                    newWidth = newHeight * aspectRatio;
+                } else {
+                    newWidth = window.innerWidth * 0.9; // Mengambil 90% lebar layar
+                    newHeight = newWidth / aspectRatio;
+                }
+
+                canvas.width = GAME_WIDTH; // Set canvas internal resolution
+                canvas.height = GAME_HEIGHT;
+                canvas.style.width = `${newWidth}px`; // Scale canvas to fit viewport
+                canvas.style.height = `${newHeight}px`;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Bersihkan canvas
+
+                if (gamePaused) {
+                    requestAnimationFrame(gameLoop);
+                    return;
+                }
+
+                // Update logika game
+                player.update(currentBlocks, currentEnemies, currentCoins, currentGoals);
+                currentEnemies.forEach(enemy => enemy.update(currentBlocks));
+
+                // Perbarui posisi kamera (mengikuti pemain)
+                cameraX = player.x - GAME_WIDTH / 2 + player.width / 2;
+                // Batasi kamera agar tidak keluar dari batas level
+                if (cameraX < 0) cameraX = 0;
+                const maxCameraX = levels[currentLevelIndex][0].length * TILE_SIZE - GAME_WIDTH;
+                if (cameraX > maxCameraX) cameraX = maxCameraX;
+                if (maxCameraX < 0) cameraX = 0; // Jika level lebih kecil dari lebar game, kamera tetap di 0
+
+                // Gambar semua objek
+                currentBlocks.forEach(block => block.draw());
+                currentCoins.forEach(coin => coin.draw());
+                currentEnemies.forEach(enemy => enemy.draw());
+                currentGoals.forEach(goal => goal.draw());
+                player.draw();
+
+                requestAnimationFrame(gameLoop);
+            }
+
+            // --- Event Listener untuk Input ---
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
+                    keys.left = true;
+                }
+                if (e.code === 'ArrowRight' || e.code === 'KeyD') {
+                    keys.right = true;
+                }
+                if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
+                    if (gamePaused && e.code === 'Space') { // Untuk memulai kembali setelah game over
+                        startGame();
+                    }
+                    keys.up = true;
+                }
+            });
+
+            document.addEventListener('keyup', (e) => {
+                if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
+                    keys.left = false;
+                }
+                if (e.code === 'ArrowRight' || e.code === 'KeyD') {
+                    keys.right = false;
+                }
+                if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
+                    keys.up = false;
+                }
+            });
+
+            // Mobile control touch events
+            leftBtn.addEventListener('touchstart', (e) => { e.preventDefault(); keys.left = true; }, { passive: false });
+            leftBtn.addEventListener('touchend', (e) => { e.preventDefault(); keys.left = false; });
+            leftBtn.addEventListener('touchcancel', (e) => { e.preventDefault(); keys.left = false; });
+
+            rightBtn.addEventListener('touchstart', (e) => { e.preventDefault(); keys.right = true; }, { passive: false });
+            rightBtn.addEventListener('touchend', (e) => { e.preventDefault(); keys.right = false; });
+            rightBtn.addEventListener('touchcancel', (e) => { e.preventDefault(); keys.right = false; });
+
+            jumpBtn.addEventListener('touchstart', (e) => { e.preventDefault(); keys.up = true; }, { passive: false });
+            jumpBtn.addEventListener('touchend', (e) => { e.preventDefault(); keys.up = false; });
+            jumpBtn.addEventListener('touchcancel', (e) => { e.preventDefault(); keys.up = false; });
+
+
+            // --- Inisialisasi Game ---
+            startGame(); // Mulai game saat halaman dimuat
+            requestAnimationFrame(gameLoop); // Mulai loop game
+        });
+    </script>
+</body>
+</html>

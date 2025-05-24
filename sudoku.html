@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Sudoku</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f4;
+            --text-color: #333;
+            --header-color: #4CAF50; /* Green */
+            --board-border-color: #333;
+            --cell-border-color: #bbb;
+            --block-border-color: #333;
+            --button-bg: #4CAF50;
+            --button-text: white;
+            --button-hover-bg: #45a049;
+            --input-bg: #e0e0e0;
+            --input-text: #333;
+            --highlight-bg: #c8e6c9; /* Light green for active cell */
+            --error-text: #d32f2f; /* Red for errors */
+            --fixed-cell-bg: #d0d0d0; /* Bg for initial numbers */
+        }
+
+        /* Dark Mode Toggles */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #2c2c2c;
+                --text-color: #e0e0e0;
+                --header-color: #66bb6a; /* Lighter green */
+                --board-border-color: #bbb;
+                --cell-border-color: #555;
+                --block-border-color: #bbb;
+                --button-bg: #66bb6a;
+                --button-text: #2c2c2c;
+                --button-hover-bg: #4caf50;
+                --input-bg: #444;
+                --input-text: #e0e0e0;
+                --highlight-bg: #4a664b; /* Darker green for active cell */
+                --error-text: #ef5350; /* Lighter red for errors */
+                --fixed-cell-bg: #3a3a3a; /* Darker bg for initial numbers */
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: var(--header-color);
+            margin-bottom: 25px;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        #sudoku-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--bg-color); /* Match body bg */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 90%; /* Max width for smaller screens */
+            width: 500px; /* Max width for larger screens */
+        }
+
+        #timer {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--header-color);
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            grid-template-rows: repeat(9, 1fr);
+            width: 100%;
+            aspect-ratio: 1 / 1; /* Keep board square */
+            border: 3px solid var(--board-border-color);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .cell {
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--cell-border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            box-sizing: border-box; /* Include padding/border in element's total width and height */
+        }
+
+        /* Thick borders for 3x3 blocks */
+        .cell:nth-child(3n) {
+            border-right: 3px solid var(--block-border-color);
+        }
+        .cell:nth-child(9n) {
+            border-right: 1px solid var(--cell-border-color); /* Override for end of row */
+        }
+        .cell:nth-child(n) { /* Apply to rows */
+            border-bottom: 1px solid var(--cell-border-color);
+        }
+        .cell:nth-child(n+19):nth-child(-n+27),
+        .cell:nth-child(n+46):nth-child(-n+54) {
+            border-bottom: 3px solid var(--block-border-color);
+        }
+        /* Top border for first row of blocks */
+        .cell:nth-child(n+1):nth-child(-n+9) {
+            border-top: 3px solid var(--block-border-color);
+        }
+        /* Left border for first column of blocks */
+        .cell:nth-child(3n+1) {
+            border-left: 3px solid var(--block-border-color);
+        }
+        .cell:nth-child(1), .cell:nth-child(4), .cell:nth-child(7),
+        .cell:nth-child(10), .cell:nth-child(13), .cell:nth-child(16),
+        .cell:nth-child(19), .cell:nth-child(22), .cell:nth-child(25),
+        .cell:nth-child(28), .cell:nth-child(31), .cell:nth-child(34),
+        .cell:nth-child(37), .cell:nth-child(40), .cell:nth-child(43),
+        .cell:nth-child(46), .cell:nth-child(49), .cell:nth-child(52),
+        .cell:nth-child(55), .cell:nth-child(58), .cell:nth-child(61),
+        .cell:nth-child(64), .cell:nth-child(67), .cell:nth-child(70) {
+            border-left: 1px solid var(--cell-border-color); /* Override left block border for first column */
+        }
+        
+        .cell.fixed {
+            background-color: var(--fixed-cell-bg);
+            cursor: not-allowed;
+            color: var(--text-color);
+        }
+
+        .cell.selected {
+            background-color: var(--highlight-bg);
+        }
+
+        .cell input {
+            width: 90%;
+            height: 90%;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            border: none;
+            background-color: transparent;
+            color: var(--input-text);
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            -moz-appearance: textfield; /* Hide arrows on Firefox */
+        }
+        .cell input::-webkit-outer-spin-button,
+        .cell input::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Hide arrows on Chrome/Safari */
+            margin: 0;
+        }
+
+        .cell.error input {
+            color: var(--error-text);
+        }
+
+        #controls {
+            margin-top: 25px;
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            gap: 15px; /* Space between buttons */
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background-color: var(--button-hover-bg);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        #status-message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+            min-height: 1.2em; /* Prevent layout shift */
+        }
+
+        /* Responsiveness */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            #sudoku-container {
+                padding: 15px;
+            }
+            .cell {
+                font-size: 1.4em;
+            }
+            .cell input {
+                font-size: 1.4em;
+            }
+            #controls {
+                flex-direction: column; /* Stack buttons vertically */
+                width: 80%; /* Make buttons wider */
+            }
+            .btn {
+                width: 100%; /* Full width buttons */
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            #sudoku-container {
+                padding: 10px;
+            }
+            .cell {
+                font-size: 1.2em;
+            }
+            .cell input {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Sudoku</h1>
+    <div id="sudoku-container">
+        <div id="timer">00:00</div>
+        <div id="board">
+            </div>
+        <div id="controls">
+            <button class="btn" id="new-game-btn">Game Baru</button>
+            <button class="btn" id="clear-btn">Hapus Sel</button>
+            <button class="btn" id="hint-btn">Petunjuk</button>
+            <button class="btn" id="check-btn">Periksa</button>
+            <button class="btn" id="solve-btn">Selesaikan</button>
+        </div>
+        <div id="status-message"></div>
+    </div>
+
+    <script>
+        const boardElement = document.getElementById('board');
+        const timerElement = document.getElementById('timer');
+        const newGameBtn = document.getElementById('new-game-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const hintBtn = document.getElementById('hint-btn');
+        const checkBtn = document.getElementById('check-btn');
+        const solveBtn = document.getElementById('solve-btn');
+        const statusMessage = document.getElementById('status-message');
+
+        let puzzle = []; // Array 9x9 untuk menyimpan puzzle awal (angka tetap)
+        let solution = []; // Array 9x9 untuk menyimpan solusi lengkap
+        let currentBoard = []; // Array 9x9 untuk menyimpan status papan saat ini (termasuk input user)
+        let selectedCell = null; // Menyimpan sel yang sedang dipilih
+        let timerInterval;
+        let seconds = 0;
+
+        const EMPTY = 0; // Representasi sel kosong
+
+        // --- Fungsi Pembangkitan dan Validasi Sudoku ---
+        function generateSudoku() {
+            // Inisialisasi papan kosong
+            let board = Array(9).fill(0).map(() => Array(9).fill(0));
+
+            // Isi diagonal blocks (lebih mudah diisi secara acak tanpa konflik awal)
+            fillBox(board, 0, 0);
+            fillBox(board, 3, 3);
+            fillBox(board, 6, 6);
+
+            // Selesaikan papan yang sebagian terisi menggunakan backtracking
+            solveSudoku(board);
+
+            // Salin papan yang sudah terisi penuh sebagai solusi
+            const fullSolution = board.map(row => [...row]);
+
+            // Hapus beberapa angka untuk membuat puzzle
+            const numToRemove = 45; // Jumlah sel yang akan dihapus (tingkat kesulitan)
+            let tempBoard = board.map(row => [...row]); // Salinan untuk diubah
+
+            let removedCount = 0;
+            while (removedCount < numToRemove) {
+                const row = Math.floor(Math.random() * 9);
+                const col = Math.floor(Math.random() * 9);
+
+                if (tempBoard[row][col] !== EMPTY) {
+                    const backup = tempBoard[row][col];
+                    tempBoard[row][col] = EMPTY;
+
+                    // Cek apakah puzzle masih memiliki solusi unik (opsional, tapi penting untuk game berkualitas)
+                    // Untuk kesederhanaan, kita tidak akan mengimplementasikan pengecekan solusi unik di sini,
+                    // Karena itu jauh lebih kompleks. Asumsi saja puzzle tetap solvable.
+
+                    removedCount++;
+                }
+            }
+
+            return { puzzle: tempBoard, solution: fullSolution };
+        }
+
+        // Fungsi pembantu untuk mengisi blok 3x3 dengan angka acak unik
+        function fillBox(board, row, col) {
+            let nums = shuffleArray([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    board[row + i][col + j] = nums.pop();
+                }
+            }
+        }
+
+        // Fungsi untuk mengacak array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Fungsi Backtracking untuk menyelesaikan Sudoku
+        function solveSudoku(board) {
+            const findEmpty = (b) => {
+                for (let r = 0; r < 9; r++) {
+                    for (let c = 0; c < 9; c++) {
+                        if (b[r][c] === EMPTY) {
+                            return [r, c];
+                        }
+                    }
+                }
+                return null; // Tidak ada sel kosong
+            };
+
+            const isValid = (b, num, pos) => {
+                const [row, col] = pos;
+
+                // Cek baris
+                for (let c = 0; c < 9; c++) {
+                    if (b[row][c] === num && c !== col) {
+                        return false;
+                    }
+                }
+
+                // Cek kolom
+                for (let r = 0; r < 9; r++) {
+                    if (b[r][col] === num && r !== row) {
+                        return false;
+                    }
+                }
+
+                // Cek kotak 3x3
+                const boxRow = Math.floor(row / 3) * 3;
+                const boxCol = Math.floor(col / 3) * 3;
+
+                for (let r = boxRow; r < boxRow + 3; r++) {
+                    for (let c = boxCol; c < boxCol + 3; c++) {
+                        if (b[r][c] === num && (r !== row || c !== col)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+
+            const emptyPos = findEmpty(board);
+            if (!emptyPos) {
+                return true; // Papan sudah terisi penuh
+            }
+
+            const [row, col] = emptyPos;
+
+            for (let num = 1; num <= 9; num++) {
+                if (isValid(board, num, [row, col])) {
+                    board[row][col] = num;
+
+                    if (solveSudoku(board)) {
+                        return true;
+                    }
+
+                    board[row][col] = EMPTY; // Reset jika tidak berhasil (backtrack)
+                }
+            }
+            return false; // Tidak ada solusi
+        }
+
+
+        // --- Fungsi UI dan Game Logic ---
+        function initBoard() {
+            boardElement.innerHTML = ''; // Bersihkan papan
+            const { puzzle: newPuzzle, solution: newSolution } = generateSudoku();
+            puzzle = newPuzzle;
+            solution = newSolution;
+            currentBoard = puzzle.map(row => [...row]); // Salin puzzle ke currentBoard
+
+            for (let r = 0; r < 9; r++) {
+                for (let c = 0; c < 9; c++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+
+                    if (puzzle[r][c] !== EMPTY) {
+                        cell.classList.add('fixed'); // Angka bawaan tidak bisa diubah
+                        cell.textContent = puzzle[r][c];
+                    } else {
+                        // Tambahkan input field untuk sel yang bisa diisi
+                        const input = document.createElement('input');
+                        input.type = 'number';
+                        input.min = '1';
+                        input.max = '9';
+                        input.maxLength = '1'; // Batasi input hanya 1 digit
+                        input.classList.add('user-input');
+                        input.value = currentBoard[r][c] !== EMPTY ? currentBoard[r][c] : '';
+                        
+                        // Event listener untuk input
+                        input.addEventListener('input', handleInputChange);
+                        input.addEventListener('focus', handleCellFocus);
+                        input.addEventListener('blur', handleCellBlur);
+                        input.addEventListener('keydown', handleInputKeydown); // Untuk navigasi atau validasi karakter
+
+                        cell.appendChild(input);
+                    }
+                    boardElement.appendChild(cell);
+                }
+            }
+        }
+
+        // Timer
+        function startTimer() {
+            clearInterval(timerInterval);
+            seconds = 0;
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            seconds++;
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            timerElement.textContent = 
+                `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function resetGame() {
+            initBoard();
+            startTimer();
+            statusMessage.textContent = '';
+            removeErrorHighlights();
+            selectedCell = null;
+            // Pastikan semua input tidak error atau selected
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.classList.remove('selected', 'error');
+                const input = cell.querySelector('input');
+                if (input) input.classList.remove('error');
+            });
+        }
+
+        // Event handler saat input diubah
+        function handleInputChange(event) {
+            const input = event.target;
+            let value = input.value;
+
+            // Batasi input hanya angka 1-9
+            value = value.replace(/[^1-9]/g, '');
+            if (value.length > 1) {
+                value = value.charAt(0);
+            }
+            input.value = value;
+
+            const row = parseInt(input.closest('.cell').dataset.row);
+            const col = parseInt(input.closest('.cell').dataset.col);
+            
+            currentBoard[row][col] = value === '' ? EMPTY : parseInt(value);
+
+            // Hapus highlight error saat input berubah
+            removeErrorHighlights();
+            statusMessage.textContent = '';
+
+            // Cek kemenangan setiap kali input valid diubah
+            if (isBoardFull() && checkBoardValidity(currentBoard, solution)) {
+                stopTimer();
+                statusMessage.textContent = 'Selamat! Anda berhasil menyelesaikan Sudoku!';
+                statusMessage.style.color = varToCss('--header-color');
+                // Nonaktifkan semua input
+                document.querySelectorAll('.cell input').forEach(inputField => {
+                    inputField.disabled = true;
+                });
+            }
+        }
+
+        // Fungsi untuk mengambil nilai CSS variable
+        function varToCss(varName) {
+            return getComputedStyle(document.documentElement).getPropertyValue(varName);
+        }
+
+        // Event handler saat sel input difokuskan
+        function handleCellFocus(event) {
+            if (selectedCell) {
+                selectedCell.classList.remove('selected');
+            }
+            selectedCell = event.target.closest('.cell');
+            selectedCell.classList.add('selected');
+        }
+
+        // Event handler saat sel input kehilangan fokus
+        function handleCellBlur(event) {
+            // Tidak menghapus 'selected' langsung agar bisa digunakan untuk tombol "Hapus"
+            // selectedCell = null; // Ini akan dihapus oleh tombol Clear atau saat sel lain dipilih
+        }
+
+        // Navigasi keyboard dan validasi karakter
+        function handleInputKeydown(event) {
+            const input = event.target;
+            const row = parseInt(input.closest('.cell').dataset.row);
+            const col = parseInt(input.closest('.cell').dataset.col);
+
+            const cells = Array.from(boardElement.children);
+            const currentIndex = row * 9 + col;
+
+            switch (event.key) {
+                case 'ArrowUp':
+                    event.preventDefault();
+                    if (row > 0) cells[currentIndex - 9].querySelector('input')?.focus();
+                    break;
+                case 'ArrowDown':
+                    event.preventDefault();
+                    if (row < 8) cells[currentIndex + 9].querySelector('input')?.focus();
+                    break;
+                case 'ArrowLeft':
+                    event.preventDefault();
+                    if (col > 0) cells[currentIndex - 1].querySelector('input')?.focus();
+                    break;
+                case 'ArrowRight':
+                    event.preventDefault();
+                    if (col < 8) cells[currentIndex + 1].querySelector('input')?.focus();
+                    break;
+                case 'Backspace':
+                case 'Delete':
+                    // Biarkan default behavior untuk menghapus angka
+                    break;
+                default:
+                    // Hanya izinkan angka 1-9
+                    if (!/^[1-9]$/.test(event.key)) {
+                        event.preventDefault();
+                    }
+            }
+        }
+
+
+        // Fungsi bantuan: Menghapus angka di sel yang dipilih
+        function clearSelectedCell() {
+            if (selectedCell && !selectedCell.classList.contains('fixed')) {
+                const input = selectedCell.querySelector('input');
+                if (input) {
+                    input.value = '';
+                    const row = parseInt(selectedCell.dataset.row);
+                    const col = parseInt(selectedCell.dataset.col);
+                    currentBoard[row][col] = EMPTY;
+                    input.classList.remove('error'); // Hapus error jika ada
+                    statusMessage.textContent = ''; // Hapus pesan status
+                }
+            }
+            // Hapus selected state setelah dihapus
+            if (selectedCell) {
+                selectedCell.classList.remove('selected');
+                selectedCell = null;
+            }
+        }
+
+        // Fungsi bantuan: Memberikan petunjuk
+        function giveHint() {
+            if (!selectedCell || selectedCell.classList.contains('fixed')) {
+                statusMessage.textContent = 'Pilih sel kosong yang bisa diisi untuk petunjuk!';
+                statusMessage.style.color = varToCss('--text-color');
+                return;
+            }
+
+            const row = parseInt(selectedCell.dataset.row);
+            const col = parseInt(selectedCell.dataset.col);
+
+            if (currentBoard[row][col] === solution[row][col]) {
+                statusMessage.textContent = 'Sel ini sudah benar!';
+                statusMessage.style.color = varToCss('--text-color');
+                return;
+            }
+
+            // Hapus error sebelumnya
+            removeErrorHighlights();
+            statusMessage.textContent = '';
+
+            const input = selectedCell.querySelector('input');
+            if (input) {
+                input.value = solution[row][col];
+                currentBoard[row][col] = solution[row][col];
+                input.classList.remove('error'); // Pastikan tidak ada error
+                selectedCell.classList.remove('selected'); // Hapus seleksi
+                selectedCell = null;
+                
+                // Cek kemenangan setelah petunjuk
+                if (isBoardFull() && checkBoardValidity(currentBoard, solution)) {
+                    stopTimer();
+                    statusMessage.textContent = 'Selamat! Anda berhasil menyelesaikan Sudoku!';
+                    statusMessage.style.color = varToCss('--header-color');
+                    document.querySelectorAll('.cell input').forEach(inputField => {
+                        inputField.disabled = true;
+                    });
+                }
+            }
+        }
+
+        // Fungsi bantuan: Memeriksa kesalahan
+        function checkErrors() {
+            removeErrorHighlights(); // Hapus highlight lama
+            let hasError = false;
+
+            document.querySelectorAll('.cell').forEach(cell => {
+                const r = parseInt(cell.dataset.row);
+                const c = parseInt(cell.dataset.col);
+                const input = cell.querySelector('input');
+                
+                if (input && input.value !== '' && currentBoard[r][c] !== solution[r][c]) {
+                    input.classList.add('error');
+                    hasError = true;
+                }
+            });
+
+            if (hasError) {
+                statusMessage.textContent = 'Ada angka yang salah. Angka yang salah disorot merah.';
+                statusMessage.style.color = varToCss('--error-text');
+            } else {
+                statusMessage.textContent = 'Tidak ada kesalahan yang terdeteksi. Teruslah bermain!';
+                statusMessage.style.color = varToCss('--header-color');
+            }
+        }
+
+        function removeErrorHighlights() {
+            document.querySelectorAll('.cell input.error').forEach(input => {
+                input.classList.remove('error');
+            });
+            statusMessage.textContent = '';
+        }
+
+        // Fungsi untuk menyelesaikan papan sepenuhnya
+        function solveGame() {
+            if (!confirm('Apakah Anda yakin ingin melihat solusi? Ini akan mengakhiri permainan saat ini.')) {
+                return;
+            }
+
+            stopTimer();
+            statusMessage.textContent = 'Sudoku telah dipecahkan!';
+            statusMessage.style.color = varToCss('--header-color');
+
+            document.querySelectorAll('.cell').forEach(cell => {
+                const r = parseInt(cell.dataset.row);
+                const c = parseInt(cell.dataset.col);
+                const input = cell.querySelector('input');
+
+                if (input) {
+                    input.value = solution[r][c];
+                    input.disabled = true; // Nonaktifkan input
+                    input.classList.remove('error');
+                }
+                cell.classList.remove('selected');
+                cell.classList.remove('error'); // Hapus error dari sel
+                currentBoard[r][c] = solution[r][c]; // Update currentBoard
+            });
+            selectedCell = null;
+        }
+
+        // --- Fungsi Validasi Board Lengkap ---
+        function isBoardFull() {
+            for (let r = 0; r < 9; r++) {
+                for (let c = 0; c < 9; c++) {
+                    if (currentBoard[r][c] === EMPTY) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function checkBoardValidity(boardToCheck, correctSolution) {
+            // Cek apakah setiap angka yang diisi pengguna sesuai dengan solusi
+            for (let r = 0; r < 9; r++) {
+                for (let c = 0; c < 9; c++) {
+                    if (boardToCheck[r][c] !== EMPTY && boardToCheck[r][c] !== correctSolution[r][c]) {
+                        return false; // Ada angka yang salah
+                    }
+                }
+            }
+            // Jika semua terisi dan tidak ada yang salah, berarti benar
+            return true;
+        }
+
+
+        // --- Event Listener Tombol ---
+        newGameBtn.addEventListener('click', resetGame);
+        clearBtn.addEventListener('click', clearSelectedCell);
+        hintBtn.addEventListener('click', giveHint);
+        checkBtn.addEventListener('click', checkErrors);
+        solveBtn.addEventListener('click', solveGame);
+
+        // --- Inisialisasi Game ---
+        resetGame(); // Memulai game pertama kali
+    </script>
+</body>
+</html>
