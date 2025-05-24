@@ -360,28 +360,34 @@ h1 {
     // Fungsi untuk menentukan crashPoint secara matematis (lebih realistis untuk pengganda tinggi)
     // Probabilitas crash lebih tinggi di pengganda rendah, lebih rendah di pengganda tinggi.
     function calculateCrashPoint() {
-        const houseEdge = 0.01; // Contoh house edge 1%
-        const randomValue = Math.random(); // Angka acak antara 0 dan 1
+    const randomValue = Math.random(); // Angka acak antara 0 dan 1
 
-        // Rumus sederhana untuk distribusi probabilitas (semakin besar randomValue, semakin tinggi crashPoint)
-        // Semakin dekat randomValue ke 1, semakin tinggi pengganda.
-        // Dibatasi secara efektif oleh 1 / houseEdge jika randomValue sangat mendekati 1
-        let crash = Math.max(1.00, Math.floor((1 - randomValue) / houseEdge) / 100 + 1);
-
-        // Untuk memastikan crashPoint tidak terlalu absurd dan tidak langsung crash di 1.00x
-        if (crash < 1.01) {
-            crash = 1.01;
-        }
-
-        // Kita bisa memberikan batas maksimal agar tidak terlalu ekstrem
-        // Misal, batas keras di 200x untuk mencegah nilai Infinity atau angka terlalu besar
-        const MAX_CRASH_POINT = 200; // Bisa disesuaikan
-        if (crash > MAX_CRASH_POINT) {
-            crash = MAX_CRASH_POINT;
-        }
-        
-        return parseFloat(crash.toFixed(2)); // Bulatkan ke 2 desimal
+    let crash;
+    if (randomValue < 0.40) { // 40% kemungkinan crash antara 1.01x - 1.5x
+        crash = 1.01 + Math.random() * 0.49; // 1.01 sampai 1.50
+    } else if (randomValue < 0.70) { // 30% kemungkinan crash antara 1.5x - 3x
+        crash = 1.51 + Math.random() * 1.49; // 1.51 sampai 3.00
+    } else if (randomValue < 0.90) { // 20% kemungkinan crash antara 3x - 10x
+        crash = 3.01 + Math.random() * 6.99; // 3.01 sampai 10.00
+    } else if (randomValue < 0.98) { // 8% kemungkinan crash antara 10x - 50x
+        crash = 10.01 + Math.random() * 39.99; // 10.01 sampai 50.00
+    } else { // 2% kemungkinan crash di atas 50x
+        crash = 50.01 + Math.random() * 150; // 50.01 sampai 200.00
     }
+
+    // Pastikan tidak ada crash di bawah 1.01 (walaupun dengan logika di atas, ini seharusnya sudah teratasi)
+    if (crash < 1.01) {
+        crash = 1.01;
+    }
+
+    const MAX_CRASH_POINT = 200; 
+    if (crash > MAX_CRASH_POINT) {
+        crash = MAX_CRASH_POINT;
+    }
+
+    return parseFloat(crash.toFixed(2));
+}
+
 
     // Fungsi untuk memulai game
     function startGame() {
