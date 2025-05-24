@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Crash (High Multiplier)</title>
+    <style>
+      :root {
+    font-size: 16px; /* Base font size for 1rem */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1a1a2e; /* Darker background */
+    color: #e0e0e0;
+    margin: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.container {
+    background-color: #2b2b4d; /* Slightly lighter than body */
+    padding: 2rem; /* Use rem for padding */
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    width: 95%; /* More width on small screens */
+    max-width: 550px;
+    box-sizing: border-box; /* Include padding in width */
+    margin: 1rem 0; /* Add vertical margin for small screens */
+}
+
+h1 {
+    color: #8be9fd; /* Light blue */
+    margin-bottom: 1.5rem; /* Use rem */
+    font-size: 2.2rem; /* Use rem */
+    text-shadow: 0 0 8px rgba(139, 233, 253, 0.4);
+}
+
+.balance {
+    font-size: 1.4rem; /* Use rem */
+    margin-bottom: 1.5rem; /* Use rem */
+    color: #50fa7b; /* Greenish */
+    font-weight: bold;
+}
+
+.game-area {
+    background-color: #3b3b6b; /* Even lighter */
+    padding: 2.5rem; /* Use rem */
+    border-radius: 10px;
+    margin-bottom: 1.5rem; /* Use rem */
+    position: relative;
+    overflow: hidden;
+}
+
+.multiplier {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 4.5rem; /* Use rem */
+    font-weight: bold;
+    color: #ffb86c; /* Orange */
+    text-shadow: 0 0 10px rgba(255, 184, 108, 0.7);
+    transition: color 0.2s ease-in-out;
+}
+
+.multiplier.crashed {
+    color: #ff5555; /* Red on crash */
+}
+.multiplier.cashed-out {
+    color: #50fa7b; /* Green on cash out */
+}
+
+.status {
+    font-size: 1.1rem; /* Use rem */
+    color: #bbb;
+    margin-top: 1rem; /* Use rem */
+}
+
+.controls {
+    margin-bottom: 2rem; /* Use rem */
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap to next line */
+    justify-content: center;
+    align-items: center;
+    gap: 1rem; /* Use rem */
+}
+
+.controls label {
+    font-size: 1.1rem; /* Use rem */
+    margin-right: 0.5rem; /* Use rem */
+    color: #e0e0e0;
+}
+
+.controls input[type="number"] {
+    padding: 0.75rem; /* Use rem */
+    border: 1px solid #6272a4;
+    background-color: #21213b;
+    color: #e0e0e0;
+    border-radius: 8px;
+    width: 100px; /* Fixed width, but will be adjusted by media queries */
+    font-size: 1em; /* Relative to parent font size */
+    text-align: center;
+    -moz-appearance: textfield;
+}
+/* Hide arrows for Chrome, Safari, Edge */
+.controls input[type="number"]::-webkit-outer-spin-button,
+.controls input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.controls button {
+    background-color: #8be9fd;
+    color: #282c34;
+    padding: 0.75rem 1.5rem; /* Use rem */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem; /* Use rem */
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.controls button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(139, 233, 253, 0.3);
+}
+
+.controls button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.controls button#cashOutButton {
+    background-color: #ff5555; /* Red */
+    color: white;
+}
+.controls button#cashOutButton:hover:not(:disabled) {
+    box-shadow: 0 4px 10px rgba(255, 85, 85, 0.3);
+}
+
+.log {
+    background-color: #21213b;
+    padding: 1.25rem; /* Use rem */
+    border-radius: 10px;
+    max-height: 15rem; /* Use rem for max-height */
+    overflow-y: auto;
+    text-align: left;
+    border: 1px solid #6272a4;
+}
+
+.log h2 {
+    font-size: 1.2rem; /* Use rem */
+    color: #8be9fd;
+    margin-top: 0;
+    margin-bottom: 1rem; /* Use rem */
+}
+
+.log ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.log li {
+    padding: 0.5rem 0; /* Use rem */
+    border-bottom: 1px dashed #444;
+    font-size: 0.95rem; /* Use rem */
+    color: #ccc;
+}
+
+.log li:last-child {
+    border-bottom: none;
+}
+.log li.win {
+    color: #50fa7b; /* Green for wins */
+}
+.log li.lose {
+    color: #ff5555; /* Red for losses */
+}
+
+/* Scrollbar styling for WebKit browsers */
+.log::-webkit-scrollbar {
+    width: 8px;
+}
+
+.log::-webkit-scrollbar-track {
+    background: #21213b;
+    border-radius: 10px;
+}
+
+.log::-webkit-scrollbar-thumb {
+    background: #6272a4;
+    border-radius: 10px;
+}
+
+.log::-webkit-scrollbar-thumb:hover {
+    background: #8be9fd;
+}
+
+/* --- Media Queries for Responsiveness --- */
+
+/* For smaller screens (e.g., phones in portrait mode, up to 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 1.5rem; /* Reduce padding */
+        width: 98%; /* Take more width */
+    }
+
+    h1 {
+        font-size: 1.8rem; /* Smaller heading */
+    }
+
+    .balance {
+        font-size: 1.2rem; /* Smaller balance text */
+    }
+
+    .game-area {
+        padding: 2rem; /* Reduce padding */
+    }
+
+    .multiplier {
+        font-size: 3.5rem; /* Smaller multiplier */
+    }
+
+    .status {
+        font-size: 1rem; /* Smaller status text */
+    }
+
+    .controls input[type="number"] {
+        width: 90px; /* Slightly smaller input */
+        font-size: 0.9em;
+        padding: 0.6rem;
+    }
+
+    .controls button {
+        padding: 0.6rem 1.2rem; /* Smaller buttons */
+        font-size: 0.95rem;
+    }
+
+    .log {
+        max-height: 10rem; /* Shorter log on very small screens */
+        padding: 1rem;
+    }
+    .log h2 {
+        font-size: 1.1rem;
+    }
+    .log li {
+        font-size: 0.85rem;
+    }
+}
+
+/* For medium screens (e.g., tablets in portrait or landscape, small desktops, 481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .container {
+        padding: 2.5rem;
+        max-width: 600px;
+    }
+    h1 {
+        font-size: 2.5rem;
+    }
+    .multiplier {
+        font-size: 5rem;
+    }
+}
+
+/* For larger screens (desktops, larger tablets, 769px and above) */
+@media (min-width: 769px) {
+    .container {
+        padding: 3rem;
+        max-width: 650px;
+    }
+    h1 {
+        font-size: 3rem;
+    }
+    .multiplier {
+        font-size: 6rem;
+    }
+    .controls input[type="number"] {
+        width: 150px;
+        font-size: 1.1em;
+    }
+    .controls button {
+        padding: 0.85rem 1.8rem;
+        font-size: 1.2rem;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Game Crash 📈</h1>
+        <div class="balance">
+            Saldo Anda: <span id="balance">10,000</span> Koin
+        </div>
+
+        <div class="game-area">
+            <div class="multiplier" id="multiplier">1.00x</div>
+            <div class="status" id="status">Tekan Mulai untuk Bertaruh!</div>
+        </div>
+
+        <div class="controls">
+            <label for="betAmount">Jumlah Taruhan:</label>
+            <input type="number" id="betAmount" value="10" min="1" max="10000">
+            <button id="startButton">Mulai Game!</button>
+            <button id="cashOutButton" disabled>Cash Out!</button>
+        </div>
+
+        <div class="log">
+            <h2>Riwayat Game</h2>
+            <ul id="gameLog"></ul>
+        </div>
+    </div>
+
+    <script>
+      
+    </script>
+</body>
+</html>

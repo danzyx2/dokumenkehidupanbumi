@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Tebak Angka</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fce4ec; /* Light pink background */
+            margin: 0;
+            color: #4a148c; /* Dark purple text */
+        }
+        h1 {
+            color: #880e4f; /* Darker pink for heading */
+            margin-bottom: 20px;
+        }
+        #game-area {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        input[type="number"] {
+            padding: 10px;
+            margin: 15px 0;
+            border: 2px solid #ce93d8; /* Light purple border */
+            border-radius: 5px;
+            font-size: 1.1em;
+            width: 150px;
+            text-align: center;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            background-color: #880e4f; /* Darker pink button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #5e003c; /* Even darker pink on hover */
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ad1457; /* Medium pink for message */
+        }
+        #reset-button {
+            margin-top: 20px;
+            background-color: #ce93d8;
+            color: #4a148c;
+        }
+        #reset-button:hover {
+            background-color: #ab47bc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Tebak Angka</h1>
+    <div id="game-area">
+        <p>Aku sudah memilih angka antara 1 dan 100. Coba tebak!</p>
+        <input type="number" id="guessInput" min="1" max="100">
+        <button id="submitGuess">Tebak!</button>
+        <p id="message"></p>
+        <button id="reset-button">Mulai Ulang</button>
+    </div>
+
+    <script>
+        let randomNumber = Math.floor(Math.random() * 100) + 1;
+        let guesses = 0;
+
+        const guessInput = document.getElementById('guessInput');
+        const submitButton = document.getElementById('submitGuess');
+        const messageDisplay = document.getElementById('message');
+        const resetButton = document.getElementById('reset-button');
+
+        function checkGuess() {
+            const userGuess = parseInt(guessInput.value);
+
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                messageDisplay.textContent = 'Masukkan angka antara 1 dan 100.';
+                return;
+            }
+
+            guesses++;
+
+            if (userGuess === randomNumber) {
+                messageDisplay.textContent = `Selamat! Kamu benar dalam ${guesses} tebakan.`;
+                submitButton.disabled = true;
+                guessInput.disabled = true;
+            } else if (userGuess < randomNumber) {
+                messageDisplay.textContent = 'Terlalu rendah! Coba lagi.';
+            } else {
+                messageDisplay.textContent = 'Terlalu tinggi! Coba lagi.';
+            }
+        }
+
+        function resetGame() {
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            guesses = 0;
+            guessInput.value = '';
+            messageDisplay.textContent = '';
+            submitButton.disabled = false;
+            guessInput.disabled = false;
+        }
+
+        submitButton.addEventListener('click', checkGuess);
+        resetButton.addEventListener('click', resetGame);
+        guessInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        // Initialize game on load
+        resetGame(); // Ensure initial state is clean
+    </script>
+</body>
+</html>
