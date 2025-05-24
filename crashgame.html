@@ -317,7 +317,192 @@ h1 {
     </div>
 
     <script>
-      
+      document.addEventListener('DOMContentLoaded', () => {
+    const balanceElement = document.getElementById('balance');
+    const multiplierElement = document.getElementById('multiplier');
+    const statusElement = document.getElementById('status');
+    const betAmountInput = document.getElementById('betAmount');
+    const startButton = document.getElementById('startButton');
+    const cashOutButton = document.getElementById('cashOutButton');
+    const gameLog = document.getElementById('gameLog');
+
+    // Inisialisasi saldo dari localStorage atau 10000 jika belum ada
+    let balance = parseFloat(localStorage.getItem('crashGameBalance'));
+    if (isNaN(balance) || balance < 0 || balance === 0) {
+        balance = 10000;
+    }
+    
+    let currentMultiplier = 1.00;
+    let betAmount = 0;
+    let gameInterval;
+    let isPlaying = false;
+    let crashPoint = 0;
+
+    // Fungsi untuk memperbarui tampilan saldo
+    function updateBalanceDisplay() {
+        balanceElement.textContent = balance.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        localStorage.setItem('crashGameBalance', balance.toFixed(2));
+    }
+
+    // Fungsi untuk menambahkan entri ke log riwayat
+    function addLogEntry(message, type = '') {
+        const li = document.createElement('li');
+        li.textContent = message;
+        if (type) {
+            li.classList.add(type);
+        }
+        gameLog.prepend(li);
+        while (gameLog.children.length > 10) {
+            gameLog.removeChild(gameLog.lastChild);
+        }
+    }
+
+    // Fungsi untuk menentukan crashPoint secara matematis (lebih realistis untuk pengganda tinggi)
+    // Probabilitas crash lebih tinggi di pengganda rendah, lebih rendah di pengganda tinggi.
+    function calculateCrashPoint() {
+        const houseEdge = 0.01; // Contoh house edge 1%
+        const randomValue = Math.random(); // Angka acak antara 0 dan 1
+
+        // Rumus sederhana untuk distribusi probabilitas (semakin besar randomValue, semakin tinggi crashPoint)
+        // Semakin dekat randomValue ke 1, semakin tinggi pengganda.
+        // Dibatasi secara efektif oleh 1 / houseEdge jika randomValue sangat mendekati 1
+        let crash = Math.max(1.00, Math.floor((1 - randomValue) / houseEdge) / 100 + 1);
+
+        // Untuk memastikan crashPoint tidak terlalu absurd dan tidak langsung crash di 1.00x
+        if (crash < 1.01) {
+            crash = 1.01;
+        }
+
+        // Kita bisa memberikan batas maksimal agar tidak terlalu ekstrem
+        // Misal, batas keras di 200x untuk mencegah nilai Infinity atau angka terlalu besar
+        const MAX_CRASH_POINT = 200; // Bisa disesuaikan
+        if (crash > MAX_CRASH_POINT) {
+            crash = MAX_CRASH_POINT;
+        }
+        
+        return parseFloat(crash.toFixed(2)); // Bulatkan ke 2 desimal
+    }
+
+    // Fungsi untuk memulai game
+    function startGame() {
+        betAmount = parseFloat(betAmountInput.value);
+
+        if (isNaN(betAmount) || betAmount <= 0) {
+            statusElement.textContent = "Taruhan tidak valid! Masukkan angka positif.";
+            return;
+        }
+        if (betAmount > balance) {
+            statusElement.textContent = "Saldo tidak cukup!";
+            return;
+        }
+
+        multiplierElement.classList.remove('crashed', 'cashed-out');
+
+        balance -= betAmount;
+        updateBalanceDisplay();
+        statusElement.textContent = "Game dimulai! Pengganda naik...";
+        multiplierElement.textContent = "1.00x";
+        startButton.disabled = true;
+        betAmountInput.disabled = true;
+        cashOutButton.disabled = false;
+        isPlaying = true;
+
+        currentMultiplier = 1.00;
+        crashPoint = calculateCrashPoint(); // Panggil fungsi baru untuk crashPoint
+        
+        // Kecepatan peningkatan pengganda. Bisa ditingkatkan untuk pengganda yang lebih tinggi
+        // Initial speed will be slightly faster for small multipliers, then progressively slower.
+        let speed = 0.005; // Starting speed per interval
+
+        gameInterval = setInterval(() => {
+            currentMultiplier += speed;
+            // Adjust speed based on multiplier - makes it feel more dynamic
+            if (currentMultiplier < 2) {
+                speed = 0.01;
+            } else if (currentMultiplier < 5) {
+                speed = 0.02;
+            } else if (currentMultiplier < 10) {
+                speed = 0.05;
+            } else if (currentMultiplier < 20) {
+                speed = 0.1;
+            } else if (currentMultiplier < 50) {
+                speed = 0.2;
+            } else {
+                speed = 0.5; // Very fast at high multipliers
+            }
+
+
+            // Formatting multiplier display: Show more decimal places for small values, fewer for large values
+            let displayMultiplier;
+            if (currentMultiplier < 10) {
+                displayMultiplier = currentMultiplier.toFixed(2);
+            } else if (currentMultiplier < 100) {
+                displayMultiplier = currentMultiplier.toFixed(1);
+            } else {
+                displayMultiplier = currentMultiplier.toFixed(0); // No decimals for 100x+
+            }
+            multiplierElement.textContent = displayMultiplier + "x";
+
+            if (currentMultiplier >= crashPoint) {
+                clearInterval(gameInterval);
+                statusElement.textContent = `CRASH! di ${currentMultiplier.toFixed(2)}x`;
+                multiplierElement.classList.add('crashed');
+                addLogEntry(`Kalah! Taruhan ${betAmount.toLocaleString('id-ID')} koin. Crash di ${currentMultiplier.toFixed(2)}x.`, 'lose');
+                resetGame();
+            }
+        }, 50); // Update setiap 50ms untuk pergerakan yang lebih halus
+    }
+
+    // Fungsi untuk cash out (mengambil kemenangan)
+    function cashOut() {
+        clearInterval(gameInterval);
+        isPlaying = false;
+        const winnings = betAmount * currentMultiplier;
+        balance += winnings;
+        updateBalanceDisplay();
+        statusElement.textContent = `CA$HED OUT! Menang ${winnings.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} koin di ${currentMultiplier.toFixed(2)}x`;
+        multiplierElement.classList.add('cashed-out');
+        addLogEntry(`Menang! Taruhan ${betAmount.toLocaleString('id-ID')} koin, menang ${winnings.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} di ${currentMultiplier.toFixed(2)}x.`, 'win');
+        resetGame();
+    }
+
+    // Fungsi untuk mereset UI game setelah ronde selesai
+    function resetGame() {
+        startButton.disabled = false;
+        betAmountInput.disabled = false;
+        cashOutButton.disabled = true;
+        isPlaying = false;
+        betAmountInput.value = 10; 
+        betAmountInput.max = balance;
+    }
+
+    // Event Listeners untuk tombol
+    startButton.addEventListener('click', () => {
+        if (!isPlaying) {
+            startGame();
+        }
+    });
+
+    cashOutButton.addEventListener('click', () => {
+        if (isPlaying) {
+            cashOut();
+        }
+    });
+
+    // Batasan input taruhan
+    betAmountInput.addEventListener('input', () => {
+        let value = parseFloat(betAmountInput.value);
+        if (isNaN(value) || value < 1) {
+            betAmountInput.value = 1;
+        } else if (value > balance) {
+            betAmountInput.value = Math.floor(balance);
+        }
+    });
+
+    // Inisialisasi tampilan awal
+    updateBalanceDisplay();
+    betAmountInput.max = balance;
+});
     </script>
 </body>
 </html>
