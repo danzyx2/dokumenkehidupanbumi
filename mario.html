@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Platformer Koin Sederhana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -14,13 +15,9 @@
             justify-content: center;
             min-height: 100vh;
             background-color: #333;
-            font-family: 'Press Start 2P', cursive; /* Tambahkan font retro jika ingin */
+            font-family: 'Press Start 2P', cursive;
             color: white;
         }
-
-        /* Ini akan mengambil font dari Google Fonts. Pastikan ada koneksi internet saat pertama kali dimuat. */
-        /* Namun, jika ingin sepenuhnya statis offline, hapus baris ini dan gunakan font fallback. */
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
         #game-container {
             display: flex;
@@ -29,6 +26,7 @@
             width: 100%;
             height: 100vh;
             justify-content: center;
+            position: relative; /* Penting untuk posisi overlay */
         }
 
         canvas {
@@ -38,6 +36,7 @@
             max-width: 95vw; /* Batasi lebar canvas agar responsif */
             max-height: 95vh; /* Batasi tinggi canvas agar responsif */
             image-rendering: pixelated; /* Untuk tampilan pixel art */
+            box-sizing: border-box; /* Pastikan padding/border tidak menambah ukuran */
         }
 
         #ui-overlay {
@@ -73,6 +72,7 @@
             transition: background-color 0.2s, transform 0.1s;
             flex: 1; /* Agar tombol mengisi ruang */
             margin: 0 5px; /* Spasi antar tombol */
+            font-family: 'Press Start 2P', cursive; /* Agar font tombol sama */
         }
 
         .control-button.jump {
@@ -90,6 +90,62 @@
                 display: none;
             }
         }
+
+        /* Gaya untuk Overlay Mulai/Reset Game */
+        #game-start-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Latar belakang gelap transparan */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Pastikan di atas elemen lain */
+            color: white;
+            font-size: 1.5em;
+            text-align: center;
+            gap: 20px; /* Jarak antara pesan dan tombol */
+            font-family: 'Press Start 2P', cursive;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #game-start-overlay.hidden {
+            display: none;
+        }
+
+        #start-game-btn {
+            background-color: #007bff; /* Blue */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        #start-game-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        #start-game-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        #overlay-message {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            line-height: 1.3;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
     </style>
 </head>
 <body>
@@ -99,7 +155,14 @@
             <div>Nyawa: <span id="lives-count">3</span></div>
             <div>Level: <span id="level-count">1</span></div>
         </div>
+
+        <div id="game-start-overlay">
+            <p id="overlay-message">Tekan MULAI GAME untuk bermain!</p>
+            <button id="start-game-btn">MULAI GAME</button>
+        </div>
+
         <canvas id="gameCanvas"></canvas>
+
         <div id="mobile-controls">
             <button class="control-button" id="left-btn">←</button>
             <button class="control-button" id="right-btn">→</button>
@@ -121,13 +184,18 @@
             const rightBtn = document.getElementById('right-btn');
             const jumpBtn = document.getElementById('jump-btn');
 
+            // Overlay Elements
+            const gameStartOverlay = document.getElementById('game-start-overlay');
+            const overlayMessage = document.getElementById('overlay-message');
+            const startGameBtn = document.getElementById('start-game-btn');
+
             // --- Game Konfigurasi ---
             const TILE_SIZE = 32; // Ukuran setiap "kotak" dalam piksel
             const GRAVITY = 0.8;
             const PLAYER_SPEED = 4;
             const JUMP_POWER = -12;
             const ENEMY_SPEED = 1;
-            const GAME_WIDTH = 800; // Lebar logika game tetap
+            const GAME_WIDTH = 800; // Lebar logika game tetap (untuk basis perhitungan)
             const GAME_HEIGHT = 480; // Tinggi logika game tetap
 
             // --- Game State ---
@@ -144,6 +212,8 @@
                 up: false
             };
 
+            // Definisi Level
+            // W = Wall/Tanah, X = Platform, C = Coin, E = Enemy, P = Player Start, G = Goal
             const levels = [
                 // Level 1
                 [
@@ -189,7 +259,7 @@
                 ]
             ];
 
-            // Peta simbol ke properti blok
+            // Peta simbol ke properti blok (warna, karakter emoji)
             const tileTypes = {
                 ' ': { type: 'empty', color: 'transparent' },
                 'W': { type: 'wall', color: '#6B4226' }, // Dinding / Tanah
@@ -214,8 +284,10 @@
                 }
 
                 draw() {
+                    // Gunakan font pixelated untuk emoji
+                    ctx.imageSmoothingEnabled = false; // Penting untuk tampilan pixel
                     if (this.char) {
-                        ctx.font = `${this.width * 0.8}px serif`;
+                        ctx.font = `${this.width * 0.8}px 'Press Start 2P'`; // Ukuran font relatif ke TILE_SIZE
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
                         ctx.fillText(this.char, this.x + this.width / 2 - cameraX, this.y + this.height / 2);
@@ -282,17 +354,19 @@
                     }
 
                     // Deteksi tabrakan dengan musuh
-                    enemies.forEach(enemy => {
+                    for (let i = enemies.length - 1; i >= 0; i--) {
+                        const enemy = enemies[i];
                         if (this.intersects(enemy)) {
                             // Jika pemain di atas musuh dan bergerak ke bawah (lompat di atas musuh)
-                            if (this.dy > 0 && (this.y + this.height - this.dy) < enemy.y) {
+                            // Periksa posisi Y pemain di frame sebelumnya (y - dy) relatif terhadap musuh
+                            if (this.dy > 0 && (this.y + this.height - this.dy) < enemy.y && !enemy.isDying) {
                                 enemy.die(); // Musuh mati
                                 this.dy = JUMP_POWER / 2; // Pemain memantul
-                            } else {
+                            } else if (!enemy.isDying) {
                                 this.die(); // Pemain mati
                             }
                         }
-                    });
+                    }
 
                     // Deteksi tabrakan dengan koin
                     for (let i = coinsArray.length - 1; i >= 0; i--) {
@@ -347,7 +421,7 @@
                 }
 
                 die() {
-                    if (this.isDying) return;
+                    if (this.isDying) return; // Mencegah mati berkali-kali
                     lives--;
                     livesCountElement.textContent = lives;
                     this.isDying = true;
@@ -373,11 +447,11 @@
                         ctx.globalAlpha = 0.5; // Buat pemain sedikit transparan saat sekarat
                     }
                     // Gambar pemain
-                    ctx.font = `${this.width}px serif`;
+                    ctx.font = `${this.width}px 'Press Start 2P'`;
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     ctx.fillText(this.char, this.x + this.width / 2 - cameraX, this.y + this.height / 2);
-                    ctx.globalAlpha = 1.0;
+                    ctx.globalAlpha = 1.0; // Reset alpha
                 }
             }
 
@@ -387,7 +461,7 @@
                     this.dx = ENEMY_SPEED; // Kecepatan musuh
                     this.initialX = x;
                     this.patrolRange = TILE_SIZE * 5; // Jarak patroli
-                    this.isDying = false;
+                    this.isDying = false; // Status sedang mati
                 }
 
                 update(blocks) {
@@ -396,31 +470,35 @@
                     this.x += this.dx;
 
                     // Periksa tabrakan dengan blok untuk membalik arah
-                    let collided = false;
+                    let hitWall = false;
                     blocks.forEach(block => {
                         if (this.intersects(block)) {
-                            collided = true;
+                            // Cek jika tabrakan horizontal
+                            if (this.y + this.height > block.y + 5 && this.y < block.y + block.height - 5) { // Sedikit toleransi Y
+                                hitWall = true;
+                            }
                         }
                     });
 
                     // Periksa batas patroli
-                    if (this.dx > 0 && this.x > this.initialX + this.patrolRange) {
+                    if (this.dx > 0 && this.x >= this.initialX + this.patrolRange) {
                         this.dx *= -1; // Balik arah
-                    } else if (this.dx < 0 && this.x < this.initialX) {
+                    } else if (this.dx < 0 && this.x <= this.initialX) {
                         this.dx *= -1; // Balik arah
                     }
 
                     // Jika menabrak blok dari samping, balik arah juga
-                    if (collided) {
+                    if (hitWall) {
                          this.dx *= -1;
-                         this.x += this.dx; // Pindahkan sedikit agar tidak terus menempel
+                         // Pindahkan sedikit agar tidak terus menempel, mencegah glitch
+                         this.x += this.dx * 2;
                     }
 
                     // Gravitasi sederhana agar musuh jatuh ke platform
                     this.y += GRAVITY;
                     blocks.forEach(block => {
                         if (this.intersects(block)) {
-                            if (this.y + this.height > block.y && this.y < block.y + block.height) { // Tabrakan vertikal
+                            if (this.dy > 0 && (this.y + this.height - GRAVITY) < block.y) { // Jatuh ke atas blok
                                 this.y = block.y - this.height; // Letakkan di atas blok
                             }
                         }
@@ -468,7 +546,7 @@
                                 coins.push(new GameObject(x, y, TILE_SIZE, TILE_SIZE, tileInfo.type, tileInfo.char));
                                 break;
                             case 'enemy':
-                                enemies.push(new Enemy(x, y, TILE_SIZE, TILE_SIZE));
+                                enemies.push(new Enemy(x, y)); // Musuh perlu posisi awal yang benar
                                 break;
                             case 'player_start':
                                 playerStartX = x;
@@ -498,10 +576,9 @@
                 currentLevelIndex = 0;
                 gamePaused = false;
                 updateUI();
-                loadAndRenderLevel();
-                showMessage("Tekan 'Mulai' untuk melanjutkan!", "green");
-                // Pesan akan muncul setelah tombol start game muncul.
-                // Jika game dimulai otomatis setelah ini, pesan akan hilang cepat.
+                loadAndRenderLevel(); // Memuat level pertama
+                gameStartOverlay.classList.add('hidden'); // Sembunyikan overlay
+                showMessage("Level 1 Dimulai!", "green");
             }
 
             function loadAndRenderLevel() {
@@ -525,7 +602,7 @@
                 currentLevelIndex++;
                 if (currentLevelIndex < levels.length) {
                     loadAndRenderLevel();
-                    showMessage(`Selamat! Level ${currentLevelIndex} Selesai!`, "green");
+                    showMessage(`Selamat! Level ${currentLevelIndex + 1} Dimulai!`, "green");
                 } else {
                     gameWin();
                 }
@@ -537,38 +614,58 @@
                 levelCountElement.textContent = currentLevelIndex + 1;
             }
 
+            // Fungsi untuk menampilkan pesan temporer atau di overlay
             function showMessage(msg, color = 'white') {
-                const messageElement = document.createElement('div');
-                messageElement.textContent = msg;
-                messageElement.style.position = 'absolute';
-                messageElement.style.top = '50%';
-                messageElement.style.left = '50%';
-                messageElement.style.transform = 'translate(-50%, -50%)';
-                messageElement.style.fontSize = '2em';
-                messageElement.style.color = color;
-                messageElement.style.backgroundColor = 'rgba(0,0,0,0.7)';
-                messageElement.style.padding = '20px';
-                messageElement.style.borderRadius = '10px';
-                messageElement.style.zIndex = '100';
-                messageElement.id = 'temp-message';
-                document.body.appendChild(messageElement);
+                // Hapus pesan sementara yang mungkin ada sebelumnya
+                const existingMessage = document.getElementById('temp-message');
+                if (existingMessage) {
+                    existingMessage.remove();
+                }
 
-                setTimeout(() => {
-                    const existingMessage = document.getElementById('temp-message');
-                    if (existingMessage) {
-                        existingMessage.remove();
-                    }
-                }, 2000); // Pesan hilang setelah 2 detik
+                // Jika overlay start/gameover sedang aktif, update pesannya
+                if (!gameStartOverlay.classList.contains('hidden')) {
+                    overlayMessage.textContent = msg;
+                    overlayMessage.style.color = color;
+                } else {
+                    // Jika tidak, buat pesan temporer di tengah layar
+                    const messageElement = document.createElement('div');
+                    messageElement.textContent = msg;
+                    messageElement.style.position = 'absolute';
+                    messageElement.style.top = '50%';
+                    messageElement.style.left = '50%';
+                    messageElement.style.transform = 'translate(-50%, -50%)';
+                    messageElement.style.fontSize = '2em';
+                    messageElement.style.color = color;
+                    messageElement.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                    messageElement.style.padding = '20px';
+                    messageElement.style.borderRadius = '10px';
+                    messageElement.style.zIndex = '100';
+                    messageElement.id = 'temp-message'; // Beri ID agar bisa dihapus
+                    document.body.appendChild(messageElement);
+
+                    setTimeout(() => {
+                        const tempMessage = document.getElementById('temp-message');
+                        if (tempMessage) {
+                            tempMessage.remove();
+                        }
+                    }, 2000); // Pesan hilang setelah 2 detik
+                }
             }
 
             function gameOver() {
                 gamePaused = true;
-                showMessage("GAME OVER! Tekan spasi untuk mulai lagi.", "red");
+                overlayMessage.textContent = "GAME OVER! Tekan MULAI GAME untuk mencoba lagi.";
+                overlayMessage.style.color = 'red';
+                startGameBtn.textContent = "COBA LAGI"; // Ubah teks tombol
+                gameStartOverlay.classList.remove('hidden'); // Tampilkan overlay
             }
 
             function gameWin() {
                 gamePaused = true;
-                showMessage("ANDA MENANG! Selamat!", "gold");
+                overlayMessage.textContent = "ANDA MENANG! Selamat! Tekan MULAI GAME untuk bermain lagi.";
+                overlayMessage.style.color = 'gold';
+                startGameBtn.textContent = "MAIN LAGI"; // Ubah teks tombol
+                gameStartOverlay.classList.remove('hidden'); // Tampilkan overlay
             }
 
             // --- Game Loop ---
@@ -583,17 +680,23 @@
                 const aspectRatio = GAME_WIDTH / GAME_HEIGHT;
                 let newWidth, newHeight;
 
-                if (window.innerWidth / window.innerHeight > aspectRatio) {
-                    newHeight = window.innerHeight * 0.8; // Mengambil 80% tinggi layar
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                // Prioritaskan mengisi ruang vertikal atau horizontal
+                if (viewportWidth / viewportHeight > aspectRatio) {
+                    newHeight = viewportHeight * 0.8; // Mengambil 80% tinggi layar
                     newWidth = newHeight * aspectRatio;
                 } else {
-                    newWidth = window.innerWidth * 0.9; // Mengambil 90% lebar layar
+                    newWidth = viewportWidth * 0.9; // Mengambil 90% lebar layar
                     newHeight = newWidth / aspectRatio;
                 }
 
-                canvas.width = GAME_WIDTH; // Set canvas internal resolution
+                // Set canvas internal resolution (untuk logika game)
+                canvas.width = GAME_WIDTH;
                 canvas.height = GAME_HEIGHT;
-                canvas.style.width = `${newWidth}px`; // Scale canvas to fit viewport
+                // Scale canvas untuk mengisi viewport (untuk tampilan)
+                canvas.style.width = `${newWidth}px`;
                 canvas.style.height = `${newHeight}px`;
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height); // Bersihkan canvas
@@ -611,9 +714,16 @@
                 cameraX = player.x - GAME_WIDTH / 2 + player.width / 2;
                 // Batasi kamera agar tidak keluar dari batas level
                 if (cameraX < 0) cameraX = 0;
-                const maxCameraX = levels[currentLevelIndex][0].length * TILE_SIZE - GAME_WIDTH;
-                if (cameraX > maxCameraX) cameraX = maxCameraX;
-                if (maxCameraX < 0) cameraX = 0; // Jika level lebih kecil dari lebar game, kamera tetap di 0
+                // Pastikan ada setidaknya satu baris di levels untuk perhitungan maxCameraX
+                const levelWidth = levels[currentLevelIndex] ? levels[currentLevelIndex][0].length * TILE_SIZE : GAME_WIDTH;
+                const maxCameraX = levelWidth - GAME_WIDTH;
+
+                if (maxCameraX < 0) { // Jika lebar level lebih kecil dari lebar tampilan game
+                    cameraX = 0; // Kamera tetap di posisi 0
+                } else if (cameraX > maxCameraX) {
+                    cameraX = maxCameraX;
+                }
+
 
                 // Gambar semua objek
                 currentBlocks.forEach(block => block.draw());
@@ -634,10 +744,12 @@
                     keys.right = true;
                 }
                 if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
-                    if (gamePaused && e.code === 'Space') { // Untuk memulai kembali setelah game over
+                    // Jika game paused, dan tombolnya adalah 'Space', anggap ini sebagai start/reset untuk desktop
+                    if (gamePaused && e.code === 'Space') {
                         startGame();
+                    } else if (!gamePaused) { // Jika game tidak paused, izinkan lompat
+                        keys.up = true;
                     }
-                    keys.up = true;
                 }
             });
 
@@ -666,10 +778,26 @@
             jumpBtn.addEventListener('touchend', (e) => { e.preventDefault(); keys.up = false; });
             jumpBtn.addEventListener('touchcancel', (e) => { e.preventDefault(); keys.up = false; });
 
+            // Event Listener untuk tombol MULAI GAME di overlay
+            startGameBtn.addEventListener('click', () => {
+                startGame(); // Memanggil fungsi startGame untuk memulai/mereset game
+            });
 
-            // --- Inisialisasi Game ---
-            startGame(); // Mulai game saat halaman dimuat
-            requestAnimationFrame(gameLoop); // Mulai loop game
+            // --- Inisialisasi Awal Game ---
+            updateUI(); // Perbarui UI agar saldo dll. terlihat sejak awal
+            // Pastikan game dimulai dalam keadaan paused dan overlay terlihat
+            gamePaused = true;
+            gameStartOverlay.classList.remove('hidden');
+            overlayMessage.textContent = "Tekan MULAI GAME untuk bermain!";
+            overlayMessage.style.color = 'white';
+            startGameBtn.textContent = "MULAI GAME";
+
+            // Panggil gameLoop pertama kali untuk render UI dan overlay awal
+            requestAnimationFrame(gameLoop);
+
+            // Inisialisasi posisi player agar tidak undefined sebelum level dimuat
+            // Ini penting untuk mencegah error jika player.x diakses sebelum loadLevel terpanggil
+            player = new Player(0, 0); // Posisi dummy, akan diperbarui saat loadLevel
         });
     </script>
 </body>
