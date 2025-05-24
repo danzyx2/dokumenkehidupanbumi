@@ -3,43 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koleksi Gameku</title>
+    <title>Koleksi Gameku (Tema Gelap)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
+            /* Warna latar belakang gelap */
+            background-color: #1a1a1a; /* Sangat gelap */
+            /* Warna teks terang */
+            color: #e0e0e0; /* Abu-abu terang */
             margin: 20px;
             text-align: center;
         }
         h1 {
-            color: #0056b3;
+            /* Warna judul yang menonjol */
+            color: #00bcd4; /* Cyan terang */
         }
         .game-list {
             list-style: none;
             padding: 0;
             margin: 30px auto;
             max-width: 600px;
-            background-color: #fff;
+            /* Latar belakang daftar game yang lebih terang dari body tapi masih gelap */
+            background-color: #2c2c2c; /* Abu-abu gelap */
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            /* Bayangan sedikit lebih terang untuk terlihat di latar gelap */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
         .game-list li {
             padding: 15px 20px;
-            border-bottom: 1px solid #eee;
+            /* Garis pemisah yang lebih samar */
+            border-bottom: 1px solid #444;
         }
         .game-list li:last-child {
             border-bottom: none;
         }
         .game-list a {
             text-decoration: none;
-            color: #007bff;
+            /* Warna tautan yang cerah */
+            color: #81d4fa; /* Biru langit */
             font-weight: bold;
             font-size: 1.2em;
             transition: color 0.3s ease;
         }
         .game-list a:hover {
-            color: #0056b3;
+            /* Warna hover yang sedikit berbeda */
+            color: #00e5ff; /* Cyan yang lebih terang */
+        }
+        p {
+            color: #bbbbbb; /* Warna teks paragraf agar tidak terlalu kontras */
         }
     </style>
 </head>
@@ -47,9 +58,9 @@
     <h1>Selamat Datang di Koleksi Gameku!</h1>
     <ul class="game-list">
         <li><a href="tic_tac_toe.html">Mainkan Tic-Tac-Toe</a></li>
-                <li><a href="crashgame.html">Mainkan CrashGame</a></li>
-                        <li><a href="tebakangka.html">Mainkan Tebak Angka</a></li>
-        </ul>
+        <li><a href="crashgame.html">Mainkan CrashGame</a></li>
+        <li><a href="tebakangka.html">Mainkan Tebak Angka</a></li>
+    </ul>
     <p>Pilih game yang ingin kamu mainkan dari daftar di atas.</p>
 </body>
 </html>
