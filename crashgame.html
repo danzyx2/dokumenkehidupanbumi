@@ -363,13 +363,13 @@ h1 {
     const randomValue = Math.random(); // Angka acak antara 0 dan 1
 
     let crash;
-    if (randomValue < 0.40) { // 40% kemungkinan crash antara 1.01x - 1.5x
-        crash = 1.01 + Math.random() * 0.49; // 1.01 sampai 1.50
-    } else if (randomValue < 0.70) { // 30% kemungkinan crash antara 1.5x - 3x
+    if (randomValue < 0.45) { // 40% kemungkinan crash antara 1.01x - 1.5x
+        crash = 1.01 + Math.random() * 0.99; // 1.01 sampai 1.50
+    } else if (randomValue < 0.65) { // 30% kemungkinan crash antara 1.5x - 3x
         crash = 1.51 + Math.random() * 1.49; // 1.51 sampai 3.00
-    } else if (randomValue < 0.90) { // 20% kemungkinan crash antara 3x - 10x
+    } else if (randomValue < 0.80) { // 20% kemungkinan crash antara 3x - 10x
         crash = 3.01 + Math.random() * 6.99; // 3.01 sampai 10.00
-    } else if (randomValue < 0.98) { // 8% kemungkinan crash antara 10x - 50x
+    } else if (randomValue < 0.88) { // 8% kemungkinan crash antara 10x - 50x
         crash = 10.01 + Math.random() * 39.99; // 10.01 sampai 50.00
     } else { // 2% kemungkinan crash di atas 50x
         crash = 50.01 + Math.random() * 150; // 50.01 sampai 200.00
