@@ -363,21 +363,36 @@ h1 {
     const randomValue = Math.random(); // Angka acak antara 0 dan 1
 
     let crash;
-    if (randomValue < 0.35) { // 40% kemungkinan crash antara 1.01x - 1.5x
-        crash = 1.01 + Math.random() * 0.99; // 1.01 sampai 1.50
-    } else if (randomValue < 0.70) { // 30% kemungkinan crash antara 1.5x - 3x
-        crash = 2.01 + Math.random() * 1.49; // 1.51 sampai 3.00
-    } else if (randomValue < 0.80) { // 20% kemungkinan crash antara 3x - 10x
-        crash = 3.01 + Math.random() * 6.99; // 3.01 sampai 10.00
-    } else if (randomValue < 0.88) { // 8% kemungkinan crash antara 10x - 50x
-        crash = 10.01 + Math.random() * 39.99; // 10.01 sampai 50.00
-    } else { // 2% kemungkinan crash di atas 50x
-        crash = 50.01 + Math.random() * 150; // 50.01 sampai 200.00
-    }
 
-    // Pastikan tidak ada crash di bawah 1.01 (walaupun dengan logika di atas, ini seharusnya sudah teratasi)
-    if (crash < 1.01) {
-        crash = 1.01;
+    // Persentase probabilitas yang disesuaikan agar total 100%
+    const probRange1 = 0.40; // 40% kemungkinan crash antara 1.01x - 1.99x
+    const probRange2 = 0.35; // 35% kemungkinan crash antara 2.00x - 3.49x
+    const probRange3 = 0.15; // 15% kemungkinan crash antara 3.50x - 10.00x
+    const probRange4 = 0.08; // 8% kemungkinan crash antara 10.01x - 50.00x
+    const probRange5 = 0.02; // 2% kemungkinan crash di atas 50.01x
+
+    // Ambang batas kumulatif
+    const threshold1 = probRange1; // 0.40
+    const threshold2 = threshold1 + probRange2; // 0.75
+    const threshold3 = threshold2 + probRange3; // 0.90
+    const threshold4 = threshold3 + probRange4; // 0.98
+    // threshold5 adalah 1.00
+
+    if (randomValue < threshold1) { // 40% kemungkinan
+        // Antara 1.01 dan 1.99
+        crash = 1.01 + Math.random() * (1.99 - 1.01); 
+    } else if (randomValue < threshold2) { // 35% kemungkinan
+        // Antara 2.00 dan 3.49
+        crash = 2.00 + Math.random() * (3.49 - 2.00);
+    } else if (randomValue < threshold3) { // 15% kemungkinan
+        // Antara 3.50 dan 10.00
+        crash = 3.50 + Math.random() * (10.00 - 3.50);
+    } else if (randomValue < threshold4) { // 8% kemungkinan
+        // Antara 10.01 dan 50.00
+        crash = 10.01 + Math.random() * (50.00 - 10.01);
+    } else { // 2% kemungkinan (sisa dari 100%)
+        // Di atas 50.01 hingga batas maksimal 200
+        crash = 50.01 + Math.random() * (200 - 50.01);
     }
 
     const MAX_CRASH_POINT = 200; 
@@ -385,8 +400,9 @@ h1 {
         crash = MAX_CRASH_POINT;
     }
 
-    return parseFloat(crash.toFixed(2));
+    return parseFloat(crash.toFixed(2)); // Bulatkan ke 2 desimal
 }
+
 
 
     // Fungsi untuk memulai game
