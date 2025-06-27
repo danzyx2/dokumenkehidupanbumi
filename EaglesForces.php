@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eagles Forces - Squad MLBB</title>
+    <style>
+        /* CSS untuk Tampilan Gelap dan Efek Dinamis */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212; /* Warna latar belakang sangat gelap */
+            color: #e0e0e0; /* Warna teks terang */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            scroll-behavior: smooth; /* Efek scroll halus */
+        }
+
+        header {
+            background-color: #1e1e1e; /* Warna header sedikit lebih terang dari body */
+            padding: 0.8em 2em; /* Kurangi padding vertikal header */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Bayangan untuk kedalaman */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            flex-wrap: wrap; /* Agar elemen di header bisa wrap */
+        }
+
+        /* Kontainer baru untuk Logo dan Nama Squad */
+        .brand-info {
+            display: flex;
+            align-items: center;
+            margin-right: 20px; /* Jaga jarak dengan navigasi */
+        }
+
+        .logo-container {
+            position: relative; /* Penting untuk overlay */
+            display: inline-block; /* Agar overlay pas dengan gambar */
+            -webkit-user-select: none; /* Mencegah seleksi teks/gambar */
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            margin-right: 15px; /* Spasi antara logo dan judul */
+            width: 70px; /* Sesuaikan dengan max-height img + border + padding */
+            height: 70px; /* Sesuaikan dengan max-height img + border + padding */
+            display: flex; /* Untuk memposisikan gambar di tengah container */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-container img {
+            max-height: 50px; /* Ukuran logo sedikit dikecilkan */
+            max-width: 50px; /* Pastikan lebar juga diatur agar bundar sempurna */
+            display: block; /* Menghilangkan spasi bawah gambar */
+            pointer-events: none; /* Mencegah event mouse langsung ke gambar */
+            border-radius: 50%; /* Membuat gambar menjadi bundar */
+            object-fit: cover; /* Memastikan gambar mengisi lingkaran tanpa distorsi */
+            border: 4px solid #03dac6; /* Border cyan yang cerah */
+            box-shadow: 0 0 10px rgba(3, 218, 198, 0.5); /* Efek glow pada border */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transisi untuk efek hover */
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.05); /* Sedikit membesar saat di-hover */
+            box-shadow: 0 0 15px rgba(3, 218, 198, 0.8); /* Glow lebih kuat saat di-hover */
+        }
+
+        /* Overlay untuk perlindungan logo */
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1; /* Di atas gambar */
+            background-color: transparent; /* Transparan, hanya untuk menangkap event mouse */
+            border-radius: 50%; /* Pastikan overlay juga bundar */
+        }
+
+        h1 {
+            color: #bb86fc; /* Warna aksen ungu */
+            margin: 0;
+            font-size: 2.2em; /* Ukuran font judul disesuaikan */
+            letter-spacing: 1px;
+        }
+
+        nav {
+            flex-grow: 1; /* Biarkan navigasi mengambil sisa ruang */
+            overflow-x: auto; /* Aktifkan scroll horizontal */
+            -webkit-overflow-scrolling: touch; /* Untuk scroll halus di iOS */
+            scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+            -ms-overflow-style: none; /* Sembunyikan scrollbar di IE/Edge */
+        }
+
+        /* Sembunyikan scrollbar untuk WebKit (Chrome, Safari) */
+        nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex; /* Gunakan flexbox untuk item */
+            flex-wrap: nowrap; /* Pastikan item tidak wrap, tetap satu baris */
+            justify-content: flex-end; /* Pindahkan navigasi ke kanan */
+            min-width: max-content; /* Pastikan ul cukup lebar untuk menampung semua li */
+        }
+
+        nav ul li {
+            margin-left: 1.5em; /* Jaga jarak antar item navigasi */
+            flex-shrink: 0; /* Mencegah item menyusut */
+        }
+
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.1em; /* Ukuran font link disesuaikan */
+            transition: color 0.3s ease, transform 0.3s ease; /* Efek transisi */
+            position: relative;
+            white-space: nowrap; /* Mencegah teks link pecah baris */
+            padding: 5px 0; /* Padding vertikal link disesuaikan */
+        }
+
+        nav ul li a:hover {
+            color: #03dac6; /* Warna aksen cyan saat hover */
+            transform: translateY(-3px); /* Sedikit naik saat hover */
+        }
+
+        /* Efek garis bawah saat hover */
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #03dac6;
+            bottom: -2px; /* Sesuaikan posisi garis bawah */
+            left: 0;
+            transition: width 0.3s ease-in-out;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        main {
+            padding: 60px 20px 40px 20px; /* Padding atas main untuk ruang di bawah header */
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 60px; /* Margin bawah section */
+            padding: 30px;
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out; /* Efek dinamis pada section */
+            scroll-margin-top: 80px; /* Ruang di atas section saat discroll (sedikit lebih dari tinggi header) */
+        }
+
+        section:hover {
+            transform: translateY(-5px); /* Sedikit naik saat hover */
+        }
+
+        h2 {
+            color: #bb86fc;
+            font-size: 2em; /* Ukuran font h2 */
+            margin-bottom: 1.2em; /* Margin bawah h2 */
+            border-bottom: 2px solid #03dac6;
+            padding-bottom: 12px; /* Padding bawah h2 */
+            display: inline-block; /* Agar border-bottom sesuai lebar teks */
+        }
+
+        .player {
+            background-color: #2c2c2c;
+            padding: 20px; /* Padding player */
+            margin-bottom: 15px; /* Margin bawah player */
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Gap antar elemen player */
+            transition: background-color 0.3s ease;
+        }
+
+        .player:hover {
+            background-color: #3a3a3a;
+        }
+
+        .player img {
+            width: 70px; /* Ukuran foto pemain */
+            height: 70px; /* Ukuran foto pemain */
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #03dac6;
+        }
+
+        .player-info {
+            flex-grow: 1; /* Agar info pemain bisa mengisi ruang */
+        }
+
+        .player-info h3 {
+            margin: 0 0 8px 0; /* Margin bawah nama pemain */
+            color: #03dac6;
+            font-size: 1.3em; /* Ukuran nama pemain */
+        }
+
+        .player-info p {
+            margin: 0;
+            font-size: 1em; /* Ukuran info pemain */
+            color: #b0b0b0;
+        }
+
+        /* --- Materi Hero (di Roster) --- */
+        .hero-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Jarak antar hero */
+            margin-top: 10px;
+        }
+
+        .hero-list li {
+            background-color: #1e1e1e; /* Warna background hero item */
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero-list li:hover {
+            background-color: #3a3a3a;
+        }
+
+        .hero-list li a {
+            color: #bb86fc; /* Warna link hero */
+            text-decoration: none;
+            white-space: nowrap; /* Pastikan nama hero tidak pecah baris */
+        }
+
+        .hero-list li a:hover {
+            color: #03dac6;
+            text-decoration: underline;
+        }
+
+        /* --- Gaya untuk card season --- */
+        .season-card {
+            background-color: #2c2c2c;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px; /* Sedikit lebih banyak margin */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .season-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .season-card h3 {
+            color: #03dac6;
+            font-size: 1.6em;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #3a3a3a;
+            padding-bottom: 10px;
+        }
+
+        .season-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Agar statistik bisa wrap */
+            gap: 15px; /* Jarak antar statistik */
+        }
+
+        .stat-item {
+            text-align: center;
+            background-color: #1e1e1e;
+            padding: 10px 15px;
+            border-radius: 5px;
+            min-width: 120px; /* Lebar minimum untuk item statistik */
+        }
+
+        .stat-item .value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #bb86fc;
+            margin-bottom: 5px;
+        }
+
+        .stat-item .label {
+            font-size: 0.9em;
+            color: #b0b0b0;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: #2c2c2c;
+            margin-bottom: 12px; /* Margin bawah list item */
+            padding: 18px; /* Padding list item */
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-size: 1em; /* Ukuran font list item */
+        }
+
+        ul li:hover {
+            background-color: #3a3a3a;
+        }
+
+        a {
+            color: #bb86fc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #03dac6;
+            text-decoration: underline;
+        }
+
+        /* --- Gaya untuk Bagian Materi Hero --- */
+        .hero-material-card {
+            background-color: #2c2c2c;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero-material-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-material-card h3 {
+            color: #03dac6;
+            font-size: 1.6em;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #3a3a3a;
+            padding-bottom: 10px;
+        }
+
+        .material-item {
+            margin-bottom: 10px;
+        }
+
+        .material-item a {
+            display: block;
+            background-color: #1e1e1e;
+            padding: 12px 15px;
+            border-radius: 5px;
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .material-item a:hover {
+            background-color: #3a3a3a;
+            color: #03dac6;
+            text-decoration: none; /* Hilangkan underline saat hover */
+        }
+
+
+        footer {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            text-align: center;
+            padding: 2em; /* Padding footer */
+            margin-top: 70px; /* Margin atas footer */
+            border-top: 1px solid #333;
+            font-size: 0.9em;
+        }
+
+        /* --- Media Queries untuk Responsivitas --- */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column; /* Ubah header menjadi kolom di layar kecil */
+                padding: 0.8em 1em; /* Kurangi padding header */
+            }
+
+            .brand-info {
+                flex-direction: row; /* Logo dan judul tetap berdampingan */
+                justify-content: center; /* Pusatkan logo dan judul */
+                margin-right: 0;
+                margin-bottom: 15px; /* Tambah jarak ke navigasi */
+                width: 100%; /* Ambil lebar penuh */
+            }
+
+            .logo-container {
+                margin-right: 10px; /* Jaga jarak antara logo dan judul */
+                margin-bottom: 0; /* Hilangkan margin bawah logo */
+                width: 60px; /* Sesuaikan ukuran logo di layar kecil */
+                height: 60px;
+            }
+
+            .logo-container img {
+                max-height: 40px; /* Perkecil gambar logo di layar kecil */
+                max-width: 40px;
+            }
+
+            h1 {
+                font-size: 1.8em; /* Sesuaikan ukuran judul */
+                text-align: left; /* Biarkan teks rata kiri di samping logo */
+            }
+
+            nav {
+                width: 100%; /* Navigasi mengambil lebar penuh */
+                overflow-x: auto; /* Pastikan scroll horizontal aktif */
+            }
+
+            nav ul {
+                justify-content: flex-start; /* Mulai item dari kiri di layar kecil */
+                padding: 0 1em; /* Beri sedikit padding horizontal agar tidak terlalu mepet */
+            }
+
+            nav ul li {
+                margin-left: 1em; /* Jarak antar link */
+                margin-bottom: 0; /* Hilangkan margin bawah link */
+            }
+
+            nav ul li:first-child {
+                margin-left: 0; /* Hilangkan margin kiri pada item pertama */
+            }
+
+            nav ul li a {
+                font-size: 1em;
+                padding: 6px 0;
+            }
+
+            main {
+                padding-top: 70px; /* Padding atas main disesuaikan */
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            section {
+                padding: 20px;
+                margin-bottom: 40px;
+                scroll-margin-top: 60px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+                margin-bottom: 1em;
+                padding-bottom: 8px;
+            }
+
+            .player {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .player img {
+                margin-bottom: 5px;
+                width: 60px;
+                height: 60px;
+            }
+
+            .player-info h3 {
+                font-size: 1.2em;
+                margin-bottom: 5px;
+            }
+
+            .hero-list {
+                justify-content: center; /* Pusatkan hero list di mobile */
+            }
+
+            ul li {
+                padding: 15px;
+                margin-bottom: 8px;
+                font-size: 0.95em;
+            }
+
+            .season-card {
+                padding: 20px;
+            }
+
+            .season-card h3 {
+                font-size: 1.4em;
+            }
+
+            .season-stats {
+                flex-direction: column; /* Statistik bertumpuk di mobile */
+                align-items: center;
+            }
+
+            .stat-item {
+                width: 100%; /* Ambil lebar penuh */
+                max-width: 250px; /* Batasi lebar agar tidak terlalu lebar */
+            }
+
+            .hero-material-card {
+                padding: 20px;
+            }
+            .hero-material-card h3 {
+                font-size: 1.4em;
+            }
+
+            footer {
+                padding: 1.5em;
+                margin-top: 50px;
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6em; /* Ukuran judul lebih kecil lagi */
+            }
+
+            .logo-container {
+                width: 50px;
+                height: 50px;
+            }
+            .logo-container img {
+                max-height: 35px;
+                max-width: 35px;
+            }
+
+            nav ul {
+                padding: 0 0.5em; /* Padding lebih kecil di layar sangat kecil */
+            }
+
+            nav ul li {
+                margin-left: 0.8em; /* Jarak antar link di layar sangat kecil */
+            }
+
+            nav ul li a {
+                font-size: 0.9em;
+            }
+
+            section {
+                scroll-margin-top: 50px;
+            }
+
+            .season-card {
+                padding: 15px;
+            }
+
+            .season-card h3 {
+                font-size: 1.2em;
+            }
+
+            .stat-item {
+                min-width: unset; /* Hapus min-width */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand-info">
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo Eagles Forces" id="logo-protected">
+            </div>
+            <h1>Eagles Forces</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#tentang-kami">Tentang Kami</a></li>
+                <li><a href="#roster">Roster</a></li>
+                <li><a href="#prestasi">Prestasi</a></li>
+                <li><a href="#pencapaian-season">Pencapaian Season</a></li>
+                <li><a href="#materi-hero">Materi Hero</a></li> <li><a href="#media-sosial">Media Sosial</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="tentang-kami">
+            <h2>Tentang Kami</h2>
+            <p>Eagles Forces adalah squad Mobile Legends: Bang Bang yang didedikasikan untuk keunggulan dan kerja sama tim. Dibentuk pada Tahun 2019, kami berkomitmen untuk mengasah keterampilan, mengembangkan strategi inovatif, dan mencapai puncak kompetisi. Kami percaya bahwa dengan komunikasi yang kuat, dedikasi, dan semangat juang yang tak pernah padam, setiap anggota dapat mencapai potensi penuh mereka.</p>
+            <p>Visi kami adalah menjadi salah satu squad MLBB terkemuka di Bumi, dikenal bukan hanya karena kemenangan kami, tetapi juga karena sportivitas dan komunitas yang solid.</p>
+        </section>
+
+        <section id="roster">
+            <h2>Roster Kami</h2>
+            <div class="player">
+                <img src="gold.png" alt="Foto Pemain Gold Laner">
+                <div class="player-info">
+                    <h3>KENJ</h3>
+                    <p>Role: Gold Laner</p>
+                    <p>Hero Andalan: </p>
+                    <ul class="hero-list">
+                        <li>Ixia</li>
+                        <li>Clint</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="player">
+                <img src="jungle.png" alt="Foto Pemain Jungler">
+                <div class="player-info">
+                    <h3>[Nama Pemain 2]</h3>
+                    <p>Role: Jungler</p>
+                    <p>Hero Andalan: </p>
+                    <ul class="hero-list">
+                        <li>Fanny</li>
+                        <li>Ling</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="player">
+                <img src="mid.png" alt="Foto Pemain Mid Laner">
+                <div class="player-info">
+                    <h3>[Nama Pemain 3]</h3>
+                    <p>Role: Mid Laner</p>
+                    <p>Hero Andalan: </p>
+                    <ul class="hero-list">
+                        <li>Pharsa</li>
+                        <li>Yve</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="player">
+                <img src="roam.png" alt="Foto Pemain Roamer">
+                <div class="player-info">
+                    <h3>[Nama Pemain 4]</h3>
+                    <p>Role: Roamer</p>
+                    <p>Hero Andalan: </p>
+                    <ul class="hero-list">
+                        <li>Franco</li>
+                        <li>Chou</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="player">
+                <img src="exp.png" alt="Foto Pemain EXP Laner">
+                <div class="player-info">
+                    <h3>•°BLACK•HOLE~</h3>
+                    <p>Role: EXP Laner</p>
+                    <p>Hero Andalan: </p>
+                    <ul class="hero-list">
+                        <li>Argus</li>
+                        <li>X-Borg</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="prestasi">
+            <h2>Prestasi Kami</h2>
+            <ul>
+                <li>Juara 1 - Turnamen Lokal [Nama Turnamen] (Bulan, Tahun)</li>
+                <li>Peringkat Top 8 - Kompetisi Online [Nama Kompetisi] (Bulan, Tahun)</li>
+                <li>MVP Final - [Nama Pemain] di Turnamen [Nama Turnamen] (Bulan, Tahun)</li>
+                <li>[Tambahkan Prestasi Lainnya Di Sini]</li>
+            </ul>
+        </section>
+
+        <section id="pencapaian-season">
+            <h2>Pencapaian Per Season</h2>
+
+            <div class="season-card">
+                <h3>Season 31 (Saat Ini)</h3>
+                <div class="season-stats">
+                    <div class="stat-item">
+                        <div class="value">250</div>
+                        <div class="label">Total Pertandingan</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value">75%</div>
+                        <div class="label">Win Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value">90%</div>
+                        <div class="label">Team Up Rate</div>
+                    </div>
+                </div>
+                </div>
+
+
+                
+
+        </section>
+
+        <section id="materi-hero">
+            <h2>Materi Hero</h2>
+
+            <div class="hero-material-card">
+                <h3>Florin</h3>
+                <div class="material-item">
+                    <a href="https://www.youtube.com/watch?v=floringuide1" target="_blank" rel="noopener noreferrer">Build Item Florin Terbaik 2024</a>
+                </div>
+                <div class="material-item">
+                    <a href="https://www.duniagames.co.id/artikel/florintips" target="_blank" rel="noopener noreferrer">Tips dan Trik Menguasai Florin</a>
+                </div>
+                <div class="material-item">
+                    <a href="https://www.youtube.com/watch?v=florincombo" target="_blank" rel="noopener noreferrer">Video Combo Skill Florin</a>
+                </div>
+            </div>
+
+            <div class="hero-material-card">
+                <h3>Claude</h3>
+                <div class="material-item">
+                    <a href="https://www.youtube.com/watch?v=claudeguide1" target="_blank" rel="noopener noreferrer">Guide Lengkap Claude Gold Lane</a>
+                </div>
+                <div class="material-item">
+                    <a href="https://www.duniagames.co.id/artikel/claudebuild" target="_blank" rel="noopener noreferrer">Item Build Claude Tersakit</a>
+                </div>
+            </div>
+
+            <div class="hero-material-card">
+                <h3>Fanny</h3>
+                <div class="material-item">
+                    <a href="https://www.youtube.com/watch?v=fannyguide" target="_blank" rel="noopener noreferrer">Belajar Kabel Fanny untuk Pemula</a>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="media-sosial">
+            <h2>Ikuti Kami!</h2>
+            <ul>
+                <li><a href="https://instagram.com/eaglesforces" target="_blank" rel="noopener noreferrer">Instagram: @EaglesForces</a></li>
+                <li><a href="https://facebook.com/eaglesforces" target="_blank" rel="noopener noreferrer">Facebook: Eagles Forces Official</a></li>
+                <li><a href="#" target="_blank" rel="noopener noreferrer">TikTok: @EaglesForces</a></li>
+                <li><a href="#" target="_blank" rel="noopener noreferrer">YouTube: Eagles Forces Gaming</a></li>
+            </ul>
+        </section>
+
+        <section id="kontak">
+            <h2>Kontak Kami</h2>
+            <p>Hubungi kami untuk informasi lebih lanjut.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Eagles Forces. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // JavaScript untuk perlindungan logo
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoProtected = document.getElementById('logo-protected');
+            const logoContainer = logoProtected.closest('.logo-container');
+
+            if (logoContainer) {
+                logoContainer.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    alert('Maaf, gambar tidak dapat diunduh.');
+                });
+                logoProtected.ondragstart = function() { return false; };
+            }
+        });
+    </script>
+</body>
+</html>
