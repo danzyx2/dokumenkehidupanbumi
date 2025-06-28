@@ -180,7 +180,7 @@
             margin-bottom: 15px; /* Margin bawah player */
             border-radius: 5px;
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* Align item ke atas untuk info lebih banyak */
             gap: 20px; /* Gap antar elemen player */
             transition: background-color 0.3s ease;
         }
@@ -195,22 +195,59 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #03dac6;
+            flex-shrink: 0; /* Mencegah gambar menyusut */
         }
 
         .player-info {
             flex-grow: 1; /* Agar info pemain bisa mengisi ruang */
         }
 
+        .player-name-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap; /* Agar tag bisa wrap jika nama terlalu panjang */
+        }
+
         .player-info h3 {
-            margin: 0 0 8px 0; /* Margin bawah nama pemain */
+            margin: 0; /* Hilangkan margin bawaan h3 */
             color: #03dac6;
             font-size: 1.3em; /* Ukuran nama pemain */
+            margin-right: 10px; /* Jarak antara nama dan tag */
+        }
+
+        /* Styling untuk role tag */
+        .role-tag {
+            background-color: #bb86fc; /* Warna ungu untuk tag */
+            color: #121212;
+            font-size: 0.75em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            white-space: nowrap; /* Pastikan tag tidak pecah baris */
+            margin-left: 5px; /* Jarak dari nama */
+        }
+
+        .role-tag.group-owner {
+            background-color: #ff9800; /* Oranye untuk owner grup */
+        }
+
+        .role-tag.squad-owner {
+            background-color: #f44336; /* Merah untuk owner squad */
+        }
+
+        .role-tag.member {
+            background-color: #2196f3; /* Biru untuk anggota biasa */
         }
 
         .player-info p {
-            margin: 0;
+            margin: 0 0 5px 0; /* Margin bawah info pemain */
             font-size: 1em; /* Ukuran info pemain */
             color: #b0b0b0;
+        }
+        
+        .player-info p:last-of-type {
+            margin-bottom: 0; /* Hapus margin bawah pada paragraf terakhir */
         }
 
         /* --- Materi Hero (di Roster) --- */
@@ -245,6 +282,29 @@
             color: #03dac6;
             text-decoration: underline;
         }
+
+        /* Awards Section */
+        .awards-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+            border-top: 1px solid #3a3a3a;
+            padding-top: 15px;
+        }
+
+        .awards-list li {
+            background-color: #1e1e1e;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #b0b0b0;
+        }
+
+        .awards-list li:last-child {
+            margin-bottom: 0;
+        }
+
 
         /* --- Gaya untuk card season --- */
         .season-card {
@@ -461,6 +521,7 @@
                 text-align: center;
                 gap: 10px;
                 padding: 15px;
+                align-items: center; /* Pusatkan item di mode kolom */
             }
 
             .player img {
@@ -472,6 +533,10 @@
             .player-info h3 {
                 font-size: 1.2em;
                 margin-bottom: 5px;
+            }
+
+            .player-name-container {
+                justify-content: center; /* Pusatkan nama dan tag di mobile */
             }
 
             .hero-list {
@@ -592,60 +657,101 @@
             <div class="player">
                 <img src="gold.png" alt="Foto Pemain Gold Laner">
                 <div class="player-info">
-                    <h3>KENJ</h3>
-                    <p>Role: Gold Laner</p>
+                    <div class="player-name-container">
+                        <h3>KENJ</h3>
+                        <span class="role-tag squad-owner">Anggota Biasa</span>
+                        </div>
+                    <p>Role Utama: Gold Laner</p>
+                    <p>Role Sampingan: Mid Laner</p>
                     <p>Hero Andalan: </p>
                     <ul class="hero-list">
                         <li>Ixia</li>
                         <li>Clint</li>
+                    </ul>
+                    <p>Penghargaan:</p>
+                    <ul class="awards-list">
+                        <li>MVP Terbanyak</li>
+                        <li>Top Damage Dealer</li>
                     </ul>
                 </div>
             </div>
             <div class="player">
                 <img src="jungle.png" alt="Foto Pemain Jungler">
                 <div class="player-info">
-                    <h3>[Nama Pemain 2]</h3>
-                    <p>Role: Jungler</p>
+                    <div class="player-name-container">
+                        <h3>[Nama Pemain 2]</h3>
+                        <span class="role-tag group-owner">Anggota Biasa</span>
+                    </div>
+                    <p>Role Utama: Jungler</p>
+                    <p>Role Sampingan: EXP Laner</p>
                     <p>Hero Andalan: </p>
                     <ul class="hero-list">
                         <li>Fanny</li>
                         <li>Ling</li>
+                    </ul>
+                    <p>Penghargaan:</p>
+                    <ul class="awards-list">
+                        <li>Tidak ada penghargaan saat ini</li>
                     </ul>
                 </div>
             </div>
             <div class="player">
                 <img src="mid.png" alt="Foto Pemain Mid Laner">
                 <div class="player-info">
-                    <h3>[Nama Pemain 3]</h3>
-                    <p>Role: Mid Laner</p>
+                    <div class="player-name-container">
+                        <h3>[Nama Pemain 3]</h3>
+                        <span class="role-tag member">Anggota Biasa</span>
+                    </div>
+                    <p>Role Utama: Mid Laner</p>
+                    <p>Role Sampingan: Roamer</p>
                     <p>Hero Andalan: </p>
                     <ul class="hero-list">
                         <li>Pharsa</li>
                         <li>Yve</li>
+                    </ul>
+                    <p>Penghargaan:</p>
+                    <ul class="awards-list">
+                        <li>Tidak ada penghargaan saat ini</li>
                     </ul>
                 </div>
             </div>
             <div class="player">
                 <img src="roam.png" alt="Foto Pemain Roamer">
                 <div class="player-info">
-                    <h3>Gilang_1524</h3>
-                    <p>Role: Roamer</p>
+                    <div class="player-name-container">
+                        <h3>Gilang_1524</h3>
+                        <span class="role-tag member">Owner Squad</span>
+                    </div>
+                    <p>Role Utama: Roamer</p>
+                    <p>Role Sampingan: Mid Laner dan EXP Laner</p>
                     <p>Hero Andalan: </p>
                     <ul class="hero-list">
                         <li>Mathilda</li>
                         <li>Florin</li>
+                    </ul>
+                    <p>Penghargaan:</p>
+                    <ul class="awards-list">
+                        <li>Tidak ada penghargaan saat ini</li>
                     </ul>
                 </div>
             </div>
             <div class="player">
                 <img src="exp.png" alt="Foto Pemain EXP Laner">
                 <div class="player-info">
-                    <h3>•°BLACK•HOLE~</h3>
-                    <p>Role: EXP Laner</p>
+                    <div class="player-name-container">
+                        <h3>•°BLACK•HOLE~</h3>
+                        <span class="role-tag member">Owner Grup</span>
+                    </div>
+                    <p>Role Utama: EXP Laner</p>
+                    <p>Role Sampingan: Roamer dan Mid Laner</p>
                     <p>Hero Andalan: </p>
                     <ul class="hero-list">
                         <li>Argus</li>
                         <li>X-Borg</li>
+                    </ul>
+                    <p>Penghargaan:</p>
+                    <ul class="awards-list">
+                        <li>Tidak ada penghargaan saat ini</li>
                     </ul>
                 </div>
             </div>
@@ -653,39 +759,12 @@
 
         <section id="prestasi">
             <h2>Prestasi Kami</h2>
-            <!--<ul>
-                <li>Juara 1 - Turnamen Lokal [Nama Turnamen] (Bulan, Tahun)</li>
-                <li>Peringkat Top 8 - Kompetisi Online [Nama Kompetisi] (Bulan, Tahun)</li>
-                <li>MVP Final - [Nama Pemain] di Turnamen [Nama Turnamen] (Bulan, Tahun)</li>
-                <li>[Tambahkan Prestasi Lainnya Di Sini]</li>
-            </ul>-->
-        </section>
+            </section>
 
         <section id="pencapaian-season">
             <h2>Pencapaian Per Season</h2>
 
-            <!--<div class="season-card">
-                <h3>Season 31 (Saat Ini)</h3>
-                <div class="season-stats">
-                    <div class="stat-item">
-                        <div class="value">250</div>
-                        <div class="label">Total Pertandingan</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="value">75%</div>
-                        <div class="label">Win Rate</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="value">90%</div>
-                        <div class="label">Team Up Rate</div>
-                    </div>
-                </div>
-        </div-->
-
-
-                
-
-        </section>
+            </section>
 
         <section id="materi-hero">
             <h2>Materi Hero dan Meta</h2>
@@ -706,32 +785,14 @@
                 </div>
             </div>
 
-            <!--<div class="hero-material-card">
-                <h3>Claude</h3>
-                <div class="material-item">
-                    <a href="https://www.youtube.com/watch?v=claudeguide1" target="_blank" rel="noopener noreferrer">Guide Lengkap Claude Gold Lane</a>
-                </div>
-                <div class="material-item">
-                    <a href="https://www.duniagames.co.id/artikel/claudebuild" target="_blank" rel="noopener noreferrer">Item Build Claude Tersakit</a>
-                </div>
-            </div>
-
-            <div class="hero-material-card">
-                <h3>Fanny</h3>
-                <div class="material-item">
-                    <a href="https://www.youtube.com/watch?v=fannyguide" target="_blank" rel="noopener noreferrer">Belajar Kabel Fanny untuk Pemula</a>
-                </div>
-            </div>-->
-
-        </section>
+            </section>
 
         <section id="media-sosial">
             <h2>Ikuti Kami!</h2>
             <ul>
                 
                 <li><a href="https://chat.whatsapp.com/INaUd6BPEgS9yA7zD9wrUx" target="_blank" rel="noopener noreferrer">Whatsapp: EAGLES FORCES</a></li>
-                <!--<li><a href="#" target="_blank" rel="noopener noreferrer">YouTube: Eagles Forces Gaming</a></li-->
-            </ul>
+                </ul>
         </section>
 
         <section id="kontak">
