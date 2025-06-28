@@ -202,18 +202,11 @@
             flex-grow: 1; /* Agar info pemain bisa mengisi ruang */
         }
 
-        .player-name-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            flex-wrap: wrap; /* Agar tag bisa wrap jika nama terlalu panjang */
-        }
-
+        /* Styling untuk nama pemain */
         .player-info h3 {
-            margin: 0; /* Hilangkan margin bawaan h3 */
+            margin: 0 0 5px 0; /* Margin bawah untuk memberi jarak ke tag */
             color: #03dac6;
             font-size: 1.3em; /* Ukuran nama pemain */
-            margin-right: 10px; /* Jarak antara nama dan tag */
         }
 
         /* Styling untuk role tag */
@@ -225,7 +218,8 @@
             border-radius: 4px;
             font-weight: bold;
             white-space: nowrap; /* Pastikan tag tidak pecah baris */
-            margin-left: 5px; /* Jarak dari nama */
+            display: inline-block; /* Agar bisa menerapkan margin vertikal */
+            margin-bottom: 10px; /* Jarak antara tag dan role utama */
         }
 
         .role-tag.group-owner {
@@ -534,9 +528,11 @@
                 font-size: 1.2em;
                 margin-bottom: 5px;
             }
-
-            .player-name-container {
-                justify-content: center; /* Pusatkan nama dan tag di mobile */
+            
+            .player-info h3, .role-tag {
+                text-align: center; /* Pusatkan teks */
+                margin-left: auto; /* Untuk pusatkan tag jika display block */
+                margin-right: auto; /* Untuk pusatkan tag jika display block */
             }
 
             .hero-list {
@@ -657,10 +653,8 @@
             <div class="player">
                 <img src="gold.png" alt="Foto Pemain Gold Laner">
                 <div class="player-info">
-                    <div class="player-name-container">
-                        <h3>KENJ</h3>
-                        <span class="role-tag squad-owner">Anggota Biasa</span>
-                        </div>
+                    <h3>KENJ</h3>
+                    <span class="role-tag member">Anggota Biasa</span>
                     <p>Role Utama: Gold Laner</p>
                     <p>Role Sampingan: Mid Laner</p>
                     <p>Hero Andalan: </p>
@@ -678,10 +672,8 @@
             <div class="player">
                 <img src="jungle.png" alt="Foto Pemain Jungler">
                 <div class="player-info">
-                    <div class="player-name-container">
-                        <h3>[Nama Pemain 2]</h3>
-                        <span class="role-tag group-owner">Anggota Biasa</span>
-                    </div>
+                    <h3>[Nama Pemain 2]</h3>
+                    <span class="role-tag member">Anggota Biasa</span>
                     <p>Role Utama: Jungler</p>
                     <p>Role Sampingan: EXP Laner</p>
                     <p>Hero Andalan: </p>
@@ -698,10 +690,8 @@
             <div class="player">
                 <img src="mid.png" alt="Foto Pemain Mid Laner">
                 <div class="player-info">
-                    <div class="player-name-container">
-                        <h3>[Nama Pemain 3]</h3>
-                        <span class="role-tag member">Anggota Biasa</span>
-                    </div>
+                    <h3>[Nama Pemain 3]</h3>
+                    <span class="role-tag member">Anggota Biasa</span>
                     <p>Role Utama: Mid Laner</p>
                     <p>Role Sampingan: Roamer</p>
                     <p>Hero Andalan: </p>
@@ -718,10 +708,8 @@
             <div class="player">
                 <img src="roam.png" alt="Foto Pemain Roamer">
                 <div class="player-info">
-                    <div class="player-name-container">
-                        <h3>Gilang_1524</h3>
-                        <span class="role-tag member">Owner Squad</span>
-                    </div>
+                    <h3>Gilang_1524</h3>
+                    <span class="role-tag squad-owner">Owner Squad</span>
                     <p>Role Utama: Roamer</p>
                     <p>Role Sampingan: Mid Laner dan EXP Laner</p>
                     <p>Hero Andalan: </p>
@@ -738,10 +726,8 @@
             <div class="player">
                 <img src="exp.png" alt="Foto Pemain EXP Laner">
                 <div class="player-info">
-                    <div class="player-name-container">
-                        <h3>•°BLACK•HOLE~</h3>
-                        <span class="role-tag member">Owner Grup</span>
-                    </div>
+                    <h3>•°BLACK•HOLE~</h3>
+                    <span class="role-tag group-owner">Owner Grup</span>
                     <p>Role Utama: EXP Laner</p>
                     <p>Role Sampingan: Roamer dan Mid Laner</p>
                     <p>Hero Andalan: </p>
