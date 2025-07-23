@@ -101,6 +101,33 @@
             margin-right: 15px;
         }
 
+        /* Button Style */
+        .join-button {
+            display: block;
+            width: fit-content;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background-color: #25D366; /* WhatsApp Green */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .join-button:hover {
+            background-color: #1DA851;
+            transform: translateY(-2px);
+        }
+
+        .join-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .container {
@@ -113,17 +140,21 @@
             h2 {
                 font-size: 1.4em;
             }
+            .join-button {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Peraturan Turnamen Mobile Legends: Bang Bang</h1>
-        <!--<h1>MERDEKA! MLBB MYTHIC GLORY SHOWDOWN</h1-->
-
         <div class="note">
             <p>Dirgahayu Republik Indonesia! Mari rayakan semangat kemerdekaan dengan menjunjung tinggi sportivitas dan semangat juang dalam turnamen ini!</p>
         </div>
+
+        <a href="https://chat.whatsapp.com/G1TpFrLCNYx9L9238uPHZZ?mode=ac_t" class="join-button" target="_blank">Gabung Grup WhatsApp Turnamen</a>
 
         <h2>1. Umum</h2>
         <ul>
@@ -230,9 +261,7 @@
         <ul>
             <li>Juara 1: Uang  + Sertifikat</li>
             <li>Juara 2: Uang  + Sertifikat</li>
-            <!--<li>Juara 3: [Deskripsi Hadiah, contoh: Uang Tunai RpX.XXX.XXX + In-Game Diamonds + Sertifikat]</li>
-            <!--<li>(Opsional) MVP Final/Turnamen: [Deskripsi Hadiah]</li-->
-        </ul>
+            </ul>
 
       
 
@@ -264,8 +293,7 @@
             </div>
             <div class="legend">
                 <span>Tim yang kalah akan gugur dan tidak melanjutkan turnamen.</span>
-                <!--<span>Juara 3 (jika ada) dapat ditentukan melalui pertandingan perebutan juara 3 antara tim yang kalah di Semifinal.</span-->
-            </div>
+                </div>
         </div>
 
 
