@@ -4,7 +4,6 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Manzz — Jual Beli Online</title>
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { background: #f5f7fb; }
@@ -26,15 +25,12 @@
   </style>
 </head>
 <body>
-  <!-- Hero -->
   <section class="hero">
     <h1>Jual Beli Bumi</h1>
     <p>Belanja mudah, cepat, dan langsung dari berbagai platform toko online</p>
   </section>
 
-  <!-- Produk -->
-<main class="container py-4">
-  <!-- Kolom Pencarian -->
+  <main class="container py-4">
   <div class="row mb-4">
     <div class="col-md-6 mx-auto">
       <input type="text" id="searchBox" class="form-control" placeholder="Cari produk atau toko...">
@@ -45,8 +41,7 @@
 </main>
 
 
-  <!-- Modal -->
-<div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -54,7 +49,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <!-- Carousel dengan auto-slide -->
         <div id="prodCarousel" class="carousel slide mb-3" data-bs-ride="carousel" data-bs-interval="3000">
           <div class="carousel-inner" id="carouselInner"></div>
           <button class="carousel-control-prev" type="button" data-bs-target="#prodCarousel" data-bs-slide="prev">
@@ -69,6 +63,7 @@
         <p id="prodDesc"></p>
       </div>
       <div class="modal-footer">
+        <button id="shareBtn" class="btn btn-outline-primary">Bagikan</button>
         <a id="buyBtn" class="btn btn-primary" target="_blank">Pesan Sekarang</a>
       </div>
     </div>
@@ -80,7 +75,6 @@
     © <span id="y"></span> JIKA ADA TOKO YANG MENIPU SILAHKAN LAPOR KE KAMI MELALUI GMAIL DI KONTAK
   </footer>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
   // Data Produk (dengan harga)
@@ -139,6 +133,7 @@
   const prodDesc=document.getElementById("prodDesc");
   const buyBtn=document.getElementById("buyBtn");
   const carouselInner=document.getElementById("carouselInner");
+  const shareBtn = document.getElementById("shareBtn");
 
  grid.addEventListener("click", e=>{
   const card=e.target.closest(".card");
@@ -162,6 +157,22 @@
   // reset ke slide pertama tiap buka modal
   const carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById("prodCarousel"));
   carousel.to(0);
+
+  // Atur logika tombol berbagi saat modal dibuka
+  if (navigator.share) {
+    shareBtn.style.display = 'block';
+    shareBtn.onclick = () => {
+      navigator.share({
+        title: p.name,
+        text: `*Dijual:* ${p.name}\n*Toko:* ${p.store}\n*Harga:* ${formatIDR(p.price)}\n\n*Lihat selengkapnya:*`,
+        url: p.link
+      })
+      .then(() => console.log('Berhasil berbagi'))
+      .catch((error) => console.log('Gagal berbagi:', error));
+    };
+  } else {
+    shareBtn.style.display = 'none';
+  }
  });
 
 // Render Produk dengan filter
@@ -198,13 +209,7 @@ document.getElementById("searchBox").addEventListener("input", e=>{
   renderProducts(e.target.value);
 });
 
-  
-
   document.getElementById("y").textContent=new Date().getFullYear();
   </script>
 </body>
 </html>
-
-
-
-
