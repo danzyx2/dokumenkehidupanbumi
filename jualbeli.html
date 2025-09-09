@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Manzz — Jual Beli Online</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background: #f5f7fb; }
+    .hero {
+      background: linear-gradient(135deg, #6c7bff, #20dfa8);
+      color: #fff;
+      padding: 4rem 1rem;
+      text-align: center;
+      border-radius: 0 0 30px 30px;
+      margin-bottom: 2rem;
+    }
+    .hero h1 { font-weight: 800; }
+    .card:hover {
+      transform: translateY(-5px);
+      transition: .3s;
+      box-shadow: 0 10px 25px rgba(0,0,0,.15);
+    }
+    .price { font-weight: 700; color:#0d6efd; }
+  </style>
+</head>
+<body>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Jual Beli Bumi</h1>
+    <p>Belanja mudah, cepat, dan langsung dari berbagai platform toko online</p>
+  </section>
+
+  <!-- Produk -->
+<main class="container py-4">
+  <!-- Kolom Pencarian -->
+  <div class="row mb-4">
+    <div class="col-md-6 mx-auto">
+      <input type="text" id="searchBox" class="form-control" placeholder="Cari produk atau toko...">
+    </div>
+  </div>
+
+  <div class="row" id="productGrid"></div>
+</main>
+
+
+  <!-- Modal -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="prodName" class="modal-title"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Carousel dengan auto-slide -->
+        <div id="prodCarousel" class="carousel slide mb-3" data-bs-ride="carousel" data-bs-interval="3000">
+          <div class="carousel-inner" id="carouselInner"></div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#prodCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#prodCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+        <p class="text-muted" id="prodStore"></p>
+        <p class="price" id="prodPrice"></p>
+        <p id="prodDesc"></p>
+      </div>
+      <div class="modal-footer">
+        <a id="buyBtn" class="btn btn-primary" target="_blank">Pesan Sekarang</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center text-muted py-4">
+    © <span id="y"></span> Manzz • Kumpulan Jual Beli Online
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  // Data Produk (dengan harga)
+  const PRODUCTS = [
+    {
+      name:"Headphone ZX-7",
+      store:"Shopify",
+      price:499000,
+      desc:"Headphone over-ear dengan bass mantap, mikrofon noise-cancelling, dan desain nyaman.",
+      photos:["https://picsum.photos/id/29/800/500","https://picsum.photos/id/180/800/500","https://picsum.photos/id/257/800/500"],
+      link:"https://example.com/shopify/headphone"
+    },
+    {
+      name:"Smartwatch Wave",
+      store:"WooCommerce",
+      price:799000,
+      desc:"Smartwatch layar AMOLED, tahan air, notifikasi pintar, dan baterai tahan 7 hari.",
+      photos:["https://picsum.photos/id/1050/800/500","https://picsum.photos/id/1062/800/500"],
+      link:"https://example.com/woocommerce/watch"
+    },
+    {
+      name:"Jaket Windbreaker",
+      store:"Magento",
+      price:359000,
+      desc:"Ringan, tahan angin, cocok untuk olahraga outdoor maupun kasual.",
+      photos:["https://picsum.photos/id/250/800/500","https://picsum.photos/id/318/800/500"],
+      link:"https://example.com/magento/jacket"
+    }
+  ];
+
+  function formatIDR(num){
+    return new Intl.NumberFormat("id-ID", {style:"currency", currency:"IDR"}).format(num);
+  }
+
+  // Render Produk
+  const grid=document.getElementById("productGrid");
+  PRODUCTS.forEach((p,i)=>{
+    const col=document.createElement("div");
+    col.className="col-md-4 mb-4";
+    col.innerHTML=`
+      <div class="card h-100" data-index="${i}" data-bs-toggle="modal" data-bs-target="#productModal">
+        <img src="${p.photos[0]}" class="card-img-top" alt="${p.name}">
+        <div class="card-body">
+          <h5 class="card-title">${p.name}</h5>
+          <p class="card-text text-muted">${p.store}</p>
+          <p class="price">${formatIDR(p.price)}</p>
+        </div>
+      </div>`;
+    grid.appendChild(col);
+  });
+
+  // Modal Logic
+  const prodName=document.getElementById("prodName");
+  const prodStore=document.getElementById("prodStore");
+  const prodPrice=document.getElementById("prodPrice");
+  const prodDesc=document.getElementById("prodDesc");
+  const buyBtn=document.getElementById("buyBtn");
+  const carouselInner=document.getElementById("carouselInner");
+
+ grid.addEventListener("click", e=>{
+  const card=e.target.closest(".card");
+  if(!card) return;
+  const p=PRODUCTS[card.dataset.index];
+  prodName.textContent=p.name;
+  prodStore.textContent="Toko: "+p.store;
+  prodPrice.textContent="Harga: "+formatIDR(p.price);
+  prodDesc.textContent=p.desc;
+  buyBtn.href=p.link;
+
+  // isi ulang carousel
+  carouselInner.innerHTML="";
+  p.photos.forEach((src,j)=>{
+    const div=document.createElement("div");
+    div.className="carousel-item"+(j===0?" active":"");
+    div.innerHTML=`<img src="${src}" class="d-block w-100 rounded" alt="${p.name}">`;
+    carouselInner.appendChild(div);
+  });
+
+  // reset ke slide pertama tiap buka modal
+  const carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById("prodCarousel"));
+  carousel.to(0);
+ });
+
+// Render Produk dengan filter
+function renderProducts(filter="") {
+  grid.innerHTML = "";
+  const keyword = filter.toLowerCase();
+
+  PRODUCTS.forEach((p,i)=>{
+    if (
+      p.name.toLowerCase().includes(keyword) ||
+      p.store.toLowerCase().includes(keyword)
+    ) {
+      const col=document.createElement("div");
+      col.className="col-md-4 mb-4";
+      col.innerHTML=`
+        <div class="card h-100" data-index="${i}" data-bs-toggle="modal" data-bs-target="#productModal">
+          <img src="${p.photos[0]}" class="card-img-top" alt="${p.name}">
+          <div class="card-body">
+            <h5 class="card-title">${p.name}</h5>
+            <p class="card-text text-muted">${p.store}</p>
+            <p class="price">${formatIDR(p.price)}</p>
+          </div>
+        </div>`;
+      grid.appendChild(col);
+    }
+  });
+}
+
+// Panggil awal
+renderProducts();
+
+// Event pencarian
+document.getElementById("searchBox").addEventListener("input", e=>{
+  renderProducts(e.target.value);
+});
+
+  
+
+  document.getElementById("y").textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
