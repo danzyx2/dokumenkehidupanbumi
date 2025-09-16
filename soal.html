@@ -7,34 +7,109 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      background: #121212;
-      font-family: "Poppins", sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      color: #f5f5f5;
+  background: url('background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  color: #f5f5f5;
+  
+  /* Menerapkan efek blur ke seluruh latar belakang */
+  backdrop-filter: blur(10px);
+}
+
+.container {
+      width: 100%; /* Kontainer memenuhi seluruh lebar */
+      max-width: 100%; /* Tidak ada batasan lebar maksimum */
+      height: 100vh; /* Kontainer memenuhi seluruh tinggi viewport */
+      padding: 5vh 5vw; /* Padding fleksibel */
+      background: rgba(30, 30, 30, 0.5);
+      border-radius: 0; /* Menghilangkan sudut melengkung */
+      box-shadow: none; /* Menghilangkan bayangan */
+      backdrop-filter: none;
+      border: none; /* Menghilangkan garis tepi */
     }
-    .container {
-      width: 90%;
-      max-width: 750px;
-      padding: 25px;
-      background: #1e1e1e;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,.6);
-    }
+
+
     h1 {
       text-align: center;
       color: #4cafef;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      letter-spacing: 1px;
     }
     #skor-tertinggi, #riwayat-skor {
       text-align: center;
       font-weight: 500;
-      margin-bottom: 12px;
-      color: #ccc;
+      margin-bottom: 18px;
+      color: #aaa;
     }
+
+    /* --- Bagian Home/Kategori --- */
+    #kategori-section {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .form-group {
+      background: rgba(42, 42, 42, 0.7); /* Menambahkan transparansi */
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .form-group label {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: #ddd;
+    }
+    select {
+      background: #1e1e1e;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      color: #f5f5f5;
+      outline: none;
+      transition: border .3s;
+    }
+    select:focus { border-color: #4cafef; }
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: rgba(42, 42, 42, 0.7); /* Menambahkan transparansi */
+      border: 1px solid #333;
+    }
+    .form-check input {
+      accent-color: #4cafef;
+      transform: scale(1.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #4cafef;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: .3s;
+    }
+    button:hover { background: #2196f3; transform: translateY(-1px); }
+    button:disabled { background: #555; cursor: not-allowed; }
+
+    /* --- Bagian Kuis --- */
     #progress-bar {
       width: 100%;
       background: #333;
@@ -72,9 +147,7 @@
       background: #2a2a2a;
       color: #ddd;
     }
-    #pilihan label:hover {
-      background: #333;
-    }
+    #pilihan label:hover { background: #333; }
     #pilihan input[type=radio] {
       margin-right: 8px;
       accent-color: #4cafef;
@@ -89,26 +162,6 @@
       border-color: #e57373;
       color: #ffcdd2;
     }
-    button {
-      width: 100%;
-      padding: 14px;
-      background: #4cafef;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: .3s;
-    }
-    button:hover {
-      background: #2196f3;
-    }
-    button:disabled {
-      background: #555;
-      cursor: not-allowed;
-    }
     #hasil {
       margin-top: 15px;
       font-weight: 600;
@@ -118,9 +171,7 @@
     #rincian {
       margin-top: 20px;
     }
-    #rincian h3 {
-      margin-bottom: 10px;
-    }
+    #rincian h3 { margin-bottom: 10px; }
     .soal-review {
       border: 1px solid #444;
       border-radius: 8px;
@@ -128,39 +179,43 @@
       margin-bottom: 10px;
       background: #2a2a2a;
     }
-    .soal-review.correct {
-      background: #1b5e20;
-      color: #c8e6c9;
-    }
-    .soal-review.incorrect {
-      background: #880e4f;
-      color: #f8bbd0;
-    }
-    .hidden {display:none;}
+    .soal-review.correct { background: #1b5e20; color: #c8e6c9; }
+    .soal-review.incorrect { background: #880e4f; color: #f8bbd0; }
+
+    /* Utility */
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Latihan Soal Interaktif</h1>
+    <h1 id="judul-kuis">Latihan Soal Interaktif</h1>
     <div id="skor-tertinggi"></div>
     <div id="riwayat-skor"></div>
 
     <div id="kategori-section">
-      <label>Kategori:
+      <div class="form-group">
+        <label for="kategori-select">Kategori</label>
         <select id="kategori-select">
           <option value="umum">Umum</option>
-          <option value="ipa">IPA</option>
+          <option value="tjkt1">TJKT 1</option>
         </select>
-      </label><br><br>
-      <label>Mode Kuis:
+      </div>
+      <div class="form-group">
+        <label for="mode-select">Mode Kuis</label>
         <select id="mode-select">
           <option value="langsung">Jawaban Langsung</option>
           <option value="akhir">Jawaban di Akhir</option>
         </select>
-      </label><br><br>
-      <label><input type="checkbox" id="use-timer" checked> Gunakan Timer (20 detik/soal)</label><br>
-      <label><input type="checkbox" id="acak-soal" checked> Acak Soal</label><br>
-      <button id="mulai-btn">Mulai Kuis</button>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" id="use-timer" checked>
+        <label for="use-timer">Gunakan Timer (20 detik/soal)</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" id="acak-soal" checked>
+        <label for="acak-soal">Acak Soal</label>
+      </div>
+      <button id="mulai-btn">🚀 Mulai Kuis</button>
     </div>
 
     <div id="kuis-section" class="hidden">
@@ -177,23 +232,467 @@
   </div>
 
   <script>
-    const soalPerKategori={
-      umum:[
-        {pertanyaan:"Apa ibukota Indonesia?",pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"],jawaban:"Jakarta"},
-        {pertanyaan:"7x8 = ?",pilihan:["54","56","64","63","48"],jawaban:"56"}
+    // =================== DATA SOAL ===================
+    const soalPerKategori = {
+  umum: [
+    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
+    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+  ],
+  
+  tjkt1: [
+    {
+      pertanyaan: "Apa fungsi utama dari sebuah router?",
+      pilihan: [
+        "Untuk mengelola akun pengguna di jaringan.",
+        "Untuk memfilter spam email.",
+        "Untuk menghubungkan jaringan yang berbeda dan meneruskan paket data di antara mereka.",
+        "Untuk menyimpan data website.",
+        "Untuk menyediakan daya ke perangkat jaringan."
       ],
-      ipa:[
-        {pertanyaan:"Rumus air?",pilihan:["O2","H2O","CO2","NaCl","H2"],jawaban:"H2O"},
-        {pertanyaan:"Planet terdekat Matahari?",pilihan:["Bumi","Venus","Merkurius","Mars","Jupiter"],jawaban:"Merkurius"}
-      ]
-    };
+      jawaban: "Untuk menghubungkan jaringan yang berbeda dan meneruskan paket data di antara mereka."
+    },
+    {
+      pertanyaan: "Pada lapisan OSI model manakah sebuah router beroperasi?",
+      pilihan: [
+        "Physical Layer (Lapisan 1)",
+        "Data Link Layer (Lapisan 2)",
+        "Network Layer (Lapisan 3)",
+        "Transport Layer (Lapisan 4)",
+        "Application Layer (Lapisan 7)"
+      ],
+      jawaban: "Network Layer (Lapisan 3)"
+    },
+    {
+      pertanyaan: "Apa kegunaan dari tabel routing?",
+      pilihan: [
+        "Untuk menyimpan kata sandi pengguna.",
+        "Untuk menyimpan log lalu lintas jaringan.",
+        "Untuk memetakan alamat IP ke alamat MAC.",
+        "Untuk menyimpan informasi tentang jalur jaringan menuju tujuan.",
+        "Untuk menyediakan daftar jaringan Wi-Fi yang tersedia."
+      ],
+      jawaban: "Untuk menyimpan informasi tentang jalur jaringan menuju tujuan."
+    },
+    {
+      pertanyaan: "Manakah dari berikut ini yang merupakan jenis dari routing?",
+      pilihan: [
+        "Routing Statis",
+        "Routing Pasif",
+        "Routing Reaktif",
+        "Routing Linear",
+        "Routing Hibrida"
+      ],
+      jawaban: "Routing Statis"
+    },
+    {
+      pertanyaan: "Dalam routing dinamis, bagaimana cara router mempelajari jalur jaringan?",
+      pilihan: [
+        "Mereka dikonfigurasi secara manual oleh administrator.",
+        "Mereka mempelajari jalur dari server pusat.",
+        "Mereka bertukar informasi dengan router lain.",
+        "Mereka mendapatkan informasi dari server DNS.",
+        "Mereka menemukan jalur dengan memindai jaringan."
+      ],
+      jawaban: "Mereka bertukar informasi dengan router lain."
+    },
+    {
+      pertanyaan: "Apa itu default gateway?",
+      pilihan: [
+        "Server utama untuk seluruh jaringan.",
+        "Perangkat pertama yang ditemui paket data dalam perjalanannya ke tujuan.",
+        "Alamat penyedia layanan internet.",
+        "Perangkat yang hanya terhubung ke perangkat lokal.",
+        "Perangkat yang mengelola keamanan jaringan."
+      ],
+      jawaban: "Perangkat pertama yang ditemui paket data dalam perjalanannya ke tujuan."
+    },
+    {
+      pertanyaan: "Manakah dari ini yang merupakan metrik yang digunakan oleh protokol routing untuk menentukan jalur terbaik?",
+      pilihan: [
+        "Jarak",
+        "Bandwidth",
+        "Biaya (Cost)",
+        "Jumlah hop (Hop count)",
+        "Semua jawaban benar"
+      ],
+      jawaban: "Semua jawaban benar"
+    },
+    {
+      pertanyaan: "Apa perbedaan utama antara routing statis dan dinamis?",
+      pilihan: [
+        "Routing statis kurang aman.",
+        "Routing dinamis memerlukan konfigurasi manual.",
+        "Routing statis kurang skalabel untuk jaringan besar.",
+        "Routing dinamis digunakan untuk jaringan kecil dan sederhana.",
+        "Routing statis beradaptasi dengan perubahan jaringan secara otomatis."
+      ],
+      jawaban: "Routing statis kurang skalabel untuk jaringan besar."
+    },
+    {
+      pertanyaan: "Firewall adalah sistem penting yang berfungsi untuk menjaga keamanan jaringan. Manakah dari berikut ini yang paling baik menggambarkan tujuan utamanya?",
+      pilihan: [
+        "Untuk mempercepat koneksi jaringan.",
+        "Untuk memblokir akses yang tidak sah dan lalu lintas berbahaya.",
+        "Untuk mengelola login pengguna.",
+        "Untuk membuat cadangan data jaringan.",
+        "Untuk mengoptimalkan transfer data."
+      ],
+      jawaban: "Untuk memblokir akses yang tidak sah dan lalu lintas berbahaya."
+    },
+    {
+      pertanyaan: "Manakah dari berikut ini yang merupakan jenis firewall yang umum?",
+      pilihan: [
+        "Firewall penyaringan paket (packet-filtering firewall)",
+        "Gerbang tingkat sirkuit (circuit-level gateway)",
+        "Firewall inspeksi stateful (stateful inspection firewall)",
+        "Firewall proxy",
+        "Semua jawaban benar"
+      ],
+      jawaban: "Semua jawaban benar"
+    },
+    {
+      pertanyaan: "Bagaimana cara kerja firewall penyaringan paket?",
+      pilihan: [
+        "Ini memeriksa konten paket data.",
+        "Ini bertindak sebagai proxy untuk semua lalu lintas jaringan.",
+        "Ini memeriksa header paket data dan memfilter berdasarkan aturan.",
+        "Ini hanya mengizinkan lalu lintas dari alamat IP yang terpercaya.",
+        "Ini mengenkripsi semua data yang masuk dan keluar."
+      ],
+      jawaban: "Ini memeriksa header paket data dan memfilter berdasarkan aturan."
+    },
+    {
+      pertanyaan: "Apa keuntungan utama dari firewall inspeksi stateful?",
+      pilihan: [
+        "Ini lebih cepat dari firewall lain.",
+        "Ini adalah opsi termurah.",
+        "Ini dapat melacak status koneksi jaringan yang aktif.",
+        "Ini hanya berfungsi dengan jaringan lokal.",
+        "Ini tidak memerlukan konfigurasi."
+      ],
+      jawaban: "Ini dapat melacak status koneksi jaringan yang aktif."
+    },
+    {
+      pertanyaan: "Sebuah firewall dapat diimplementasikan sebagai...",
+      pilihan: [
+        "Perangkat keras",
+        "Perangkat lunak pada komputer",
+        "Layanan berbasis cloud",
+        "Semua jawaban benar",
+        "Tidak ada jawaban yang benar"
+      ],
+      jawaban: "Semua jawaban benar"
+    },
+    {
+      pertanyaan: "Apa itu Access Control List (ACL) dalam konteks firewall?",
+      pilihan: [
+        "Daftar pengguna yang diizinkan.",
+        "Sekumpulan aturan yang mendefinisikan lalu lintas mana yang diizinkan atau ditolak.",
+        "Log dari semua aktivitas jaringan.",
+        "Daftar website yang akan diblokir.",
+        "Basis data malware yang diketahui."
+      ],
+      jawaban: "Sekumpulan aturan yang mendefinisikan lalu lintas mana yang diizinkan atau ditolak."
+    },
+    {
+      pertanyaan: "Apa fungsi utama dari firewall proxy?",
+      pilihan: [
+        "Untuk secara fisik menghubungkan jaringan yang berbeda.",
+        "Untuk memeriksa paket data di lapisan jaringan.",
+        "Untuk bertindak sebagai perantara untuk semua lalu lintas jaringan.",
+        "Untuk hanya memblokir website berbahaya.",
+        "Untuk memantau kecepatan jaringan."
+      ],
+      jawaban: "Untuk bertindak sebagai perantara untuk semua lalu lintas jaringan."
+    },
+    {
+      pertanyaan: "Manakah dari ini yang merupakan jenis protokol routing?",
+      pilihan: [
+        "RIP (Routing Information Protocol)",
+        "FTP (File Transfer Protocol)",
+        "HTTP (Hypertext Transfer Protocol)",
+        "DNS (Domain Name System)",
+        "DHCP (Dynamic Host Configuration Protocol)"
+      ],
+      jawaban: "RIP (Routing Information Protocol)"
+    },
+    {
+      pertanyaan: "Apa itu protokol routing distance-vector?",
+      pilihan: [
+        "Protokol yang menentukan jalur terbaik berdasarkan tautan tercepat.",
+        "Protokol yang menghitung jalur hanya menggunakan jumlah hop.",
+        "Protokol di mana router berbagi tabel routing mereka dengan tetangga.",
+        "Protokol yang mengirim peta lengkap jaringan ke semua router lain.",
+        "Protokol yang hanya digunakan dalam jaringan lokal kecil."
+      ],
+      jawaban: "Protokol di mana router berbagi tabel routing mereka dengan tetangga."
+    },
+    {
+      pertanyaan: "Manakah dari ini yang merupakan protokol routing link-state?",
+      pilihan: [
+        "EIGRP",
+        "BGP",
+        "RIP",
+        "OSPF",
+        "IGRP"
+      ],
+      jawaban: "OSPF"
+    },
+    {
+      pertanyaan: "Apa kepanjangan dari 'L' pada OSPF?",
+      pilihan: [
+        "Learning",
+        "Layer",
+        "Link",
+        "Load",
+        "Local"
+      ],
+      jawaban: "Link"
+    },
+    {
+      pertanyaan: "Apa karakteristik utama dari protokol routing link-state?",
+      pilihan: [
+        "Ini menggunakan jumlah hop sebagai satu-satunya metrik.",
+        "Ini dirancang untuk jaringan yang lambat dan tidak stabil.",
+        "Ini membuat peta topologi lengkap dari jaringan.",
+        "Ini mengirimkan seluruh tabel routing ke tetangganya.",
+        "Ini adalah protokol statis."
+      ],
+      jawaban: "Ini membuat peta topologi lengkap dari jaringan."
+    },
+    {
+      pertanyaan: "BGP (Border Gateway Protocol) adalah contoh dari jenis protokol routing apa?",
+      pilihan: [
+        "Interior Gateway Protocol (IGP)",
+        "Exterior Gateway Protocol (EGP)",
+        "Protokol routing statis",
+        "Protokol routing link-state",
+        "Protokol routing distance-vector"
+      ],
+      jawaban: "Exterior Gateway Protocol (EGP)"
+    },
+    {
+      pertanyaan: "Protokol routing manakah yang biasanya digunakan untuk routing antara sistem otonom (AS) yang berbeda di internet?",
+      pilihan: [
+        "RIP",
+        "OSPF",
+        "EIGRP",
+        "BGP",
+        "IGRP"
+      ],
+      jawaban: "BGP"
+    },
+    {
+      pertanyaan: "Berapa batas jumlah hop untuk RIP (Routing Information Protocol)?",
+      pilihan: [
+        "5 hop",
+        "10 hop",
+        "15 hop",
+        "20 hop",
+        "Tidak terbatas"
+      ],
+      jawaban: "15 hop"
+    },
+    {
+      pertanyaan: "Protokol routing manakah yang merupakan protokol milik Cisco?",
+      pilihan: [
+        "OSPF",
+        "BGP",
+        "RIP",
+        "EIGRP",
+        "ISIS"
+      ],
+      jawaban: "EIGRP"
+    },
+    {
+      pertanyaan: "Apa itu sistem otonom (AS)?",
+      pilihan: [
+        "Satu komputer di jaringan.",
+        "Sekelompok perangkat dalam jaringan lokal.",
+        "Kumpulan jaringan di bawah satu kendali administratif.",
+        "Satu router.",
+        "Sebuah firewall."
+      ],
+      jawaban: "Kumpulan jaringan di bawah satu kendali administratif."
+    },
+    {
+      pertanyaan: "Metrik routing digunakan untuk...",
+      pilihan: [
+        "Mengukur ukuran jaringan.",
+        "Menentukan jalur terbaik ke tujuan.",
+        "Melacak aktivitas pengguna.",
+        "Menghitung jumlah perangkat yang terhubung.",
+        "Memantau kinerja firewall."
+      ],
+      jawaban: "Menentukan jalur terbaik ke tujuan."
+    },
+    {
+      pertanyaan: "Manakah dari ini yang merupakan fitur utama dari RIP?",
+      pilihan: [
+        "Konvergensi cepat.",
+        "Mendukung jaringan besar.",
+        "Bergantung pada jumlah hop sebagai metrik utamanya.",
+        "Menggunakan algoritma yang kompleks.",
+        "Memerlukan konfigurasi manual."
+      ],
+      jawaban: "Bergantung pada jumlah hop sebagai metrik utamanya."
+    },
+    {
+      pertanyaan: "Apa tujuan dari protokol routing?",
+      pilihan: [
+        "Untuk mengamankan lalu lintas jaringan.",
+        "Untuk mengelola server email.",
+        "Untuk memungkinkan router menemukan jalur ke tujuan secara dinamis.",
+        "Untuk mengkonfigurasi alamat IP statis.",
+        "Untuk menyediakan koneksi fisik antara jaringan."
+      ],
+      jawaban: "Untuk memungkinkan router menemukan jalur ke tujuan secara dinamis."
+    },
+    {
+      pertanyaan: "Apa itu konvergensi dalam konteks protokol routing?",
+      pilihan: [
+        "Proses jaringan yang mengalami crash.",
+        "Keadaan di mana semua router dalam jaringan memiliki tabel routing yang konsisten.",
+        "Proses menghubungkan perangkat baru ke jaringan.",
+        "Kecepatan transfer data.",
+        "Keamanan jaringan."
+      ],
+      jawaban: "Keadaan di mana semua router dalam jaringan memiliki tabel routing yang konsisten."
+    },
+    {
+      pertanyaan: "Manakah dari ini yang merupakan kerugian dari routing statis?",
+      pilihan: [
+        "Ini kurang aman.",
+        "Ini lebih kompleks untuk dikonfigurasi.",
+        "Ini tidak cocok untuk jaringan besar yang sering berubah.",
+        "Ini lebih cepat dari routing dinamis.",
+        "Ini tidak mendukung banyak jalur."
+      ],
+      jawaban: "Ini tidak cocok untuk jaringan besar yang sering berubah."
+    },
+    {
+      pertanyaan: "Apa komponen utama dari fungsi keamanan firewall?",
+      pilihan: [
+        "Menginstal pembaruan perangkat lunak secara otomatis.",
+        "Memblokir port dan alamat IP.",
+        "Mengelola konsumsi daya.",
+        "Membuat akun pengguna baru.",
+        "Memantau penggunaan printer."
+      ],
+      jawaban: "Memblokir port dan alamat IP."
+    },
+    {
+      pertanyaan: "Aturan firewall yang menolak semua lalu lintas dari alamat IP tertentu adalah contoh dari tindakan apa?",
+      pilihan: [
+        "Terima (Accept)",
+        "Tolak (Reject)",
+        "Jatuhkan (Drop)",
+        "Teruskan (Forward)",
+        "Catat (Log)"
+      ],
+      jawaban: "Jatuhkan (Drop)"
+    },
+    {
+      pertanyaan: "Apa tujuan utama seorang teknisi jaringan dalam mengelola firewall?",
+      pilihan: [
+        "Untuk membuat jaringan lebih cepat.",
+        "Untuk memastikan semua pengguna dapat mengakses semua website.",
+        "Untuk mencegah akses tidak sah sambil mengizinkan lalu lintas yang sah.",
+        "Untuk menyederhanakan topologi jaringan.",
+        "Untuk menginstal perangkat lunak baru di semua komputer."
+      ],
+      jawaban: "Untuk mencegah akses tidak sah sambil mengizinkan lalu lintas yang sah."
+    },
+    {
+      pertanyaan: "Jenis firewall manakah yang paling aman?",
+      pilihan: [
+        "Firewall penyaringan paket",
+        "Firewall tanpa state",
+        "Firewall inspeksi stateful",
+        "Firewall proxy",
+        "Tidak ada jawaban yang benar"
+      ],
+      jawaban: "Firewall proxy"
+    },
+    {
+      pertanyaan: "Apa perbedaan utama antara router dan switch?",
+      pilihan: [
+        "Switch menghubungkan jaringan yang berbeda, sementara router menghubungkan perangkat dalam satu jaringan.",
+        "Router menghubungkan jaringan yang berbeda, sementara switch menghubungkan perangkat dalam satu jaringan.",
+        "Switch beroperasi di Lapisan 3, sementara router beroperasi di Lapisan 2.",
+        "Router hanya berfungsi dengan koneksi kabel, sementara switch berfungsi dengan nirkabel.",
+        "Router digunakan untuk keamanan, sementara switch untuk kecepatan."
+      ],
+      jawaban: "Router menghubungkan jaringan yang berbeda, sementara switch menghubungkan perangkat dalam satu jaringan."
+    },
+    {
+      pertanyaan: "Apa tujuan utama dari protokol routing?",
+      pilihan: [
+        "Untuk memfilter lalu lintas yang tidak diinginkan.",
+        "Untuk membangun koneksi antara dua komputer.",
+        "Untuk menemukan jalur terbaik bagi data untuk melakukan perjalanan melintasi jaringan.",
+        "Untuk mengelola printer jaringan.",
+        "Untuk menetapkan alamat IP ke perangkat."
+      ],
+      jawaban: "Untuk menemukan jalur terbaik bagi data untuk melakukan perjalanan melintasi jaringan."
+    },
+    {
+      pertanyaan: "Manakah dari ini yang merupakan jenis protokol routing?",
+      pilihan: [
+        "Statis",
+        "Dinamis",
+        "RIP",
+        "OSPF",
+        "Semua jawaban benar"
+      ],
+      jawaban: "Semua jawaban benar"
+    },
+    {
+      pertanyaan: "Firewall adalah sistem penting yang membantu menjaga keamanan jaringan. Apa peran utamanya?",
+      pilihan: [
+        "Mempercepat akses internet.",
+        "Mencegah akses tidak sah ke jaringan.",
+        "Membuat akun pengguna baru secara otomatis.",
+        "Mengoptimalkan pengaturan printer jaringan.",
+        "Menyediakan akses internet nirkabel."
+      ],
+      jawaban: "Mencegah akses tidak sah ke jaringan."
+    },
+    {
+      pertanyaan: "Apa yang terkandung dalam tabel routing?",
+      pilihan: [
+        "Daftar semua pengguna di jaringan.",
+        "Informasi tentang lokasi fisik perangkat.",
+        "Jalur ke tujuan jaringan yang berbeda dan metrik terkaitnya.",
+        "Riwayat semua aktivitas jaringan.",
+        "Kebijakan keamanan firewall."
+      ],
+      jawaban: "Jalur ke tujuan jaringan yang berbeda dan metrik terkaitnya."
+    },
+    {
+      pertanyaan: "Dalam konteks firewall, apa itu 'DMZ'?",
+      pilihan: [
+        "Zona default untuk semua lalu lintas.",
+        "Jaringan internal yang aman.",
+        "Jaringan penyangga yang berada di antara jaringan internal dan internet.",
+        "Zona yang hanya mengizinkan lalu lintas lokal.",
+        "Zona yang sepenuhnya diblokir dari semua lalu lintas."
+      ],
+      jawaban: "Jaringan penyangga yang berada di antara jaringan internal dan internet."
+    }
+  ]
+};
 
-    let soalAktif=[],currentSoalIndex=0,score=0,modeKuis="langsung",gunakanTimer=true,acakSoal=true;
-    let skorTertinggi=localStorage.getItem("skorTertinggi")||0;
-    let riwayatSkor=JSON.parse(localStorage.getItem("riwayatSkor")||"[]");
-    let timerInterval,waktuPerSoal=20,startTime, endTime;
+
+
+    // =================== VARIABEL GLOBAL ===================
+    let soalAktif=[], currentSoalIndex=0, score=0, modeKuis="langsung", gunakanTimer=true, acakSoal=true;
+    let skorTertinggi = localStorage.getItem("skorTertinggi") || 0;
+    let riwayatSkor = JSON.parse(localStorage.getItem("riwayatSkor") || "[]");
+    let timerInterval, waktuPerSoal=20, startTime, endTime;
     let jawabanUser=[];
 
+    // =================== ELEMEN DOM ===================
     const kategoriSection=document.getElementById("kategori-section");
     const kuisSection=document.getElementById("kuis-section");
     const mulaiBtn=document.getElementById("mulai-btn");
@@ -208,24 +707,40 @@
     const timerEl=document.getElementById("timer");
     const skorTertinggiEl=document.getElementById("skor-tertinggi");
     const riwayatSkorEl=document.getElementById("riwayat-skor");
+    const judulKuisEl = document.getElementById("judul-kuis"); // Tambahan: mengambil elemen judul
+    
+    // Tambahan: maping untuk judul berdasarkan kategori
+    const namaKategori = {
+      "umum": "Latihan Soal Umum",
+      "tjkt1": "Latihan Soal TJKT 1"
+    };
 
+    // =================== INISIALISASI ===================
     skorTertinggiEl.innerHTML=`Skor Tertinggi: <span style="color:#4cafef">${skorTertinggi}</span>`;
     riwayatSkorEl.innerHTML=riwayatSkor.length?`Riwayat Skor: ${riwayatSkor.join(", ")}`:"Belum ada riwayat";
 
-    function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+    // =================== FUNGSI UTILITAS ===================
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } }
 
+    // =================== FUNGSI LOGIKA ===================
     function mulaiKuis(){
       const kategori=document.getElementById("kategori-select").value;
       modeKuis=document.getElementById("mode-select").value;
       gunakanTimer=document.getElementById("use-timer").checked;
       acakSoal=document.getElementById("acak-soal").checked;
 
-      soalAktif=[...soalPerKategori[kategori]];
-      if(acakSoal)shuffle(soalAktif);
-      currentSoalIndex=0;score=0;jawabanUser=[];startTime=new Date();
+      // Tambahan: Mengubah judul berdasarkan kategori yang dipilih
+      judulKuisEl.textContent = namaKategori[kategori];
 
+      soalAktif=[...soalPerKategori[kategori]];
+      if(acakSoal) shuffle(soalAktif);
+
+      currentSoalIndex=0; score=0; jawabanUser=[]; startTime=new Date();
+
+      // Sembunyikan home, tampilkan kuis
       kategoriSection.classList.add("hidden");
       kuisSection.classList.remove("hidden");
+
       submitBtn.disabled=false;
       tampilkanSoal();
     }
@@ -236,13 +751,13 @@
         const data=soalAktif[currentSoalIndex];
         soalEl.textContent=`${currentSoalIndex+1}. ${data.pertanyaan}`;
         pilihanEl.innerHTML="";
-        let pilihan=[...data.pilihan];shuffle(pilihan);
+        let pilihan=[...data.pilihan]; shuffle(pilihan);
         pilihan.forEach(p=>{
           pilihanEl.innerHTML+=`<label><input type="radio" name="pilihan" value="${p}">${p}</label>`;
         });
         hasilEl.textContent="";
         updateProgress();
-        if(gunakanTimer)mulaiTimer(); else timerEl.textContent="";
+        if(gunakanTimer) mulaiTimer(); else timerEl.textContent="";
       }else tampilkanHasil();
     }
 
@@ -251,17 +766,19 @@
       if(!pilih){alert("Pilih jawaban dulu!");return;}
       const jawaban=pilih.value;
       const benar=soalAktif[currentSoalIndex].jawaban;
-      jawabanUser.push({soal:soalAktif[currentSoalIndex].pertanyaan,jawabanAnda:jawaban,jawabanBenar:benar,correct:jawaban===benar});
-      if(jawaban===benar)score++;
+
+      jawabanUser.push({ soal:soalAktif[currentSoalIndex].pertanyaan, jawabanAnda:jawaban, jawabanBenar:benar, correct:jawaban===benar });
+      if(jawaban===benar) score++;
+
       if(modeKuis==="langsung"){
         document.querySelectorAll("#pilihan label").forEach(l=>{
           const val=l.querySelector("input").value;
-          if(val===benar)l.classList.add("correct");
-          if(val===jawaban&&jawaban!==benar)l.classList.add("incorrect");
+          if(val===benar) l.classList.add("correct");
+          if(val===jawaban && jawaban!==benar) l.classList.add("incorrect");
         });
         hasilEl.textContent=jawaban===benar?"✅ Benar":"❌ Salah";
-        setTimeout(()=>{currentSoalIndex++;tampilkanSoal();},1000);
-      }else{currentSoalIndex++;tampilkanSoal();}
+        setTimeout(()=>{currentSoalIndex++; tampilkanSoal();},1000);
+      }else{ currentSoalIndex++; tampilkanSoal(); }
     }
 
     function tampilkanHasil(){
@@ -269,34 +786,27 @@
       const total=soalAktif.length;
       const durasi=Math.round((endTime-startTime)/1000);
       hasilEl.innerHTML=`🏁 Selesai! Skor: ${score}/${total}<br>⏱️ Waktu: ${durasi} detik`;
+
       riwayatSkor.push(score);
       localStorage.setItem("riwayatSkor",JSON.stringify(riwayatSkor));
       riwayatSkorEl.innerHTML=`Riwayat Skor: ${riwayatSkor.join(", ")}`;
+
       if(score>skorTertinggi){
         skorTertinggi=score;
         localStorage.setItem("skorTertinggi",skorTertinggi);
         skorTertinggiEl.innerHTML=`Skor Tertinggi Baru: ${skorTertinggi}`;
       }
+
       submitBtn.disabled=true;
       ulangBtn.classList.remove("hidden");
       homeBtn.classList.remove("hidden");
       tampilkanRincian();
     }
 
-    function tampilkanRincian(){
-      rincianEl.innerHTML="<h3>Rincian Jawaban:</h3>";
-      jawabanUser.forEach((j,i)=>{
-        rincianEl.innerHTML+=`
-          <div class="soal-review ${j.correct?"correct":"incorrect"}">
-            <b>Soal ${i+1}:</b> ${j.soal}<br>
-            Jawaban Anda: ${j.jawabanAnda}<br>
-            Jawaban Benar: ${j.jawabanBenar}<br>
-            Status: ${j.correct?"✅ Benar":"❌ Salah"}
-          </div>`;
-      });
-    }
-
     function ulangKuis(){
+      // Tambahan: Mengembalikan judul ke awal
+      judulKuisEl.textContent = "Latihan Soal Interaktif";
+
       kategoriSection.classList.remove("hidden");
       kuisSection.classList.add("hidden");
       ulangBtn.classList.add("hidden");
@@ -304,13 +814,33 @@
       rincianEl.innerHTML="";
     }
 
-    function kembaliHome(){
-      window.location.href="index.html";
+    function kembaliHome(){ window.location.href="index.html"; }
+    function updateProgress(){ progressEl.style.width=`${(currentSoalIndex/soalAktif.length)*100}%`; }
+    function mulaiTimer(){
+      let w=waktuPerSoal;
+      timerEl.textContent=`⏳ ${w}s`;
+      timerInterval=setInterval(()=>{
+        w--; timerEl.textContent=`⏳ ${w}s`;
+        if(w<=0){ clearInterval(timerInterval); currentSoalIndex++; tampilkanSoal(); }
+      },1000);
     }
+    
+    function tampilkanRincian() {
+  rincianEl.innerHTML = '<h3>Rincian Jawaban</h3>';
+  jawabanUser.forEach(item => {
+    const soalReviewEl = document.createElement('div');
+    soalReviewEl.className = `soal-review ${item.correct ? 'correct' : 'incorrect'}`;
+    soalReviewEl.innerHTML = `
+      <p><strong>Soal:</strong> ${item.soal}</p>
+      <p><strong>Jawaban Anda:</strong> ${item.jawabanAnda}</p>
+      <p><strong>Jawaban Benar:</strong> ${item.jawabanBenar}</p>
+    `;
+    rincianEl.appendChild(soalReviewEl);
+  });
+}
 
-    function updateProgress(){progressEl.style.width=`${(currentSoalIndex/soalAktif.length)*100}%`;}
-    function mulaiTimer(){let w=waktuPerSoal;timerEl.textContent=`⏳ ${w}s`;timerInterval=setInterval(()=>{w--;timerEl.textContent=`⏳ ${w}s`;if(w<=0){clearInterval(timerInterval);currentSoalIndex++;tampilkanSoal();}},1000);}
 
+    // =================== EVENT LISTENER ===================
     mulaiBtn.addEventListener("click",mulaiKuis);
     submitBtn.addEventListener("click",cekJawaban);
     ulangBtn.addEventListener("click",ulangKuis);
