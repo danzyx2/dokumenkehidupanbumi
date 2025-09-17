@@ -840,6 +840,14 @@
 }
 
 
+    window.addEventListener('beforeunload', function (e) {
+  // Batalkan event
+  e.preventDefault();
+  // Chrome memerlukan returnValue
+  e.returnValue = '';
+});
+
+
     // =================== EVENT LISTENER ===================
     mulaiBtn.addEventListener("click",mulaiKuis);
     submitBtn.addEventListener("click",cekJawaban);
