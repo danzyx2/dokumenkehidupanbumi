@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <script type="text/javascript" id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-  </script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Latihan Soal Interaktif</title>
@@ -239,406 +235,8 @@
     // =================== DATA SOAL ===================
     const soalPerKategori = {
   umum: [
-    {
-      pertanyaan: "Diberikan rumus fungsi $f(x)=2x+5$. Berapakah nilai peta dari $f(a)$?",
-      pilihan: [
-        "$2a+5$",
-        "$a+5$",
-        "$2a-5$",
-        "$2x+a$"
-      ],
-      jawaban: "$2a+5$"
-    },
-    {
-      pertanyaan: "Diketahui rumus fungsi $f(x)=ax+b$. Jika $f(-2)= -12$ dan $f(3)= 13$, tentukan nilai dari $f(5)$!",
-      pilihan: [
-        "23",
-        "25",
-        "27",
-        "29"
-      ],
-      jawaban: "23"
-    },
-    {
-      pertanyaan: "Jika $f(x)=x^2+2x$ dan $g(x)=3x-1$, tentukan nilai dari $(f+g)(x)$!",
-      pilihan: [
-        "$x^2+5x-1$",
-        "$x^2-x+1$",
-        "$3x^3+5x^2-2x$",
-        "$x^2+5x+1$"
-      ],
-      jawaban: "$x^2+5x-1$"
-    },
-    {
-      pertanyaan: "Diketahui $f(x)=2x^2+4x-3$ dan $g(x)=x+2$. Tentukan nilai dari $(f/g)(x)$!",
-      pilihan: [
-        "$2x-1$",
-        "$2x+2$",
-        "$2x-3$",
-        "$\\frac{2x^2+4x-3}{x+2}$"
-      ],
-      jawaban: "$\\frac{2x^2+4x-3}{x+2}$"
-    },
-    {
-      pertanyaan: "Jika $f(x)=x^2-3x+2$ dan $g(x)=2x-4$, tentukan nilai dari $(f-g)(x)$!",
-      pilihan: [
-        "$x^2-5x+6$",
-        "$x^2+x-2$",
-        "$-x^2-5x+6$",
-        "$x^2-x-2$"
-      ],
-      jawaban: "$x^2-5x+6$"
-    },
-    {
-      pertanyaan: "Diketahui $f(x)=x-3$ dan $g(x)=x^2+2x-1$. Tentukan nilai dari $(f\\circ g)(x)$!",
-      pilihan: [
-        "$x^2+2x-4$",
-        "$x^2-x+2$",
-        "$x^2-x-4$",
-        "$x^2-2x-2$"
-      ],
-      jawaban: "$x^2+2x-4$"
-    },
-    {
-      pertanyaan: "Jika $f(x)=2x+1$ dan $g(x)=3x-4$, tentukan $(g\\circ f)(x)$!",
-      pilihan: [
-        "$6x-2$",
-        "$6x-3$",
-        "$6x-5$",
-        "$6x-1$"
-      ],
-      jawaban: "$6x-1$"
-    },
-    {
-      pertanyaan: "Diketahui $f(x)=x^2+3$ dan $g(x)=x-1$. Tentukan nilai dari $(f\\circ g)(-2)$!",
-      pilihan: [
-        "10",
-        "12",
-        "14",
-        "16"
-      ],
-      jawaban: "12"
-    },
-    {
-      pertanyaan: "Jika $f(x)=2x-5$ dan $g(x)=x^2+1$, tentukan nilai dari $(g\\circ f)(x)$!",
-      "pilihan": [
-        "$4x^2-20x+26$",
-        "$4x^2-10x+2$",
-        "$2x^2-3$",
-        "$4x^2-20x+24$"
-      ],
-      "jawaban": "$4x^2-20x+26$"
-    },
-    {
-      "pertanyaan": "Diketahui $f(x)=x+4$ dan $g(x)=2x-3$. Tentukan nilai dari $(g\\circ f)(5)$!",
-      "pilihan": [
-        "10",
-        "11",
-        "13",
-        "15"
-      ],
-      "jawaban": "15"
-    },
-    {
-      "pertanyaan": "Jika $f(x)=x+2$ dan $g(x)=2x-1$, serta $(f\\circ g)(x)=9$, tentukan nilai $x$!",
-      "pilihan": [
-        "1",
-        "2",
-        "3",
-        "4"
-      ],
-      "jawaban": "4"
-    },
-    {
-      "pertanyaan": "Diketahui $f(x)=x+5$ dan $f(g(x))=2x-3$. Tentukan fungsi $g(x)$!",
-      "pilihan": [
-        "$g(x)=2x-8$",
-        "$g(x)=2x+2$",
-        "$g(x)=x-8$",
-        "$g(x)=x-2$"
-      ],
-      "jawaban": "$g(x)=2x-8$"
-    },
-    {
-      "pertanyaan": "Jika $f(x)=3x-4$ dan $(f\\circ g)(x)=6x+2$, tentukan fungsi $g(x)$!",
-      "pilihan": [
-        "$g(x)=2x+2$",
-        "$g(x)=2x-6$",
-        "$g(x)=x+6$",
-        "$g(x)=x-2$"
-      ],
-      "jawaban": "$g(x)=2x+2$"
-    },
-    {
-      "pertanyaan": "Diketahui $g(x)=x-3$ dan $(g\\circ f)(x)=2x-1$. Tentukan fungsi $f(x)$!",
-      "pilihan": [
-        "$f(x)=2x+2$",
-        "$f(x)=2x+4$",
-        "$f(x)=x+2$",
-        "$f(x)=x-4$"
-      ],
-      "jawaban": "$f(x)=2x+2$"
-    },
-    {
-      "pertanyaan": "Jika $g(x)=4x+1$ dan $(g\\circ f)(x)=8x+9$, tentukan fungsi $f(x)$!",
-      "pilihan": [
-        "$f(x)=2x+2$",
-        "$f(x)=2x-2$",
-        "$f(x)=x+2$",
-        "$f(x)=2x+1$"
-      ],
-      "jawaban": "$f(x)=2x+2$"
-    },
-    {
-      "pertanyaan": "Diberikan fungsi dalam bentuk pasangan berurutan: $\{(1,3), (2,5), (3,7), (4,9)\}$. Tentukan fungsi inversnya!",
-      "pilihan": [
-        "$\\{(3,1), (5,2), (7,3), (9,4)\\}$",
-        "$\\{(1,3), (2,5), (3,7), (4,9)\\}$",
-        "$\\{(1,3), (5,2), (7,3), (9,4)\\}$",
-        "$\\{(1,3), (2,5), (7,3), (9,4)\\}$"
-      ],
-      "jawaban": "$\\{(3,1), (5,2), (7,3), (9,4)\\}$"
-    },
-    {
-      "pertanyaan": "Tentukan fungsi invers dari $f(x)=3x-4$!",
-      "pilihan": [
-        "$f^{-1}(x) = \\frac{x+4}{3}$",
-        "$f^{-1}(x) = \\frac{x-4}{3}$",
-        "$f^{-1}(x) = 3x+4$",
-        "$f^{-1}(x) = 4x-3$"
-      ],
-      "jawaban": "$f^{-1}(x) = \\frac{x+4}{3}$"
-    },
-    {
-      "pertanyaan": "Jika $f(x)=2x+3$, tentukan fungsi inversnya!",
-      "pilihan": [
-        "$f^{-1}(x) = \\frac{x-3}{2}$",
-        "$f^{-1}(x) = \\frac{x+3}{2}$",
-        "$f^{-1}(x) = 3x-2$",
-        "$f^{-1}(x) = 2x-3$"
-      ],
-      "jawaban": "$f^{-1}(x) = \\frac{x-3}{2}$"
-    },
-    {
-      "pertanyaan": "Tentukan fungsi invers dari $f(x) = \\frac{2}{3}x+5$!",
-      "pilihan": [
-        "$f^{-1}(x) = \\frac{3}{2}x - \\frac{15}{2}$",
-        "$f^{-1}(x) = \\frac{2}{3}x - 5$",
-        "$f^{-1}(x) = \\frac{3}{2}x + 5$",
-        "$f^{-1}(x) = 3x+5$"
-      ],
-      "jawaban": "$f^{-1}(x) = \\frac{3}{2}x - \\frac{15}{2}$"
-    },
-    {
-      "pertanyaan": "Jika $f(x)=\\frac{4x-2}{3}$, tentukan fungsi inversnya!",
-      "pilihan": [
-        "$f^{-1}(x) = \\frac{3x+2}{4}$",
-        "$f^{-1}(x) = \\frac{3x-2}{4}$",
-        "$f^{-1}(x) = \\frac{4x+2}{3}$",
-        "$f^{-1}(x) = \\frac{4x-2}{3}$"
-      ],
-      "jawaban": "$f^{-1}(x) = \\frac{3x+2}{4}$"
-    },
-    {
-      "pertanyaan": "Tentukan fungsi invers dari $f(x)=\\frac{2x+3}{4x-1}$!",
-      "pilihan": [
-        "$f^{-1}(x) = \\frac{x+3}{4x-2}$",
-        "$f^{-1}(x) = \\frac{4x+1}{2x-3}$",
-        "$f^{-1}(x) = \\frac{3x+2}{x+4}$",
-        "$f^{-1}(x) = \\frac{2x+1}{4x-3}$"
-      ],
-      "jawaban": "$f^{-1}(x) = \\frac{x+3}{4x-2}$"
-    },
-    {
-      "pertanyaan": "Jika $f(x)=\\frac{3x-2}{x+5}$, tentukan fungsi inversnya!",
-      "pilihan": [
-        "$f^{-1}(x) = \\frac{5x+2}{3-x}$",
-        "$f^{-1}(x) = \\frac{x+5}{3x-2}$",
-        "$f^{-1}(x) = \\frac{3x+5}{x-2}$",
-        "$f^{-1}(x) = \\frac{2x+5}{3x-1}$"
-      ],
-      "jawaban": "$f^{-1}(x) = \\frac{5x+2}{3-x}$"
-    },
-    {
-      "pertanyaan": "Tentukan fungsi invers dari $f(x)=x^2-6x-1$!",
-      "pilihan": [
-        "$f^{-1}(x)=\\sqrt{x+10}+3$",
-        "$f^{-1}(x)=-\\sqrt{x+10}+3$",
-        "$f^{-1}(x)=\\sqrt{x+8}-3$",
-        "$f^{-1}(x)=x^2-6x-1$"
-      ],
-      "jawaban": "$f^{-1}(x)=\\sqrt{x+10}+3$"
-    },
-    {
-      "pertanyaan": "Jika $f(x)=x+2$ dan $g(x)=3x-1$, tentukan $(f\\circ g)^{-1}(x)$!",
-      "pilihan": [
-        "$f^{-1}(x) = \\frac{x-1}{3}$",
-        "$(f\\circ g)^{-1}(x)=\\frac{x-1}{3}$",
-        "$(f\\circ g)^{-1}(x)=\\frac{x-3}{3}$",
-        "$(f\\circ g)^{-1}(x)=\\frac{x-3}{2}$"
-      ],
-      "jawaban": "$(f\\circ g)^{-1}(x)=\\frac{x-1}{3}$"
-    },
-    {
-      "pertanyaan": "Diketahui $f(x)=x-4$ dan $g(x)=2x+1$. Tentukan $(g\\circ f)^{-1}(x)$!",
-      "pilihan": [
-        "$(g\\circ f)^{-1}(x)=\\frac{x+7}{2}$",
-        "$(g\\circ f)^{-1}(x)=\\frac{x-7}{2}$",
-        "$(g\\circ f)^{-1}(x)=\\frac{x-4}{2}$",
-        "$(g\\circ f)^{-1}(x)=\\frac{x+4}{2}$"
-      ],
-      "jawaban": "$(g\\circ f)^{-1}(x)=\\frac{x+7}{2}$"
-    },
-    {
-      "pertanyaan": "Titik $A(3,-5)$ ditranslasikan oleh $T=\\binom{2}{4}$. Tentukan bayangan titik A!",
-      "pilihan": [
-        "$A'(5,-1)$",
-        "$A'(1,-9)$",
-        "$A'(5,1)$",
-        "$A'(-1,9)$"
-      ],
-      "jawaban": "$A'(5,-1)$"
-    },
-    {
-      "pertanyaan": "Bayangan titik $B(4,2)$ setelah ditranslasikan oleh $T=\\binom{-3}{1}$ adalah...",
-      "pilihan": [
-        "$B'(1,3)$",
-        "$B'(7,3)$",
-        "$B'(-1,-3)$",
-        "$B'(7,1)$"
-      ],
-      "jawaban": "$B'(1,3)$"
-    },
-    {
-      "pertanyaan": "Jika titik $C(-2,6)$ ditranslasikan oleh $T=\\binom{5}{-3}$, tentukan bayangan titik C!",
-      "pilihan": [
-        "$C'(3,3)$",
-        "$C'(7,9)$",
-        "$C'(-7,9)$",
-        "$C'(3,9)$"
-      ],
-      "jawaban": "$C'(3,3)$"
-    },
-    {
-      "pertanyaan": "Titik $D(1, -4)$ ditranslasikan oleh $T_1=\\binom{3}{2}$ dilanjutkan oleh $T_2=\\binom{-1}{5}$. Tentukan bayangan akhirnya!",
-      "pilihan": [
-        "$D'(3,3)$",
-        "$D'(3,11)$",
-        "$D'(-3,3)$",
-        "$D'(5,3)$"
-      ],
-      "jawaban": "$D'(3,3)$"
-    },
-    {
-      "pertanyaan": "Titik $P(-2,3)$ ditranslasikan sejauh $T=\\binom{a}{b}$ menghasilkan bayangan $P'(4,-1)$. Tentukan vektor translasi $T$!",
-      "pilihan": [
-        "$T=\\binom{6}{-4}$",
-        "$T=\\binom{2}{-2}$",
-        "$T=\\binom{6}{4}$",
-        "$T=\\binom{-6}{4}$"
-      ],
-      "jawaban": "$T=\\binom{6}{-4}$"
-    },
-    {
-      "pertanyaan": "Persamaan garis $y=3x-2$ ditranslasikan oleh $T=\\binom{1}{2}$. Tentukan persamaan garis bayangannya!",
-      "pilihan": [
-        "$y'=3x'-3$",
-        "$y'=3x'-1$",
-        "$y'=3x'+1$",
-        "$y'=3x'-2$"
-      ],
-      "jawaban": "$y'=3x'-3$"
-    },
-    {
-      "pertanyaan": "Garis $2x+y-3=0$ ditranslasikan oleh $T=\\binom{-2}{4}$. Tentukan persamaan garis bayangannya!",
-      "pilihan": [
-        "$2x'+y'+5=0$",
-        "$2x'+y'-5=0$",
-        "$2x'+y'-7=0$",
-        "$2x'+y'+1=0$"
-      ],
-      "jawaban": "$2x'+y'+5=0$"
-    },
-    {
-      "pertanyaan": "Titik $A(4,-1)$ direfleksikan terhadap sumbu Y. Tentukan bayangannya!",
-      "pilihan": [
-        "$A'(-4,-1)$",
-        "$A'(4,1)$",
-        "$A'(-4,1)$",
-        "$A'(1,4)$"
-      ],
-      "jawaban": "$A'(-4,-1)$"
-    },
-    {
-      "pertanyaan": "Titik $B(-2,5)$ direfleksikan terhadap garis $x=3$. Tentukan bayangannya!",
-      "pilihan": [
-        "$B'(8,5)$",
-        "$B'(5,5)$",
-        "$B'(1,5)$",
-        "$B'(4,5)$"
-      ],
-      "jawaban": "$B'(8,5)$"
-    },
-    {
-      "pertanyaan": "Segitiga $ABC$ dengan titik sudut $A(1,2)$, $B(3,4)$, dan $C(5,1)$ direfleksikan terhadap sumbu X. Tentukan bayangan titik-titik sudutnya!",
-      "pilihan": [
-        "$A'(1,-2), B'(3,-4), C'(5,-1)$",
-        "$A'(-1,2), B'(-3,4), C'(-5,1)$",
-        "$A'(-1,-2), B'(-3,-4), C'(-5,-1)$",
-        "$A'(2,1), B'(4,3), C'(1,5)$"
-      ],
-      "jawaban": "$A'(1,-2), B'(3,-4), C'(5,-1)$"
-    },
-    {
-      "pertanyaan": "Tentukan bayangan persamaan garis $3x-2y+4=0$ setelah direfleksikan terhadap titik asal $O(0,0)$!",
-      "pilihan": [
-        "$3x-2y-4=0$",
-        "$3x+2y+4=0$",
-        "$3x+2y-4=0$",
-        "$2x-3y+4=0$"
-      ],
-      "jawaban": "$3x-2y-4=0$"
-    },
-    {
-      "pertanyaan": "Persamaan garis $x+2y-5=0$ direfleksikan terhadap sumbu Y. Tentukan bayangannya!",
-      "pilihan": [
-        "$-x+2y-5=0$",
-        "$x-2y-5=0$",
-        "$x+2y+5=0$",
-        "$2x+y-5=0$"
-      ],
-      "jawaban": "$-x+2y-5=0$"
-    },
-    {
-      "pertanyaan": "Titik $P(-3,5)$ direfleksikan terhadap sumbu X dilanjutkan translasi $T=\\binom{2}{-3}$. Tentukan bayangan akhirnya!",
-      "pilihan": [
-        "$P'(-1,-8)$",
-        "$P'(-5,2)$",
-        "$P'(1,-2)$",
-        "$P'(-1,2)$"
-      ],
-      "jawaban": "$P'(-1,-8)$"
-    },
-    {
-      "pertanyaan": "Titik $Q(4,-1)$ ditranslasikan oleh $T=\\binom{-2}{3}$ dilanjutkan refleksi terhadap garis $y=x$. Tentukan bayangan akhirnya!",
-      "pilihan": [
-        "$Q''(2,2)$",
-        "$Q''(2,-2)$",
-        "$Q''(-2,2)$",
-        "$Q''(2,1)$"
-      ],
-      "jawaban": "$Q''(2,2)$"
-    },
-    {
-      "pertanyaan": "Titik $R(-5,2)$ ditranslasikan oleh $T=\\binom{3}{-4}$ dilanjutkan refleksi terhadap titik asal $O(0,0)$. Tentukan bayangan akhirnya!",
-      "pilihan": [
-        "$R''(2,2)$",
-        "$R''(-2,2)$",
-        "$R''(2,-2)$",
-        "$R''(-2,-2)$"
-      ],
-      "jawaban": "$R''(2,2)$"
-    }
+    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
+    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
   ],
   
   umum1: [
@@ -651,6 +249,15 @@
     { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
   ],
   
+  umum3: [
+    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
+    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+  ],
+  
+  umum4: [
+    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
+    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+  ],
   
   tjkt1: [
     {
@@ -1158,47 +765,21 @@
       tampilkanSoal();
     }
 
-function tampilkanSoal(){
-  clearInterval(timerInterval);
-  if(currentSoalIndex < soalAktif.length){
-    const data = soalAktif[currentSoalIndex];
-    
-    // Perbaikan: Gunakan innerHTML untuk notasi
-    soalEl.innerHTML = `${currentSoalIndex+1}. ${data.pertanyaan}`; 
-    
-    pilihanEl.innerHTML = ""; // Bersihkan elemen pilihan sebelum menambahkan yang baru
-    
-    let pilihan = [...data.pilihan];
-    shuffle(pilihan);
-    
-    pilihan.forEach(p => {
-      const label = document.createElement('label');
-      
-      const input = document.createElement('input');
-      input.type = "radio";
-      input.name = "pilihan";
-      input.value = p;
-
-      // Gunakan innerHTML untuk memasukkan notasi ke dalam label
-      label.innerHTML = `<input type="radio" name="pilihan" value="${p}">${p}`;
-      
-      pilihanEl.appendChild(label);
-    });
-    
-    hasilEl.textContent = "";
-    updateProgress();
-    if(gunakanTimer) mulaiTimer();
-    else timerEl.textContent = "";
-
-    // Memicu MathJax untuk memproses elemen yang baru ditambahkan
-    MathJax.typesetPromise([soalEl, pilihanEl]).then(() => {
-      // Notasi matematika sudah dirender
-    }).catch((err) => console.log('MathJax error:', err.message));
-  } else {
-    tampilkanHasil();
-  }
-}
-
+    function tampilkanSoal(){
+      clearInterval(timerInterval);
+      if(currentSoalIndex<soalAktif.length){
+        const data=soalAktif[currentSoalIndex];
+        soalEl.textContent=`${currentSoalIndex+1}. ${data.pertanyaan}`;
+        pilihanEl.innerHTML="";
+        let pilihan=[...data.pilihan]; shuffle(pilihan);
+        pilihan.forEach(p=>{
+          pilihanEl.innerHTML+=`<label><input type="radio" name="pilihan" value="${p}">${p}</label>`;
+        });
+        hasilEl.textContent="";
+        updateProgress();
+        if(gunakanTimer) mulaiTimer(); else timerEl.textContent="";
+      }else tampilkanHasil();
+    }
 
     function cekJawaban(){
       const pilih=document.querySelector("input[name='pilihan']:checked");
@@ -1264,7 +845,7 @@ function tampilkanSoal(){
       },1000);
     }
     
-  function tampilkanRincian() {
+    function tampilkanRincian() {
   rincianEl.innerHTML = '<h3>Rincian Jawaban</h3>';
   jawabanUser.forEach(item => {
     const soalReviewEl = document.createElement('div');
@@ -1276,14 +857,15 @@ function tampilkanSoal(){
     `;
     rincianEl.appendChild(soalReviewEl);
   });
-  
-  // 👇 TAMBAHKAN KODE INI DI SINI 👇
-  // Memicu MathJax untuk memproses elemen rincian setelah semua elemen ditambahkan
-  MathJax.typesetPromise([rincianEl]).then(() => {
-    // Rendering selesai
-  }).catch((err) => console.log('MathJax error:', err.message));
 }
 
+
+    window.addEventListener('beforeunload', function (e) {
+  // Batalkan event
+  e.preventDefault();
+  // Chrome memerlukan returnValue
+  e.returnValue = '';
+});
 
 
     // =================== EVENT LISTENER ===================
