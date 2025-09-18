@@ -196,7 +196,8 @@
       <div class="form-group">
         <label for="kategori-select">Kategori</label>
         <select id="kategori-select">
-          <option value="umum">Umum</option>
+          <option value="umum">Bahasa Indonesia</option>
+          <option value="umum1">Pendidikan Agama Islam</option>
           <option value="tjkt1">AIJ</option>
         </select>
       </div>
@@ -235,9 +236,865 @@
     // =================== DATA SOAL ===================
     const soalPerKategori = {
   umum: [
-    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
-    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+    // --- Kategori: Surat Lamaran Pekerjaan ---
+    // (Berdasarkan kisi-kisi nomor 1-12, ditambah 5 soal tambahan)
+    {
+      pertanyaan: "Pernyataan yang tepat mengenai penulisan hal dan lampiran pada surat lamaran pekerjaan adalah...",
+      pilihan: [
+        "Hal: Permohonan Pekerjaan\nLampiran: 4 berkas",
+        "Hal : Lamaran pekerjaan\nLampiran : Empat berkas",
+        "Hal: Lamaran Pekerjaan\nLampiran: Empat berkas",
+        "Hal: Permohonan Pekerjaan\nLampiran: 4 lembar"
+      ],
+      jawaban: "Hal: Lamaran Pekerjaan\nLampiran: Empat berkas"
+    },
+    {
+      paragraf: "Sebuah ilustrasi menyatakan bahwa surat lamaran pekerjaan ditujukan kepada Manajer PT. Sejahtera Jaya yang beralamat di Jalan Merdeka No. 12, Jakarta Pusat.",
+      pertanyaan: "Bagian alamat tujuan surat yang tepat berdasarkan ilustrasi tersebut adalah...",
+      pilihan: [
+        "Kepada Yth. Manajer PT. Sejahtera Jaya\nJalan Merdeka No. 12\nJakarta Pusat",
+        "Yth. Manajer PT. Sejahtera Jaya\nJl. Merdeka No. 12\nJakarta Pusat",
+        "Yth. Manajer PT. Sejahtera Jaya\nJalan Merdeka No. 12\nJakarta Pusat",
+        "Kepada Yth. Manajer PT. Sejahtera Jaya\ndi tempat"
+      ],
+      jawaban: "Yth. Manajer PT. Sejahtera Jaya\nJalan Merdeka No. 12\nJakarta Pusat"
+    },
+    {
+      paragraf: "Berikut adalah penggalan surat lamaran pekerjaan:\n\nBerdasarkan iklan lowongan pekerjaan yang dimuat di koran 'Kompas' tanggal 15 Agustus 2025, dengan ini saya mengajukan diri untuk mengisi posisi sebagai Staf Administrasi di perusahaan Bapak/Ibu.",
+      pertanyaan: "Kesalahan yang ada pada penggalan surat lamaran pekerjaan tersebut adalah...",
+      pilihan: [
+        "Penggunaan kata 'di perusahaan Bapak/Ibu' yang tidak baku.",
+        "Penggunaan tanda baca yang kurang tepat.",
+        "Penyebutan nama koran yang seharusnya dicetak miring.",
+        "Tidak adanya kata sapaan di awal alinea."
+      ],
+      jawaban: "Penggunaan tanda baca yang kurang tepat."
+    },
+    {
+      pertanyaan: "Surat lamaran pekerjaan termasuk dalam jenis surat...",
+      pilihan: [
+        "Surat Niaga",
+        "Surat Sosial",
+        "Surat Pribadi",
+        "Surat Pribadi yang bersifat resmi"
+      ],
+      jawaban: "Surat Pribadi yang bersifat resmi"
+    },
+    {
+      paragraf: "Anda melihat sebuah lowongan pekerjaan di media sosial Instagram pada tanggal 1 September 2025 untuk posisi 'Content Creator'.",
+      pertanyaan: "Alinea pembuka surat lamaran pekerjaan yang tepat berdasarkan ilustrasi tersebut adalah...",
+      pilihan: [
+        "Yang bertanda tangan di bawah ini, saya mengajukan lamaran kerja di perusahaan ini.",
+        "Melalui surat ini, saya ingin melamar pekerjaan sebagai 'Content Creator'.",
+        "Sehubungan dengan informasi lowongan pekerjaan yang saya peroleh dari akun Instagram perusahaan pada 1 September 2025, dengan ini saya mengajukan lamaran pekerjaan untuk posisi 'Content Creator'.",
+        "Saya menulis surat ini karena saya tertarik untuk bekerja sebagai 'Content Creator'."
+      ],
+      jawaban: "Sehubungan dengan informasi lowongan pekerjaan yang saya peroleh dari akun Instagram perusahaan pada 1 September 2025, dengan ini saya mengajukan lamaran pekerjaan untuk posisi 'Content Creator'."
+    },
+    {
+      paragraf: "Penggalan surat lamaran pekerjaan: 'Berdasarkan informasi dari Bapak Budi, staf personalia di perusahaan Bapak, pada tanggal 10 Oktober 2025, perusahaan Bapak/Ibu membutuhkan tenaga administrasi.'",
+      pertanyaan: "Sumber informasi yang diperoleh pelamar adalah...",
+      pilihan: [
+        "Informasi dari media massa",
+        "Informasi dari iklan",
+        "Informasi dari orang dalam",
+        "Informasi dari perusahaan langsung"
+      ],
+      jawaban: "Informasi dari orang dalam"
+    },
+    {
+      pertanyaan: "Penulisan identitas diri pelamar yang tepat adalah...",
+      pilihan: [
+        "nama : Budi Santoso\ntempat, tanggal lahir : Jakarta, 1 Januari 2000\npendidikan : S1 Ekonomi",
+        "Nama : Budi Santoso\nTempat, tanggal lahir : Jakarta, 1 Januari 2000\nPendidikan : S1 Ekonomi",
+        "Nama: Budi Santoso\nTempat/Tgl. Lahir: Jakarta, 1 Januari 2000\nPendidikan: S1 Ekonomi",
+        "Nama: Budi Santoso\ntempat, tanggal lahir: Jakarta, 1 Januari 2000\npendidikan: S1 Ekonomi"
+      ],
+      jawaban: "Nama : Budi Santoso\nTempat, tanggal lahir : Jakarta, 1 Januari 2000\nPendidikan : S1 Ekonomi"
+    },
+    {
+      pertanyaan: "Bagian yang menunjukkan tempat dan tanggal pembuatan surat adalah...",
+      pilihan: [
+        "Jakarta, 17 Agustus 2025",
+        "Jakarta, 17/8/2025",
+        "Jakarta, 17-08-2025",
+        "Jakarta, 17 Agustus 2025, perihal: Lamaran Pekerjaan"
+      ],
+      jawaban: "Jakarta, 17 Agustus 2025"
+    },
+    {
+      paragraf: "Penggalan surat lamaran pekerjaan: 'Demikian surat lamaran pekerjaan ini saya buat, besar harapan saya untuk dapat bergabung dengan perusahaan Bapak/Ibu.'",
+      pertanyaan: "Bagian tersebut merupakan...",
+      pilihan: [
+        "Alinea pembuka",
+        "Isi surat",
+        "Kalimat penutup",
+        "Salam penutup"
+      ],
+      jawaban: "Kalimat penutup"
+    },
+    {
+      pertanyaan: "Manakah penulisan identitas diri pelamar yang paling lengkap dan tepat?",
+      pilihan: [
+        "Nama : Andika Pratama\nTempat, Tanggal Lahir : Semarang, 25 Desember 2000\nJenis Kelamin : Laki-laki\nAlamat : Jl. Sudirman No. 10, Semarang\nPendidikan Terakhir : S1 Teknik Informatika\nNomor HP : 081234567890",
+        "nama : andika pratama\ntempat, tanggal lahir : semarang, 25 desember 2000\npendidikan : s1 teknik informatika\nalamat : jl. sudirman no. 10, semarang",
+        "Nama : Andika Pratama\nTempat, tanggal lahir : Semarang, 25 Desember 2000\nPendidikan : S1 Teknik Informatika\nAlamat : Jalan Sudirman No. 10, Semarang\nNo. Telepon : 081234567890",
+        "Nama: Andika Pratama\ntempat/tanggal lahir: Semarang, 25 Desember 2000\nPendidikan: S1 Teknik Informatika\nalamat: Jalan Sudirman No. 10, Semarang"
+      ],
+      jawaban: "Nama : Andika Pratama\nTempat, tanggal lahir : Semarang, 25 Desember 2000\nPendidikan : S1 Teknik Informatika\nAlamat : Jalan Sudirman No. 10, Semarang\nNo. Telepon : 081234567890"
+    },
+    {
+      paragraf: "Penggalan surat lamaran pekerjaan: 'Dengan hormat, saya yang bertanda tangan di bawah ini:\nNama: Citra Lestari\nTempat, tanggal lahir: Jakarta, 12 Juli 2002\nPendidikan: S1 Akuntansi\nAlamat: Jalan Kenanga No. 5, Jakarta Barat'",
+      pertanyaan: "Isi dari penggalan surat lamaran pekerjaan tersebut adalah...",
+      pilihan: [
+        "Alinea pembuka dan isi surat.",
+        "Identitas diri dan alamat tujuan.",
+        "Identitas diri pelamar.",
+        "Isi surat dan lampiran."
+      ],
+      jawaban: "Identitas diri pelamar."
+    },
+    {
+      pertanyaan: "Kalimat penutup surat lamaran pekerjaan yang paling tepat adalah...",
+      pilihan: [
+        "Demikian surat lamaran ini saya sampaikan, mohon diterima di perusahaan Bapak/Ibu. Terima kasih.",
+        "Atas perhatian Bapak/Ibu, saya ucapkan terima kasih.",
+        "Atas perhatiannya, saya ucapkan terima kasih.",
+        "Atas perhatian Bapak/Ibu, saya mengucapkan terima kasih."
+      ],
+      jawaban: "Atas perhatian Bapak/Ibu, saya mengucapkan terima kasih."
+    },
+    {
+      paragraf: "Penggalan surat lamaran pekerjaan: 'Berdasarkan iklan lowongan pekerjaan yang dimuat di harian 'Suara Merdeka' tanggal 23 Agustus 2025...'",
+      pertanyaan: "Sumber informasi yang diperoleh pelamar adalah...",
+      pilihan: [
+        "Informasi dari media sosial",
+        "Informasi dari harian/surat kabar",
+        "Informasi dari internet",
+        "Informasi dari orang dalam"
+      ],
+      jawaban: "Informasi dari harian/surat kabar"
+    },
+    {
+      pertanyaan: "Penulisan tempat dan tanggal pembuatan surat lamaran pekerjaan yang tepat adalah...",
+      pilihan: [
+        "Surakarta, 18 September 2025",
+        "surakarta, 18 September 2025",
+        "Jakarta / 18-09-2025",
+        "Surakarta, 18 Sep 2025"
+      ],
+      jawaban: "Surakarta, 18 September 2025"
+    },
+    {
+      paragraf: "Penggalan surat lamaran pekerjaan: 'Dengan hormat, Yang bertanda tangan di bawah ini:\nNama: Budi Santoso, S.Kom.\nTempat, Tanggal Lahir: Semarang, 1 Januari 2000'",
+      pertanyaan: "Isi dari penggalan tersebut adalah...",
+      pilihan: [
+        "Sumber informasi",
+        "Identitas diri pelamar",
+        "Kualifikasi pelamar",
+        "Bagian penutup"
+      ],
+      jawaban: "Identitas diri pelamar"
+    },
+    {
+      paragraf: "Penggalan surat lamaran pekerjaan: 'Dengan ini, saya mengajukan diri untuk mengisi posisi Akuntan yang Bapak/Ibu tawarkan.'",
+      pertanyaan: "Penggalan tersebut termasuk dalam bagian...",
+      pilihan: [
+        "Alinea pembuka",
+        "Isi surat",
+        "Identitas diri",
+        "Salam penutup"
+      ],
+      jawaban: "Alinea pembuka"
+    },
+    {
+      paragraf: "Disajikan penggalan surat lamaran pekerjaan: 'Terlampir bersama surat ini, saya sertakan satu berkas fotokopi ijazah, satu lembar fotokopi KTP, dan satu lembar pas foto terbaru.'",
+      pertanyaan: "Isi dari penggalan surat lamaran pekerjaan tersebut adalah...",
+      pilihan: [
+        "Alinea pembuka",
+        "Identitas pelamar",
+        "Lampiran",
+        "Penutup surat"
+      ],
+      jawaban: "Lampiran"
+    },
+    {
+      paragraf: "Disajikan ilustrasi: Seseorang ingin membuat surat lamaran pekerjaan untuk posisi 'Marketing' di sebuah perusahaan. Dia memiliki pengalaman kerja 2 tahun di bidang yang sama.",
+      pertanyaan: "Informasi yang tepat untuk dicantumkan pada bagian isi surat adalah...",
+      pilihan: [
+        "Pengalaman bekerja selama 2 tahun sebagai staf marketing.",
+        "Riwayat pendidikan sejak SD hingga perguruan tinggi.",
+        "Nama orang tua dan alamat.",
+        "Hobi dan minat pribadi."
+      ],
+      jawaban: "Pengalaman bekerja selama 2 tahun sebagai staf marketing."
+    },
+
+    // --- Kategori: Novel Sejarah ---
+    // (Berdasarkan kisi-kisi nomor 14-29, ditambah 5 soal tambahan)
+    {
+      paragraf: "Penggalan teks novel sejarah: 'Pada masa itu, Majapahit mencapai puncak kejayaan, berkat Mahapatih Gajah Mada yang berhasil menyatukan seluruh Nusantara.'",
+      pertanyaan: "Makna istilah 'Mahapatih' adalah...",
+      pilihan: [
+        "Raja tertinggi",
+        "Panglima perang",
+        "Perdana Menteri atau pemimpin tertinggi pemerintahan",
+        "Penasihat raja"
+      ],
+      jawaban: "Perdana Menteri atau pemimpin tertinggi pemerintahan"
+    },
+    {
+      paragraf: "Penggalan teks novel sejarah: 'Tanjungpinang adalah kota pelabuhan yang ramai. Di sana, para pedagang dari berbagai penjuru berkumpul untuk bertransaksi. Kehidupan malamnya pun tak kalah meriah, dengan para seniman yang mempertunjukkan keahliannya.'",
+      pertanyaan: "Gagasan pokok dari penggalan teks tersebut adalah...",
+      pilihan: [
+        "Ramainya kehidupan malam di Tanjungpinang.",
+        "Tanjungpinang sebagai kota pelabuhan yang ramai.",
+        "Berkumpulnya para pedagang di Tanjungpinang.",
+        "Kehidupan seniman di kota pelabuhan."
+      ],
+      jawaban: "Tanjungpinang sebagai kota pelabuhan yang ramai."
+    },
+    {
+      paragraf: "Penggalan teks novel sejarah: 'Ketika itu, Raden Wijaya memimpin pasukan yang tangguh. Mereka berhadapan dengan pasukan Mongol yang dipimpin oleh Jenderal Shih-Yen. Pertempuran berlangsung sengit, namun berkat strategi yang jitu, Raden Wijaya berhasil memukul mundur pasukan Mongol.'",
+      pertanyaan: "Pernyataan yang sesuai dengan isi teks adalah...",
+      pilihan: [
+        "Pasukan Mongol berhasil menaklukkan pasukan Raden Wijaya.",
+        "Jenderal Shih-Yen memimpin pasukan Raden Wijaya.",
+        "Raden Wijaya memimpin pasukan yang tangguh.",
+        "Pertempuran tersebut dimenangkan oleh pasukan Mongol."
+      ],
+      jawaban: "Raden Wijaya memimpin pasukan yang tangguh."
+    },
+    {
+      paragraf: "Penggalan teks novel sejarah: 'Meskipun di hadapan musuh, ia tetap teguh memegang prinsip keadilan. Ia tidak akan pernah mengorbankan rakyatnya demi kepentingan pribadi.'",
+      pertanyaan: "Nilai yang terkandung dalam teks tersebut adalah...",
+      pilihan: [
+        "Nilai budaya",
+        "Nilai moral",
+        "Nilai sosial",
+        "Nilai estetika"
+      ],
+      jawaban: "Nilai moral"
+    },
+    {
+      paragraf: "Penggalan teks novel sejarah: 'Pangeran Diponegoro adalah seorang pemimpin yang karismatik. Ia berjuang melawan penjajah dengan gagah berani, mengobarkan semangat perlawanan di kalangan rakyat jelata.'",
+      pertanyaan: "Pernyataan yang sesuai dengan penggalan teks tersebut adalah...",
+      pilihan: [
+        "Pangeran Diponegoro adalah seorang pemimpin yang lemah lembut.",
+        "Rakyat jelata menolak perlawanan terhadap penjajah.",
+        "Pangeran Diponegoro berjuang dengan gagah berani.",
+        "Pangeran Diponegoro adalah pemimpin yang bernegosiasi dengan penjajah."
+      ],
+      jawaban: "Pangeran Diponegoro berjuang dengan gagah berani."
+    },
+    {
+      paragraf: "Penggalan teks: 'Para prajurit berjalan cepat menuju benteng. Mereka melihat pemandangan yang indah di sepanjang jalan, dengan sungai yang mengalir tenang.'",
+      pertanyaan: "Kata yang termasuk verba (kata kerja) adalah...",
+      pilihan: [
+        "prajurit, benteng",
+        "indah, tenang",
+        "menuju, dengan",
+        "berjalan, melihat, mengalir"
+      ],
+      jawaban: "berjalan, melihat, mengalir"
+    },
+    {
+      paragraf: "Penggalan teks novel sejarah: 'Raden Fatah mendirikan Kerajaan Demak dengan semangat religiusitas yang kuat, menyebarkan ajaran Islam melalui berbagai cara damai.'",
+      pertanyaan: "Nilai yang terkandung dalam teks tersebut adalah...",
+      pilihan: [
+        "Nilai budaya",
+        "Nilai sosial",
+        "Nilai agama/religius",
+        "Nilai moral"
+      ],
+      jawaban: "Nilai agama/religius"
+    },
+    {
+      paragraf: "Penggalan teks: 'Pada zaman dahulu, orang-orang melakukan perjalanan jauh dengan menunggang kuda. Mereka sering singgah di desa-desa untuk beristirahat dan membeli perbekalan.'",
+      pertanyaan: "Kalimat yang bermakna lampau adalah...",
+      pilihan: [
+        "Mereka sering singgah di desa-desa.",
+        "Pada zaman dahulu, orang-orang melakukan perjalanan jauh dengan menunggang kuda.",
+        "Orang-orang membeli perbekalan.",
+        "Menunggang kuda adalah kegiatan yang menyenangkan."
+      ],
+      jawaban: "Pada zaman dahulu, orang-orang melakukan perjalanan jauh dengan menunggang kuda."
+    },
+    {
+      paragraf: "Penggalan teks novel sejarah: 'Perang yang pecah antara pasukan Sriwijaya dan Majapahit itu amat `dahsyat`. Ribuan prajurit tewas dalam pertempuran tersebut.'",
+      pertanyaan: "Makna kata 'dahsyat' adalah...",
+      pilihan: [
+        "Menarik",
+        "Luar biasa",
+        "Hebat sekali; amat sangat",
+        "Biasa saja"
+      ],
+      jawaban: "Hebat sekali; amat sangat"
+    },
+    {
+      paragraf: "Penggalan teks: 'Bangunan tua itu terlihat `kokoh` dan `megah`, meskipun sudah berdiri selama berabad-abad. Dindingnya yang `tinggi` menyiratkan kehebatan arsitektur masa lalu.'",
+      pertanyaan: "Kata yang termasuk adjektiva (kata sifat) adalah...",
+      pilihan: [
+        "bangunan, dinding",
+        "terlihat, berdiri",
+        "kokoh, megah, tinggi",
+        "itu, masa lalu"
+      ],
+      jawaban: "kokoh, megah, tinggi"
+    },
+    {
+      paragraf: "Penggalan teks: 'Pangeran itu `memerintah` rakyatnya dengan `bijaksana`. Setiap keputusannya `mempertimbangkan` kesejahteraan semua lapisan masyarakat. Ia `membangun` istana yang megah sebagai pusat pemerintahan.'",
+      pertanyaan: "Kata yang termasuk verba (kata kerja) adalah...",
+      pilihan: [
+        "pangeran, rakyat, istana",
+        "bijaksana, megah",
+        "memerintah, mempertimbangkan, membangun",
+        "setiap, sebagai"
+      ],
+      jawaban: "memerintah, mempertimbangkan, membangun"
+    },
+    {
+      paragraf: "Penggalan teks: 'Teks Proklamasi Kemerdekaan Indonesia dibacakan pada tanggal 17 Agustus 1945. Pembacaan dilakukan oleh Soekarno dan Hatta di Jalan Pegangsaan Timur No. 56, Jakarta.'",
+      pertanyaan: "Kalimat yang menunjukkan fakta adalah...",
+      pilihan: [
+        "Pembacaan Teks Proklamasi Kemerdekaan adalah momen yang paling mengharukan.",
+        "Teks Proklamasi Kemerdekaan Indonesia dibacakan pada tanggal 17 Agustus 1945.",
+        "Soekarno dan Hatta adalah proklamator terbaik yang pernah ada.",
+        "Pembacaan teks proklamasi dilakukan di tempat yang sangat sakral."
+      ],
+      jawaban: "Teks Proklamasi Kemerdekaan Indonesia dibacakan pada tanggal 17 Agustus 1945."
+    },
+    {
+      paragraf: "Penggalan teks: 'Lukisan Monalisa adalah karya seni yang paling indah di dunia. Tidak ada lukisan lain yang bisa menandingi keindahan senyum misteriusnya.'",
+      pertanyaan: "Kalimat yang menunjukkan opini adalah...",
+      pilihan: [
+        "Lukisan Monalisa adalah karya seni.",
+        "Lukisan Monalisa adalah karya seni yang paling indah di dunia.",
+        "Lukisan Monalisa tidak ada bandingannya.",
+        "Lukisan Monalisa dilukis oleh Leonardo da Vinci."
+      ],
+      jawaban: "Lukisan Monalisa adalah karya seni yang paling indah di dunia."
+    },
+    {
+      paragraf: "Penggalan teks: 'Petani gagal panen `karena` kemarau panjang. `Oleh karena itu`, mereka terpaksa menjual ternaknya untuk memenuhi kebutuhan sehari-hari.'",
+      pertanyaan: "Konjungsi kausalitas (sebab-akibat) dalam teks tersebut adalah...",
+      pilihan: [
+        "karena, oleh karena itu",
+        "gagal, menjual",
+        "petani, kemarau",
+        "dan, tetapi"
+      ],
+      jawaban: "karena, oleh karena itu"
+    },
+    {
+      pertanyaan: "Berikut ini adalah fakta dalam novel sejarah, kecuali...",
+      pilihan: [
+        "Tanggal dan tempat peristiwa sejarah",
+        "Tokoh-tokoh sejarah yang ada",
+        "Peristiwa sejarah yang memang terjadi",
+        "Dialog imajinatif antartokoh"
+      ],
+      jawaban: "Dialog imajinatif antartokoh"
+    },
+    {
+      pertanyaan: "Kalimat berikut yang merupakan opini dalam novel sejarah adalah...",
+      pilihan: [
+        "Patih Gajah Mada mengucap Sumpah Palapa di hadapan raja.",
+        "Sultan Agung adalah raja yang sangat bijaksana dan dicintai rakyatnya.",
+        "Kerajaan Majapahit berdiri pada abad ke-13.",
+        "Perang Diponegoro terjadi dari tahun 1825 hingga 1830."
+      ],
+      jawaban: "Sultan Agung adalah raja yang sangat bijaksana dan dicintai rakyatnya."
+    },
+    {
+      paragraf: "Penggalan paragraf rumpang: 'Pangeran itu dikenal `[...]` oleh rakyatnya. Ia sering membantu orang miskin dan `[...]` bagi kesejahteraan rakyatnya.'",
+      pertanyaan: "Kata yang tepat untuk melengkapi paragraf rumpang tersebut adalah...",
+      pilihan: [
+        "dermawan - berkorban",
+        "pemimpin - bekerja",
+        "pintar - melatih",
+        "gagah - bersembunyi"
+      ],
+      jawaban: "dermawan - berkorban"
+    },
+    {
+      paragraf: "Penggalan Novel Sejarah: 'Di istana yang megah, Sriwijaya hidup makmur di bawah kepemimpinan raja yang adil dan bijaksana. Namun, di balik kemakmuran itu, terselubung intrik politik yang mengancam stabilitas kerajaan.'",
+      pertanyaan: "Pernyataan yang sesuai dengan penggalan teks adalah...",
+      pilihan: [
+        "Kerajaan Sriwijaya mengalami masa suram.",
+        "Raja Sriwijaya tidak adil dan bijaksana.",
+        "Istana Sriwijaya tidak megah.",
+        "Di balik kemakmuran, ada intrik politik yang mengancam stabilitas kerajaan."
+      ],
+      jawaban: "Di balik kemakmuran, ada intrik politik yang mengancam stabilitas kerajaan."
+    },
+    {
+      paragraf: "Penggalan Novel Sejarah: 'Dengan hati yang pilu, ia meninggalkan desa kelahirannya. Ia tahu, `jikalau` tidak segera pergi, nyawanya akan terancam oleh pasukan musuh yang semakin mendekat.'",
+      pertanyaan: "Konjungsi kausalitas dalam kalimat tersebut adalah...",
+      pilihan: [
+        "Dengan",
+        "jikalau",
+        "yang",
+        "semakin"
+      ],
+      jawaban: "jikalau"
+    },
+    {
+      paragraf: "Penggalan teks: 'Pada hari Senin, 10 September 2025, kami akan mengadakan rapat di ruang C. Namun, waktu rapat dapat diubah sewaktu-waktu.'",
+      pertanyaan: "Kalimat yang menunjukkan fakta adalah...",
+      pilihan: [
+        "Rapat tersebut akan sangat menarik dan produktif.",
+        "Rapat akan diadakan pada hari Senin, 10 September 2025 di ruang C.",
+        "Ruang C adalah ruang rapat terbaik di kantor.",
+        "Waktu rapat tidak bisa diubah sama sekali."
+      ],
+      jawaban: "Rapat akan diadakan pada hari Senin, 10 September 2025 di ruang C."
+    },
+    {
+      paragraf: "Penggalan teks: 'Pemandangan `indah` itu mempesona setiap mata yang `melihatnya`. Sungai `jernih` mengalir `tenang` di bawah pepohonan `rindang`.'",
+      pertanyaan: "Kata-kata yang termasuk adjektiva (kata sifat) adalah...",
+      pilihan: [
+        "pemandangan, sungai, pepohonan",
+        "melihat, mengalir",
+        "indah, jernih, tenang, rindang",
+        "setiap, di bawah"
+      ],
+      jawaban: "indah, jernih, tenang, rindang"
+    },
+    {
+      pertanyaan: "Berikut adalah salah satu nilai yang sering ditemukan dalam novel sejarah.",
+      pilihan: [
+        "Nilai religius",
+        "Nilai budaya",
+        "Nilai moral",
+        "Semua jawaban benar"
+      ],
+      jawaban: "Semua jawaban benar"
+    },
+    {
+      paragraf: "Penggalan teks: 'Pada zaman itu, pertempuran terjadi di banyak wilayah, `sehingga` masyarakat hidup dalam kecemasan dan ketakutan.'",
+      pertanyaan: "Konjungsi kausalitas dalam kalimat tersebut adalah...",
+      pilihan: [
+        "sehingga",
+        "dan",
+        "di",
+        "pada"
+      ],
+      jawaban: "sehingga"
+    },
+    {
+      paragraf: "Penggalan teks: 'Patih itu dikenal `[...]` oleh rakyatnya karena keberaniannya dalam memimpin pertempuran.'",
+      pertanyaan: "Kata yang tepat untuk melengkapi paragraf rumpang tersebut adalah...",
+      pilihan: [
+        "bijaksana",
+        "gagah berani",
+        "pintar",
+        "tenang"
+      ],
+      jawaban: "gagah berani"
+    },
+    {
+      pertanyaan: "Nilai yang berkaitan dengan adat istiadat dan tradisi suatu masyarakat dalam novel sejarah adalah...",
+      pilihan: [
+        "Nilai moral",
+        "Nilai budaya",
+        "Nilai sosial",
+        "Nilai religius"
+      ],
+      jawaban: "Nilai budaya"
+    },
+    {
+      pertanyaan: "Novel sejarah adalah teks yang menceritakan tentang...",
+      pilihan: [
+        "Fiksi semata",
+        "Fakta sejarah semata",
+        "Gabungan fakta dan fiksi",
+        "Karangan ilmiah"
+      ],
+      jawaban: "Gabungan fakta dan fiksi"
+    },
+    {
+      paragraf: "Penggalan teks novel sejarah: 'Pangeran Diponegoro adalah seorang pemimpin yang berani. Ia sering `menyusun` strategi perang yang jitu. Ia juga `memimpin` pasukan dengan penuh semangat.'",
+      pertanyaan: "Kata yang termasuk verba adalah...",
+      pilihan: [
+        "Pangeran, pasukan",
+        "berani, jitu",
+        "menyusun, memimpin",
+        "penuh, semangat"
+      ],
+      jawaban: "menyusun, memimpin"
+    },
+    {
+      paragraf: "Penggalan teks: 'Semua orang `pasti` akan menyukai `keindahan` pantai itu.'",
+      pertanyaan: "Kalimat yang menunjukkan opini adalah...",
+      pilihan: [
+        "Semua orang `pasti` akan menyukai `keindahan` pantai itu.",
+        "Pantai itu terletak di Bali.",
+        "Air laut di pantai itu berwarna biru.",
+        "Banyak turis asing yang berkunjung ke sana."
+      ],
+      jawaban: "Semua orang `pasti` akan menyukai `keindahan` pantai itu."
+    },
+    {
+      paragraf: "Penggalan teks: 'Ia dikenal sebagai pemimpin yang `bijaksana`. Keputusan yang ia ambil `selalu` demi kepentingan rakyatnya.'",
+      pertanyaan: "Kata yang termasuk adjektiva adalah...",
+      pilihan: [
+        "pemimpin, rakyat",
+        "keputusan, kepentingan",
+        "bijaksana, selalu",
+        "bijaksana"
+      ],
+      jawaban: "bijaksana"
+    },
+    {
+      paragraf: "Penggalan teks: 'Meskipun sudah tua, rumah itu masih terlihat `gagah` dengan tiang-tiang yang `besar` dan cat yang `terawat`.'",
+      pertanyaan: "Kata yang termasuk adjektiva (kata sifat) adalah...",
+      pilihan: [
+        "rumah, tiang, cat",
+        "terlihat, terawat",
+        "gagah, besar",
+        "meskipun, dengan"
+      ],
+      jawaban: "gagah, besar"
+    },
+    {
+      paragraf: "Penggalan teks: 'Para prajurit `menyerang` benteng musuh. Mereka `melompat` pagar dan `bertarung` dengan berani.'",
+      pertanyaan: "Kata yang termasuk verba (kata kerja) adalah...",
+      pilihan: [
+        "prajurit, benteng, pagar",
+        "musuh, berani",
+        "menyerang, melompat, bertarung",
+        "para, dengan"
+      ],
+      jawaban: "menyerang, melompat, bertarung"
+    },
+    {
+      paragraf: "Penggalan teks: 'Perang `tersebut` `membuat` banyak orang menderita.'",
+      pertanyaan: "Kalimat tersebut memiliki makna kausalitas (sebab-akibat). Konjungsi kausalitas yang digunakan adalah...",
+      pilihan: [
+        "tersebut",
+        "membuat",
+        "perang",
+        "banyak"
+      ],
+      jawaban: "membuat"
+    },
+    {
+      pertanyaan: "Fakta sejarah dalam novel sejarah berfungsi untuk...",
+      pilihan: [
+        "Menambah unsur fantasi.",
+        "Membuat cerita lebih menarik.",
+        "Membangun latar cerita yang autentik dan meyakinkan.",
+        "Mengubah alur cerita sejarah."
+      ],
+      jawaban: "Membangun latar cerita yang autentik dan meyakinkan."
+    },
+    {
+      pertanyaan: "Berikut ini yang merupakan contoh opini adalah...",
+      pilihan: [
+        "Patung itu dibangun pada tahun 1945.",
+        "Patung itu memiliki tinggi 10 meter.",
+        "Patung itu terlihat sangat artistik dan indah.",
+        "Patung itu terletak di depan alun-alun kota."
+      ],
+      jawaban: "Patung itu terlihat sangat artistik dan indah."
+    },
+    {
+      paragraf: "Penggalan paragraf rumpang: 'Penyanyi itu memiliki suara yang sangat `[...]`. Ia sering `[...]` lagu-lagu tradisional dengan indah.'",
+      pertanyaan: "Kata yang tepat untuk melengkapi paragraf rumpang tersebut adalah...",
+      pilihan: [
+        "buruk - menyanyikan",
+        "merdu - menyanyikan",
+        "merdu - mendengarkan",
+        "keras - membuat"
+      ],
+      jawaban: "merdu - menyanyikan"
+    },
+    {
+      pertanyaan: "Kalimat yang menggunakan verba adalah...",
+      pilihan: [
+        "Kerajaan itu megah.",
+        "Ia seorang raja yang bijaksana.",
+        "Raja itu memerintah dengan adil.",
+        "Raja itu memiliki kekuasaan."
+      ],
+      jawaban: "Raja itu memerintah dengan adil."
+    },
+
+    // --- Kategori: CV (Curriculum Vitae) ---
+    // (Berdasarkan kisi-kisi nomor 31-34, ditambah 1 soal tambahan)
+    {
+      paragraf: "Sebuah ilustrasi menyatakan bahwa seseorang ingin membuat CV untuk melamar pekerjaan. Ia akan mencantumkan pengalaman kerja, riwayat pendidikan, dan keahlian yang dimilikinya.",
+      pertanyaan: "Bagian CV yang paling mungkin digunakan adalah...",
+      pilihan: [
+        "Bagian kontak dan data diri.",
+        "Bagian 'summary' dan 'objective'.",
+        "Bagian riwayat pendidikan, pengalaman kerja, dan keahlian.",
+        "Bagian referensi dan penghargaan."
+      ],
+      jawaban: "Bagian riwayat pendidikan, pengalaman kerja, dan keahlian."
+    },
+    {
+      pertanyaan: "Bagian manakah yang tidak seharusnya ada dalam sebuah CV profesional?",
+      pilihan: [
+        "Riwayat pendidikan",
+        "Pengalaman kerja",
+        "Hobi",
+        "Informasi kontak"
+      ],
+      jawaban: "Hobi"
+    },
+    {
+      paragraf: "Penggalan CV: 'Pengalaman Kerja:\nPT Maju Sejahtera, sebagai Staf Keuangan (2020-2023)\n- Bertanggung jawab dalam menyusun laporan keuangan bulanan.'",
+      pertanyaan: "Isi dari penggalan CV tersebut adalah...",
+      pilihan: [
+        "Ringkasan profesional",
+        "Riwayat pendidikan",
+        "Pengalaman kerja",
+        "Keahlian"
+      ],
+      jawaban: "Pengalaman kerja"
+    },
+    {
+      paragraf: "Penggalan CV: 'Keahlian:\n- Microsoft Office (Word, Excel, PowerPoint)\n- Photoshop\n- Public Speaking'",
+      pertanyaan: "Isi dari penggalan CV tersebut adalah...",
+      pilihan: [
+        "Pengalaman kerja",
+        "Data diri",
+        "Keahlian atau keterampilan",
+        "Ringkasan profesional"
+      ],
+      jawaban: "Keahlian atau keterampilan"
+    },
+    {
+      paragraf: "Sebuah ilustrasi menyatakan bahwa seorang 'fresh graduate' ingin membuat CV yang ringkas namun informatif. Ia ingin menyoroti keahliannya di bidang desain grafis dan pengalaman magangnya.",
+      pertanyaan: "Bagian CV yang paling relevan untuk dicantumkan adalah...",
+      pilihan: [
+        "Bagian pengalaman kerja dan referensi.",
+        "Bagian 'summary', riwayat pendidikan, pengalaman magang, dan keahlian.",
+        "Bagian hobi dan prestasi.",
+        "Bagian data pribadi lengkap."
+      ],
+      jawaban: "Bagian 'summary', riwayat pendidikan, pengalaman magang, dan keahlian."
+    },
+    {
+      pertanyaan: "Penggalan CV: 'Saya seorang lulusan baru dengan pengalaman magang di PT. ABC selama 3 bulan. Saya memiliki kemampuan yang kuat dalam komunikasi dan analisis data.'",
+      pilihan: [
+        "Ringkasan profesional ('Summary')",
+        "Pengalaman kerja",
+        "Riwayat pendidikan",
+        "Keahlian"
+      ],
+      jawaban: "Ringkasan profesional ('Summary')"
+    },
+    {
+      pertanyaan: "Bagian CV yang berisi daftar sekolah atau universitas yang pernah ditempuh adalah...",
+      pilihan: [
+        "Ringkasan profesional",
+        "Pengalaman kerja",
+        "Riwayat pendidikan",
+        "Keahlian"
+      ],
+      jawaban: "Riwayat pendidikan"
+    },
+    {
+      pertanyaan: "Apa tujuan utama dari sebuah CV?",
+      pilihan: [
+        "Untuk memperkenalkan diri secara singkat.",
+        "Untuk menjalin pertemanan dengan HRD.",
+        "Untuk menjual produk perusahaan.",
+        "Untuk meyakinkan perusahaan bahwa Anda adalah kandidat yang tepat."
+      ],
+      jawaban: "Untuk meyakinkan perusahaan bahwa Anda adalah kandidat yang tepat."
+    },
+    {
+      pertanyaan: "Bagian dalam CV yang berisi nama, alamat, nomor telepon, dan email adalah...",
+      pilihan: [
+        "Riwayat pendidikan",
+        "Pengalaman kerja",
+        "Informasi kontak",
+        "Keahlian"
+      ],
+      jawaban: "Informasi kontak"
+    },
+    {
+      pertanyaan: "Seorang pelamar memiliki pengalaman bekerja selama 5 tahun. Bagian CV yang harus ia tonjolkan adalah...",
+      pilihan: [
+        "Riwayat pendidikan",
+        "Pengalaman kerja",
+        "Hobi",
+        "Foto"
+      ],
+      jawaban: "Pengalaman kerja"
+    },
+    {
+      pertanyaan: "Bagian CV yang memuat daftar penghargaan atau pencapaian yang pernah diraih adalah...",
+      pilihan: [
+        "Riwayat Pendidikan",
+        "Pengalaman Kerja",
+        "Penghargaan",
+        "Keahlian"
+      ],
+      jawaban: "Penghargaan"
+    },
+
+    // --- Kategori: Iklan ---
+    // (Berdasarkan kisi-kisi nomor 35-40, ditambah 5 soal tambahan)
+    {
+      paragraf: "Sebuah iklan layanan masyarakat menampilkan gambar hutan yang gundul dengan slogan 'Lestarikan Alam Kita, Sebelum Terlambat.'",
+      pertanyaan: "Pernyataan yang sesuai dengan iklan tersebut adalah...",
+      pilihan: [
+        "Iklan tersebut bertujuan untuk menjual produk tertentu.",
+        "Iklan tersebut mengajak masyarakat untuk melestarikan alam.",
+        "Iklan tersebut menginformasikan tentang kerugian akibat pemanasan global.",
+        "Iklan tersebut menampilkan keindahan alam."
+      ],
+      jawaban: "Iklan tersebut mengajak masyarakat untuk melestarikan alam."
+    },
+    {
+      paragraf: "Sebuah iklan komersial menampilkan produk sabun cuci dengan slogan 'Bersih Tak Tertandingi, Wangi Sepanjang Hari.'",
+      pertanyaan: "Pernyataan yang sesuai dengan iklan tersebut adalah...",
+      pilihan: [
+        "Iklan tersebut ditujukan untuk mempromosikan pariwisata.",
+        "Iklan tersebut menawarkan diskon besar-besaran.",
+        "Iklan tersebut mengunggulkan kualitas kebersihan dan aroma produk.",
+        "Iklan tersebut mengajak untuk hemat energi."
+      ],
+      jawaban: "Iklan tersebut mengunggulkan kualitas kebersihan dan aroma produk."
+    },
+    {
+      paragraf: "Sebuah iklan menampilkan foto sebuah mobil baru dengan tulisan 'Fitur Canggih, Harga Terjangkau.'",
+      pertanyaan: "Isi pokok dari iklan tersebut adalah...",
+      pilihan: [
+        "Mobil baru dengan fitur canggih dan harga yang mahal.",
+        "Mobil bekas dengan fitur standar.",
+        "Mobil baru dengan fitur canggih dan harga terjangkau.",
+        "Diskon besar-besaran untuk mobil baru."
+      ],
+      jawaban: "Mobil baru dengan fitur canggih dan harga terjangkau."
+    },
+    {
+      paragraf: "Sebuah iklan layanan masyarakat berisi ajakan untuk berhenti merokok. Ada gambar paru-paru yang rusak dan tulisan 'Berhenti Merokok Sekarang Juga!'",
+      pertanyaan: "Isi dari iklan tersebut adalah...",
+      pilihan: [
+        "Penjualan rokok dengan harga murah.",
+        "Bahaya merokok dan ajakan untuk berhenti.",
+        "Informasi tentang penyakit pernapasan.",
+        "Pemasaran produk kesehatan."
+      ],
+      jawaban: "Bahaya merokok dan ajakan untuk berhenti."
+    },
+    {
+      paragraf: "Sebuah ilustrasi menyatakan bahwa sebuah perusahaan air minum ingin membuat iklan dengan slogan yang mengajak orang untuk minum air lebih banyak.",
+      pertanyaan: "Slogan yang paling tepat adalah...",
+      pilihan: [
+        "Minum, nikmati, dan rasakan!",
+        "Airku, pilihanku.",
+        "Tingkatkan Energi, Jaga Hidrasi, Minumlah Lebih Banyak Air!",
+        "Harga murah, kualitas terbaik."
+      ],
+      jawaban: "Tingkatkan Energi, Jaga Hidrasi, Minumlah Lebih Banyak Air!"
+    },
+    {
+      paragraf: "Sebuah ilustrasi menyatakan bahwa sebuah kampanye sosial ingin mempromosikan hidup sehat dengan olahraga. Iklan tersebut menampilkan slogan 'Ayo Bergerak, Hidup Sehat.'",
+      pertanyaan: "Isi dari ilustrasi tersebut adalah...",
+      pilihan: [
+        "Ajakan untuk menjual alat olahraga.",
+        "Ajakan untuk melakukan kegiatan olahraga dan menjaga kesehatan.",
+        "Informasi tentang cara diet yang efektif.",
+        "Informasi tentang tempat kebugaran."
+      ],
+      jawaban: "Ajakan untuk melakukan kegiatan olahraga dan menjaga kesehatan."
+    },
+    {
+      paragraf: "Sebuah iklan menampilkan foto sepasang sepatu lari dengan tulisan 'Ringan, Nyaman, dan Kuat. Raih Kecepatanmu!'",
+      pertanyaan: "Isi pokok dari iklan tersebut adalah...",
+      pilihan: [
+        "Sepatu lari yang mahal.",
+        "Sepatu lari yang memiliki kualitas baik.",
+        "Olahraga lari adalah kegiatan yang menyenangkan.",
+        "Pentingnya berolahraga secara teratur."
+      ],
+      jawaban: "Sepatu lari yang memiliki kualitas baik."
+    },
+    {
+      pertanyaan: "Iklan layanan masyarakat yang paling efektif untuk mengajak masyarakat menghemat air adalah...",
+      pilihan: [
+        "Iklan dengan slogan 'Air Murah, Gunakan Sesuka Hati'.",
+        "Iklan dengan slogan 'Air Mahal, Gunakan Secukupnya'.",
+        "Iklan dengan slogan 'Hemat Air, Hemat Uang'.",
+        "Iklan dengan slogan 'Air Adalah Kehidupan, Hematilah Air untuk Masa Depan'."
+      ],
+      jawaban: "Iklan dengan slogan 'Air Adalah Kehidupan, Hematilah Air untuk Masa Depan'."
+    },
+    {
+      pertanyaan: "Tujuan utama iklan layanan masyarakat adalah...",
+      pilihan: [
+        "Mempromosikan produk.",
+        "Memberikan hiburan.",
+        "Mengubah perilaku dan pandangan masyarakat terhadap suatu isu.",
+        "Menawarkan diskon."
+      ],
+      jawaban: "Mengubah perilaku dan pandangan masyarakat terhadap suatu isu."
+    },
+    {
+      paragraf: "Sebuah ilustrasi menyatakan bahwa sebuah iklan komersial menampilkan produk makanan ringan dengan gambar kemasan yang menarik dan tulisan 'Renyah di Luar, Lumer di Dalam. Manjakan Lidahmu!'.",
+      pertanyaan: "Tujuan utama iklan tersebut adalah...",
+      pilihan: [
+        "Mengedukasi masyarakat tentang nutrisi.",
+        "Meningkatkan penjualan produk dengan menonjolkan keunggulan rasa dan tekstur.",
+        "Menawarkan diskon harga.",
+        "Mengajak masyarakat untuk hidup sehat."
+      ],
+      jawaban: "Meningkatkan penjualan produk dengan menonjolkan keunggulan rasa dan tekstur."
+    },
+    {
+      paragraf: "Disajikan ilustrasi: Sebuah lembaga ingin membuat iklan yang mengajak masyarakat untuk membuang sampah pada tempatnya. Iklan itu menampilkan gambar lingkungan bersih dan kotor.",
+      pertanyaan: "Slogan yang paling tepat untuk iklan tersebut adalah...",
+      pilihan: [
+        "Buang Sampah di Mana Saja, Yang Penting Bersih!",
+        "Lingkungan Sehat, Cerminan Pribadi Kita.",
+        "Sampah Adalah Uang.",
+        "Jual Sampahmu dan Dapatkan Uang."
+      ],
+      jawaban: "Lingkungan Sehat, Cerminan Pribadi Kita."
+    },
+    {
+      paragraf: "Sebuah iklan komersial menampilkan seorang tokoh terkenal yang menggunakan produk kecantikan. Slogan iklan itu adalah 'Rahasia Kecantikan Alami'.",
+      pertanyaan: "Iklan tersebut menggunakan strategi...",
+      pilihan: [
+        "Menawarkan harga termurah.",
+        "Memberikan diskon besar.",
+        "Menggunakan `endorsement` tokoh terkenal untuk meyakinkan calon pembeli.",
+        "Menekankan pada manfaat kesehatan."
+      ],
+      jawaban: "Menggunakan `endorsement` tokoh terkenal untuk meyakinkan calon pembeli."
+    },
+    {
+      pertanyaan: "Apa yang membedakan iklan layanan masyarakat dari iklan komersial?",
+      pilihan: [
+        "Iklan layanan masyarakat selalu lebih pendek.",
+        "Iklan layanan masyarakat tidak bertujuan untuk mencari keuntungan finansial.",
+        "Iklan layanan masyarakat hanya muncul di media cetak.",
+        "Iklan layanan masyarakat menggunakan gambar yang lebih sederhana."
+      ],
+      jawaban: "Iklan layanan masyarakat tidak bertujuan untuk mencari keuntungan finansial."
+    },
+    {
+      paragraf: "Penggalan iklan: 'Beli Dua Roti, Gratis Satu Minuman! Penawaran terbatas sampai akhir bulan ini.'",
+      pertanyaan: "Informasi utama yang ingin disampaikan iklan tersebut adalah...",
+      pilihan: [
+        "Roti dan minuman adalah produk terbaik.",
+        "Harga produk akan naik bulan depan.",
+        "Penawaran diskon atau promosi terbatas.",
+        "Stok produk sudah habis."
+      ],
+      jawaban: "Penawaran diskon atau promosi terbatas."
+    },
   ],
+
+
+
   
   umum1: [
     { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
@@ -731,8 +1588,9 @@
     
     // Tambahan: maping untuk judul berdasarkan kategori
     const namaKategori = {
-      "umum": "Latihan Soal Umum",
-      "tjkt1": "Latihan Soal AIJ"
+      "umum": "Bahasa Indonesia",
+      "umum1": "Pendidikan Agama Islam",
+      "tjkt1": "AIJ"
     };
 
     // =================== INISIALISASI ===================
@@ -766,20 +1624,35 @@
     }
 
     function tampilkanSoal(){
-      clearInterval(timerInterval);
-      if(currentSoalIndex<soalAktif.length){
-        const data=soalAktif[currentSoalIndex];
-        soalEl.textContent=`${currentSoalIndex+1}. ${data.pertanyaan}`;
-        pilihanEl.innerHTML="";
-        let pilihan=[...data.pilihan]; shuffle(pilihan);
-        pilihan.forEach(p=>{
-          pilihanEl.innerHTML+=`<label><input type="radio" name="pilihan" value="${p}">${p}</label>`;
-        });
-        hasilEl.textContent="";
-        updateProgress();
-        if(gunakanTimer) mulaiTimer(); else timerEl.textContent="";
-      }else tampilkanHasil();
+  clearInterval(timerInterval);
+  if(currentSoalIndex < soalAktif.length){
+    const data = soalAktif[currentSoalIndex];
+    
+    // Periksa apakah ada properti paragraf di objek soal saat ini
+    if(data.paragraf){
+      // Jika ada, tampilkan paragraf diikuti dengan pertanyaan
+      soalEl.innerHTML = `<p>${data.paragraf}</p><p><strong>${currentSoalIndex+1}. ${data.pertanyaan}</strong></p>`;
+    } else {
+      // Jika tidak ada, cukup tampilkan pertanyaan seperti biasa
+      soalEl.innerHTML = `<p><strong>${currentSoalIndex+1}. ${data.pertanyaan}</strong></p>`;
     }
+
+    pilihanEl.innerHTML = "";
+    let pilihan = [...data.pilihan]; 
+    if(acakSoal) shuffle(pilihan);
+
+    pilihan.forEach(p => {
+      pilihanEl.innerHTML += `<label><input type="radio" name="pilihan" value="${p}">${p}</label>`;
+    });
+
+    hasilEl.textContent = "";
+    updateProgress();
+    if(gunakanTimer) mulaiTimer(); else timerEl.textContent = "";
+  } else {
+    tampilkanHasil();
+  }
+}
+
 
     function cekJawaban(){
       const pilih=document.querySelector("input[name='pilihan']:checked");
