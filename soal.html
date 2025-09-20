@@ -198,6 +198,7 @@
         <select id="kategori-select">
           <option value="umum">Bahasa Indonesia</option>
           <option value="umum1">Pendidikan Agama Islam</option>
+          <option value="umum2">Teknik Jaringan Komputer dan Telekomunikasi</option>
           <option value="tjkt1">AIJ</option>
         </select>
       </div>
@@ -234,6 +235,14 @@
 
   <script>
     // =================== DATA SOAL ===================
+    const namaKategori = {
+      "umum": "Bahasa Indonesia",
+      "umum1": "Pendidikan Agama Islam",
+      "umum2": "Teknik Jaringan Komputer dan Telekomunikasi",
+      "tjkt1": "AIJ"
+    };
+    
+    
     const soalPerKategori = {
   umum: [
     // --- Kategori: Surat Lamaran Pekerjaan ---
@@ -1101,10 +1110,1201 @@
     { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
   ],
   
+  
   umum2: [
-    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
-    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+    // --- Kategori: DNS Server (Bind9) ---
+    {
+      pertanyaan: "Setelah menginstal Bind9, langkah pertama untuk mengkonfigurasi DNS server adalah mengedit file konfigurasi utama. Di mana file konfigurasi utama Bind9 biasanya terletak?",
+      pilihan: [
+        "/etc/named.conf",
+        "/etc/bind/named.conf.local",
+        "/etc/default/bind9",
+        "/var/cache/bind/named.conf"
+      ],
+      jawaban: "/etc/bind/named.conf.local"
+    },
+    {
+      pertanyaan: "Fungsi utama dari 'forward zone' dalam konfigurasi DNS adalah...",
+      pilihan: [
+        "Menerjemahkan nama domain ke alamat IP",
+        "Menerjemahkan alamat IP ke nama domain",
+        "Mengatur server DNS sekunder",
+        "Mengatur resolver DNS"
+      ],
+      jawaban: "Menerjemahkan nama domain ke alamat IP"
+    },
+    {
+      pertanyaan: "Untuk membuat record 'A' yang menunjuk ke IP address `192.168.1.100` untuk domain `www.example.com`, baris yang tepat dalam file zone forward adalah...",
+      pilihan: [
+        "www IN CNAME 192.168.1.100",
+        "www IN A 192.168.1.100",
+        "www IN MX 192.168.1.100",
+        "www IN NS 192.168.1.100"
+      ],
+      jawaban: "www IN A 192.168.1.100"
+    },
+    {
+      pertanyaan: "Berikut adalah langkah-langkah dalam pengujian konfigurasi Bind9, kecuali...",
+      pilihan: [
+        "Menggunakan perintah `nslookup` atau `dig`",
+        "Memeriksa status service Bind9",
+        "Memeriksa file log `/var/log/syslog`",
+        "Menggunakan perintah `ifconfig` untuk melihat IP"
+      ],
+      jawaban: "Menggunakan perintah `ifconfig` untuk melihat IP"
+    },
+    {
+      pertanyaan: "Fungsi dari 'reverse zone' dalam DNS adalah...",
+      pilihan: [
+        "Menerjemahkan nama domain ke alamat IP",
+        "Mengatur alias untuk nama domain",
+        "Mengatur server DNS otoritatif",
+        "Menerjemahkan alamat IP ke nama domain"
+      ],
+      jawaban: "Menerjemahkan alamat IP ke nama domain"
+    },
+    {
+      pertanyaan: "Perintah yang digunakan untuk memeriksa sintaks file konfigurasi Bind9 adalah...",
+      pilihan: [
+        "`named-checkconf`",
+        "`bind-check`",
+        "`bind9-test`",
+        "`dns-test`"
+      ],
+      jawaban: "`named-checkconf`"
+    },
+    // --- Kategori: Web Server (Apache2, WordPress) ---
+    {
+      pertanyaan: "Jika Anda ingin menginstal dan mengkonfigurasi Web server Apache2, perintah yang paling umum digunakan pada sistem operasi berbasis Debian/Ubuntu adalah...",
+      pilihan: [
+        "`apt install apache2`",
+        "`yum install httpd`",
+        "`dnf install apache2`",
+        "`pacman -S apache2`"
+      ],
+      jawaban: "`apt install apache2`"
+    },
+    {
+      pertanyaan: "Troubleshooting '404 Not Found' pada Web server Apache2 biasanya mengindikasikan bahwa...",
+      pilihan: [
+        "Web server tidak berjalan",
+        "File yang diminta tidak ditemukan di direktori root",
+        "Ada masalah pada firewall",
+        "Port 80 sudah digunakan"
+      ],
+      jawaban: "File yang diminta tidak ditemukan di direktori root"
+    },
+    {
+      pertanyaan: "Salah satu langkah awal yang perlu dilakukan saat instalasi WordPress adalah membuat database dan user MySQL. Perintah yang digunakan untuk membuat database di MySQL adalah...",
+      pilihan: [
+        "`CREATE TABLE wordpress_db;`",
+        "`CREATE USER wordpress_user;`",
+        "`CREATE DATABASE wordpress_db;`",
+        "`SHOW DATABASES;`"
+      ],
+      jawaban: "`CREATE DATABASE wordpress_db;`"
+    },
+    {
+      pertanyaan: "Setelah menginstal Apache2, konfigurasi 'virtual host' memungkinkan Anda untuk...",
+      pilihan: [
+        "Menjalankan beberapa website pada satu server",
+        "Menggunakan server sebagai reverse proxy",
+        "Mengenkripsi semua traffic web",
+        "Mengubah port default Apache2"
+      ],
+      jawaban: "Menjalankan beberapa website pada satu server"
+    },
+    {
+      pertanyaan: "Untuk mengaktifkan virtual host baru di Apache2 pada Ubuntu/Debian, perintah yang harus dijalankan adalah...",
+      pilihan: [
+        "`a2ensite`",
+        "`a2enmod`",
+        "`a2dissite`",
+        "`a2dismod`"
+      ],
+      jawaban: "`a2ensite`"
+    },
+    {
+      pertanyaan: "Ketika WordPress tidak dapat terhubung ke database, kesalahan yang paling mungkin terjadi adalah...",
+      pilihan: [
+        "Web server mati",
+        "Nama database, user, atau password salah di `wp-config.php`",
+        "Firewall memblokir port 80",
+        "File `index.php` hilang"
+      ],
+      jawaban: "Nama database, user, atau password salah di `wp-config.php`"
+    },
+    // --- Kategori: Mail Server (Postfix, Dovecot, Roundcube) ---
+    {
+      pertanyaan: "Fungsi utama dari Postfix dalam arsitektur Mail Server adalah...",
+      pilihan: [
+        "Mengelola antarmuka webmail",
+        "Menyediakan penyimpanan email",
+        "Mengirim dan menerima email (MTA)",
+        "Mengautentikasi user"
+      ],
+      jawaban: "Mengirim dan menerima email (MTA)"
+    },
+    {
+      pertanyaan: "Untuk memungkinkan pengguna mengambil email dari server, layanan yang diperlukan adalah...",
+      pilihan: [
+        "Postfix",
+        "Dovecot",
+        "Roundcube",
+        "DNS"
+      ],
+      jawaban: "Dovecot"
+    },
+    {
+      pertanyaan: "Roundcube berfungsi sebagai 'webmail client'. Ini berarti Roundcube memungkinkan pengguna untuk...",
+      pilihan: [
+        "Mengirim email dari command line",
+        "Mengkonfigurasi Mail Server",
+        "Mengakses email melalui browser web",
+        "Mendukung protokol IMAP dan POP3"
+      ],
+      jawaban: "Mengakses email melalui browser web"
+    },
+    {
+      pertanyaan: "Apa peran utama dari protokol IMAP pada Mail Server?",
+      pilihan: [
+        "Mengirim email dari client ke server",
+        "Mengelola user dan password",
+        "Menyimpan email di server sehingga dapat diakses dari berbagai perangkat",
+        "Menghapus email dari server setelah diunduh oleh client"
+      ],
+      jawaban: "Menyimpan email di server sehingga dapat diakses dari berbagai perangkat"
+    },
+    {
+      pertanyaan: "Saat melakukan pengujian Mail Server, salah satu langkah yang penting adalah memastikan bahwa DNS record MX (Mail Exchanger) telah dikonfigurasi dengan benar. Fungsi record MX adalah...",
+      pilihan: [
+        "Menentukan nama host untuk server web",
+        "Menentukan nama host untuk server mail",
+        "Menentukan IP address untuk server mail",
+        "Menentukan alias untuk server mail"
+      ],
+      jawaban: "Menentukan nama host untuk server mail"
+    },
+    {
+      pertanyaan: "Jika pengguna tidak dapat login ke Roundcube, kemungkinan masalahnya adalah...",
+      pilihan: [
+        "Postfix tidak berjalan",
+        "Firewall memblokir port 80",
+        "Dovecot tidak berjalan atau konfigurasi autentikasi salah",
+        "Web server tidak berjalan"
+      ],
+      jawaban: "Dovecot tidak berjalan atau konfigurasi autentikasi salah"
+    },
+    {
+      pertanyaan: "Apa perbedaan mendasar antara protokol IMAP dan POP3?",
+      pilihan: [
+        "POP3 menyimpan email di server, IMAP tidak",
+        "IMAP menghapus email dari server setelah diunduh, POP3 tidak",
+        "IMAP menyimpan email di server, POP3 mengunduhnya ke perangkat lokal dan menghapusnya dari server (secara default)",
+        "Keduanya berfungsi sama, hanya portnya yang berbeda"
+      ],
+      jawaban: "IMAP menyimpan email di server, POP3 mengunduhnya ke perangkat lokal dan menghapusnya dari server (secara default)"
+    },
+    {
+      pertanyaan: "Perintah `telnet localhost 25` digunakan untuk menguji fungsionalitas...",
+      pilihan: [
+        "Dovecot",
+        "Roundcube",
+        "Postfix (SMTP)",
+        "Web server"
+      ],
+      jawaban: "Postfix (SMTP)"
+    },
+    // --- Kategori: TLU (Capaian Kompetensi) ---
+    {
+      pertanyaan: "Manakah dari aplikasi komunikasi data berikut yang paling sesuai untuk akses real-time seperti panggilan video atau suara?",
+      pilihan: [
+        "Email",
+        "File Transfer Protocol (FTP)",
+        "Aplikasi Video Conference",
+        "SMS"
+      ],
+      jawaban: "Aplikasi Video Conference"
+    },
+    {
+      pertanyaan: "Dibandingkan dengan server fisik, penggunaan cloud computing menawarkan efisiensi yang lebih baik karena...",
+      pilihan: [
+        "Membutuhkan lebih banyak ruang fisik",
+        "Pengguna harus membeli hardware sendiri",
+        "Menawarkan skalabilitas dan biaya operasional yang lebih rendah",
+        "Hanya dapat diakses secara lokal"
+      ],
+      jawaban: "Menawarkan skalabilitas dan biaya operasional yang lebih rendah"
+    },
+    {
+      pertanyaan: "Dalam sebuah video conference, sering terjadi 'lag' (jeda). Salah satu solusi untuk mengatasi masalah ini dari sisi manajemen jaringan adalah...",
+      pilihan: [
+        "Mengganti monitor yang lebih besar",
+        "Meningkatkan kualitas mikrofon",
+        "Menggunakan Quality of Service (QoS) untuk memprioritaskan traffic video",
+        "Mengganti webcam dengan resolusi lebih tinggi"
+      ],
+      jawaban: "Menggunakan Quality of Service (QoS) untuk memprioritaskan traffic video"
+    },
+    {
+      pertanyaan: "Manakah dari komponen komunikasi data berikut yang paling krusial untuk memastikan keamanan transmisi data?",
+      pilihan: [
+        "Kabel jaringan",
+        "Media transmisi",
+        "Protokol enkripsi",
+        "Sumber data"
+      ],
+      jawaban: "Protokol enkripsi"
+    },
+    {
+      pertanyaan: "Bagaimana implikasi standar kecepatan jaringan (misalnya 10 Mbps vs 1 Gbps) terhadap komunikasi data?",
+      pilihan: [
+        "Tidak ada implikasi, hanya mempengaruhi biaya",
+        "Meningkatkan kecepatan transmisi data, mengurangi waktu pengiriman",
+        "Meningkatkan latensi dan memperlambat komunikasi",
+        "Hanya relevan untuk aplikasi real-time"
+      ],
+      jawaban: "Meningkatkan kecepatan transmisi data, mengurangi waktu pengiriman"
+    },
+    {
+      pertanyaan: "Sebuah switch bekerja pada Layer 2 dari model OSI. Berdasarkan fungsi ini, apa yang menjadi dasar penentuan jalur oleh switch?",
+      pilihan: [
+        "Alamat IP",
+        "Nama domain",
+        "Alamat MAC",
+        "Nomor port"
+      ],
+      jawaban: "Alamat MAC"
+    },
+    {
+      pertanyaan: "Untuk file sharing jarak dekat antara dua komputer yang berbeda, standar komunikasi yang paling optimal adalah...",
+      pilihan: [
+        "Bluetooth",
+        "Ethernet",
+        "Wi-Fi",
+        "NFC"
+      ],
+      jawaban: "Ethernet"
+    },
+    {
+      pertanyaan: "Dalam sebuah presentasi video conference, solusi apa yang paling efektif agar tampilan presentasi terlihat jelas bagi semua peserta?",
+      pilihan: [
+        "Menggunakan background virtual",
+        "Meningkatkan volume suara",
+        "Memastikan resolusi layar yang di-share cukup tinggi",
+        "Mematikan kamera"
+      ],
+      jawaban: "Memastikan resolusi layar yang di-share cukup tinggi"
+    },
+    {
+      pertanyaan: "Fitur pada aplikasi video conference yang dapat digunakan agar siswa yang tidak hadir tetap bisa mengikuti materi adalah...",
+      pilihan: [
+        "Polling",
+        "Live recording",
+        "Breakout rooms",
+        "Virtual background"
+      ],
+      jawaban: "Live recording"
+    },
+    {
+      pertanyaan: "Seorang siswa mengeluhkan adanya gema suara saat video conference. Penyebab paling mungkin dan solusinya adalah...",
+      pilihan: [
+        "Sinyal internet buruk; pindah ke lokasi dengan sinyal lebih baik",
+        "Mikrofon terlalu sensitif; menurunkan gain mikrofon",
+        "Suara dari speaker masuk kembali ke mikrofon; menggunakan headset atau menurunkan volume speaker",
+        "Kamera tidak fokus; membersihkan lensa kamera"
+      ],
+      jawaban: "Suara dari speaker masuk kembali ke mikrofon; menggunakan headset atau menurunkan volume speaker"
+    },
+    // --- Kategori: Cyber Security ---
+    {
+      pertanyaan: "Manakah dari algoritma berikut yang merupakan contoh dari kriptografi simetris?",
+      pilihan: [
+        "AES",
+        "RSA",
+        "ECC",
+        "ElGamal"
+      ],
+      jawaban: "AES"
+    },
+    {
+      pertanyaan: "Istilah lain untuk kriptografi kunci publik adalah...",
+      pilihan: [
+        "Kriptografi Simetris",
+        "Kriptografi Asimetris",
+        "Fungsi Hash",
+        "Steganografi"
+      ],
+      jawaban: "Kriptografi Asimetris"
+    },
+    {
+      pertanyaan: "Manakah dari fungsi hash berikut yang umum digunakan untuk memastikan integritas data?",
+      pilihan: [
+        "SHA-256",
+        "RSA",
+        "AES",
+        "DES"
+      ],
+      jawaban: "SHA-256"
+    },
+    {
+      pertanyaan: "Proses mengubah data plainteks menjadi cipherteks disebut...",
+      pilihan: [
+        "Decryption",
+        "Hashing",
+        "Encryption",
+        "Signing"
+      ],
+      jawaban: "Encryption"
+    },
+    {
+      pertanyaan: "Prinsip keamanan yang memastikan data tidak diubah secara tidak sah adalah...",
+      pilihan: [
+        "Confidentiality",
+        "Availability",
+        "Integrity",
+        "Authenticity"
+      ],
+      jawaban: "Integrity"
+    },
+    {
+      pertanyaan: "Dalam hak akses Linux, angka `755` pada `chmod` memiliki arti...",
+      pilihan: [
+        "Pemilik: `rwx`, Grup: `rwx`, Lainnya: `rwx`",
+        "Pemilik: `rwx`, Grup: `r-x`, Lainnya: `r-x`",
+        "Pemilik: `rwx`, Grup: `rw-`, Lainnya: `rw-`",
+        "Pemilik: `r--`, Grup: `r--`, Lainnya: `r--`"
+      ],
+      jawaban: "Pemilik: `rwx`, Grup: `r-x`, Lainnya: `r-x`"
+    },
+    {
+      pertanyaan: "Simbol `rwx` pada hak akses Linux mewakili...",
+      pilihan: [
+        "Read, write, execute",
+        "Rename, write, execute",
+        "Read, write, exit",
+        "Run, write, exchange"
+      ],
+      jawaban: "Read, write, execute"
+    },
+    {
+      pertanyaan: "Perintah Linux untuk mengganti kepemilikan file atau direktori adalah...",
+      pilihan: [
+        "`chmod`",
+        "`chgrp`",
+        "`chown`",
+        "`ls -l`"
+      ],
+      jawaban: "`chown`"
+    },
+    {
+      pertanyaan: "Apa arti dari izin file `-rw-r--r--` pada Linux?",
+      pilihan: [
+        "Pemilik: read/write, Grup: read, Lainnya: read",
+        "Pemilik: read, Grup: read/write, Lainnya: read",
+        "Pemilik: read/write/execute, Grup: read, Lainnya: read",
+        "Pemilik: read, Grup: read, Lainnya: read"
+      ],
+      jawaban: "Pemilik: read/write, Grup: read, Lainnya: read"
+    },
+    {
+      pertanyaan: "Perintah untuk melihat hak akses file pada Linux adalah...",
+      pilihan: [
+        "`ls`",
+        "`ls -a`",
+        "`ls -l`",
+        "`ls -h`"
+      ],
+      jawaban: "`ls -l`"
+    },
+    // --- Kategori: Routing ---
+    {
+      pertanyaan: "Apa fungsi utama dari protokol routing?",
+      pilihan: [
+        "Menentukan jalur terbaik untuk paket data",
+        "Membagi jaringan menjadi subnet",
+        "Menyembunyikan alamat IP",
+        "Melakukan enkripsi paket data"
+      ],
+      jawaban: "Menentukan jalur terbaik untuk paket data"
+    },
+    {
+      pertanyaan: "Perbedaan utama antara routing statis dan routing dinamis adalah...",
+      pilihan: [
+        "Statis lebih cepat, dinamis lebih lambat",
+        "Statis dikonfigurasi secara manual, dinamis secara otomatis",
+        "Statis hanya untuk jaringan kecil, dinamis untuk jaringan besar",
+        "Statis lebih aman, dinamis kurang aman"
+      ],
+      jawaban: "Statis dikonfigurasi secara manual, dinamis secara otomatis"
+    },
+    {
+      pertanyaan: "Dalam routing dinamis, metrik adalah nilai yang digunakan untuk...",
+      pilihan: [
+        "Mengukur kecepatan CPU router",
+        "Menentukan biaya atau jarak ke sebuah tujuan",
+        "Mengidentifikasi jenis protokol routing",
+        "Mengatur prioritas paket data"
+      ],
+      jawaban: "Menentukan biaya atau jarak ke sebuah tujuan"
+    },
+    {
+      pertanyaan: "Perintah `show ip route` pada router Cisco berfungsi untuk...",
+      pilihan: [
+        "Melihat konfigurasi antarmuka",
+        "Melihat tabel routing",
+        "Melihat status firewall",
+        "Melihat versi IOS router"
+      ],
+      jawaban: "Melihat tabel routing"
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan 'hop count' dalam protokol routing?",
+      pilihan: [
+        "Jumlah router yang dilewati paket data",
+        "Jumlah paket data yang hilang",
+        "Waktu yang dibutuhkan paket untuk mencapai tujuan",
+        "Bandwidth jalur"
+      ],
+      jawaban: "Jumlah router yang dilewati paket data"
+    },
+    {
+      pertanyaan: "Salah satu keuntungan dari routing dinamis adalah...",
+      pilihan: [
+        "Konfigurasi yang lebih sederhana",
+        "Tidak memerlukan protokol routing",
+        "Otomatis beradaptasi dengan perubahan topologi jaringan",
+        "Lebih hemat bandwidth"
+      ],
+      jawaban: "Otomatis beradaptasi dengan perubahan topologi jaringan"
+    },
+    {
+      pertanyaan: "Ketika dua router terhubung langsung, mereka akan saling berbagi informasi routing melalui...",
+      pilihan: [
+        "Static route",
+        "Default route",
+        "Protocol routing (mis. OSPF, RIP)",
+        "ACL"
+      ],
+      jawaban: "Protocol routing (mis. OSPF, RIP)"
+    },
+    {
+      pertanyaan: "Apa yang terjadi jika sebuah router tidak memiliki rute yang valid untuk sebuah tujuan?",
+      pilihan: [
+        "Router akan membuat rute baru secara otomatis",
+        "Router akan meneruskan paket ke rute default (jika ada)",
+        "Router akan mem-broadcast paket ke semua antarmuka",
+        "Paket akan dikembalikan ke sumber"
+      ],
+      jawaban: "Router akan meneruskan paket ke rute default (jika ada)"
+    },
+    // --- Kategori: Firewall ---
+    {
+      pertanyaan: "Fungsi utama dari firewall adalah...",
+      pilihan: [
+        "Mempercepat transfer data",
+        "Membatasi akses ke server web",
+        "Menghubungkan dua jaringan",
+        "Mengontrol lalu lintas jaringan yang masuk dan keluar"
+      ],
+      jawaban: "Mengontrol lalu lintas jaringan yang masuk dan keluar"
+    },
+    {
+      pertanyaan: "Sebuah firewall yang beroperasi pada Layer 3 dari model OSI berfungsi untuk...",
+      pilihan: [
+        "Melakukan inspeksi paket berdasarkan aplikasi",
+        "Memblokir lalu lintas berdasarkan alamat IP dan port",
+        "Memfilter berdasarkan konten web",
+        "Mengenkripsi data"
+      ],
+      jawaban: "Memblokir lalu lintas berdasarkan alamat IP dan port"
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan 'stateless firewall'?",
+      pilihan: [
+        "Firewall yang melacak keadaan koneksi",
+        "Firewall yang hanya memfilter paket berdasarkan header paket tunggal",
+        "Firewall yang tidak memerlukan konfigurasi",
+        "Firewall yang hanya memfilter lalu lintas keluar"
+      ],
+      jawaban: "Firewall yang hanya memfilter paket berdasarkan header paket tunggal"
+    },
+    {
+      pertanyaan: "Dalam konfigurasi `iptables` di Linux, `chain` `INPUT` berfungsi untuk...",
+      pilihan: [
+        "Memfilter paket yang keluar dari server",
+        "Memfilter paket yang masuk ke server",
+        "Memfilter paket yang diteruskan oleh server",
+        "Memfilter lalu lintas di jaringan lokal"
+      ],
+      jawaban: "Memfilter paket yang masuk ke server"
+    },
+    {
+      pertanyaan: "Sebuah 'Access Control List' (ACL) pada firewall digunakan untuk...",
+      pilihan: [
+        "Mendaftar semua pengguna yang diizinkan",
+        "Menentukan aturan untuk mengizinkan atau menolak lalu lintas",
+        "Mengatur prioritas paket data",
+        "Memonitor penggunaan bandwidth"
+      ],
+      jawaban: "Menentukan aturan untuk mengizinkan atau menolak lalu lintas"
+    },
+    {
+      pertanyaan: "Perbedaan antara 'packet filtering' dan 'stateful inspection' pada firewall adalah...",
+      pilihan: [
+        "Packet filtering lebih cepat, stateful inspection lebih lambat",
+        "Packet filtering hanya memeriksa header, stateful inspection melacak keadaan koneksi",
+        "Packet filtering lebih aman, stateful inspection kurang aman",
+        "Keduanya berfungsi sama, hanya namanya berbeda"
+      ],
+      jawaban: "Packet filtering hanya memeriksa header, stateful inspection melacak keadaan koneksi"
+    },
+    {
+      pertanyaan: "Jika Anda ingin memblokir semua traffic masuk kecuali untuk port 80 (HTTP), aturan firewall yang tepat harus...",
+      pilihan: [
+        "Mengizinkan semua port kecuali 80",
+        "Memblokir semua lalu lintas, lalu mengizinkan port 80",
+        "Hanya mengizinkan port 80, tanpa aturan blokir",
+        "Memblokir semua lalu lintas tanpa pengecualian"
+      ],
+      jawaban: "Memblokir semua lalu lintas, lalu mengizinkan port 80"
+    },
+    // Menambahkan 37 soal tambahan untuk melengkapi hingga 70
+    // Soal-soal ini mencakup campuran materi dari semua kategori yang ada,
+    // dengan fokus pada pemahaman mendalam dan penerapan konsep.
+    {
+      pertanyaan: "Pada Web server, apa yang terjadi jika Anda tidak mengkonfigurasi file index (misalnya, `index.html` atau `index.php`) di direktori root?",
+      pilihan: [
+        "Server akan menampilkan error 404",
+        "Server akan menampilkan daftar file di direktori tersebut",
+        "Server akan otomatis membuat file index kosong",
+        "Server akan crash"
+      ],
+      jawaban: "Server akan menampilkan daftar file di direktori tersebut"
+    },
+    {
+      pertanyaan: "Untuk mengatasi masalah `permission denied` saat mengkonfigurasi Web server, perintah Linux yang paling sering digunakan adalah...",
+      pilihan: [
+        "`chmod`",
+        "`chown`",
+        "`chgrp`",
+        "`ls -l`"
+      ],
+      jawaban: "`chmod`"
+    },
+    {
+      pertanyaan: "Manakah dari berikut ini yang bukan merupakan komponen dasar dari sistem komunikasi data?",
+      pilihan: [
+        "Pengirim",
+        "Penerima",
+        "Media Transmisi",
+        "Kamera"
+      ],
+      jawaban: "Kamera"
+    },
+    {
+      pertanyaan: "Model komunikasi data berbasis cloud memungkinkan pengguna untuk...",
+      pilihan: [
+        "Mengakses sumber daya komputasi melalui internet",
+        "Membangun infrastruktur jaringan fisik di tempat",
+        "Hanya menyimpan data secara lokal",
+        "Melakukan komunikasi hanya dengan satu perangkat"
+      ],
+      jawaban: "Mengakses sumber daya komputasi melalui internet"
+    },
+    {
+      pertanyaan: "Dalam konteks keamanan jaringan, 'Confidentiality' merujuk pada prinsip...",
+      pilihan: [
+        "Memastikan data tidak dapat diubah",
+        "Memastikan data hanya dapat diakses oleh pihak yang berwenang",
+        "Memastikan data selalu tersedia",
+        "Memastikan data tidak dapat dipublikasikan"
+      ],
+      jawaban: "Memastikan data hanya dapat diakses oleh pihak yang berwenang"
+    },
+    {
+      pertanyaan: "Protokol routing OSPF (Open Shortest Path First) menggunakan algoritma...",
+      pilihan: [
+        "Distance Vector",
+        "Link State",
+        "Path Vector",
+        "Hybrid"
+      ],
+      jawaban: "Link State"
+    },
+    {
+      pertanyaan: "Perintah `sudo systemctl restart apache2` digunakan untuk...",
+      pilihan: [
+        "Menginstal Apache2",
+        "Menghentikan Apache2",
+        "Memulai ulang layanan Apache2",
+        "Menghapus Apache2"
+      ],
+      jawaban: "Memulai ulang layanan Apache2"
+    },
+    {
+      pertanyaan: "Dalam konfigurasi `named.conf.local`, apa tujuan dari menambahkan `type master;`?",
+      pilihan: [
+        "Menandai server sebagai server master untuk zone tersebut",
+        "Menandai server sebagai server sekunder",
+        "Mengubah jenis protokol DNS",
+        "Mengaktifkan logging DNS"
+      ],
+      jawaban: "Menandai server sebagai server master untuk zone tersebut"
+    },
+    {
+      pertanyaan: "Untuk membuat record `CNAME` (Canonical Name) yang mengarahkan `ftp.example.com` ke `www.example.com`, baris yang benar dalam file zone adalah...",
+      pilihan: [
+        "ftp IN A www.example.com",
+        "ftp IN CNAME www.example.com.",
+        "ftp IN MX www.example.com",
+        "ftp IN A 192.168.1.1"
+      ],
+      jawaban: "ftp IN CNAME www.example.com."
+    },
+    {
+      pertanyaan: "Perintah `telnet localhost 110` digunakan untuk menguji fungsionalitas...",
+      pilihan: [
+        "SMTP",
+        "IMAP",
+        "POP3",
+        "HTTP"
+      ],
+      jawaban: "POP3"
+    },
+    {
+      pertanyaan: "Salah satu penyebab gema suara saat video conference adalah `crosstalk`. Apa yang dimaksud dengan `crosstalk`?",
+      pilihan: [
+        "Gangguan dari sinyal internet lain",
+        "Suara dari speaker satu peserta masuk ke mikrofon peserta lain",
+        "Gema yang berasal dari ruangan yang kosong",
+        "Gangguan dari perangkat elektronik lain"
+      ],
+      jawaban: "Suara dari speaker satu peserta masuk ke mikrofon peserta lain"
+    },
+    {
+      pertanyaan: "Kriptografi kunci asimetris menggunakan...",
+      pilihan: [
+        "Satu kunci yang sama untuk enkripsi dan dekripsi",
+        "Dua kunci yang berbeda, kunci publik dan kunci privat",
+        "Fungsi hash untuk enkripsi",
+        "Kunci simetris untuk enkripsi"
+      ],
+      jawaban: "Dua kunci yang berbeda, kunci publik dan kunci privat"
+    },
+    {
+      pertanyaan: "Fungsi `hash` secara umum bersifat 'one-way'. Ini berarti...",
+      pilihan: [
+        "Tidak dapat dienkripsi",
+        "Tidak dapat didekripsi kembali menjadi data asli",
+        "Hanya bisa digunakan untuk enkripsi, bukan dekripsi",
+        "Hanya bisa digunakan untuk satu jenis data"
+      ],
+      jawaban: "Tidak dapat didekripsi kembali menjadi data asli"
+    },
+    {
+      pertanyaan: "Dalam model OSI, Layer 7 adalah 'Application Layer'. Aplikasi apa yang beroperasi pada layer ini?",
+      pilihan: [
+        "Switch",
+        "Router",
+        "E-mail client",
+        "Kabel"
+      ],
+      jawaban: "E-mail client"
+    },
+    {
+      pertanyaan: "Seorang siswa ingin mengirim file berukuran besar ke guru melalui internet. Protokol komunikasi yang paling sesuai adalah...",
+      pilihan: [
+        "HTTP",
+        "SMTP",
+        "FTP",
+        "DHCP"
+      ],
+      jawaban: "FTP"
+    },
+    {
+      pertanyaan: "Perintah `sudo apt-get update` dan `sudo apt-get upgrade` seringkali dijalankan sebelum instalasi perangkat lunak. Tujuan dari perintah ini adalah...",
+      pilihan: [
+        "Untuk menghapus paket yang tidak diperlukan",
+        "Untuk mengkonfigurasi perangkat lunak yang diinstal",
+        "Untuk memperbarui daftar paket dan mengupgrade paket yang ada",
+        "Untuk menginstal perangkat lunak baru"
+      ],
+      jawaban: "Untuk memperbarui daftar paket dan mengupgrade paket yang ada"
+    },
+    {
+      pertanyaan: "Jika Anda ingin mengubah kepemilikan file `test.txt` dari user `budi` ke user `darmawan`, perintah yang benar adalah...",
+      pilihan: [
+        "`chown darmawan test.txt`",
+        "`chmod darmawan test.txt`",
+        "`chgrp darmawan test.txt`",
+        "`ls -l darmawan test.txt`"
+      ],
+      jawaban: "`chown darmawan test.txt`"
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan 'default route' dalam tabel routing?",
+      pilihan: [
+        "Rute yang digunakan jika tidak ada rute spesifik yang cocok",
+        "Rute yang paling disukai oleh router",
+        "Rute yang digunakan untuk mengirim paket ke jaringan lokal",
+        "Rute yang digunakan untuk mengirim paket ke internet"
+      ],
+      jawaban: "Rute yang digunakan jika tidak ada rute spesifik yang cocok"
+    },
+    {
+      pertanyaan: "Firewall yang melakukan inspeksi paket data dari Layer 3 hingga Layer 7 disebut...",
+      pilihan: [
+        "Packet filtering firewall",
+        "Stateful firewall",
+        "Application-level gateway",
+        "Transparent firewall"
+      ],
+      jawaban: "Application-level gateway"
+    },
+    {
+      pertanyaan: "Dalam sebuah firewall, aturan `DENY ANY ANY` berfungsi untuk...",
+      pilihan: [
+        "Mengizinkan semua lalu lintas",
+        "Menolak semua lalu lintas",
+        "Hanya menolak lalu lintas dari sumber yang tidak dikenal",
+        "Hanya menolak lalu lintas ke tujuan yang tidak dikenal"
+      ],
+      jawaban: "Menolak semua lalu lintas"
+    },
+    {
+      pertanyaan: "Apa perbedaan antara kriptografi simetris dan asimetris dari segi kecepatan?",
+      pilihan: [
+        "Asimetris lebih cepat",
+        "Simetris lebih cepat",
+        "Keduanya memiliki kecepatan yang sama",
+        "Kecepatan tergantung pada ukuran kunci"
+      ],
+      jawaban: "Simetris lebih cepat"
+    },
+    {
+      pertanyaan: "Dalam model OSI, 'Presentation Layer' bertanggung jawab untuk...",
+      pilihan: [
+        "Routing paket data",
+        "Mengatur format data dan enkripsi",
+        "Membuat sesi antara dua aplikasi",
+        "Mengelola antarmuka pengguna"
+      ],
+      jawaban: "Mengatur format data dan enkripsi"
+    },
+    {
+      pertanyaan: "Perintah `iptables -L` berfungsi untuk...",
+      pilihan: [
+        "Menghapus semua aturan firewall",
+        "Mengaktifkan firewall",
+        "Melihat daftar aturan firewall",
+        "Membuat aturan baru"
+      ],
+      jawaban: "Melihat daftar aturan firewall"
+    },
+    {
+      pertanyaan: "Jika sebuah organisasi ingin meminimalkan biaya infrastruktur server fisik, solusi yang paling tepat adalah...",
+      pilihan: [
+        "Membeli server fisik yang lebih besar",
+        "Menggunakan cloud computing",
+        "Menggunakan peer-to-peer networking",
+        "Menggunakan server lokal yang lebih banyak"
+      ],
+      jawaban: "Menggunakan cloud computing"
+    },
+    {
+      pertanyaan: "Ketika `ping` ke sebuah domain gagal, masalahnya bisa jadi...",
+      pilihan: [
+        "Firewall memblokir ICMP",
+        "DNS server tidak dapat menerjemahkan nama domain",
+        "Kabel jaringan putus",
+        "Semua jawaban di atas benar"
+      ],
+      jawaban: "Semua jawaban di atas benar"
+    },
+    {
+      pertanyaan: "Protokol routing EIGRP (Enhanced Interior Gateway Routing Protocol) dikategorikan sebagai...",
+      pilihan: [
+        "Distance Vector",
+        "Link State",
+        "Path Vector",
+        "Hybrid"
+      ],
+      jawaban: "Hybrid"
+    },
+    {
+      pertanyaan: "Pada Web server, apa peran dari file `.htaccess`?",
+      pilihan: [
+        "File konfigurasi global untuk server",
+        "File yang mengkonfigurasi setiap virtual host",
+        "File konfigurasi per direktori",
+        "File yang mengontrol hak akses file"
+      ],
+      jawaban: "File konfigurasi per direktori"
+    },
+    {
+      pertanyaan: "Fungsi utama dari `iptables` adalah...",
+      pilihan: [
+        "Membuat website",
+        "Membuat user baru",
+        "Mengatur tabel firewall pada kernel Linux",
+        "Mengelola database"
+      ],
+      jawaban: "Mengatur tabel firewall pada kernel Linux"
+    },
+    {
+      pertanyaan: "Dalam `chmod`, apa arti dari angka `4`?",
+      pilihan: [
+        "Write (tulis)",
+        "Read (baca)",
+        "Execute (eksekusi)",
+        "Tidak ada hak akses"
+      ],
+      jawaban: "Read (baca)"
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan 'Symmetric Key'?",
+      pilihan: [
+        "Kunci publik untuk enkripsi",
+        "Kunci privat untuk dekripsi",
+        "Satu kunci yang sama untuk enkripsi dan dekripsi",
+        "Pasangan kunci publik dan privat"
+      ],
+      jawaban: "Satu kunci yang sama untuk enkripsi dan dekripsi"
+    },
+    {
+      pertanyaan: "Perintah `sudo systemctl status dovecot` digunakan untuk...",
+      pilihan: [
+        "Memulai layanan Dovecot",
+        "Menghentikan layanan Dovecot",
+        "Melihat status layanan Dovecot",
+        "Menghapus Dovecot"
+      ],
+      jawaban: "Melihat status layanan Dovecot"
+    },
+    {
+      pertanyaan: "Jika Anda ingin mengubah hak akses file `script.sh` agar bisa dieksekusi oleh semua orang, perintah yang benar adalah...",
+      pilihan: [
+        "`chmod +x script.sh`",
+        "`chmod 777 script.sh`",
+        "`chmod +r script.sh`",
+        "`chmod +w script.sh`"
+      ],
+      jawaban: "`chmod +x script.sh`"
+    },
+    {
+      pertanyaan: "Fungsi dari `PTR record` dalam DNS adalah...",
+      pilihan: [
+        "Menerjemahkan nama domain ke IP address",
+        "Mengatur alias untuk host",
+        "Menerjemahkan IP address ke nama domain",
+        "Mengidentifikasi mail server"
+      ],
+      jawaban: "Menerjemahkan IP address ke nama domain"
+    },
+    {
+      pertanyaan: "Berikut adalah salah satu keuntungan utama dari penggunaan Web server terpisah untuk setiap website (virtual host):",
+      pilihan: [
+        "Menggunakan IP publik yang sama untuk semua website",
+        "Menghemat penggunaan RAM",
+        "Menurunkan tingkat keamanan",
+        "Menghilangkan kebutuhan akan DNS"
+      ],
+      jawaban: "Menggunakan IP publik yang sama untuk semua website"
+    },
+    {
+      pertanyaan: "Pada Mail Server, jika Roundcube tidak dapat diakses, masalahnya mungkin terletak pada...",
+      pilihan: [
+        "Layanan Postfix",
+        "Layanan Apache2/Web server",
+        "Layanan DNS",
+        "Layanan SMTP"
+      ],
+      jawaban: "Layanan Apache2/Web server"
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan 'firewall traversal'?",
+      pilihan: [
+        "Proses paket data melewati firewall",
+        "Proses firewall memblokir paket",
+        "Proses firewall crash",
+        "Proses firewall mengkonfigurasi dirinya sendiri"
+      ],
+      jawaban: "Proses paket data melewati firewall"
+    },
+    {
+      pertanyaan: "Pada kriptografi, 'dekripsi' adalah proses...",
+      pilihan: [
+        "Mengubah plainteks menjadi cipherteks",
+        "Mengubah cipherteks kembali menjadi plainteks",
+        "Membuat kunci privat",
+        "Mengamankan data"
+      ],
+      jawaban: "Mengubah cipherteks kembali menjadi plainteks"
+    },
+    {
+      pertanyaan: "Manakah dari berikut ini yang bukan merupakan fitur standar dari aplikasi video conference?",
+      pilihan: [
+        "Screen sharing",
+        "Polling",
+        "Breakout rooms",
+        "Printer sharing"
+      ],
+      jawaban: "Printer sharing"
+    },
+    {
+      pertanyaan: "Jika sebuah router kehilangan koneksi ke jaringan, protokol routing dinamis akan...",
+      pilihan: [
+        "Memerlukan konfigurasi manual baru",
+        "Secara otomatis menghapus rute yang tidak valid dari tabel routing",
+        "Membuat rute statis baru",
+        "Tidak melakukan apa-apa"
+      ],
+      jawaban: "Secara otomatis menghapus rute yang tidak valid dari tabel routing"
+    },
+    {
+      pertanyaan: "Protokol apa yang digunakan untuk mengirim email dari Mail Client ke Mail Server?",
+      pilihan: [
+        "POP3",
+        "IMAP",
+        "SMTP",
+        "HTTP"
+      ],
+      jawaban: "SMTP"
+    },
+    {
+      pertanyaan: "Apa peran dari `MX record` pada konfigurasi DNS untuk Mail Server?",
+      pilihan: [
+        "Mengidentifikasi alamat IP dari mail server",
+        "Menentukan nama host yang bertanggung jawab untuk menerima email",
+        "Mengatur prioritas pengiriman email",
+        "Mengatur alias untuk mail server"
+      ],
+      jawaban: "Menentukan nama host yang bertanggung jawab untuk menerima email"
+    },
+    {
+      pertanyaan: "Perintah `sudo chown -R www-data:www-data /var/www/html` digunakan untuk...",
+      pilihan: [
+        "Mengubah hak akses file",
+        "Mengubah kepemilikan file dan direktori secara rekursif",
+        "Menghapus file dan direktori",
+        "Membuat direktori baru"
+      ],
+      jawaban: "Mengubah kepemilikan file dan direktori secara rekursif"
+    },
+    {
+      pertanyaan: "Dalam sebuah firewall, 'implicit deny' rule adalah...",
+      pilihan: [
+        "Aturan yang secara eksplisit mengizinkan semua lalu lintas",
+        "Aturan yang secara eksplisit menolak semua lalu lintas",
+        "Aturan yang tidak terlihat tetapi menolak semua lalu lintas yang tidak diizinkan secara eksplisit",
+        "Aturan yang tidak dapat diubah"
+      ],
+      jawaban: "Aturan yang tidak terlihat tetapi menolak semua lalu lintas yang tidak diizinkan secara eksplisit"
+    },
+    {
+      pertanyaan: "Jika Anda ingin mengamankan sebuah website dengan enkripsi SSL/TLS, apa yang perlu diinstal di Web server Anda?",
+      pilihan: [
+        "PHP",
+        "MySQL",
+        "Sertifikat SSL",
+        "WordPress"
+      ],
+      jawaban: "Sertifikat SSL"
+    },
+    {
+      pertanyaan: "Dalam kriptografi, 'plaintext' adalah...",
+      pilihan: [
+        "Data yang sudah dienkripsi",
+        "Data yang belum dienkripsi",
+        "Kunci enkripsi",
+        "Fungsi hash"
+      ],
+      jawaban: "Data yang belum dienkripsi"
+    },
+    {
+      pertanyaan: "Salah satu fungsi dari model OSI Layer 4 (Transport Layer) adalah...",
+      pilihan: [
+        "Routing paket data",
+        "Mengatur komunikasi end-to-end",
+        "Memformat data",
+        "Mengatur alamat MAC"
+      ],
+      jawaban: "Mengatur komunikasi end-to-end"
+    },
+    {
+      pertanyaan: "Untuk mengkonfigurasi virtual host di Apache2, file yang paling sering diedit terletak di direktori...",
+      pilihan: [
+        "/etc/apache2/apache2.conf",
+        "/etc/apache2/sites-available/",
+        "/var/www/html/",
+        "/etc/apache2/mods-enabled/"
+      ],
+      jawaban: "/etc/apache2/sites-available/"
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan 'dynamic routing protocol'?",
+      pilihan: [
+        "Protokol yang hanya digunakan untuk rute statis",
+        "Protokol yang secara otomatis menemukan dan berbagi rute",
+        "Protokol yang digunakan untuk mengkonfigurasi IP address",
+        "Protokol yang hanya digunakan untuk jaringan kecil"
+      ],
+      jawaban: "Protokol yang secara otomatis menemukan dan berbagi rute"
+    },
+    {
+      pertanyaan: "Manakah dari berikut ini yang merupakan contoh dari 'Symmetric Key Cryptography'?",
+      pilihan: [
+        "RSA",
+        "DES",
+        "ECC",
+        "Diffie-Hellman"
+      ],
+      jawaban: "DES"
+    },
+    {
+      pertanyaan: "Apa peran dari file `wp-config.php` dalam instalasi WordPress?",
+      pilihan: [
+        "File tema utama",
+        "File konfigurasi database dan kredensial",
+        "File yang berisi semua postingan",
+        "File yang mengelola user WordPress"
+      ],
+      jawaban: "File konfigurasi database dan kredensial"
+    },
+    {
+      pertanyaan: "Pada Mail Server, jika email tidak dapat terkirim, kemungkinan besar ada masalah pada layanan...",
+      pilihan: [
+        "IMAP",
+        "POP3",
+        "Roundcube",
+        "Postfix (SMTP)"
+      ],
+      jawaban: "Postfix (SMTP)"
+    },
+    {
+      pertanyaan: "Dalam model OSI, Layer 2 (Data Link Layer) berfungsi untuk...",
+      pilihan: [
+        "Mengatur alamat IP",
+        "Mengatur alamat MAC",
+        "Mengatur port number",
+        "Mengatur routing"
+      ],
+      jawaban: "Mengatur alamat MAC"
+    },
+    {
+      pertanyaan: "Manakah dari berikut ini yang bukan merupakan aspek dari CIA Triad?",
+      pilihan: [
+        "Confidentiality",
+        "Integrity",
+        "Authentication",
+        "Availability"
+      ],
+      jawaban: "Authentication"
+    },
+    {
+      pertanyaan: "Ketika router menerima paket data, apa langkah pertama yang dilakukan router untuk menentukan jalur?",
+      pilihan: [
+        "Mengecek alamat MAC sumber",
+        "Memeriksa tabel routing",
+        "Mengubah header paket",
+        "Mengirim paket ke semua antarmuka"
+      ],
+      jawaban: "Memeriksa tabel routing"
+    },
+    {
+      pertanyaan: "Perintah `sudo systemctl stop postfix` digunakan untuk...",
+      pilihan: [
+        "Memulai layanan Postfix",
+        "Menghilangkan layanan Postfix",
+        "Menghentikan layanan Postfix",
+        "Melihat status Postfix"
+      ],
+      jawaban: "Menghentikan layanan Postfix"
+    },
+    {
+      pertanyaan: "Sebuah `ping` gagal karena `Destination Host Unreachable`. Hal ini mengindikasikan masalah pada...",
+      pilihan: [
+        "Koneksi fisik",
+        "Konfigurasi DNS",
+        "Tabel routing",
+        "Layanan Web server"
+      ],
+      jawaban: "Tabel routing"
+    },
+    {
+      pertanyaan: "Dalam hak akses Linux, apa arti dari angka `5` pada `chmod`?",
+      pilihan: [
+        "Read dan write",
+        "Read dan execute",
+        "Write dan execute",
+        "Read, write, dan execute"
+      ],
+      jawaban: "Read dan execute"
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan 'firewall kebijakan'?",
+      pilihan: [
+        "Firewall yang dikonfigurasi oleh user",
+        "Firewall yang memfilter berdasarkan jenis layanan",
+        "Firewall yang hanya mengizinkan lalu lintas sesuai kebijakan keamanan",
+        "Firewall yang tidak memerlukan konfigurasi"
+      ],
+      jawaban: "Firewall yang hanya mengizinkan lalu lintas sesuai kebijakan keamanan"
+    },
+    {
+      pertanyaan: "Perintah `named-checkzone example.com /etc/bind/db.example.com` digunakan untuk...",
+      pilihan: [
+        "Mengaktifkan zone baru",
+        "Memeriksa sintaks file zone",
+        "Mengubah file zone",
+        "Melihat status layanan DNS"
+      ],
+      jawaban: "Memeriksa sintaks file zone"
+    },
+    {
+      pertanyaan: "Jika Anda ingin memastikan bahwa tidak ada yang dapat mengubah file `/etc/apache2/apache2.conf`, hak akses yang paling tepat adalah...",
+      pilihan: [
+        "`-rwxrwxrwx`",
+        "`-rw-r--r--`",
+        "`-r--r--r--`",
+        "`-rwxr-xr-x`"
+      ],
+      jawaban: "`-r--r--r--`"
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan `stateless protocol`?",
+      pilihan: [
+        "Protokol yang tidak menyimpan informasi sesi",
+        "Protokol yang menyimpan informasi sesi",
+        "Protokol yang hanya digunakan untuk komunikasi real-time",
+        "Protokol yang tidak memerlukan koneksi"
+      ],
+      jawaban: "Protokol yang tidak menyimpan informasi sesi"
+    },
+    {
+      pertanyaan: "Dalam Mail Server, apa peran dari `MTA (Mail Transfer Agent)`?",
+      pilihan: [
+        "Mengelola user",
+        "Menyimpan email di server",
+        "Mengirim email dari satu server ke server lain",
+        "Menyediakan antarmuka webmail"
+      ],
+      jawaban: "Mengirim email dari satu server ke server lain"
+    },
+    {
+      pertanyaan: "Sebuah router dapat bertindak sebagai firewall dengan menggunakan fitur...",
+      pilihan: [
+        "Static route",
+        "Default route",
+        "Access Control List (ACL)",
+        "DHCP server"
+      ],
+      jawaban: "Access Control List (ACL)"
+    }
   ],
+
+
   
   umum3: [
     { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
@@ -1112,6 +2312,16 @@
   ],
   
   umum4: [
+    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
+    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+  ],
+
+  umum5: [
+    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
+    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+  ],
+
+  umum6: [
     { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
     { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
   ],
@@ -1587,11 +2797,7 @@
     const judulKuisEl = document.getElementById("judul-kuis"); // Tambahan: mengambil elemen judul
     
     // Tambahan: maping untuk judul berdasarkan kategori
-    const namaKategori = {
-      "umum": "Bahasa Indonesia",
-      "umum1": "Pendidikan Agama Islam",
-      "tjkt1": "AIJ"
-    };
+    
 
     // =================== INISIALISASI ===================
     skorTertinggiEl.innerHTML=`Skor Tertinggi: <span style="color:#4cafef">${skorTertinggi}</span>`;
