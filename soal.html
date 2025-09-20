@@ -244,6 +244,474 @@
     
     
     const soalPerKategori = {
+  umum3: [
+    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
+    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+  ],
+  
+  umum4: [
+    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
+    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+  ],
+
+  umum5: [
+    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
+    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+  ],
+
+  
+  umum1: [
+    // --- Kategori: Sabar dalam menghadapi musibah dan ujian (8 soal) ---
+    {
+      pertanyaan: "Berikut adalah salah satu kandungan dari QS. Al-Baqarah ayat 155...",
+      pilihan: [
+        "Perintah untuk berinfak di jalan Allah",
+        "Penjelasan tentang larangan berbuat syirik",
+        "Janji Allah akan menguji manusia dengan berbagai cobaan dan kesulitan",
+        "Anjuran untuk bersyukur atas nikmat yang diberikan",
+        "Kewajiban untuk melaksanakan shalat lima waktu"
+      ],
+      jawaban: "Janji Allah akan menguji manusia dengan berbagai cobaan dan kesulitan"
+    },
+    {
+      pertanyaan: "Bagaimana cara membiasakan sikap sabar dalam menghadapi musibah?",
+      pilihan: [
+        "Menceritakan musibah kepada semua orang",
+        "Merespon musibah dengan keluh kesah dan amarah",
+        "Meyakini bahwa musibah adalah bagian dari takdir Allah dan setiap kesulitan pasti ada kemudahan",
+        "Menghindari musibah dengan berdiam diri dan menyendiri",
+        "Mencari cara untuk membalas dendam atas musibah yang terjadi"
+      ],
+      jawaban: "Meyakini bahwa musibah adalah bagian dari takdir Allah dan setiap kesulitan pasti ada kemudahan"
+    },
+    {
+      pertanyaan: "Seorang muslimah yang ditinggal wafat oleh suaminya tetap bersabar dan ikhlas. Ia menganggap ini adalah ujian dari Allah SWT. Sikap ini merupakan contoh dari sikap sabar dalam menghadapi...",
+      pilihan: [
+        "Ujian kesehatan",
+        "Musibah keluarga",
+        "Cobaan harta",
+        "Ujian sosial",
+        "Ujian kekuasaan"
+      ],
+      jawaban: "Musibah keluarga"
+    },
+    {
+      paragraf: "Teks ayat Al-Baqarah ayat 155: 'wala nabluwannakum bisyai'im minal khoufi wal ju'i wa naqsim minal amwali wal anfusi wats tsamaraati wa basy-syirish-shobiriin'",
+      pertanyaan: "Hukum bacaan tajwid pada lafaz 'wal ju'i' adalah...",
+      pilihan: [
+        "Idgham bighunnah",
+        "Alif Lam Qomariyah",
+        "Ikhfa",
+        "Idzhar",
+        "Iqlab"
+      ],
+      jawaban: "Alif Lam Qomariyah"
+    },
+    {
+      pertanyaan: "Ketika seorang muslim mengalami musibah, ia dianjurkan untuk mengucapkan kalimat 'Inna lillahi wa inna ilaihi raji'un'. Kalimat ini disebut...",
+      pilihan: [
+        "Kalimat Tasbih",
+        "Kalimat Istighfar",
+        "Kalimat Tarji'",
+        "Kalimat Hamdalah",
+        "Kalimat Tahlil"
+      ],
+      jawaban: "Kalimat Tarji'"
+    },
+    {
+      paragraf: "Terjemahan per kata dari ayat 155 surat Al Baqarah: 'dan sungguh akan Kami berikan cobaan kepadamu, dengan sedikit ketakutan, kelaparan, kekurangan harta, jiwa dan buah-buahan. Dan berikanlah berita gembira kepada orang-orang yang sabar.'",
+      pertanyaan: "Terjemahan dari kata 'wats tsamaraati' adalah...",
+      pilihan: [
+        "dengan sedikit ketakutan",
+        "kekurangan harta",
+        "dan buah-buahan",
+        "kelaparan",
+        "dan jiwa"
+      ],
+      jawaban: "dan buah-buahan"
+    },
+    {
+      pertanyaan: "Berikut adalah salah satu keutamaan dari sikap sabar...",
+      pilihan: [
+        "Diberi harta yang berlimpah",
+        "Mendapat jabatan yang tinggi",
+        "Mendapat pahala yang tak terhingga dari Allah",
+        "Dijauhkan dari segala penyakit",
+        "Hidup tanpa masalah"
+      ],
+      jawaban: "Mendapat pahala yang tak terhingga dari Allah"
+    },
+    {
+      pertanyaan: "Ketika menghadapi ujian dari Allah, hikmah dari sikap sabar adalah...",
+      pilihan: [
+        "Menambah kesombongan diri",
+        "Menghindarkan diri dari azab Allah dan mendapat keberkahan",
+        "Menurunkan derajat di sisi Allah",
+        "Membuat hati menjadi gelisah",
+        "Membuat hidup lebih sulit"
+      ],
+      jawaban: "Menghindarkan diri dari azab Allah dan mendapat keberkahan"
+    },
+    // --- Kategori: Indahnya Kehidupan Bermakna (8 soal) ---
+    {
+      pertanyaan: "Sikap instropeksi diri (muhasabah) adalah salah satu cara untuk...",
+      pilihan: [
+        "Menambah kekayaan",
+        "Membiasakan diri untuk menyadari kesalahan dan memupuk iman",
+        "Meningkatkan kualitas tidur",
+        "Menambah teman dan relasi",
+        "Menghindari tanggung jawab"
+      ],
+      jawaban: "Membiasakan diri untuk menyadari kesalahan dan memupuk iman"
+    },
+    {
+      pertanyaan: "Mengucapkan kalimat yang baik dan benar merupakan cerminan dari iman yang...",
+      pilihan: [
+        "Bertambah dengan lisan",
+        "Bertambah dengan harta",
+        "Bertambah dengan perbuatan",
+        "Tidak memiliki konsekuensi",
+        "Bertambah dengan jabatan"
+      ],
+      jawaban: "Bertambah dengan lisan"
+    },
+    {
+      pertanyaan: "Berikut adalah kriteria orang yang imannya semakin bertambah, yaitu...",
+      pilihan: [
+        "Selalu beramal hanya di depan orang lain",
+        "Tidak pernah melakukan kesalahan",
+        "Senang beribadah tanpa merasa diawasi Allah",
+        "Senantiasa beramal shalih dan merasa diawasi oleh Allah SWT",
+        "Selalu mengandalkan orang lain"
+      ],
+      jawaban: "Senantiasa beramal shalih dan merasa diawasi oleh Allah SWT"
+    },
+    {
+      pertanyaan: "Al Hadits yang mengungkapkan predikat orang yang apabila beramal seolah melihat Allah SWT, jika tidak yakinlah Allah SWT melihatnya, adalah Hadits tentang...",
+      pilihan: [
+        "Keimanan",
+        "Keikhlasan",
+        "Ihsan",
+        "Islam",
+        "Taqwa"
+      ],
+      jawaban: "Ihsan"
+    },
+    {
+      paragraf: "Terjemahan QS Al Anfal ayat 2: 'Sesungguhnya orang-orang yang beriman ialah mereka yang bila disebut nama Allah gemetarlah hati mereka, dan apabila dibacakan ayat-ayat-Nya bertambahlah iman mereka (karenanya), dan hanya kepada Tuhanlah mereka bertawakkal.'",
+      pertanyaan: "Berdasarkan ayat tersebut, perilaku orang yang beriman adalah...",
+      pilihan: [
+        "Tidak memiliki rasa takut",
+        "Hatinya tenang ketika nama Allah disebut",
+        "Imannya bertambah ketika dibacakan ayat Al Qur'an",
+        "Beribadah hanya karena takut azab Allah",
+        "Mengutamakan harta daripada ibadah"
+      ],
+      jawaban: "Imannya bertambah ketika dibacakan ayat Al Qur'an"
+    },
+    {
+      pertanyaan: "Berikut ini adalah salah satu kriteria orang munafik menurut syariat Islam...",
+      pilihan: [
+        "Apabila berjanji tidak pernah ditepati",
+        "Apabila berkata selalu jujur",
+        "Apabila diberi amanah selalu menjaga",
+        "Apabila berdebat selalu mengalah",
+        "Apabila beramal selalu ikhlas"
+      ],
+      jawaban: "Apabila berjanji tidak pernah ditepati"
+    },
+    {
+      pertanyaan: "Membiasakan sikap sebagai orang yang beriman dapat ditunjukkan dengan perilaku...",
+      pilihan: [
+        "Selalu berbuat maksiat dan dosa",
+        "Berbohong demi kebaikan",
+        "Menjaga amanah dan berkata jujur",
+        "Beramal hanya saat ada orang lain",
+        "Menghindari shalat berjamaah"
+      ],
+      jawaban: "Menjaga amanah dan berkata jujur"
+    },
+    {
+      pertanyaan: "Kandungan Al Qur'an surat Al Baqarah ayat 1-5 menjelaskan tentang...",
+      pilihan: [
+        "Ciri-ciri orang yang bertaqwa",
+        "Perintah untuk berpuasa",
+        "Larangan riba",
+        "Kisah nabi-nabi",
+        "Rukun iman"
+      ],
+      jawaban: "Ciri-ciri orang yang bertaqwa"
+    },
+    // --- Kategori: Munafik dan Keras Hati tak akan pernah maju (5 soal) ---
+    {
+      pertanyaan: "Berikut ini adalah salah satu tokoh kafir Quraisy yang bermuka dua (munafik) pada zaman Rasulullah SAW...",
+      pilihan: [
+        "Abu Bakar As-Siddiq",
+        "Umar bin Khattab",
+        "Abdullah bin Ubay bin Salul",
+        "Ali bin Abi Thalib",
+        "Zaid bin Haritsah"
+      ],
+      jawaban: "Abdullah bin Ubay bin Salul"
+    },
+    {
+      pertanyaan: "Salah satu ciri mengerasnya hati manusia adalah...",
+      pilihan: [
+        "Sering membaca Al Qur'an",
+        "Mudah menangis karena takut kepada Allah",
+        "Sulit menerima nasihat kebaikan",
+        "Senang melakukan kebaikan",
+        "Menghindari maksiat"
+      ],
+      jawaban: "Sulit menerima nasihat kebaikan"
+    },
+    {
+      pertanyaan: "Tanda-tanda seseorang memiliki sifat keras kepala adalah...",
+      pilihan: [
+        "Selalu menerima pendapat orang lain",
+        "Merasa paling benar dan tidak mau dikoreksi",
+        "Senang bersedekah",
+        "Sering meminta maaf",
+        "Mengakui kesalahan"
+      ],
+      jawaban: "Merasa paling benar dan tidak mau dikoreksi"
+    },
+    {
+      pertanyaan: "Sikap su'udzon (buruk sangka) dapat mengakibatkan...",
+      pilihan: [
+        "Bertambahnya persaudaraan",
+        "Munculnya fitnah dan permusuhan",
+        "Hati menjadi lebih tenang",
+        "Meningkatnya kualitas ibadah",
+        "Hubungan yang harmonis"
+      ],
+      jawaban: "Munculnya fitnah dan permusuhan"
+    },
+    {
+      pertanyaan: "Menurut Al Qur'an, karakteristik sikap munafik yang paling utama adalah...",
+      pilihan: [
+        "Beriman di lisan, tetapi kufur di dalam hati",
+        "Menjalankan shalat lima waktu",
+        "Berbuat baik kepada sesama",
+        "Suka menolong orang yang sedang kesulitan",
+        "Suka berpuasa"
+      ],
+      jawaban: "Beriman di lisan, tetapi kufur di dalam hati"
+    },
+    // --- Kategori: Kewarisan dan Kearifan dalam Islam (9 soal) ---
+    {
+      pertanyaan: "Dalam pembagian harta waris, ketentuan yang berlaku adalah...",
+      pilihan: [
+        "Dapat dibagi secara merata kepada semua ahli waris",
+        "Mengikuti aturan yang telah ditetapkan dalam Al Qur'an dan Hadits",
+        "Ditentukan berdasarkan kesepakatan keluarga",
+        "Dibagi berdasarkan usia ahli waris",
+        "Mengikuti hukum adat"
+      ],
+      jawaban: "Mengikuti aturan yang telah ditetapkan dalam Al Qur'an dan Hadits"
+    },
+    {
+      pertanyaan: "Berikut adalah salah satu ahli waris yang dapat menghabiskan seluruh harta warisan...",
+      pilihan: [
+        "Anak perempuan",
+        "Suami",
+        "Saudara perempuan kandung",
+        "Anak laki-laki",
+        "Istri"
+      ],
+      jawaban: "Anak laki-laki"
+    },
+    {
+      pertanyaan: "Ilmu yang membahas tentang pembagian harta warisan dalam Islam disebut...",
+      pilihan: [
+        "Ilmu Tauhid",
+        "Ilmu Fiqih",
+        "Ilmu Waris (Faraidh)",
+        "Ilmu Akhlak",
+        "Ilmu Kalam"
+      ],
+      jawaban: "Ilmu Waris (Faraidh)"
+    },
+    {
+      pertanyaan: "Siapa ahli waris yang memperoleh bagian tertentu dari harta warisan?",
+      pilihan: [
+        "Anak laki-laki",
+        "Anak perempuan",
+        "Paman",
+        "Saudara laki-laki seibu sebapak",
+        "Sepupu"
+      ],
+      jawaban: "Anak perempuan"
+    },
+    {
+      pertanyaan: "Salah satu penyebab terhalangnya pembagian harta waris adalah...",
+      pilihan: [
+        "Adanya anak yatim",
+        "Adanya hutang yang belum terbayar oleh pewaris",
+        "Ahli waris yang jumlahnya sedikit",
+        "Pewaris yang meninggal pada bulan Ramadhan",
+        "Pewaris yang tidak memiliki keturunan"
+      ],
+      jawaban: "Adanya hutang yang belum terbayar oleh pewaris"
+    },
+    {
+      pertanyaan: "Penyebab yang menyebabkan seseorang tidak mendapatkan warisan adalah...",
+      pilihan: [
+        "Pernah berselisih dengan pewaris",
+        "Berbeda keyakinan atau agama dengan pewaris",
+        "Berbeda jenis kelamin dengan pewaris",
+        "Belum menikah",
+        "Tidak memiliki pekerjaan"
+      ],
+      jawaban: "Berbeda keyakinan atau agama dengan pewaris"
+    },
+    {
+      pertanyaan: "Seorang suami meninggal dan meninggalkan seorang istri, seorang anak laki-laki, dan seorang anak perempuan. Harta warisan sebesar Rp120.000.000. Bagian yang diterima oleh anak laki-laki adalah...",
+      pilihan: [
+        "Rp30.000.000",
+        "Rp40.000.000",
+        "Rp50.000.000",
+        "Rp60.000.000",
+        "Rp80.000.000"
+      ],
+      jawaban: "Rp60.000.000"
+    },
+    {
+      pertanyaan: "Seorang istri meninggal dan meninggalkan suami, ayah, dan ibu. Harta warisan sebesar Rp96.000.000. Bagian yang diterima oleh suami adalah...",
+      pilihan: [
+        "Rp12.000.000",
+        "Rp24.000.000",
+        "Rp48.000.000",
+        "Rp36.000.000",
+        "Rp42.000.000"
+      ],
+      jawaban: "Rp48.000.000"
+    },
+    {
+      pertanyaan: "Pembagian harta waris dalam Islam harus dilakukan setelah...",
+      pilihan: [
+        "Semua ahli waris berkumpul",
+        "Pewaris dimakamkan dan semua hutang serta wasiatnya dilunasi",
+        "Adanya surat perjanjian dari pengadilan",
+        "Semua harta pewaris sudah diketahui",
+        "Seluruh ahli waris setuju"
+      ],
+      jawaban: "Pewaris dimakamkan dan semua hutang serta wasiatnya dilunasi"
+    },
+    // --- Kategori: Perkembangan Peradaban Islam di Dunia (10 soal) ---
+    {
+      pertanyaan: "Salah satu tokoh ilmuwan di Pakistan yang dikenal sebagai peraih Nobel Fisika adalah...",
+      pilihan: [
+        "Muhammad Iqbal",
+        "Abdus Salam",
+        "Ziauddin Ahmad",
+        "Hamidullah",
+        "Dr. A. Q. Khan"
+      ],
+      jawaban: "Abdus Salam"
+    },
+    {
+      pertanyaan: "Salah satu tokoh ilmuwan di Pakistan yang dikenal sebagai penyair dan filsuf adalah...",
+      pilihan: [
+        "Muhammad Iqbal",
+        "Abdus Salam",
+        "Ziauddin Ahmad",
+        "Hamidullah",
+        "Allama Iqbal"
+      ],
+      jawaban: "Muhammad Iqbal"
+    },
+    {
+      pertanyaan: "Ilmuwan Pakistan yang merintis studi tentang pemikiran Islam modern adalah...",
+      pilihan: [
+        "Muhammad Iqbal",
+        "Abdus Salam",
+        "Fazlur Rahman",
+        "Hamidullah",
+        "Ziauddin Sardar"
+      ],
+      jawaban: "Fazlur Rahman"
+    },
+    {
+      pertanyaan: "Periode klasik fase pertama perkembangan Islam adalah...",
+      pilihan: [
+        "Periode Rasulullah SAW",
+        "Periode Khulafaur Rasyidin",
+        "Periode Dinasti Abbasiyah",
+        "Periode Dinasti Umayyah",
+        "Periode Daulah Utsmaniyah"
+      ],
+      jawaban: "Periode Dinasti Umayyah"
+    },
+    {
+      pertanyaan: "Sejarah perkembangan Islam periode klasik fase pertama (650-1250 M) ditandai dengan...",
+      pilihan: [
+        "Berkembangnya ilmu pengetahuan dan peradaban Islam",
+        "Masa kemunduran dan perpecahan",
+        "Penaklukan wilayah Eropa Barat",
+        "Penyebaran Islam di Asia Tenggara",
+        "Perang Salib"
+      ],
+      jawaban: "Berkembangnya ilmu pengetahuan dan peradaban Islam"
+    },
+    {
+      pertanyaan: "Faktor yang menyebabkan kemunduran Islam adalah...",
+      pilihan: [
+        "Kemajuan ilmu pengetahuan",
+        "Perpecahan dan konflik internal di antara umat Islam",
+        "Perdagangan yang maju",
+        "Hubungan diplomatik yang baik",
+        "Keterbukaan terhadap budaya lain"
+      ],
+      jawaban: "Perpecahan dan konflik internal di antara umat Islam"
+    },
+    {
+      pertanyaan: "Tokoh pembebas bangsa Mesir dari penjajahan adalah...",
+      pilihan: [
+        "Jamal Abdun Naser",
+        "Anwar Sadat",
+        "Muhammad Iqbal",
+        "Sayyid Qutb",
+        "Faisal bin Abdulaziz"
+      ],
+      jawaban: "Jamal Abdun Naser"
+    },
+    {
+      pertanyaan: "Tokoh Pendiri Pakistan Philosophy Congres adalah...",
+      pilihan: [
+        "Muhammad Iqbal",
+        "Mian Muhammad Sharif",
+        "Jamal Abdun Naser",
+        "Abdus Salam",
+        "Fazlur Rahman"
+      ],
+      jawaban: "Mian Muhammad Sharif"
+    },
+    {
+      pertanyaan: "Negara yang memiliki agama mayoritas muslim dan dikenal sebagai 'Macan Asia' adalah...",
+      pilihan: [
+        "Pakistan",
+        "Mesir",
+        "Turki",
+        "Malaysia",
+        "Indonesia"
+      ],
+      jawaban: "Malaysia"
+    },
+    {
+      pertanyaan: "Negara tujuan kaum muslim memasuki benua Eropa setelah perang dunia ke-2 adalah...",
+      pilihan: [
+        "Inggris dan Perancis",
+        "Jerman dan Italia",
+        "Spanyol dan Portugal",
+        "Yunani dan Polandia",
+        "Belanda dan Belgia"
+      ],
+      jawaban: "Jerman dan Italia"
+    }
+  ],
+
+      
   umum: [
     // --- Kategori: Surat Lamaran Pekerjaan ---
     // (Berdasarkan kisi-kisi nomor 1-12, ditambah 5 soal tambahan)
@@ -1104,12 +1572,6 @@
 
 
 
-  
-  umum1: [
-    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
-    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
-  ],
-  
   
   umum2: [
     // --- Kategori: DNS Server (Bind9) ---
