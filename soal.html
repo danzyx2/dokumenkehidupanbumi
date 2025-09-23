@@ -201,6 +201,9 @@
           <option value="umum2">Teknik Jaringan Komputer dan Telekomunikasi</option>
           <option value="tjkt1">AIJ</option>
           <option value="umum5">Pendidikan Kewarganegaraan</option>
+          <option value="umum3">Mail Server</option>
+          <option value="umum4">Firewall</option>
+        
         </select>
       </div>
       <div class="form-group">
@@ -240,21 +243,473 @@
       "umum": "Bahasa Indonesia",
       "umum1": "Pendidikan Agama Islam",
       "umum5": "Pendidikan Kewarganegaraan", 
+      "umum3": "Mail Server", 
+      "umum4": "Firewall", 
       "umum2": "Teknik Jaringan Komputer dan Telekomunikasi",
       "tjkt1": "AIJ"
     };
     
     
     const soalPerKategori = {
-  umum3: [
+  umum7: [
     { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
     { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
   ],
   
-  umum4: [
+  umum6: [
     { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
     { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
   ],
+
+  umum3: [
+    // --- Kategori: Mail Server ---
+    {
+      pertanyaan: "Berikut ini adalah definisi dari Mail Server yang paling tepat...",
+      pilihan: [
+        "Server yang hanya berfungsi untuk menerima email.",
+        "Server yang digunakan untuk menjelajahi internet.",
+        "Server yang berfungsi untuk mengirim, menerima, menyimpan, dan mengelola email.",
+        "Server yang bertugas sebagai database.",
+        "Server yang digunakan untuk streaming video."
+      ],
+      jawaban: "Server yang berfungsi untuk mengirim, menerima, menyimpan, dan mengelola email."
+    },
+    {
+      pertanyaan: "Komponen Mail Server yang bertugas mengirim dan meneruskan email ke server tujuan adalah...",
+      pilihan: [
+        "MTA (Mail Transfer Agent)",
+        "MDA (Mail Delivery Agent)",
+        "MUA (Mail User Agent)",
+        "DNS Server",
+        "Web Server"
+      ],
+      jawaban: "MTA (Mail Transfer Agent)"
+    },
+    {
+      pertanyaan: "Aplikasi yang digunakan user untuk membaca dan mengirim email, baik berupa aplikasi desktop (seperti Thunderbird) atau berbasis web (seperti Roundcube), disebut sebagai...",
+      pilihan: [
+        "MTA (Mail Transfer Agent)",
+        "MDA (Mail Delivery Agent)",
+        "MUA (Mail User Agent)",
+        "POP3",
+        "IMAP"
+      ],
+      jawaban: "MUA (Mail User Agent)"
+    },
+    {
+      pertanyaan: "Postfix adalah contoh dari komponen Mail Server yang berfungsi sebagai...",
+      pilihan: [
+        "Mail Delivery Agent",
+        "Mail User Agent",
+        "Mail Transfer Agent",
+        "Database Server",
+        "DNS Server"
+      ],
+      jawaban: "Mail Transfer Agent"
+    },
+    {
+      pertanyaan: "Dovecot adalah contoh dari komponen Mail Server yang berfungsi sebagai...",
+      pilihan: [
+        "Mail Transfer Agent",
+        "Mail Delivery Agent",
+        "Mail User Agent",
+        "Web Server",
+        "FTP Server"
+      ],
+      jawaban: "Mail Delivery Agent"
+    },
+    {
+      pertanyaan: "Roundcube merupakan aplikasi webmail berbasis PHP yang terhubung dengan Dovecot untuk membaca email dan dengan Postfix untuk mengirim email. Hal ini menjadikannya contoh dari...",
+      pilihan: [
+        "Mail Transfer Agent (MTA)",
+        "Mail Delivery Agent (MDA)",
+        "Mail User Agent (MUA)",
+        "DNS Server",
+        "Database Server"
+      ],
+      jawaban: "Mail User Agent (MUA)"
+    },
+    {
+      paragraf: "Dalam konfigurasi Mail Server, salah satu langkah yang dilakukan adalah menginstal paket-paket yang dibutuhkan. Beberapa paket yang disebutkan dalam jobsheet adalah `postfix`, `dovecot-imapd`, `apache2`, dan `roundcube`.",
+      pertanyaan: "Berdasarkan paragraf tersebut, paket apa yang berfungsi untuk menyediakan akses email kepada pengguna dan mendukung POP3/IMAP?",
+      pilihan: [
+        "postfix",
+        "dovecot-imapd",
+        "apache2",
+        "roundcube",
+        "mariadb-server"
+      ],
+      jawaban: "dovecot-imapd"
+    },
+    {
+      pertanyaan: "Protokol yang digunakan oleh Postfix sebagai jembatan untuk mengirimkan email dari user ke mail server lain adalah...",
+      pilihan: [
+        "HTTP (Hypertext Transfer Protocol)",
+        "FTP (File Transfer Protocol)",
+        "SMTP (Simple Mail Transfer Protocol)",
+        "POP3 (Post Office Protocol version 3)",
+        "IMAP (Internet Message Access Protocol)"
+      ],
+      jawaban: "SMTP (Simple Mail Transfer Protocol)"
+    },
+    {
+      pertanyaan: "Untuk mengkonfigurasi Mail Server, salah satu langkah awalnya adalah memastikan IP Address sudah diatur secara permanen. Perintah untuk mengedit file konfigurasi network pada Ubuntu 22.04 LTS adalah...",
+      pilihan: [
+        "nano /etc/network/interfaces",
+        "nano /etc/netplan/01-netcfg.yaml",
+        "nano /etc/hosts",
+        "nano /etc/resolv.conf",
+        "nano /etc/init.d/named"
+      ],
+      jawaban: "nano /etc/netplan/01-netcfg.yaml"
+    },
+    {
+      pertanyaan: "Pada konfigurasi Postfix, pilihan 'General type of mail configuration' yang memungkinkan email dikirim dan diterima secara langsung menggunakan SMTP adalah...",
+      pilihan: [
+        "No configuration",
+        "Internet site",
+        "Internet with smarthost",
+        "Satellite system",
+        "Local only"
+      ],
+      jawaban: "Internet site"
+    },
+    {
+      pertanyaan: "Setelah menginstal paket-paket yang dibutuhkan, perintah untuk membuat folder email menggunakan Dovecot adalah...",
+      pilihan: [
+        "mkdir /var/mail",
+        "maildirmake.dovecot /etc/skel/Maildir",
+        "systemctl start dovecot",
+        "adduser adek",
+        "nano /etc/dovecot/conf.d/10-mail.conf"
+      ],
+      jawaban: "maildirmake.dovecot /etc/skel/Maildir"
+    },
+    {
+      pertanyaan: "Dalam konfigurasi file `main.cf` Postfix, parameter yang ditambahkan untuk menentukan lokasi mailbox pengguna adalah...",
+      pilihan: [
+        "myhostname",
+        "mydestination",
+        "mynetworks",
+        "home_mailbox",
+        "relayhost"
+      ],
+      jawaban: "home_mailbox"
+    },
+    {
+      pertanyaan: "Untuk memastikan bahwa Mail Server dapat terhubung ke DNS Server dan internet, perintah ping yang dapat digunakan adalah...",
+      pilihan: [
+        "ping localhost",
+        "ping 127.0.0.1",
+        "ping 8.8.8.8",
+        "ping mail.stewa.edu",
+        "ping www.stewa.edu"
+      ],
+      jawaban: "ping 8.8.8.8"
+    },
+    {
+      pertanyaan: "Untuk mengaktifkan otentikasi `plaintext` pada konfigurasi Dovecot, file yang perlu diubah adalah...",
+      pilihan: [
+        "/etc/dovecot/conf.d/10-mail.conf",
+        "/etc/dovecot/conf.d/10-auth.conf",
+        "/etc/postfix/main.cf",
+        "/etc/apache2/sites-available/roundcube.conf",
+        "/etc/hosts"
+      ],
+      jawaban: "/etc/dovecot/conf.d/10-auth.conf"
+    },
+    {
+      pertanyaan: "Setelah instalasi dan konfigurasi, untuk membuat akun email baru, perintah yang digunakan adalah...",
+      pilihan: [
+        "useradd -m user",
+        "adduser user",
+        "mail user",
+        "sudo useradd user",
+        "systemctl restart postfix"
+      ],
+      jawaban: "adduser user"
+    },
+    {
+      pertanyaan: "Pada konfigurasi Roundcube, perintah yang digunakan untuk mengubah kepemilikan folder webmail agar dapat diakses oleh Apache adalah...",
+      pilihan: [
+        "chown -R root:root /var/www/roundcube/",
+        "chown -R www-data:www-data /var/www/roundcube/",
+        "chmod -R 777 /var/www/roundcube/",
+        "ls -l /var/www/roundcube/",
+        "rm -rf /var/www/roundcube/"
+      ],
+      jawaban: "chown -R www-data:www-data /var/www/roundcube/"
+    },
+    {
+      pertanyaan: "Untuk mengaktifkan virtual host Apache yang telah dibuat untuk Roundcube, perintah yang benar adalah...",
+      pilihan: [
+        "a2ensite roundcube.conf",
+        "a2dissite 000-default.conf",
+        "systemctl reload apache2",
+        "a2enmod rewrite",
+        "apachectl start"
+      ],
+      jawaban: "a2ensite roundcube.conf"
+    },
+    {
+      pertanyaan: "Setelah konfigurasi database untuk Roundcube, perintah yang digunakan untuk mengimpor skema database awal adalah...",
+      pilihan: [
+        "mysql -u root -p < /var/www/roundcube/SQL/mysql.initial.sql",
+        "mysql -u rcadmin -p roundcube < /var/www/roundcube/SQL/mysql.initial.sql",
+        "php /var/www/roundcube/bin/install.sh",
+        "apt install mariadb-server",
+        "create database roundcube;"
+      ],
+      jawaban: "mysql -u rcadmin -p roundcube < /var/www/roundcube/SQL/mysql.initial.sql"
+    },
+    {
+      pertanyaan: "Apa yang perlu diubah pada konfigurasi Roundcube setelah instalasi web installer berhasil?",
+      pilihan: [
+        "Menambahkan user baru.",
+        "Mengubah nama database.",
+        "Mengubah bagian SMTP di file `config.inc.php`.",
+        "Menghapus folder `installer`.",
+        "Mengubah timezone PHP."
+      ],
+      jawaban: "Mengubah bagian SMTP di file `config.inc.php`."
+    },
+    {
+      pertanyaan: "Perintah `rm -r /var/www/roundcube/installer/` bertujuan untuk...",
+      pilihan: [
+        "Menginstal ulang Roundcube.",
+        "Membuat direktori baru.",
+        "Menghapus folder installer demi alasan keamanan.",
+        "Mengubah kepemilikan folder.",
+        "Memulai layanan Apache."
+      ],
+      jawaban: "Menghapus folder installer demi alasan keamanan."
+    }
+  ],
+
+umum4: [
+    // --- Kategori: Firewall ---
+    {
+      pertanyaan: "Berdasarkan definisi pada dokumen, Firewall adalah sebuah sistem atau perangkat yang berfungsi untuk...",
+      pilihan: [
+        "Membatasi akses internet untuk semua pengguna.",
+        "Mengizinkan semua lalu lintas jaringan untuk melaluinya.",
+        "Mengizinkan lalu lintas jaringan yang dianggap aman dan mencegah yang tidak aman.",
+        "Mencatat semua aktivitas di dalam jaringan tanpa memfilternya.",
+        "Melindungi perangkat dari virus dan malware."
+      ],
+      jawaban: "Mengizinkan lalu lintas jaringan yang dianggap aman dan mencegah yang tidak aman."
+    },
+    {
+      pertanyaan: "Umumnya, sebuah firewall diimplementasikan dalam sebuah mesin terdedikasi yang berjalan pada...",
+      pilihan: [
+        "Komputer klien.",
+        "Router di dalam jaringan lokal.",
+        "Gerbang (gateway) antara jaringan lokal dan jaringan lainnya.",
+        "Server database.",
+        "Access point nirkabel."
+      ],
+      jawaban: "Gerbang (gateway) antara jaringan lokal dan jaringan lainnya."
+    },
+    {
+      pertanyaan: "Berikut ini adalah salah satu tujuan utama dari penggunaan Firewall, yaitu...",
+      pilihan: [
+        "Mempercepat kecepatan internet.",
+        "Mencegah serangan dari hacker, pelaku spionase, atau pencuri data.",
+        "Membantu instalasi aplikasi.",
+        "Meningkatkan kapasitas penyimpanan data.",
+        "Menyediakan layanan cloud computing."
+      ],
+      jawaban: "Mencegah serangan dari hacker, pelaku spionase, atau pencuri data."
+    },
+    {
+      pertanyaan: "Salah satu fungsi utama Firewall adalah mengontrol dan mengawasi...",
+      pilihan: [
+        "Penggunaan aplikasi pada komputer.",
+        "Arus listrik yang mengalir di jaringan.",
+        "Paket data yang mengalir di jaringan.",
+        "Suhu perangkat keras jaringan.",
+        "Hak akses pengguna lokal."
+      ],
+      jawaban: "Paket data yang mengalir di jaringan."
+    },
+    {
+      pertanyaan: "Apa yang harus dilakukan Firewall terhadap lalu lintas data yang akan melewati jaringan privat?",
+      pilihan: [
+        "Mengabaikannya.",
+        "Membiarkan semua data lewat.",
+        "Melakukan pemeriksaan terhadap paket data.",
+        "Menyimpan semua paket data secara permanen.",
+        "Mengubah format paket data."
+      ],
+      jawaban: "Melakukan pemeriksaan terhadap paket data."
+    },
+    {
+      pertanyaan: "Salah satu kriteria yang digunakan oleh firewall untuk memperbolehkan atau tidak memperbolehkan paket data lewat adalah...",
+      pilihan: [
+        "Jenis sistem operasi.",
+        "Warna kabel jaringan.",
+        "Ukuran fisik paket data.",
+        "Alamat IP dari komputer sumber.",
+        "Nama pengguna yang sedang login."
+      ],
+      jawaban: "Alamat IP dari komputer sumber."
+    },
+    {
+      pertanyaan: "Informasi apa yang disimpan dalam header paket data yang dapat menjadi kriteria pemeriksaan Firewall?",
+      pilihan: [
+        "Tanggal pembuatan paket.",
+        "Informasi dari header yang disimpan dalam paket data.",
+        "Jenis konten yang diakses.",
+        "Durasi koneksi.",
+        "Jumlah paket yang dikirim."
+      ],
+      jawaban: "Informasi dari header yang disimpan dalam paket data."
+    },
+    {
+      pertanyaan: "Selain Alamat IP, kriteria lain yang digunakan firewall untuk memfilter data adalah...",
+      pilihan: [
+        "Kecepatan koneksi internet.",
+        "Merek perangkat jaringan.",
+        "Port TCP/UDP sumber dari sumber.",
+        "Jumlah memori RAM.",
+        "Resolusi layar komputer tujuan."
+      ],
+      jawaban: "Port TCP/UDP sumber dari sumber."
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan 'Melakukan autentifikasi terhadap akses' sebagai salah satu fungsi Firewall?",
+      pilihan: [
+        "Memastikan bahwa semua data telah dikirim.",
+        "Membuat cadangan data secara otomatis.",
+        "Memeriksa identitas pengguna yang mencoba mengakses jaringan.",
+        "Memeriksa hanya header paket data.",
+        "Menghapus data yang tidak terpakai."
+      ],
+      jawaban: "Memeriksa identitas pengguna yang mencoba mengakses jaringan."
+    },
+    {
+      pertanyaan: "Kemampuan untuk mendeteksi protokol aplikasi tertentu yang spesifik merupakan keunggulan dari aplikasi...",
+      pilihan: [
+        "Web server",
+        "Proxy firewall",
+        "Mail server",
+        "DNS server",
+        "FTP server"
+      ],
+      jawaban: "Proxy firewall"
+    },
+    {
+      pertanyaan: "Salah satu fungsi pencatatan transaksi kejadian di firewall memungkinkan...",
+      pilihan: [
+        "Pengguna untuk mengunggah file lebih cepat.",
+        "Pendeteksian dini akan penjebolan jaringan.",
+        "Penghematan bandwidth.",
+        "Pengaturan prioritas lalu lintas data.",
+        "Penentuan lokasi geografis pengguna."
+      ],
+      jawaban: "Pendeteksian dini akan penjebolan jaringan."
+    },
+    {
+      pertanyaan: "Salah satu karakteristik firewall adalah...",
+      pilihan: [
+        "Memperbolehkan lalu lintas dari luar ke dalam jaringan secara bebas.",
+        "Seluruh hubungan/kegiatan dari dalam ke luar, harus melewati firewall.",
+        "Tidak memerlukan konfigurasi keamanan.",
+        "Tidak kebal terhadap serangan.",
+        "Hanya dapat digunakan pada jaringan nirkabel."
+      ],
+      jawaban: "Seluruh hubungan/kegiatan dari dalam ke luar, harus melewati firewall."
+    },
+    {
+      pertanyaan: "Bagaimana cara membatasi akses terhadap jaringan lokal agar hanya bisa melewati firewall?",
+      pilihan: [
+        "Dengan memblok/membatasi secara fisik semua akses kecuali melewati firewall.",
+        "Dengan mengubah nama jaringan.",
+        "Dengan menggunakan enkripsi data.",
+        "Dengan menginstal antivirus.",
+        "Dengan mempercepat koneksi internet."
+      ],
+      jawaban: "Dengan memblok/membatasi secara fisik semua akses kecuali melewati firewall."
+    },
+    {
+      pertanyaan: "Karakteristik kedua dari firewall adalah...",
+      pilihan: [
+        "Semua kegiatan dapat melewati firewall.",
+        "Hanya kegiatan yang tidak dikenal yang dapat melewati firewall.",
+        "Hanya kegiatan yang terdaftar/dikenal yang dapat melewati/melakukan hubungan.",
+        "Firewall hanya mengawasi lalu lintas dari luar ke dalam.",
+        "Firewall tidak memerlukan policy."
+      ],
+      jawaban: "Hanya kegiatan yang terdaftar/dikenal yang dapat melewati/melakukan hubungan."
+    },
+    {
+      pertanyaan: "Bagaimana cara agar hanya kegiatan yang terdaftar/dikenal dapat melewati firewall?",
+      pilihan: [
+        "Dengan mengatur kebijakan (policy) pada konfigurasi keamanan lokal.",
+        "Dengan menggunakan password yang panjang.",
+        "Dengan mengubah alamat MAC perangkat.",
+        "Dengan mematikan firewall secara berkala.",
+        "Dengan menggunakan browser khusus."
+      ],
+      jawaban: "Dengan mengatur kebijakan (policy) pada konfigurasi keamanan lokal."
+    },
+    {
+      pertanyaan: "Apa yang membuat sebuah firewall kebal atau relatif kuat terhadap serangan/kelemahan?",
+      pilihan: [
+        "Penggunaan sistem yang dapat dipercaya dan dengan sistem operasi yang relatif aman.",
+        "Menggunakan sistem yang kompleks dan sulit dipahami.",
+        "Memasang firewall pada setiap perangkat di jaringan.",
+        "Tidak melakukan pembaruan perangkat lunak.",
+        "Menggunakan firewall fisik saja tanpa perangkat lunak."
+      ],
+      jawaban: "Penggunaan sistem yang dapat dipercaya dan dengan sistem operasi yang relatif aman."
+    },
+    {
+      pertanyaan: "Apa yang harus dilakukan oleh firewall untuk mengatur, memfilter, dan mengontrol lalu lintas data?",
+      pilihan: [
+        "Tidak memerlukan kriteria apa pun.",
+        "Memiliki kriteria yang ketat dan jelas.",
+        "Membiarkan semua lalu lintas data lewat tanpa pemeriksaan.",
+        "Hanya memeriksa data dari sumber yang tidak dikenal.",
+        "Hanya mengontrol data yang menuju server."
+      ],
+      jawaban: "Memiliki kriteria yang ketat dan jelas."
+    },
+    {
+      pertanyaan: "Apa yang memungkinkan firewall untuk mendeteksi protokol aplikasi tertentu yang spesifik, selain hanya memeriksa header paket data?",
+      pilihan: [
+        "Menggunakan enkripsi kuat.",
+        "Kemampuan mendeteksi protokol aplikasi tertentu.",
+        "Tidak ada hal lain.",
+        "Mengubah alamat IP sumber.",
+        "Menggunakan nama domain yang berbeda."
+      ],
+      jawaban: "Kemampuan mendeteksi protokol aplikasi tertentu."
+    },
+    {
+      pertanyaan: "Berikut ini adalah salah satu kriteria yang dilakukan firewall untuk memperbolehkan paket data lewat...",
+      pilihan: [
+        "Kecepatan transmisi data.",
+        "Ukuran file yang dikirim.",
+        "Alamat IP dari komputer tujuan.",
+        "Waktu pengiriman data.",
+        "Versi protokol internet."
+      ],
+      jawaban: "Alamat IP dari komputer tujuan."
+    },
+    {
+      pertanyaan: "Fungsi pencatatan transaksi kejadian pada firewall dapat membantu sebagai...",
+      pilihan: [
+        "Pendataan pengguna yang aktif.",
+        "Laporan bulanan penggunaan internet.",
+        "Pendeteksian dini akan penjebolan jaringan.",
+        "Analisis kecepatan server.",
+        "Manajemen konfigurasi."
+      ],
+      jawaban: "Pendeteksian dini akan penjebolan jaringan."
+    },
+  ],
+      
 
   umum5: [
     // --- Kategori: Gotong Royong (20 Soal) ---
