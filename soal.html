@@ -203,6 +203,7 @@
           <option value="umum5">Pendidikan Kewarganegaraan</option>
           <option value="umum3">Mail Server</option>
           <option value="umum4">Firewall</option>
+          <option value="umum6">PKK</option>
         
         </select>
       </div>
@@ -241,6 +242,7 @@
     // =================== DATA SOAL ===================
     const namaKategori = {
       "umum": "Bahasa Indonesia",
+      "umum6": "PKK",
       "umum1": "Pendidikan Agama Islam",
       "umum5": "Pendidikan Kewarganegaraan", 
       "umum3": "Mail Server", 
@@ -257,8 +259,795 @@
   ],
   
   umum6: [
-    { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
-    { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
+    // --- Kategori: Keluhan Pelanggan (berdasarkan Kisi-kisi PKK) ---
+    {
+      pertanyaan: "Peserta didik dapat menjelaskan pengertian keluhan pelanggan dengan benar.",
+      pilihan: [
+        "Saran dari pelanggan untuk perbaikan produk.",
+        "Proses komunikasi internal antar karyawan.",
+        "Ekspresi ketidakpuasan pelanggan terhadap produk atau layanan.",
+        "Pemberian kritik yang membangun dari konsumen.",
+        "Umpan balik positif mengenai kualitas layanan."
+      ],
+      jawaban: "Ekspresi ketidakpuasan pelanggan terhadap produk atau layanan."
+    },
+    {
+      pertanyaan: "Jenis keluhan pelanggan yang dapat memberikan wawasan berharga untuk perbaikan produk dan layanan disebut keluhan...",
+      pilihan: [
+        "Negatif",
+        "Destruktif",
+        "Personal",
+        "Konstruktif",
+        "Spesifik"
+      ],
+      jawaban: "Konstruktif"
+    },
+    {
+      pertanyaan: "Keluhan pelanggan yang bersifat tidak sopan, merusak citra perusahaan, dan tidak disertai solusi disebut keluhan...",
+      pilihan: [
+        "Konstruktif",
+        "Destruktif",
+        "Positif",
+        "Manusiawi",
+        "Terstruktur"
+      ],
+      jawaban: "Destruktif"
+    },
+    {
+      pertanyaan: "Salah satu contoh keluhan destruktif adalah...",
+      pilihan: [
+        "Memberikan saran perbaikan produk.",
+        "Mengucapkan terima kasih atas layanan.",
+        "Mencaci maki perusahaan di media sosial tanpa memberikan detail masalah.",
+        "Menulis surat keluhan dengan bahasa yang sopan.",
+        "Menghubungi layanan pelanggan untuk bertanya."
+      ],
+      jawaban: "Mencaci maki perusahaan di media sosial tanpa memberikan detail masalah."
+    },
+    {
+      pertanyaan: "Mengidentifikasi perbedaan jenis keluhan pelanggan dapat membantu perusahaan dalam...",
+      pilihan: [
+        "Membiarkan keluhan yang tidak penting.",
+        "Menghindari semua keluhan yang masuk.",
+        "Memilih keluhan mana yang akan ditanggapi dengan segera dan efektif.",
+        "Menyalahkan pelanggan atas keluhan mereka.",
+        "Mengabaikan keluhan yang bersifat konstruktif."
+      ],
+      jawaban: "Memilih keluhan mana yang akan ditanggapi dengan segera dan efektif."
+    },
+    {
+      pertanyaan: "Strategi menanggapi keluhan pelanggan di media sosial yang paling tepat adalah...",
+      pilihan: [
+        "Mengabaikannya agar tidak viral.",
+        "Menghapus komentar negatif pelanggan.",
+        "Menanggapi secara terbuka dengan permintaan maaf, lalu ajak pelanggan untuk berdiskusi di saluran privat.",
+        "Menyalahkan pelanggan secara terbuka di komentar.",
+        "Membuat postingan balasan yang mengolok-olok pelanggan."
+      ],
+      jawaban: "Menanggapi secara terbuka dengan permintaan maaf, lalu ajak pelanggan untuk berdiskusi di saluran privat."
+    },
+    {
+      pertanyaan: "Berikut ini adalah salah satu strategi menanggapi keluhan di media sosial yang harus dihindari...",
+      pilihan: [
+        "Menghapus komentar tanpa pemberitahuan.",
+        "Memberikan solusi yang cepat dan tepat.",
+        "Menanggapi setiap keluhan dengan empati.",
+        "Menjadikan keluhan sebagai bahan evaluasi.",
+        "Mengajak pelanggan berdiskusi lebih lanjut secara personal."
+      ],
+      jawaban: "Menghapus komentar tanpa pemberitahuan."
+    },
+    {
+      pertanyaan: "Dampak negatif utama jika keluhan pelanggan tidak ditanggapi adalah...",
+      pilihan: [
+        "Meningkatnya loyalitas pelanggan.",
+        "Memperkuat citra perusahaan.",
+        "Pelanggan akan kembali membeli produk.",
+        "Menurunnya citra perusahaan dan hilangnya pelanggan.",
+        "Menemukan peluang untuk meningkatkan produk."
+      ],
+      jawaban: "Menurunnya citra perusahaan dan hilangnya pelanggan."
+    },
+    {
+      pertanyaan: "Akibat dari perusahaan yang tidak menanggapi keluhan adalah...",
+      pilihan: [
+        "Hubungan dengan pelanggan semakin kuat.",
+        "Pelanggan merasa tidak dihargai dan mencari alternatif lain.",
+        "Meningkatkan penjualan produk.",
+        "Memperkuat ikatan emosional dengan pelanggan.",
+        "Menghindari semua masalah."
+      ],
+      jawaban: "Pelanggan merasa tidak dihargai dan mencari alternatif lain."
+    },
+    {
+      pertanyaan: "Bagaimana cara agar keluhan pelanggan menjadi peluang untuk memperkuat hubungan?",
+      pilihan: [
+        "Mengabaikannya sama sekali.",
+        "Hanya fokus pada keluhan yang positif.",
+        "Menangani keluhan dengan cepat, tepat, dan empati.",
+        "Menyalahkan pihak lain atas keluhan.",
+        "Tidak pernah meminta maaf."
+      ],
+      jawaban: "Menangani keluhan dengan cepat, tepat, dan empati."
+    },
+    {
+      pertanyaan: "Langkah pertama yang harus dilakukan dalam penanganan keluhan pelanggan adalah...",
+      pilihan: [
+        "Segera menyalahkan pelanggan.",
+        "Meminta maaf terlebih dahulu.",
+        "Mengabaikan keluhan.",
+        "Mendengarkan keluhan pelanggan dengan baik dan penuh perhatian.",
+        "Menghapus komentar pelanggan."
+      ],
+      jawaban: "Mendengarkan keluhan pelanggan dengan baik dan penuh perhatian."
+    },
+    {
+      pertanyaan: "Setelah mendengarkan keluhan, langkah yang paling tepat adalah...",
+      pilihan: [
+        "Memotong pembicaraan pelanggan.",
+        "Menunjukkan empati dan pemahaman terhadap masalah pelanggan.",
+        "Menawarkan ganti rugi tanpa solusi.",
+        "Menceritakan pengalaman pribadi yang serupa.",
+        "Meninggalkan pelanggan."
+      ],
+      jawaban: "Menunjukkan empati dan pemahaman terhadap masalah pelanggan."
+    },
+    {
+      pertanyaan: "Dalam menghadapi keluhan produk, langkah solutif yang dapat diterapkan adalah...",
+      pilihan: [
+        "Menyalahkan pelanggan karena tidak membaca petunjuk.",
+        "Menawarkan produk lain yang tidak ada hubungannya dengan keluhan.",
+        "Melakukan evaluasi produk dan memberikan solusi yang sesuai.",
+        "Menyampaikan keluhan ke divisi lain tanpa tindak lanjut.",
+        "Membiarkan masalah produk berlarut-larut."
+      ],
+      jawaban: "Melakukan evaluasi produk dan memberikan solusi yang sesuai."
+    },
+    {
+      pertanyaan: "Salah satu faktor penyebab terjadinya keluhan pelanggan adalah...",
+      pilihan: [
+        "Kualitas produk yang sangat baik.",
+        "Layanan pelanggan yang cepat.",
+        "Komunikasi yang tidak jelas dan tidak efektif.",
+        "Harga produk yang murah.",
+        "Kecepatan pengiriman yang tepat waktu."
+      ],
+      jawaban: "Komunikasi yang tidak jelas dan tidak efektif."
+    },
+    {
+      pertanyaan: "Keterampilan komunikasi yang penting saat menghadapi pelanggan yang marah adalah...",
+      pilihan: [
+        "Membalas amarah dengan amarah.",
+        "Menjaga nada suara yang tenang dan profesional.",
+        "Mendebat pelanggan untuk menunjukkan siapa yang benar.",
+        "Mengabaikan keluhan pelanggan.",
+        "Memutuskan sambungan telepon."
+      ],
+      jawaban: "Menjaga nada suara yang tenang dan profesional."
+    },
+    {
+      pertanyaan: "Fungsi komunikasi internal dalam penanganan keluhan karyawan adalah...",
+      pilihan: [
+        "Menyebarkan informasi rahasia perusahaan.",
+        "Menyampaikan keluhan pelanggan ke seluruh karyawan.",
+        "Memastikan semua departemen berkoordinasi dengan baik untuk menyelesaikan masalah.",
+        "Memberikan sanksi kepada karyawan yang tidak patuh.",
+        "Mengurangi interaksi antar karyawan."
+      ],
+      jawaban: "Memastikan semua departemen berkoordinasi dengan baik untuk menyelesaikan masalah."
+    },
+    {
+      pertanyaan: "Salah satu strategi komunikasi eksternal yang tepat untuk menangani keluhan distributor adalah...",
+      pilihan: [
+        "Menyalahkan distributor di depan umum.",
+        "Menyelesaikan masalah secara personal dan menjaga hubungan baik.",
+        "Membuat peraturan baru tanpa diskusi.",
+        "Memutus hubungan kerja sama.",
+        "Mengabaikan semua masukan dari distributor."
+      ],
+      jawaban: "Menyelesaikan masalah secara personal dan menjaga hubungan baik."
+    },
+    {
+      pertanyaan: "Berikut adalah contoh penanganan keluhan yang efektif di media sosial...",
+      pilihan: [
+        "Menonaktifkan kolom komentar.",
+        "Menghapus postingan keluhan.",
+        "Menanggapi dengan cepat dan profesional, serta menawarkan solusi.",
+        "Mengunggah video yang berisi pembelaan diri.",
+        "Mempersilakan pelanggan untuk datang langsung ke kantor."
+      ],
+      jawaban: "Menanggapi dengan cepat dan profesional, serta menawarkan solusi."
+    },
+    {
+      pertanyaan: "Salah satu langkah solutif dalam penanganan keluhan produk adalah...",
+      pilihan: [
+        "Menyembunyikan informasi produk yang cacat.",
+        "Memberikan garansi produk.",
+        "Menghindari pelanggan yang banyak bertanya.",
+        "Mengabaikan keluhan yang tidak terlalu penting.",
+        "Membiarkan produk cacat tetap beredar di pasar."
+      ],
+      jawaban: "Memberikan garansi produk."
+    },
+    {
+      pertanyaan: "Strategi komunikasi eksternal yang tepat untuk menjaga hubungan dengan pelanggan dan distributor adalah...",
+      pilihan: [
+        "Tidak pernah mengakui kesalahan.",
+        "Menyediakan layanan pelanggan yang mudah dijangkau dan responsif.",
+        "Hanya berkomunikasi melalui media sosial.",
+        "Mengeluarkan produk baru tanpa pemberitahuan.",
+        "Menjual produk dengan harga yang sangat tinggi."
+      ],
+      jawaban: "Menyediakan layanan pelanggan yang mudah dijangkau dan responsif."
+    },
+    {
+      pertanyaan: "Dalam komunikasi internal, penting untuk memastikan bahwa semua karyawan...",
+      pilihan: [
+        "Tidak peduli dengan keluhan pelanggan.",
+        "Mengetahui cara yang tepat untuk menangani keluhan.",
+        "Tidak pernah berinteraksi dengan pelanggan.",
+        "Hanya berfokus pada tugas masing-masing.",
+        "Membuat keputusan sendiri tanpa persetujuan manajemen."
+      ],
+      jawaban: "Mengetahui cara yang tepat untuk menangani keluhan."
+    },
+    {
+      pertanyaan: "Penyebab utama keluhan pelanggan adalah kesenjangan antara...",
+      pilihan: [
+        "Harga dan promosi.",
+        "Ekspektasi pelanggan dan kinerja aktual produk atau layanan.",
+        "Merek dan logo produk.",
+        "Karyawan dan manajemen.",
+        "Pemasok dan distributor."
+      ],
+      jawaban: "Ekspektasi pelanggan dan kinerja aktual produk atau layanan."
+    },
+    {
+      pertanyaan: "Untuk mengatasi keluhan, perusahaan perlu membangun komunikasi eksternal yang...",
+      pilihan: [
+        "Satu arah.",
+        "Tidak konsisten.",
+        "Responsif dan transparan.",
+        "Hanya melalui surat resmi.",
+        "Hanya melalui media massa."
+      ],
+      jawaban: "Responsif dan transparan."
+    },
+    {
+      pertanyaan: "Menghadapi pelanggan yang marah, seorang agen harus...",
+      pilihan: [
+        "Menghindari kontak mata.",
+        "Membiarkan pelanggan berbicara hingga selesai tanpa interupsi.",
+        "Meminta pelanggan untuk tenang.",
+        "Meninggikan nada suara agar didengar.",
+        "Menyalahkan pelanggan secara halus."
+      ],
+      jawaban: "Membiarkan pelanggan berbicara hingga selesai tanpa interupsi."
+    },
+    {
+      pertanyaan: "Berikut adalah salah satu dampak positif dari keluhan pelanggan yang ditangani dengan baik...",
+      pilihan: [
+        "Menurunkan loyalitas pelanggan.",
+        "Meningkatkan penjualan.",
+        "Menghambat inovasi produk.",
+        "Menguatkan hubungan dan meningkatkan loyalitas pelanggan.",
+        "Memperburuk citra perusahaan."
+      ],
+      jawaban: "Menguatkan hubungan dan meningkatkan loyalitas pelanggan."
+    },
+    // --- Kategori: Lain-lain dari dokumen pendukung (15 Soal) ---
+    {
+      paragraf: "Kemasan adalah bagian pertama yang akan terlihat oleh mata konsumen. Oleh sebab itu, merancangnya dengan benar menjadi hal yang penting untuk dirancang sebaik mungkin. Konsumen jelas akan lebih menaruh perhatiannya pada tampilan yang terlihat baik, bagus dan unik daripada tampilan yang asal-asalan.",
+      pertanyaan: "Berdasarkan paragraf tersebut, fungsi utama kemasan dari sisi pemasaran adalah...",
+      pilihan: [
+        "Sebagai pelindung produk dari kerusakan.",
+        "Untuk menjaga suhu produk.",
+        "Membangun ekuitas merek dan menaikkan penjualan.",
+        "Mengurangi biaya produksi.",
+        "Menyediakan informasi gizi produk."
+      ],
+      jawaban: "Membangun ekuitas merek dan menaikkan penjualan."
+    },
+    {
+      pertanyaan: "Fungsi label menurut Kotler (2000:478) yang menggambarkan siapa pembuat, di mana dibuat, dan apa isinya adalah fungsi...",
+      pilihan: [
+        "Identifikasi produk.",
+        "Pemasaran produk.",
+        "Deskriptif produk.",
+        "Penentuan kelas produk.",
+        "Promosi produk."
+      ],
+      jawaban: "Deskriptif produk."
+    },
+    {
+      pertanyaan: "Berikut ini adalah salah satu syarat kemasan produk agar dapat berfungsi dengan baik...",
+      pilihan: [
+        "Harganya harus sangat mahal.",
+        "Tidak beracun dan tidak mengganggu kesehatan manusia.",
+        "Harus terbuat dari bahan plastik.",
+        "Memiliki bentuk yang rumit.",
+        "Memiliki warna yang mencolok."
+      ],
+      jawaban: "Tidak beracun dan tidak mengganggu kesehatan manusia."
+    },
+    {
+      pertanyaan: "Menurut dokumen 'Merancang Kemasan Produk', salah satu faktor yang berpengaruh dalam menentukan kemasan produk menurut Kotler adalah...",
+      pilihan: [
+        "Waktu produksi.",
+        "Jumlah karyawan.",
+        "Tingkat kelembaban.",
+        "Warna (colour).",
+        "Lokasi pemasaran."
+      ],
+      jawaban: "Warna (colour)."
+    },
+    {
+      paragraf: "Sifat dari kertas adalah tidak tahan air dan lembab sehingga bisa dikatakan jika bahan dengan jenis ini mudah rusak. Oleh karena itu, kertas amat sangat tidak cocok digunakan untuk produk yang memiliki tingkat kelembaban dan kadar air yang tinggi.",
+      pertanyaan: "Berdasarkan paragraf tersebut, produk yang **tidak** cocok menggunakan kemasan berbahan kertas adalah...",
+      pilihan: [
+        "Keripik kering.",
+        "Biskuit.",
+        "Minuman kemasan.",
+        "Roti kering.",
+        "Cemilan ringan."
+      ],
+      jawaban: "Minuman kemasan."
+    },
+    {
+      pertanyaan: "Kode MD pada label pangan olahan menunjukkan bahwa produk tersebut...",
+      pilihan: [
+        "Merupakan produk impor.",
+        "Diproduksi di dalam negeri.",
+        "Dibuat untuk diekspor.",
+        "Memiliki kandungan gizi tinggi.",
+        "Telah kedaluwarsa."
+      ],
+      jawaban: "Diproduksi di dalam negeri."
+    },
+    {
+      pertanyaan: "Informasi yang harus dicantumkan pada pangan olahan yang memerlukan penyiapan sebelum disajikan atau digunakan adalah...",
+      pilihan: [
+        "Hanya nama produsen.",
+        "Kode produksi saja.",
+        "Petunjuk penggunaan atau penyimpanan.",
+        "Nama dan alamat pabrik.",
+        "Tanggal kedaluwarsa."
+      ],
+      jawaban: "Petunjuk penggunaan atau penyimpanan."
+    },
+    {
+      pertanyaan: "Label pangan diatur dalam...",
+      pilihan: [
+        "Peraturan Menteri Perdagangan.",
+        "Undang-undang Nomor 7 Tahun 1996 tentang Pangan.",
+        "Peraturan Pemerintah Nomor 102 Tahun 2000.",
+        "Keputusan Presiden.",
+        "Peraturan BPOM."
+      ],
+      jawaban: "Undang-undang Nomor 7 Tahun 1996 tentang Pangan."
+    },
+    {
+      pertanyaan: "Dalam strategi distribusi, teknik yang digunakan untuk menyalurkan barang atau produk dari tangan produsen menuju ke tangan konsumen disebut...",
+      pilihan: [
+        "Manajemen produksi.",
+        "Manajemen keuangan.",
+        "Strategi distribusi.",
+        "Strategi pemasaran.",
+        "Manajemen inventori."
+      ],
+      jawaban: "Strategi distribusi."
+    },
+    {
+      pertanyaan: "Strategi distribusi di mana produk dipasarkan dalam skala daerah saja disebut...",
+      pilihan: [
+        "Distribusi nasional.",
+        "Wholesale.",
+        "Distribusi lokal.",
+        "Distribusi global.",
+        "Distribusi eksklusif."
+      ],
+      jawaban: "Distribusi lokal."
+    },
+    {
+      pertanyaan: "Dalam strategi distribusi 'Wholesale', yang menjadi andalan dalam penyaluran produk adalah...",
+      pilihan: [
+        "Penjualan langsung ke konsumen.",
+        "Pemasaran melalui media sosial.",
+        "Penggunaan distributor.",
+        "Pengiriman via pos.",
+        "Penjualan melalui e-commerce."
+      ],
+      jawaban: "Penggunaan distributor."
+    },
+    {
+      pertanyaan: "Salah satu hal yang perlu diperhatikan dalam membangun strategi distribusi yang optimal adalah...",
+      pilihan: [
+        "Mencari cara untuk menghindari pajak.",
+        "Melakukan manajemen inventori yang optimal.",
+        "Mengabaikan umpan balik dari agen.",
+        "Mengubah harga produk setiap hari.",
+        "Meningkatkan biaya produksi."
+      ],
+      jawaban: "Melakukan manajemen inventori yang optimal."
+    },
+    {
+      paragraf: "Sifat dari kertas adalah tidak tahan air dan lembab sehingga bisa dikatakan jika bahan dengan jenis ini mudah rusak. Oleh karena itu, kertas amat sangat tidak cocok digunakan untuk produk yang memiliki tingkat kelembaban dan kadar air yang tinggi.",
+      pertanyaan: "Berdasarkan paragraf tersebut, kelemahan utama dari kemasan berbahan kertas adalah...",
+      pilihan: [
+        "Biaya produksinya mahal.",
+        "Sulit dibentuk.",
+        "Tidak tahan air dan lembab.",
+        "Mudah pecah.",
+        "Tidak transparan."
+      ],
+      jawaban: "Tidak tahan air dan lembab."
+    },
+    {
+      paragraf: "Menurut Kotler dan Keller, kemasan adalah kegiatan merancang atau membuat wadah atau pembungkus bagi suatu produk. Secara umum kemasan adalah desain kreatif yang di dalamnya berisi bentuk, struktur, warna, citra hingga tipografi dari sebuah produk.",
+      pertanyaan: "Berdasarkan paragraf di atas, kemasan berfungsi sebagai...",
+      pilihan: [
+        "Wadah yang bisa diabaikan.",
+        "Pelindung produk dari sinar matahari.",
+        "Desain kreatif yang dibuat agar produk memiliki kelayakan untuk diperjual belikan.",
+        "Sarana komunikasi antar karyawan.",
+        "Alat untuk mengurangi biaya produksi."
+      ],
+      jawaban: "Desain kreatif yang dibuat agar produk memiliki kelayakan untuk diperjual belikan."
+    },
+    {
+      pertanyaan: "Berikut ini adalah pengertian kemasan yang paling tepat...",
+      pilihan: [
+        "Wadah untuk menampung produk.",
+        "Media promosi visual.",
+        "Desain kreatif yang berisi bentuk, struktur, warna, dan tipografi agar produk layak dijual.",
+        "Sistem pengiriman produk.",
+        "Sistem pencatatan penjualan."
+      ],
+      jawaban: "Desain kreatif yang berisi bentuk, struktur, warna, dan tipografi agar produk layak dijual."
+    },
+    {
+      pertanyaan: "Keterangan pada produk yang berfungsi sebagai sumber informasi dan promosi disebut...",
+      pilihan: [
+        "Kemasan.",
+        "Logo.",
+        "Label.",
+        "Kemasan sekunder.",
+        "Kemasan tersier."
+      ],
+      jawaban: "Label."
+    },
+    {
+      pertanyaan: "Tujuan label yang memberikan informasi tentang isi produk tanpa harus membuka kemasannya adalah...",
+      pilihan: [
+        "Fungsi identifikasi.",
+        "Fungsi promosi.",
+        "Fungsi deskriptif.",
+        "Fungsi keamanan.",
+        "Fungsi komunikasi."
+      ],
+      jawaban: "Fungsi deskriptif."
+    },
+    {
+      pertanyaan: "Faktor yang mempengaruhi kemasan produk menurut Kotler (2003) yang menunjukkan simbol daya saing produk adalah...",
+      pilihan: [
+        "Ukuran.",
+        "Warna.",
+        "Bahan.",
+        "Logo (brand).",
+        "Bentuk."
+      ],
+      jawaban: "Logo (brand)."
+    },
+    {
+      pertanyaan: "Sistem yang menggunakan bahan seperti aluminium foil dan cocok untuk produk yang membutuhkan tekanan udara adalah...",
+      pilihan: [
+        "Kemasan dari kertas.",
+        "Kemasan dari gelas.",
+        "Kemasan dari plastik.",
+        "Kemasan dari metal.",
+        "Kemasan dari kayu."
+      ],
+      jawaban: "Kemasan dari metal."
+    },
+    {
+      pertanyaan: "Salah satu pertimbangan dalam memilih bahan kemasan agar tidak merugikan adalah...",
+      pilihan: [
+        "Bahan kemasan harus mahal.",
+        "Bahan kemasan harus transparan.",
+        "Bahan kemasan harus cocok dengan bahan yang dikemas.",
+        "Bahan kemasan harus mudah pecah.",
+        "Bahan kemasan harus ringan."
+      ],
+      jawaban: "Bahan kemasan harus cocok dengan bahan yang dikemas."
+    },
+    // --- Kategori: Keluhan Pelanggan (lanjutan) ---
+    {
+      pertanyaan: "Salah satu langkah untuk menganalisa keluhan pelanggan adalah...",
+      pilihan: [
+        "Melakukan survei pelanggan secara berkala.",
+        "Mengabaikan keluhan yang masuk.",
+        "Menyalahkan tim pemasaran.",
+        "Menghindari interaksi dengan pelanggan.",
+        "Membuat laporan yang tidak akurat."
+      ],
+      jawaban: "Melakukan survei pelanggan secara berkala."
+    },
+    {
+      pertanyaan: "Untuk menangani keluhan, penting bagi agen layanan pelanggan untuk membangun empati, yang berarti...",
+      pilihan: [
+        "Menanggapi dengan marah.",
+        "Menunjukkan pengertian terhadap masalah dan perasaan pelanggan.",
+        "Mengabaikan perasaan pelanggan.",
+        "Hanya fokus pada solusi teknis.",
+        "Memberikan solusi tanpa mendengarkan."
+      ],
+      jawaban: "Menunjukkan pengertian terhadap masalah dan perasaan pelanggan."
+    },
+    {
+      pertanyaan: "Salah satu cara untuk mengatasi keluhan di media sosial adalah dengan...",
+      pilihan: [
+        "Menghapus komentar dan memblokir pengguna.",
+        "Membalas keluhan dengan agresif.",
+        "Mengajak pelanggan berdiskusi lebih lanjut di saluran privat.",
+        "Tidak menanggapi sama sekali.",
+        "Membuat postingan balasan yang mengolok-olok pelanggan."
+      ],
+      jawaban: "Mengajak pelanggan berdiskusi lebih lanjut di saluran privat."
+    },
+    {
+      pertanyaan: "Dalam menghadapi keluhan, perusahaan harus melihatnya sebagai...",
+      pilihan: [
+        "Masalah yang harus dihindari.",
+        "Sinyal kegagalan total.",
+        "Kesempatan untuk berdebat.",
+        "Umpan balik berharga yang dapat meningkatkan kualitas layanan.",
+        "Alat untuk merusak reputasi."
+      ],
+      jawaban: "Umpan balik berharga yang dapat meningkatkan kualitas layanan."
+    },
+    {
+      pertanyaan: "Ketika keluhan tidak ditangani, pelanggan cenderung akan...",
+      pilihan: [
+        "Kembali membeli produk.",
+        "Mencari produk alternatif dari pesaing.",
+        "Menjadi semakin loyal.",
+        "Mengajak teman-teman mereka untuk membeli produk.",
+        "Memberikan ulasan positif."
+      ],
+      jawaban: "Mencari produk alternatif dari pesaing."
+    },
+    {
+      pertanyaan: "Berikut ini adalah salah satu langkah solutif yang tepat dalam penanganan keluhan...",
+      pilihan: [
+        "Mengakui kesalahan dan meminta maaf.",
+        "Menyalahkan pelanggan.",
+        "Menyalahkan tim produksi.",
+        "Mengabaikan masalah.",
+        "Menghapus keluhan."
+      ],
+      jawaban: "Mengakui kesalahan dan meminta maaf."
+    },
+    {
+      pertanyaan: "Faktor penyebab keluhan pelanggan yang berkaitan dengan kinerja produk atau layanan adalah...",
+      pilihan: [
+        "Harga yang terlalu mahal.",
+        "Warna kemasan yang kurang menarik.",
+        "Kerusakan produk atau layanan yang tidak sesuai dengan janji.",
+        "Lokasi toko yang jauh.",
+        "Promosi yang kurang menarik."
+      ],
+      jawaban: "Kerusakan produk atau layanan yang tidak sesuai dengan janji."
+    },
+    {
+      pertanyaan: "Menunjukkan sikap komunikasi empatik dalam menghadapi keluhan pelanggan berarti...",
+      pilihan: [
+        "Menyalahkan pelanggan atas keluhan mereka.",
+        "Mengabaikan perasaan pelanggan.",
+        "Merespons dengan cara yang tidak hanya solutif tetapi juga manusiawi.",
+        "Mempercepat proses tanpa mendengarkan.",
+        "Mengakhiri percakapan sesegera mungkin."
+      ],
+      jawaban: "Merespons dengan cara yang tidak hanya solutif tetapi juga manusiawi."
+    },
+    {
+      pertanyaan: "Apa fungsi dari komunikasi internal dalam penanganan keluhan pelanggan?",
+      pilihan: [
+        "Menyembunyikan informasi dari karyawan.",
+        "Memastikan semua tim bekerja sama untuk menyelesaikan keluhan.",
+        "Menyalahkan karyawan yang bersangkutan.",
+        "Membuat keluhan menjadi rahasia.",
+        "Mencegah karyawan berinteraksi dengan pelanggan."
+      ],
+      jawaban: "Memastikan semua tim bekerja sama untuk menyelesaikan keluhan."
+    },
+    {
+      pertanyaan: "Keluhan pelanggan yang ditangani dengan tepat dapat...",
+      pilihan: [
+        "Meningkatkan 'churn rate' (tingkat pelanggan berhenti berlangganan).",
+        "Menurunkan citra perusahaan.",
+        "Mengubah keluhan menjadi alat efektif untuk meningkatkan loyalitas.",
+        "Memperpanjang proses bisnis.",
+        "Menghilangkan semua masalah."
+      ],
+      jawaban: "Mengubah keluhan menjadi alat efektif untuk meningkatkan loyalitas."
+    },
+    // --- Kategori: Keluhan Pelanggan (lanjutan) ---
+    {
+      pertanyaan: "Strategi komunikasi eksternal yang efektif untuk menghadapi keluhan pelanggan adalah...",
+      pilihan: [
+        "Hanya membalas keluhan yang menguntungkan.",
+        "Menyediakan berbagai saluran komunikasi agar pelanggan mudah menghubungi tim layanan.",
+        "Mengabaikan keluhan di media sosial.",
+        "Menyembunyikan informasi kontak layanan pelanggan.",
+        "Memaksa pelanggan untuk datang ke kantor."
+      ],
+      jawaban: "Menyediakan berbagai saluran komunikasi agar pelanggan mudah menghubungi tim layanan."
+    },
+    {
+      pertanyaan: "Peran komunikasi internal yang efektif adalah memastikan bahwa...",
+      pilihan: [
+        "Hanya manajer yang tahu tentang keluhan.",
+        "Tidak ada keluhan yang perlu diselesaikan.",
+        "Informasi keluhan dapat mengalir dengan lancar antar departemen terkait.",
+        "Karyawan hanya fokus pada pekerjaan mereka sendiri.",
+        "Semua keluhan harus diselesaikan oleh satu orang saja."
+      ],
+      jawaban: "Informasi keluhan dapat mengalir dengan lancar antar departemen terkait."
+    },
+    {
+      pertanyaan: "Salah satu keterampilan komunikasi yang harus dimiliki saat menangani pelanggan marah adalah...",
+      pilihan: [
+        "Menantang pelanggan.",
+        "Menunjukkan empati dan pemahaman.",
+        "Menggunakan nada bicara tinggi.",
+        "Menyalahkan pelanggan.",
+        "Menyudutkan pelanggan."
+      ],
+      jawaban: "Menunjukkan empati dan pemahaman."
+    },
+    {
+      pertanyaan: "Keluhan pelanggan di media sosial harus ditanggapi dengan cepat karena...",
+      pilihan: [
+        "Agar pelanggan merasa tidak penting.",
+        "Agar masalah tidak menjadi viral dan merusak citra.",
+        "Agar pelanggan lainnya ikut mengeluh.",
+        "Agar dapat mengabaikan keluhan dengan mudah.",
+        "Agar memancing perdebatan publik."
+      ],
+      jawaban: "Agar masalah tidak menjadi viral dan merusak citra."
+    },
+    {
+      pertanyaan: "Dalam komunikasi internal, apa yang perlu dilakukan untuk menangani keluhan karyawan?",
+      pilihan: [
+        "Membiarkan keluhan tidak teratasi.",
+        "Mendengarkan dengan baik dan mencari solusi bersama.",
+        "Mengabaikan keluhan karyawan.",
+        "Memberi sanksi kepada karyawan yang mengeluh.",
+        "Mencari kesalahan karyawan."
+      ],
+      jawaban: "Mendengarkan dengan baik dan mencari solusi bersama."
+    },
+    {
+      pertanyaan: "Menanggapi keluhan di media sosial secara profesional dapat...",
+      pilihan: [
+        "Merusak reputasi perusahaan.",
+        "Meningkatkan citra positif perusahaan.",
+        "Menambah jumlah keluhan.",
+        "Menurunkan penjualan.",
+        "Menurunkan loyalitas pelanggan."
+      ],
+      jawaban: "Meningkatkan citra positif perusahaan."
+    },
+    {
+      pertanyaan: "Berikut adalah salah satu faktor yang dapat menyebabkan keluhan pelanggan...",
+      pilihan: [
+        "Pelayanan yang ramah.",
+        "Ketersediaan produk.",
+        "Kualitas produk yang tidak sesuai harapan.",
+        "Diskon dan promo.",
+        "Harga yang terjangkau."
+      ],
+      jawaban: "Kualitas produk yang tidak sesuai harapan."
+    },
+    {
+      pertanyaan: "Ketika menghadapi pelanggan yang marah, seorang agen harus tetap...",
+      pilihan: [
+        "Bersikap emosional.",
+        "Mendebat pelanggan.",
+        "Sabar dan tenang.",
+        "Acuh tak acuh.",
+        "Menyalahkan pelanggan lain."
+      ],
+      jawaban: "Sabar dan tenang."
+    },
+    {
+      pertanyaan: "Apa yang dimaksud dengan 'komunikasi eksternal' dalam konteks penanganan keluhan?",
+      pilihan: [
+        "Komunikasi antar karyawan.",
+        "Komunikasi antar distributor.",
+        "Komunikasi antara perusahaan dan pihak luar, seperti pelanggan dan distributor.",
+        "Komunikasi dengan pihak investor.",
+        "Komunikasi dengan pihak bank."
+      ],
+      jawaban: "Komunikasi antara perusahaan dan pihak luar, seperti pelanggan dan distributor."
+    },
+    {
+      pertanyaan: "Mengucapkan terima kasih kepada pelanggan yang mengeluh merupakan langkah penting karena...",
+      pilihan: [
+        "Menunjukkan bahwa perusahaan tidak peduli.",
+        "Membuat pelanggan merasa tidak penting.",
+        "Menunjukkan bahwa perusahaan menghargai masukan pelanggan dan menganggapnya sebagai kesempatan untuk berkembang.",
+        "Untuk mengakhiri percakapan dengan cepat.",
+        "Sebagai formalitas belaka."
+      ],
+      jawaban: "Menunjukkan bahwa perusahaan menghargai masukan pelanggan dan menganggapnya sebagai kesempatan untuk berkembang."
+    },
+    {
+      pertanyaan: "Salah satu cara untuk menganalisis keluhan yang sering muncul adalah dengan...",
+      pilihan: [
+        "Mengabaikannya.",
+        "Mencatat dan mengidentifikasi pola keluhan yang sama.",
+        "Menyalahkan satu pihak.",
+        "Menghapus data keluhan.",
+        "Membiarkan keluhan menumpuk."
+      ],
+      jawaban: "Mencatat dan mengidentifikasi pola keluhan yang sama."
+    },
+    {
+      pertanyaan: "Komunikasi internal yang baik dalam penanganan keluhan pelanggan dapat...",
+      pilihan: [
+        "Menghambat proses penyelesaian.",
+        "Mencegah keluhan sampai ke manajemen.",
+        "Membantu menyelesaikan masalah secara lebih efektif dan efisien.",
+        "Membuat karyawan merasa tidak nyaman.",
+        "Menciptakan konflik internal."
+      ],
+      jawaban: "Membantu menyelesaikan masalah secara lebih efektif dan efisien."
+    },
+    {
+      pertanyaan: "Dalam menghadapi keluhan di media sosial, penting untuk...",
+      pilihan: [
+        "Berdebat dengan pelanggan.",
+        "Bersikap defensif.",
+        "Menghapus komentar.",
+        "Menanggapi dengan empati dan profesionalisme.",
+        "Tidak menanggapi sama sekali."
+      ],
+      jawaban: "Menanggapi dengan empati dan profesionalisme."
+    },
+    {
+      pertanyaan: "Salah satu langkah penanganan keluhan produk yang tepat adalah...",
+      pilihan: [
+        "Meminta pelanggan untuk membeli produk baru.",
+        "Menolak tanggung jawab atas produk yang rusak.",
+        "Memberikan solusi berupa perbaikan, penggantian, atau pengembalian dana.",
+        "Menyalahkan pihak pengiriman.",
+        "Tidak menanggapi keluhan produk."
+      ],
+      jawaban: "Memberikan solusi berupa perbaikan, penggantian, atau pengembalian dana."
+    },
+    {
+      pertanyaan: "Faktor penyebab keluhan yang berasal dari aspek manusia (karyawan) adalah...",
+      pilihan: [
+        "Harga produk yang murah.",
+        "Pelayanan yang tidak ramah atau kurang profesional.",
+        "Ketersediaan produk.",
+        "Kualitas produk yang baik.",
+        "Fitur produk yang lengkap."
+      ],
+      jawaban: "Pelayanan yang tidak ramah atau kurang profesional."
+    },
+    {
+      pertanyaan: "Untuk mengatasi keluhan, perusahaan perlu melakukan evaluasi terhadap keluhan yang masuk. Hal ini berfungsi untuk...",
+      pilihan: [
+        "Mencari kambing hitam.",
+        "Memperbaiki area-area yang perlu ditingkatkan.",
+        "Mengabaikan keluhan.",
+        "Membuat keluhan menjadi rahasia.",
+        "Menyalahkan pelanggan."
+      ],
+      jawaban: "Memperbaiki area-area yang perlu ditingkatkan."
+    }
   ],
 
   umum3: [
