@@ -299,7 +299,7 @@
     </div>
     <!-- Facts End -->
 
-    <!-- Hitung Mundur Ramadhan --
+    <!-- Hitung Mundur Ramadhan -->
     <div class="container-xxl bg-primary jadwalsholat my-5 py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-4">
@@ -858,6 +858,130 @@
         </div>
     </div>-->
     <!-- Service End -->
+<!--KAMIS PON -->
+<div class="container-xxl bg-dark text-light my-5 py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-md-12 text-center wow fadeIn" data-wow-delay="0.1s">
+                <p class="fs-4 fs-sm-3 fs-md-2 fs-lg-1 fw-bold text-white">Hitung Mundur Menuju Kamis Pon Berikutnya</p>
+                <h1 id="kamisPonCountdown" class="display-3 display-sm-2 display-md-1 display-lg-1 text-white">Memuat...</h1>
+                <p id="kamisPonDate" class="fs-5 text-primary"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Fungsi Bantuan untuk Perhitungan Weton Jawa ---
+    // Hari Pasaran Jawa (Pon, Wage, Kliwon, Legi, Pahing)
+    const pasaran = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
+    // Hari Masehi (Minggu=0, Senin=1, ..., Sabtu=6)
+    const hariMasehi = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    // Nilai Neptu untuk Hari (Minggu, Senin, ..., Sabtu)
+    const neptuHari = [5, 4, 8, 7, 8, 6, 9];
+    // Nilai Neptu untuk Pasaran
+    const neptuPasaran = [5, 9, 7, 4, 8]; // Legi, Pahing, Pon, Wage, Kliwon
+
+    /**
+     * Mendapatkan Weton Jawa (Hari + Pasaran) untuk tanggal tertentu.
+     * Algoritma didasarkan pada perhitungan neptu.
+     * @param {Date} date - Objek tanggal yang ingin dicari wetonnya.
+     * @returns {string} - Weton dalam format "NamaHari Pasaran".
+     */
+    function getJavaneseWeton(date) {
+        const day = date.getDay(); // 0 (Minggu) - 6 (Sabtu)
+        const dateNum = date.getDate();
+        const monthNum = date.getMonth();
+        const year = date.getFullYear();
+
+        // Menggunakan "Day number" (angka urut hari sejak tanggal referensi 01/01/0001)
+        // sebagai basis perhitungan. Cara termudah adalah:
+        // (Jumlah hari dari Epoch + 1 + 3) % 5, dimana +1 karena epoch mulai dari Kamis Legi
+        // dan +3 untuk menggeser index 0 ke Legi (Jika Epoch 1/1/1970 adalah Kamis Legi).
+        // Tanggal 1 Januari 1970 adalah hari Kamis Kliwon (Neptu 13).
+        
+        // Cek hari dari tanggal acuan:
+        // Kamis = 4 (index Masehi)
+        // Kliwon = 4 (index Pasaran)
+        
+        // Jumlah milidetik sejak epoch (1 Jan 1970)
+        const msPerDay = 1000 * 60 * 60 * 24;
+        const daysSinceEpoch = Math.floor(date.getTime() / msPerDay);
+        
+        // Hari Pasaran (0=Legi, 1=Pahing, 2=Pon, 3=Wage, 4=Kliwon)
+        // 1 Jan 1970 adalah Kamis (4) Kliwon (4). Total neptu = 4+4 = 8 (neptu Kliwon 8).
+        // Indeks pasaran untuk 1 Jan 1970 (Kamis Kliwon) adalah 4.
+        // Cek: (daysSinceEpoch % 5) = (0 % 5) = 0. Jika 0 harusnya Legi (0).
+        // Kita butuh penyesuaian: Hari pasaran untuk 1 Jan 1970 adalah Kliwon (index 4).
+        // Pasaran Index = (daysSinceEpoch + 4) % 5
+        let pasaranIndex = (daysSinceEpoch + 4) % 5;
+        if (pasaranIndex < 0) pasaranIndex += 5;
+
+        // Hari Masehi Index sudah didapat dari date.getDay()
+
+        return hariMasehi[day] + " " + pasaran[pasaranIndex];
+    }
+
+    /**
+     * Mencari tanggal Kamis Pon berikutnya (termasuk hari ini jika hari ini Kamis Pon).
+     * @param {Date} startDate - Tanggal mulai pencarian.
+     * @returns {Date} - Objek tanggal dari Kamis Pon berikutnya.
+     */
+    function findNextKamisPon(startDate) {
+        let currentDate = new Date(startDate.getTime());
+        // Loop hingga menemukan Kamis Pon
+        while (true) {
+            const weton = getJavaneseWeton(currentDate);
+            if (weton === "Kamis Pon") {
+                return currentDate;
+            }
+            // Tambah satu hari
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+    }
+
+    // --- Fungsi Hitung Mundur Utama ---
+    let nextKamisPon = findNextKamisPon(new Date());
+
+    function updateKamisPonCountdown() {
+        const now = new Date().getTime();
+        let timeLeft = nextKamisPon.getTime() - now;
+
+        // Jika hitungan mundur sudah habis (waktu negatif atau nol)
+        if (timeLeft <= 0) {
+            // Kamis Pon sudah tiba/lewat. Cari Kamis Pon berikutnya.
+            // Mulai pencarian dari hari esok (nextKamisPon + 1 hari)
+            let tomorrow = new Date(nextKamisPon.getTime());
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            // Cari Kamis Pon berikutnya
+            nextKamisPon = findNextKamisPon(tomorrow);
+            
+            // Hitung ulang sisa waktu
+            timeLeft = nextKamisPon.getTime() - now; 
+        }
+
+        // Tampilkan tanggal yang akan datang
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById("kamisPonDate").innerText = "Tanggal: " + nextKamisPon.toLocaleDateString('id-ID', options);
+        
+        // Hitung hari, jam, menit, dan detik
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // Tampilkan hasil
+        document.getElementById("kamisPonCountdown").innerHTML =
+            days + " Hari " + hours + " Jam " + minutes + " Menit " + seconds + " Detik Lagi ";
+    }
+
+    // Update countdown setiap 1 detik
+    setInterval(updateKamisPonCountdown, 1000);
+    
+    // Inisialisasi hitungan mundur saat halaman dimuat
+    updateKamisPonCountdown();
+</script>
 
 
     <!-- Animal Start -->
