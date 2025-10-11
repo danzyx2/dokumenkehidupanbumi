@@ -982,14 +982,42 @@
      */
     function findNextKamisPon(startDate) {
         let currentDate = new Date(startDate.getTime());
-        // Atur waktu ke awal hari (00:00:00) agar perhitungan konsisten
-        currentDate.setHours(0, 0, 0, 0); 
+<script>
+    // --- Fungsi Bantuan untuk Perhitungan Weton Jawa ---
+    
+    // Hari Pasaran Jawa (0=Legi, 1=Pahing, 2=Pon, 3=Wage, 4=Kliwon)
+    const pasaran = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
+    // Hari Masehi (0=Minggu, 1=Senin, ..., 6=Sabtu)
+    const hariMasehi = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    
+    /**
+     * Mendapatkan Weton Jawa (Hari + Pasaran) untuk tanggal tertentu.
+     * Menggunakan patokan 1 Januari 1970 (Kamis Kliwon)
+     */
+    function getJavaneseWeton(date) {
+        const dayMasehi = date.getDay(); 
+        const MS_PER_DAY = 1000 * 60 * 60 * 24;
         
-        // Loop hingga menemukan Kamis Pon
+        // Total hari sejak Epoch (1 Jan 1970)
+        const daysSinceEpoch = Math.floor(date.getTime() / MS_PER_DAY);
+        
+        // Pasaran Index = (daysSinceEpoch + Pasaran Index Kliwon) % 5
+        let pasaranIndex = (daysSinceEpoch + 4) % 5;
+        if (pasaranIndex < 0) pasaranIndex += 5;
+        
+        return hariMasehi[dayMasehi] + " " + pasaran[pasaranIndex];
+    }
+
+    /**
+     * Mencari tanggal Kamis Pon berikutnya (termasuk hari ini jika hari ini Kamis Pon).
+     */
+    function findNextKamisPon(startDate) {
+        let currentDate = new Date(startDate.getTime());
+        currentDate.setHours(0, 0, 0, 0); // Atur waktu ke awal hari
+        
         while (true) {
             const weton = getJavaneseWeton(currentDate);
             if (weton === "Kamis Pon") {
-                // Atur waktu target ke tengah malam (00:00:00) agar hitungan mundur penuh
                 currentDate.setHours(0, 0, 0, 0); 
                 return currentDate;
             }
@@ -1005,28 +1033,22 @@
         const now = new Date().getTime();
         let timeLeft = nextKamisPon.getTime() - now;
 
-        // Jika hitungan mundur sudah habis (waktu negatif atau nol)
+        // Cek jika sudah lewat waktunya (loop ke Kamis Pon berikutnya)
         if (timeLeft <= 0) {
-            // Kamis Pon sudah tiba/lewat. Cari Kamis Pon berikutnya.
-            // Mulai pencarian dari hari esok (nextKamisPon + 1 hari)
             let tomorrow = new Date(nextKamisPon.getTime());
             tomorrow.setDate(tomorrow.getDate() + 1);
             
-            // Cari Kamis Pon berikutnya
             nextKamisPon = findNextKamisPon(tomorrow);
-            
-            // Hitung ulang sisa waktu (mungkin masih negatif sebentar)
             timeLeft = nextKamisPon.getTime() - now; 
         }
 
-        // Tampilkan tanggal yang akan datang
+        // Tampilkan tanggal target
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById("kamisPonDate").innerText = "Tanggal: " + nextKamisPon.toLocaleDateString('id-ID', options);
         
-        // Pastikan timeLeft positif sebelum menghitung
+        // Perhitungan waktu
         if (timeLeft < 0) timeLeft = 0;
         
-        // Hitung hari, jam, menit, dan detik
         const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
@@ -1043,6 +1065,7 @@
     // Inisialisasi hitungan mundur saat halaman dimuat
     updateKamisPonCountdown();
 </script>
+
 
 
 
@@ -1629,6 +1652,7 @@
 </body>
 
 </html>
+
 
 
 
