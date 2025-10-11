@@ -872,116 +872,7 @@
 </div>
 
 <script>
-    // --- Fungsi Bantuan untuk Perhitungan Weton Jawa ---
-    // Hari Pasaran Jawa (Pon, Wage, Kliwon, Legi, Pahing)
-    const pasaran = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
-    // Hari Masehi (Minggu=0, Senin=1, ..., Sabtu=6)
-    const hariMasehi = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-    // Nilai Neptu untuk Hari (Minggu, Senin, ..., Sabtu)
-    const neptuHari = [5, 4, 8, 7, 8, 6, 9];
-    // Nilai Neptu untuk Pasaran
-    const neptuPasaran = [5, 9, 7, 4, 8]; // Legi, Pahing, Pon, Wage, Kliwon
-
-    /**
-     * Mendapatkan Weton Jawa (Hari + Pasaran) untuk tanggal tertentu.
-     * Algoritma didasarkan pada perhitungan neptu.
-     * @param {Date} date - Objek tanggal yang ingin dicari wetonnya.
-     * @returns {string} - Weton dalam format "NamaHari Pasaran".
-     */
-    function getJavaneseWeton(date) {
-        const day = date.getDay(); // 0 (Minggu) - 6 (Sabtu)
-        const dateNum = date.getDate();
-        const monthNum = date.getMonth();
-        const year = date.getFullYear();
-
-        // Menggunakan "Day number" (angka urut hari sejak tanggal referensi 01/01/0001)
-        // sebagai basis perhitungan. Cara termudah adalah:
-        // (Jumlah hari dari Epoch + 1 + 3) % 5, dimana +1 karena epoch mulai dari Kamis Legi
-        // dan +3 untuk menggeser index 0 ke Legi (Jika Epoch 1/1/1970 adalah Kamis Legi).
-        // Tanggal 1 Januari 1970 adalah hari Kamis Kliwon (Neptu 13).
-        
-        // Cek hari dari tanggal acuan:
-        // Kamis = 4 (index Masehi)
-        // Kliwon = 4 (index Pasaran)
-        
-        // Jumlah milidetik sejak epoch (1 Jan 1970)
-        const msPerDay = 1000 * 60 * 60 * 24;
-        const daysSinceEpoch = Math.floor(date.getTime() / msPerDay);
-        
-        // Hari Pasaran (0=Legi, 1=Pahing, 2=Pon, 3=Wage, 4=Kliwon)
-        // 1 Jan 1970 adalah Kamis (4) Kliwon (4). Total neptu = 4+4 = 8 (neptu Kliwon 8).
-        // Indeks pasaran untuk 1 Jan 1970 (Kamis Kliwon) adalah 4.
-        // Cek: (daysSinceEpoch % 5) = (0 % 5) = 0. Jika 0 harusnya Legi (0).
-        // Kita butuh penyesuaian: Hari pasaran untuk 1 Jan 1970 adalah Kliwon (index 4).
-        // Pasaran Index = (daysSinceEpoch + 4) % 5
-        let pasaranIndex = (daysSinceEpoch + 4) % 5;
-        if (pasaranIndex < 0) pasaranIndex += 5;
-
-        // Hari Masehi Index sudah didapat dari date.getDay()
-
-        return hariMasehi[day] + " " + pasaran[pasaranIndex];
-    }
-
-    /**
-     * Mencari tanggal Kamis Pon berikutnya (termasuk hari ini jika hari ini Kamis Pon).
-     * @param {Date} startDate - Tanggal mulai pencarian.
-     * @returns {Date} - Objek tanggal dari Kamis Pon berikutnya.
-     */
-    function findNextKamisPon(startDate) {
-        let currentDate = new Date(startDate.getTime());
-        // Loop hingga menemukan Kamis Pon
-        while (true) {
-            const weton = getJavaneseWeton(currentDate);
-            if (weton === "Kamis Pon") {
-                return currentDate;
-            }
-            // Tambah satu hari
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-    }
-
-    // --- Fungsi Hitung Mundur Utama ---
-    let nextKamisPon = findNextKamisPon(new Date());
-
-    function updateKamisPonCountdown() {
-    // --- Fungsi Bantuan untuk Perhitungan Weton Jawa yang Ditingkatkan ---
     
-    // Hari Pasaran Jawa (0=Legi, 1=Pahing, 2=Pon, 3=Wage, 4=Kliwon)
-    const pasaran = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
-    // Hari Masehi (0=Minggu, 1=Senin, ..., 4=Kamis, 5=Jumat, 6=Sabtu)
-    const hariMasehi = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-    
-    /**
-     * Mendapatkan Weton Jawa (Hari + Pasaran) untuk tanggal tertentu.
-     * Menggunakan patokan 1 Januari 1970 (Kamis Kliwon, neptu 13)
-     * @param {Date} date - Objek tanggal yang ingin dicari wetonnya.
-     * @returns {string} - Weton dalam format "NamaHari Pasaran".
-     */
-    function getJavaneseWeton(date) {
-        const dayMasehi = date.getDay(); // 0 (Minggu) - 6 (Sabtu)
-        
-        // Konstanta untuk perhitungan
-        const MS_PER_DAY = 1000 * 60 * 60 * 24;
-        
-        // Total hari sejak Epoch (1 Jan 1970)
-        const daysSinceEpoch = Math.floor(date.getTime() / MS_PER_DAY);
-        
-        // 1 Jan 1970 adalah Kamis (Index Masehi 4), Kliwon (Index Pasaran 4)
-        // Pasaran Index = (daysSinceEpoch + Pasaran Index Kliwon) % 5
-        // Pasaran Index = (daysSinceEpoch + 4) % 5
-        let pasaranIndex = (daysSinceEpoch + 4) % 5;
-        if (pasaranIndex < 0) pasaranIndex += 5; // Pastikan positif
-        
-        return hariMasehi[dayMasehi] + " " + pasaran[pasaranIndex];
-    }
-
-    /**
-     * Mencari tanggal Kamis Pon berikutnya (termasuk hari ini jika hari ini Kamis Pon).
-     * @param {Date} startDate - Tanggal mulai pencarian.
-     * @returns {Date} - Objek tanggal dari Kamis Pon berikutnya.
-     */
-    function findNextKamisPon(startDate) {
-        let currentDate = new Date(startDate.getTime());
 <script>
     // --- Fungsi Bantuan untuk Perhitungan Weton Jawa ---
     
@@ -1652,6 +1543,7 @@
 </body>
 
 </html>
+
 
 
 
