@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peraturan Kuis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Gaya umum yang sesuai dengan Kuis Cepat Interaktif */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark Blue/Gray */
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+
+        .rules-card {
+            background-color: #161b22; /* Warna latar belakang kartu lebih gelap */
+            border: 1px solid #30363d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 95%;
+        }
+
+        .list-style-blue {
+            list-style: none;
+            padding-left: 0;
+        }
+        .list-style-blue li {
+            position: relative;
+            padding-left: 1.75rem; /* Ruang untuk ikon */
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            color: #e6edf3;
+        }
+        .list-style-blue li::before {
+            content: '✓'; /* Ikon centang */
+            position: absolute;
+            left: 0;
+            color: #38bdf8; /* Warna aksen biru cerah */
+            font-weight: 700;
+            font-size: 1.25rem;
+            top: 0;
+        }
+
+        /* Gaya tombol kembali */
+        .btn-back {
+            background-color: #6b7280;
+            transition: all 0.2s ease;
+        }
+        .btn-back:hover {
+            background-color: #4b5563;
+            transform: translateY(-1px);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+        
+        // Fungsi untuk kembali ke halaman utama (asumsi kuis.html)
+        function goBack() {
+            window.history.back();
+            // Alternatif jika di-deploy ke file statis:
+            // window.location.href = 'kuis (1).html'; 
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col justify-center items-center p-4">
+    <div class="rules-card rounded-xl p-8 space-y-6">
+        
+        <!-- Header Peraturan -->
+        <header class="text-center pb-4 border-b border-gray-700">
+            <h1 class="text-3xl font-bold text-gray-100 mb-2">Peraturan Kuis</h1>
+            <p class="text-md text-gray-400">Pahami mekanisme sebelum Anda menjawab.</p>
+        </header>
+
+        <!-- Bagian Utama Peraturan -->
+        <section class="space-y-6">
+            <h2 class="text-xl font-semibold text-gray-200 border-b border-gray-800 pb-2">Mekanisme Pemenang</h2>
+            <ul class="list-style-blue">
+                <li>
+                    Pemenang adalah peserta **pertama** yang berhasil memasukkan jawaban yang benar.
+                </li>
+                <li>
+                    Hanya ada **satu pemenang** yang akan mendapatkan hadiah. Setelah pemenang ditemukan, kuis akan langsung ditutup.
+                </li>
+                <li>
+                    Hadiah adalah **Tautan Rahasia** yang akan otomatis muncul setelah Anda menjawab benar.
+                </li>
+            </ul>
+        </section>
+
+        <!-- Bagian Aturan Menjawab (PENTING) -->
+        <section class="space-y-6">
+            <h2 class="text-xl font-semibold text-gray-200 border-b border-gray-800 pb-2">Aturan Menjawab</h2>
+            <ul class="list-style-blue">
+                <li>
+                    Jawaban harus berupa **SATU KATA TUNGGAL** dan ditulis dalam bahasa Indonesia.
+                </li>
+                <li>
+                    Jawaban tidak bersifat *case-sensitive* (huruf besar/kecil tidak berpengaruh), tetapi harus **tepat secara ejaan**.
+                </li>
+                <li>
+                    Anda dapat mencoba menjawab berulang kali hingga waktu habis atau pemenang ditemukan.
+                </li>
+            </ul>
+            <div class="bg-yellow-900 bg-opacity-30 p-4 rounded-lg border-l-4 border-yellow-500 text-yellow-100">
+                <p class="font-bold">PERINGATAN PENTING:</p>
+                <p>Jawaban yang mengandung spasi atau lebih dari satu kata akan dianggap salah. Pastikan jawaban Anda adalah **satu kata** saja (contoh: 'pisang', 'gajah', 'pohon').</p>
+            </div>
+        </section>
+        
+        <!-- Bagian Waktu -->
+        <section class="space-y-4">
+             <h2 class="text-xl font-semibold text-gray-200 border-b border-gray-800 pb-2">Batas Waktu</h2>
+             <p class="text-gray-400">Kuis akan otomatis berakhir ketika waktu hitung mundur mencapai nol. Jawaban tidak akan diterima setelah batas waktu.</p>
+        </section>
+
+        <!-- Tombol Kembali -->
+        <div class="pt-6 text-center">
+            <button onclick="goBack()" class="btn-back text-white font-bold py-2 px-6 rounded-lg">
+                Kembali ke Kuis
+            </button>
+        </div>
+
+    </div>
+</body>
+</html>
+
