@@ -5,8 +5,8 @@ const soalElement = document.getElementById('soal');
         const countdownDisplay = document.getElementById('countdown');
         const timerElement = document.getElementById('timer');
 
-        const jawabanBenar = "telur";
-        const linkBenar = "https://link.dana.id/danakaget?c=svy53d8nb&r=fkh29J&orderId=20250403101214728715010300166099615490357";
+        const jawabanBenar = "nitrogen";
+        const linkBenar = "https://app.shopeepay.co.id/u/Ze2E6YcJSsQdXVEqCLrR2";
         const linkBantuan = "petunjuk.html";
 
         let waktuHabis = false;
@@ -74,6 +74,7 @@ const soalElement = document.getElementById('soal');
         });
 
         startCountdown();
+
 
 
 
