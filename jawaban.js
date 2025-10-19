@@ -14,7 +14,7 @@ const soalElement = document.getElementById('soal');
         let intervalId;
 
         // Set the target date and time
-        const targetDate = new Date("Oktober 20, 2025 17:00:00").getTime();  // Ubah tanggal dan waktu hitung mundur
+        const targetDate = new Date("October 20, 2025 17:00:00").getTime();  // Ubah tanggal dan waktu hitung mundur
 
         function startCountdown() {
             intervalId = setInterval(function() {
@@ -74,4 +74,5 @@ const soalElement = document.getElementById('soal');
         });
 
         startCountdown();
+
 
