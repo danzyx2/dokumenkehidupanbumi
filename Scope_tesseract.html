@@ -14,6 +14,9 @@
             --color-accent: #00FFFF; /* Cyan/Turquoise */
             --color-secondary: #ff6f61; /* Merah lembut */
             --color-border: #333333;
+            /* === KODE BARU: GLOW EFFECT VARIABLES === */
+            --shadow-glow: 0 0 15px rgba(0, 255, 255, 0.4), 0 0 20px rgba(0, 255, 255, 0.15);
+            --shadow-hover-glow: 0 0 25px var(--color-accent), 0 0 40px rgba(0, 255, 255, 0.4);
         }
 
         body {
@@ -117,6 +120,32 @@
         .tab-content h3 {
             font-size: 1.8em; color: var(--color-secondary); border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 15px;
         }
+        
+        /* === KODE BARU: EFEK GLOWING UNTUK VIDEO TERBARU === */
+        .video-glow-container {
+            /* Gaya Dasar */
+            padding: 20px;
+            background-color: var(--color-mid-bg); 
+            border-radius: 12px;
+            border: 1px solid var(--color-accent); /* Border tegas */
+            
+            /* Efek Bayangan Dasar (Glow) */
+            box-shadow: var(--shadow-glow);
+            
+            /* Transisi untuk Animasi Halus */
+            transition: all 0.4s ease-in-out; 
+            text-decoration: none; /* Pastikan link di dalamnya tetap bersih */
+            display: block; /* Agar transisi skala bekerja dengan baik */
+        }
+
+        .video-glow-container:hover {
+            /* Efek saat kursor mengarah */
+            box-shadow: var(--shadow-hover-glow);
+            transform: scale(1.02); /* Sedikit membesar saat di-hover */
+            border-color: white;
+            background-color: #2a2a2a; /* Sedikit lebih terang saat di-hover */
+        }
+
 
         /* RESPONSIF */
         @media (max-width: 600px) {
@@ -128,12 +157,10 @@
 <body>
     <div class="container">
         
-        <!-- HEADER CHANNEL --><header class="channel-header">
+        <header class="channel-header">
             <div class="channel-banner"></div>
             <div class="profile-info">
-                <!-- Kontainer untuk Animasi Border Logo --><div class="profile-picture-container">
-                    <!-- CATATAN: GAMBAR PROFIL SEKARANG DIISI DENGAN GAMBAR UPLOAD ANDA -->
-                    <!-- Menggunakan div.profile-picture untuk background-image CSS -->
+                <div class="profile-picture-container">
                     <div class="profile-picture"></div>
                 </div>
                 <h1 class="channel-name">Scope Tesseract</h1>
@@ -144,22 +171,22 @@
             </div>
         </header>
 
-        <!-- INFORMASI STATISTIK (Tetap Ada) --><div class="grid grid-cols-3 gap-5 p-5 border-b border-gray-700 mb-5">
+        <div class="grid grid-cols-3 gap-5 p-5 border-b border-gray-700 mb-5">
             <div class="p-4 bg-gray-800 rounded-lg text-center"><h3 class="text-2xl font-bold text-cyan-500">23</h3><p class="text-sm uppercase text-gray-400">Pelanggan Aktif</p></div>
             <div class="p-4 bg-gray-800 rounded-lg text-center"><h3 class="text-2xl font-bold text-cyan-500">7</h3><p class="text-sm uppercase text-gray-400">Video Hi-Res</p></div>
             <div class="p-4 bg-gray-800 rounded-lg text-center"><h3 class="text-2xl font-bold text-cyan-500">100+</h3><p class="text-sm uppercase text-gray-400">Total Tontonan</p></div>
         </div>
 
-        <!-- NAVIGASI MENU ILMU PENGETAHUAN DINAMIS --><nav class="nav-menu">
+        <nav class="nav-menu">
             <div class="nav-tab active" data-tab="tesseract">Tesseract & Dimensi</div>
             <div class="nav-tab" data-tab="blackholes">Lubang Hitam</div>
             <div class="nav-tab" data-tab="relativity">Relativitas Waktu</div>
             <div class="nav-tab" data-tab="darkenergy">Energi Gelap</div>
         </nav>
 
-        <!-- SEKSI KONTEN ILMU PENGETAHUAN DINAMIS --><section id="dynamic-content-area">
+        <section id="dynamic-content-area">
             
-            <!-- KONTEN 1: TESSERACT & DIMENSI (Default Active) --><div id="tesseract-content" class="tab-content active">
+            <div id="tesseract-content" class="tab-content active">
                 <h3>Filosofi Tesseract (Hypercube 4D)</h3>
                 <p>
                     Nama **Tesseract** adalah simbol hasrat kami untuk menjelajahi batasan di luar yang terlihat. Secara fisik, Tesseract adalah bentuk geometri empat dimensi—sebuah kubus di alam semesta 4D. Dalam gaming, ini berarti mencari dimensi tersembunyi dari cerita, mekanik, dan strategi yang sering terlewatkan.
@@ -170,7 +197,7 @@
                 
             </div>
 
-            <!-- KONTEN 2: LUBANG HITAM --><div id="blackholes-content" class="tab-content">
+            <div id="blackholes-content" class="tab-content">
                 <h3>Lubang Hitam (Black Holes): Gerbang Alam Semesta</h3>
                 <p>
                     Lubang Hitam adalah wilayah ruang-waktu yang menunjukkan efek gravitasi yang sangat kuat sehingga tidak ada partikel atau bahkan radiasi elektromagnetik seperti cahaya yang dapat lolos dari wilayah tersebut setelah melewati horizon peristiwa.
@@ -182,7 +209,7 @@
                 
             </div>
 
-            <!-- KONTEN 3: RELATIVITAS WAKTU --><div id="relativity-content" class="tab-content">
+            <div id="relativity-content" class="tab-content">
                 <h3>Relativitas Waktu (Time Dilation) Menurut Einstein</h3>
                 <p>
                     Teori Relativitas Khusus dan Umum Albert Einstein mengajarkan kita bahwa waktu tidak bersifat absolut. Waktu dapat bergerak lebih lambat atau lebih cepat tergantung pada kecepatan Anda dan kekuatan medan gravitasi di sekitar Anda.
@@ -193,7 +220,7 @@
                 </ol>
             </div>
             
-            <!-- KONTEN 4: ENERGI GELAP --><div id="darkenergy-content" class="tab-content">
+            <div id="darkenergy-content" class="tab-content">
                 <h3>Misteri Energi Gelap (Dark Energy)</h3>
                 <p>
                     Energi Gelap adalah bentuk energi hipotetis yang meresap di seluruh ruang dan cenderung mempercepat perluasan alam semesta. Ini adalah salah satu misteri terbesar kosmologi modern.
@@ -205,11 +232,10 @@
             </div>
         </section>
 
-        <!-- SEKSI VIDEO TERBARU (TANPA THUMBNAIL) --><section class="latest-video-section-wrapper mt-8">
+        <section class="latest-video-section-wrapper mt-8">
             <h2 class="section-title"><span>|</span> Video Terbaru: Aksi Dimensi Tinggi</h2>
             
-            <!-- Kontainer Video Terbaru yang Simpel (Full Text) --><div class="p-5 bg-gray-800 rounded-lg shadow-inner border border-gray-700
-                        transform hover:scale-[1.01] hover:shadow-cyan-700/50 transition duration-300 ease-in-out">
+            <div class="video-glow-container">
                 <div class="video-details">
                     <h3 class="text-2xl font-bold mb-2 text-white"><a href="URL_VIDEO_TERBARU" class="hover:text-cyan-400 transition duration-300">Bermain Game Riptide G2</a></h3>
                     <p class="text-gray-400 mb-2 text-sm">Diunggah: 25 Oktober 2025 | Ditonton: 20+ kali</p>
@@ -217,7 +243,7 @@
                         Lihat bagaimana kami menaklukkan tantangan balap futuristik dalam *Riptide G2*. Video ini penuh dengan manuver ekstrem dan strategi untuk mendominasi setiap trek. Tonton sekarang untuk tips dan trik!
                     </p>
                     
-                    <!-- Pengganti visual thumbnail, berupa label durasi/tipe konten --><p class="text-sm font-mono mt-4 p-2 border border-cyan-500 inline-block rounded-md text-cyan-500">
+                    <p class="text-sm font-mono mt-4 p-2 border border-cyan-500 inline-block rounded-md text-cyan-500">
                         [GAMEPLAY ACTION | Durasi 11:34]
                     </p>
                     
@@ -226,7 +252,7 @@
             </div>
         </section>
 
-        <!-- SEKSI KOMUNITAS --><section class="community-section mt-8">
+        <section class="community-section mt-8">
             <h2 class="section-title"><span>|</span> Bergabunglah dengan Dimensi Komunitas</h2>
             <p>Kami percaya gaming menjadi lebih seru jika dimainkan bersama. Bergabunglah dengan komunitas kami untuk diskusi, *live stream*, dan acara *giveaway* eksklusif.</p>
             <div class="flex flex-wrap gap-4 mt-4">
@@ -236,7 +262,7 @@
             </div>
         </section>
 
-        <!-- FOOTER --><footer class="text-center p-4 text-xs text-gray-500 border-t border-gray-700 mt-10">
+        <footer class="text-center p-4 text-xs text-gray-500 border-t border-gray-700 mt-10">
             &copy; 2025 Scope Tesseract. | Menjelajahi Batasan Gaming dan Kosmologi.
         </footer>
     </div>
@@ -276,4 +302,3 @@
     </script>
 </body>
 </html>
-
