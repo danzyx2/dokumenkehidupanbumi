@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pusat Panduan Kewirausahaan Komprehensif</title>
+    <!-- Muat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Muat Ikon Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-card {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+        .menu-item {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .menu-item:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 6px 15px rgba(45, 212, 191, 0.4);
+        }
+        /* Konten yang lebih panjang memerlukan scroll yang baik */
+        .content-body h3 {
+            font-size: 1.5rem; /* text-xl */
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #0d9488; /* teal-600 */
+            border-bottom: 2px solid #e0f2f1; /* teal-100 */
+            padding-bottom: 5px;
+        }
+        .content-body p {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen p-4 sm:p-8">
+
+    <!-- Kontainer Utama -->
+    <div class="max-w-6xl mx-auto">
+        
+        <!-- Header Aplikasi -->
+        <header class="text-center mb-10 p-6 bg-white rounded-xl shadow-xl border-t-8 border-teal-500">
+            <h1 class="text-4xl font-extrabold text-teal-700 mb-2">Panduan Komprehensif Kewirausahaan</h1>
+            <p class="text-gray-500 text-lg">Modul terperinci untuk menguasai aspek legal, finansial, dan pemasaran bisnis modern.</p>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Menu Materi (Navigasi) -->
+            <aside class="lg:w-1/3 w-full">
+                <div class="bg-white p-6 rounded-xl shadow-lg sticky top-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-700 flex items-center">
+                        <i data-lucide="compass" class="w-6 h-6 mr-2 text-teal-500"></i>
+                        Pilihan Topik Inti
+                    </h2>
+                    <nav id="menu-container" class="space-y-3">
+                        <!-- Menu items akan diisi oleh JS -->
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Area Konten Materi -->
+            <main class="lg:w-2/3 w-full">
+                <div class="material-card bg-white p-8 rounded-xl shadow-2xl border border-gray-100 min-h-[600px] overflow-y-auto">
+                    
+                    <!-- Area Judul & Deskripsi Saat Ini -->
+                    <div id="material-content">
+                        <!-- Konten akan dimuat di sini -->
+                    </div>
+
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. DATA MATERI (Objek Materi yang Diperluas)
+        const materials = {
+            'brand': {
+                icon: 'feather',
+                title: "Strategi Merek dan Ekuitas: Fondasi Bisnis Jangka Panjang",
+                content: `
+                    <p>Merek (Brand) jauh melampaui sekadar logo atau nama; ia merupakan kumpulan persepsi, janji, dan pengalaman yang dibentuk oleh pelanggan Anda. Merek yang efektif adalah aset tak berwujud yang paling berharga, menentukan harga premium yang dapat Anda kenakan dan loyalitas konsumen terhadap produk. Merek pada dasarnya adalah <strong>janji</strong> kepada konsumen.</p>
+                    
+                    <h3 class="content-body-h3">1. Anatomi & Identitas Inti Merek</h3>
+                    <p>Membangun merek memerlukan pemahaman mendalam tentang komponen-komponen yang membentuk identitasnya:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Identitas Visual:</strong> Meliputi logo, palet warna, tipografi, dan elemen desain lainnya.</li>
+                        <li><strong>Nilai Merek (Core Values):</strong> Prinsip panduan inti dan keyakinan perusahaan, tercermin dalam setiap keputusan operasional.</li>
+                        <li><strong>Kepribadian Merek (Personality):</strong> Sifat manusia yang diasosiasikan dengan merek (misalnya: inovatif, ramah, atau mewah).</li>
+                        <li><strong>Positioning:</strong> Bagaimana merek Anda diposisikan secara unik dalam benak konsumen dibandingkan dengan pesaing.</li>
+                        <li><strong>Nada Suara (Tone of Voice):</strong> Gaya komunikasi yang digunakan merek (formal, santai, humoris, dll.).</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">2. Strategi Merek (Brand Strategy)</h3>
+                    <p>Strategi merek adalah cetak biru jangka panjang yang memandu cara merek akan berinteraksi, berkembang, dan mencapai tujuan bisnisnya. Elemen kunci dari strategi merek meliputi:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Tujuan Jangka Panjang:</strong> Visi tentang di mana merek ingin berada dalam 5-10 tahun.</li>
+                        <li><strong>Target Audiens:</strong> Definisi yang sangat spesifik tentang siapa yang ingin dilayani (demografi, psikografi, *pain points*).</li>
+                        <li><strong>Proposisi Nilai (Value Proposition):</strong> Manfaat unik yang ditawarkan merek dan alasan memilih Anda daripada pesaing.</li>
+                        <li><strong>Pesan Utama (Key Message):</strong> Kalimat utama yang menangkap intisari merek, digunakan secara konsisten dalam pemasaran.</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">3. Ekuitas Merek (Brand Equity)</h3>
+                    <p>Ekuitas merek adalah nilai tambah yang diberikan pada produk atau layanan oleh nama merek. Ekuitas yang kuat menghasilkan loyalitas yang lebih tinggi dan memungkinkan penetapan harga premium. Empat pilar utama Ekuitas Merek (Model Keller):</p>
+                    <ol class="list-decimal list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Kesadaran Merek (Brand Awareness):</strong> Seberapa mudah merek dikenali dan diingat.</li>
+                        <li><strong>Asosiasi Merek (Brand Association):</strong> Semua hal yang secara mental terhubung dengan merek (kualitas, harga, nilai).</li>
+                        <li><strong>Kualitas yang Dirasakan (Perceived Quality):</strong> Penilaian konsumen terhadap kualitas keseluruhan produk atau layanan.</li>
+                        <li><strong>Loyalitas Merek (Brand Loyalty):</strong> Kecenderungan konsumen untuk membeli merek yang sama berulang kali.</li>
+                    </ol>
+                    
+                    <h3 class="content-body-h3">4. Arsitektur Merek (Brand Architecture)</h3>
+                    <p>Ini adalah sistem terstruktur yang mengatur hubungan antar merek, sub-merek, dan produk dalam portofolio perusahaan:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Branded House (Merek Payung):</strong> Perusahaan induk adalah pendorong utama merek, dan semua sub-merek menggunakan nama atau elemen visual yang sama (Contoh: FedEx, Google).</li>
+                        <li><strong>House of Brands (Rumah Merek):</strong> Perusahaan induk memiliki banyak merek independen yang memiliki identitas dan target pasar unik (Contoh: P&G, Unilever).</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">5. Pengukuran Merek & Metrik Kinerja</h3>
+                    <p>Merek harus diukur untuk memastikan investasinya membuahkan hasil. Metrik penting mencakup:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Brand Health Tracking (Pelacakan Kesehatan Merek):</strong> Survei berkala untuk mengukur kesadaran, pertimbangan, dan asosiasi merek dari waktu ke waktu.</li>
+                        <li><strong>Net Promoter Score (NPS):</strong> Mengukur loyalitas pelanggan dan kecenderungan mereka merekomendasikan merek Anda (Promotor vs. Detraktor).</li>
+                        <li><strong>Brand Valuation (Valuasi Merek):</strong> Menghitung nilai finansial merek sebagai aset tak berwujud.</li>
+                        <li><strong>Share of Voice (SoV):</strong> Persentase pembicaraan atau liputan media tentang merek Anda dibandingkan dengan pesaing.</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">6. Perluasan dan Perubahan Merek (Rebranding & Extension)</h3>
+                    <p>Keputusan strategis ini dilakukan untuk menjaga relevansi atau memanfaatkan Ekuitas Merek yang sudah ada:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Line Extension (Perluasan Lini):</strong> Menggunakan nama merek yang sama untuk produk baru dalam kategori yang sama (Contoh: Coca-Cola Diet, Coca-Cola Zero).</li>
+                        <li><strong>Category Extension (Perluasan Kategori):</strong> Menggunakan nama merek yang sama untuk produk di kategori yang sama sekali baru (Contoh: Yamaha yang menjual sepeda motor dan alat musik).</li>
+                        <li><strong>Rebranding:</strong> Proses perubahan elemen inti merek (logo, nama, nilai, atau positioning) secara signifikan, biasanya dilakukan saat terjadi perubahan besar dalam visi perusahaan atau citra yang buruk.</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">7. Desain Pengalaman Merek (Brand Experience)</h3>
+                    <p>Pengalaman adalah titik kontak di mana janji merek dipenuhi. Desain pengalaman berfokus pada emosi dan interaksi:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Touchpoints:</strong> Setiap interaksi pelanggan dengan merek, baik digital (situs web, aplikasi) maupun fisik (kemasan, toko, layanan pelanggan).</li>
+                        <li><strong>Service Design (Desain Layanan):</strong> Merancang proses dan interaksi layanan untuk memastikan konsistensi dengan kepribadian merek.</li>
+                        <li><strong>Emotional Connection:</strong> Merek yang sukses menciptakan ikatan emosional yang melampaui fungsionalitas produk, mengarah pada advokasi pelanggan yang kuat.</li>
+                    </ul>
+                    
+                    <div class="mt-6 p-4 bg-teal-50 border-l-4 border-teal-400 rounded-md">
+                        <strong>Kesimpulan Praktis:</strong> Mengelola merek adalah tentang <strong>Konsistensi Janji</strong>. Semua poin dari Identitas Inti hingga Pengalaman Pelanggan harus selaras dan didukung oleh *Brand Guideline* yang ketat.
+                    </div>
+                `
+            },
+           
+            'kemasan': {
+                icon: 'package',
+                title: "Desain, Fungsi, Keberlanjutan, dan Regulasi Kemasan",
+                content: `
+                    <p>Kemasan adalah perpanjangan fisik dari produk itu sendiri dan seringkali merupakan interaksi fisik pertama antara merek Anda dan konsumen. Peran kemasan tidak hanya proteksi, tetapi juga alat pemasaran yang vital, bertindak sebagai 'wiraniaga diam' di rak.</p>
+                    
+                    <h3 class="content-body-h3">1. Tiga Tingkat Kemasan (Packaging Levels)</h3>
+                    <p>Memahami tingkat kemasan sangat penting untuk desain yang efektif dan logistik yang efisien:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Primer (Primary Packaging):</strong> Kemasan yang bersentuhan langsung dengan produk (misalnya, botol minum).</li>
+                        <li><strong>Sekunder (Secondary Packaging):</strong> Kemasan luar yang mengelompokkan kemasan primer (misalnya, kotak karton isi 6).</li>
+                        <li><strong>Tersier (Tertiary Packaging):</strong> Kemasan untuk pengiriman dan logistik (misalnya, palet kayu).</li>
+                    </ul>
+                    
+                    <h3 class="content-body-h3">2. Fungsi Komunikasi dan Hierarchy Visual</h3>
+                    <p>Kemasan harus mampu mengkomunikasikan nilai dan positioning merek dalam hitungan detik. Prinsip desain yang kuat meliputi:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Pemasaran & Identitas:</strong> Menyampaikan *Brand Story* dan identitas merek secara konsisten.</li>
+                        <li><strong>Titik Perbedaan Jual (USP):</strong> Menyoroti manfaat utama produk secara jelas dan menonjol.</li>
+                        <li><strong>Bentuk dan Ergonomi:</strong> Bentuk kemasan harus mudah dipegang, dibuka, dan digunakan.</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">3. Jenis-Jenis Material Kemasan Utama</h3>
+                    <p>Pemilihan material menentukan biaya, daya tahan, dan citra keberlanjutan merek. Setiap bahan memiliki karakteristik pelindung yang berbeda:</p>
+                    
+                    <h4 class="content-body-h4">A. Plastik (Polimer)</h4>
+                    <ul class="list-disc list-inside space-y-2 ml-6 mb-4">
+                        <li><strong>Kelebihan:</strong> Fleksibel, ringan, biaya rendah, resisten air, dapat memiliki sifat penghalang (barrier) yang baik (misalnya PET untuk minuman berkarbonasi).</li>
+                        <li><strong>Kekurangan:</strong> Masalah daur ulang yang kompleks (banyak jenis plastik), citra lingkungan yang buruk.</li>
+                    </ul>
+
+                    <h4 class="content-body-h4">B. Kertas dan Karton (Paperboard)</h4>
+                    <ul class="list-disc list-inside space-y-2 ml-6 mb-4">
+                        <li><strong>Kelebihan:</strong> Berasal dari sumber terbarukan, mudah didaur ulang, biaya cetak relatif rendah, dapat dikustomisasi dengan mudah (misalnya kotak makanan).</li>
+                        <li><strong>Kekurangan:</strong> Tidak tahan air, perlindungan yang lemah terhadap guncangan kecuali berbentuk bergelombang (karton box).</li>
+                    </ul>
+
+                    <h4 class="content-body-h4">C. Logam (Metal: Aluminium & Baja/Timah)</h4>
+                    <ul class="list-disc list-inside space-y-2 ml-6 mb-4">
+                        <li><strong>Kelebihan:</strong> Memberikan perlindungan total dari cahaya, udara, dan kelembaban (ideal untuk minuman kaleng, makanan kaleng), sangat mudah didaur ulang (terutama Aluminium).</li>
+                        <li><strong>Kekurangan:</strong> Biaya produksi awal yang tinggi, rentan terhadap penyok.</li>
+                    </ul>
+                    
+                    <h4 class="content-body-h4">D. Kaca (Glass)</h4>
+                    <ul class="list-disc list-inside space-y-2 ml-6 mb-4">
+                        <li><strong>Kelebihan:</strong> Inert (tidak bereaksi dengan produk), memberikan tampilan premium, sangat baik untuk menjaga rasa dan aroma, dapat didaur ulang berkali-kali tanpa kehilangan kualitas.</li>
+                        <li><strong>Kekurangan:</strong> Berat, mudah pecah, biaya transportasi tinggi.</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">4. Optimasi Biaya dan Logistik</h3>
+                    <p>Kemasan harus efisien secara biaya dan logistik untuk menjaga profitabilitas:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Value Engineering:</strong> Mendesain untuk mengurangi material atau memilih material yang lebih murah tanpa mengurangi fungsi.</li>
+                        <li><strong>Dimensi Modular:</strong> Mendesain agar sesuai dengan dimensi standar palet untuk memaksimalkan muatan pengiriman.</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">5. Aspek Keberlanjutan (Sustainability) Kemasan</h3>
+                    <p>Tren global menuntut kemasan yang bertanggung jawab, fokus pada 3R (Reduce, Reuse, Recycle):</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Minimasi (Reduction):</strong> Mengurangi volume dan berat kemasan untuk menurunkan jejak karbon.</li>
+                        <li><strong>Daur Ulang Pasca-Konsumen (PCR):</strong> Menggunakan material daur ulang dalam kemasan baru.</li>
+                    </ul>
+                    
+                    <h3 class="content-body-h3">6. Pengujian Kualitas dan Keamanan</h3>
+                    <p>Untuk memastikan integritas produk dan merek, pengujian kemasan wajib dilakukan:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Shelf Life Testing:</strong> Uji laboratorium untuk memprediksi stabilitas produk di berbagai suhu.</li>
+                        <li><strong>Anti-Pemalsuan (Anti-Counterfeiting):</strong> Menambahkan fitur keamanan seperti hologram atau QR code unik untuk verifikasi keaslian.</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">7. Regulasi dan Standar Wajib Kemasan</h3>
+                    <p>Aspek legal kemasan sangat krusial, terutama untuk produk makanan, obat-obatan, dan kosmetik:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Izin Edar:</strong> Wajib mencantumkan nomor izin dari Badan Pengawas Obat dan Makanan (BPOM) atau PIRT.</li>
+                        <li><strong>Informasi Wajib:</strong> Mencakup daftar bahan, berat bersih (Netto), tanggal kedaluwarsa, dan produsen/distributor.</li>
+                    </ul>
+
+                    <div class="mt-6 p-4 bg-teal-50 border-l-4 border-teal-400 rounded-md">
+                        <strong>Kesimpulan Praktis:</strong> Kemasan adalah investasi strategis. Pilihan material (Plastik, Kertas, Logam, atau Kaca) harus menyeimbangkan fungsi perlindungan, citra merek, dan efisiensi biaya.
+                    </div>
+                `
+            },
+// ... materi lainnya
+
+            
+            'haki': {
+                icon: 'landmark',
+                title: "Hak Kekayaan Intelektual (HAKI): Perlindungan Komprehensif Aset Bisnis",
+                content: `
+                    <p>HAKI adalah fondasi legal untuk ide bisnis Anda, mengubah kreativitas dan inovasi menjadi aset hukum yang dapat dilindungi dan dimonetisasi. Perlindungan ini mencegah pihak lain meniru atau menggunakan aset Anda tanpa izin, memberikan keunggulan kompetitif yang berkelanjutan.</p>
+                    
+                    <h3 class="content-body-h3">1. Lima Jenis Perlindungan HAKI Utama di Indonesia</h3>
+                    <p>Di Indonesia, HAKI diatur oleh Undang-Undang yang berbeda dan dikelola oleh Direktorat Jenderal Kekayaan Intelektual (DJKI):</p>
+                    
+                    <dl class="space-y-4 mb-6">
+                        <div>
+                            <dt class="font-bold text-gray-700">A. Merek Dagang & Jasa (Trade Mark)</dt>
+                            <dd class="ml-4 text-gray-600">
+                                <strong>Apa yang dilindungi:</strong> Identitas visual dan verbal (nama, logo, simbol) produk/jasa. Wajib didaftarkan per kelas (sistem klasifikasi Nice). Bersifat *first-to-file* dan dapat diperpanjang setiap 10 tahun.
+                                <br><strong>Contoh:</strong> Logo "Nike Swoosh" atau Nama "Gojek".
+                                <br><strong>Dasar Hukum:</strong> Undang-Undang No. 20 Tahun 2016.
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="font-bold text-gray-700">B. Paten (Patent)</dt>
+                            <dd class="ml-4 text-gray-600">
+                                <strong>Apa yang dilindungi:</strong> Penemuan di bidang teknologi yang bersifat baru, mengandung langkah inventif, dan dapat diterapkan di industri. Ini melindungi cara kerja atau fungsi penemuan.
+                                <br><strong>Contoh:</strong> Formula kimia baru untuk baterai, atau mekanisme mesin yang lebih efisien.
+                                <br><strong>Dasar Hukum:</strong> Undang-Undang No. 13 Tahun 2016. (Jangka waktu 20 tahun, non-perpanjangan).
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="font-bold text-gray-700">C. Hak Cipta (Copyright)</dt>
+                            <dd class="ml-4 text-gray-600">
+                                <strong>Apa yang dilindungi:</strong> Ekspresi ide (bentuk artistik/literer), BUKAN ide itu sendiri. Meliputi buku, musik, film, karya seni, dan kode *software*. Perlindungan muncul secara otomatis saat karya dibuat (tidak wajib didaftarkan, tetapi pencatatan disarankan).
+                                <br><strong>Contoh:</strong> Lirik lagu, novel, foto, *source code* sebuah aplikasi.
+                                <br><strong>Dasar Hukum:</strong> Undang-Undang No. 28 Tahun 2014. (Berlaku seumur hidup pencipta + 70 tahun).
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="font-bold text-gray-700">D. Desain Industri (Industrial Design)</dt>
+                            <dd class="ml-4 text-gray-600">
+                                <strong>Apa yang dilindungi:</strong> Kreasi tentang bentuk, konfigurasi, atau komposisi garis atau warna yang memberikan kesan estetika dan dapat digunakan untuk menghasilkan produk secara massal. Melindungi tampilan visual produk.
+                                <br><strong>Contoh:</strong> Bentuk unik botol minuman, desain tampilan luar *smartphone*.
+                                <br><strong>Dasar Hukum:</strong> Undang-Undang No. 31 Tahun 2000. (Jangka waktu 10 tahun).
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="font-bold text-gray-700">E. Indikasi Geografis (Geographical Indication)</dt>
+                            <dd class="ml-4 text-gray-600">
+                                <strong>Apa yang dilindungi:</strong> Suatu tanda yang menunjukkan daerah asal suatu barang yang karena faktor geografis (alam, manusia, atau kombinasinya) memberikan reputasi, kualitas, dan karakteristik tertentu.
+                                <br><strong>Contoh:</strong> Kopi Gayo, Tenun Ikat Sumba, Susu Kuda Liar Sumbawa.
+                                <br><strong>Dasar Hukum:</strong> Undang-Undang No. 20 Tahun 2016 tentang Merek dan Indikasi Geografis.
+                            </dd>
+                        </div>
+                    </dl>
+
+                    <h3 class="content-body-h3">2. Rahasia Dagang (Trade Secret)</h3>
+                    <p>Untuk informasi sensitif yang tidak dapat atau tidak ingin dipatenkan (misalnya, resep, daftar pelanggan, formula). Perlindungannya bergantung pada sejauh mana perusahaan menjaga kerahasiaannya melalui tindakan hukum dan teknis. Ini merupakan alternatif perlindungan non-publik.</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Contoh:</strong> Formula rahasia Coca-Cola, proses manufaktur internal yang unik.</li>
+                        <li><strong>Pengamanan:</strong> Wajib menggunakan Perjanjian Kerahasiaan (NDA) dan batasan akses digital/fisik.</li>
+                        <li><strong>Dasar Hukum:</strong> Undang-Undang No. 30 Tahun 2000.</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">3. Monetisasi Aset HAKI</h3>
+                    <p>HAKI tidak hanya untuk perlindungan, tetapi juga merupakan aset yang dapat menghasilkan pendapatan:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Lisensi (Licensing):</strong> Memberikan izin kepada pihak lain untuk menggunakan HAKI Anda (misalnya, merek atau paten) dengan imbalan pembayaran royalti. Ini memungkinkan ekspansi pasar tanpa harus berinvestasi dalam produksi.</li>
+                        <li><strong>Waralaba (Franchising):</strong> Menggunakan Merek Dagang, Rahasia Dagang, dan sistem operasional yang semuanya dilindungi HAKI untuk diduplikasi oleh pihak lain.</li>
+                        <li><strong>Gadai/Jaminan:</strong> Di beberapa yurisdiksi, HAKI dapat dijadikan aset yang dapat diagunkan untuk mendapatkan pinjaman dari lembaga keuangan.</li>
+                    </ul>
+
+                    <div class="mt-6 p-4 bg-teal-50 border-l-4 border-teal-400 rounded-md">
+                        <strong>Perbedaan Kunci:</strong> Merek melindungi nama dan logo (identitas), Paten melindungi fungsi (cara kerja), dan Hak Cipta melindungi bentuk ekspresi (seni/literatur).
+                    </div>
+                `
+            },
+// ... materi lainnya
+
+
+        
+            'modal': {
+                icon: 'wallet',
+                title: "Perencanaan Modal, Analisis Biaya, dan Strategi Pendanaan",
+                content: `
+                    <p>Perencanaan modal (Capital Planning) adalah proses vital yang dimulai dengan penyusunan Proyeksi Laporan Keuangan (Financial Projection) yang realistis. Proyeksi ini harus mencakup minimal 3-5 tahun pertama dan memuat perkiraan Pendapatan, Biaya Pokok Penjualan (COGS), Biaya Operasional (Opex), dan Arus Kas.</p>
+
+                    <h3 class="content-body-h3">1. Klasifikasi Biaya dan Pengeluaran</h3>
+                    <p>Memahami perbedaan antara jenis biaya adalah kunci untuk menetapkan harga (pricing) dan mengendalikan anggaran:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Biaya Tetap (Fixed Cost - FC):</strong> Biaya yang **tidak berubah** terlepas dari volume produksi/penjualan (misalnya, sewa kantor, gaji bulanan staf inti).</li>
+                        <li><strong>Biaya Variabel (Variable Cost - VC):</strong> Biaya yang **berfluktuasi** seiring dengan volume produksi (misalnya, bahan baku, biaya kemasan per unit, komisi penjualan).</li>
+                        <li><strong>Biaya *Capex* (Capital Expenditure):</strong> Investasi jangka panjang pada aset (mesin, peralatan kantor) yang memberi manfaat lebih dari satu tahun.</li>
+                        <li><strong>Biaya *Opex* (Operational Expenditure):</strong> Biaya harian untuk menjalankan bisnis (misalnya, tagihan listrik, biaya pemasaran, gaji bulanan).</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">2. Analisis Titik Impas (Break-Even Point - BEP)</h3>
+                    <p>BEP adalah titik di mana total pendapatan (Total Revenue) sama dengan total biaya (Total Cost), sehingga bisnis tidak menghasilkan laba maupun rugi (Laba = 0). Ini adalah metrik fundamental untuk kelangsungan bisnis.</p>
+                    
+                    <h4 class="content-body-h4">A. Perhitungan BEP dalam Unit (Quantity)</h4>
+                    <p>Menentukan berapa unit produk yang harus dijual untuk mencapai titik impas:</p>
+                    <div class="p-4 bg-gray-100 rounded-md overflow-x-auto my-3">
+                        $$ \text{BEP (Unit)} = \frac{\text{Total Biaya Tetap}}{\text{Harga Jual per Unit} - \text{Biaya Variabel per Unit}} $$
+                    </div>
+                    
+                    <h4 class="content-body-h4">B. Perhitungan BEP dalam Rupiah (Value)</h4>
+                    <p>Menentukan nilai pendapatan total yang harus dicapai untuk mencapai titik impas:</p>
+                    <div class="p-4 bg-gray-100 rounded-md overflow-x-auto my-3">
+                        $$ \text{BEP (Rupiah)} = \frac{\text{Total Biaya Tetap}}{\text{Margin Kontribusi Rasio}} $$
+                        <small class="block mt-2">Dimana $\text{Margin Kontribusi Rasio} = 1 - (\frac{\text{Total Biaya Variabel}}{\text{Total Penjualan}})$</small>
+                    </div>
+
+                    <h3 class="content-body-h3">3. Sumber Modal dan Struktur Pendanaan</h3>
+                    <p>Modal dibagi menjadi dua jenis utama, yang menentukan struktur permodalan (Capital Structure) perusahaan:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Modal Ekuitas (Equity / Internal):</strong> Berasal dari setoran pemilik/pendiri, laba ditahan, atau investor yang menanamkan modal dengan imbalan kepemilikan saham. Ini tidak memiliki kewajiban pengembalian tetap.</li>
+                        <li><strong>Modal Utang (Debt / Eksternal):</strong> Berasal dari pinjaman bank, obligasi, atau kreditur lain. Modal ini memiliki kewajiban pengembalian pokok dan bunga.</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">4. Tahapan Pendanaan Eksternal (Funding Rounds)</h3>
+                    <p>Untuk perusahaan rintisan (startup), modal eksternal biasanya melalui tahapan:</p>
+                    <ol class="list-decimal list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Pre-Seed / Seed Funding:</strong> Pendanaan tahap awal untuk validasi ide (MVP) dan riset pasar. Sumber utama: FFF (Family, Friends, and Fools), *Angel Investor*.</li>
+                        <li><strong>Series A, B, C:</strong> Pendanaan Venture Capital (VC).
+                            <ul>
+                                <li>**Series A:** Setelah model bisnis terbukti, dana digunakan untuk skalabilitas, membangun tim, dan ekspansi pasar.</li>
+                                <li>**Series B/C dst:** Untuk ekspansi agresif ke pasar baru, akuisisi, dan dominasi pasar.</li>
+                            </ul>
+                        </li>
+                        <li><strong>IPO (Initial Public Offering):</strong> Penawaran saham perdana kepada publik di bursa saham, menjadi tahap akhir pendanaan eksternal utama.</li>
+                    </ol>
+                    
+                    <h3 class="content-body-h3">5. Valuasi (Penilaian Perusahaan)</h3>
+                    <p>Valuasi adalah penentuan nilai ekonomi perusahaan Anda sebelum investor menanamkan modal. Ini digunakan untuk menghitung persentase saham yang diterima investor:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Metode DCF (*Discounted Cash Flow*):</strong> Menghitung nilai perusahaan berdasarkan estimasi arus kas di masa depan yang didiskon ke nilai saat ini. Cocok untuk bisnis yang sudah stabil.</li>
+                        <li><strong>Metode Multiples (Perbandingan):</strong> Menilai perusahaan dengan membandingkan metrik keuangan (seperti Revenue atau EBITDA) dengan perusahaan sejenis yang sudah diperdagangkan di pasar. Cocok untuk startup tahap awal.</li>
+                        <li><strong>Pre-Money Valuation:</strong> Nilai perusahaan *sebelum* investasi masuk.</li>
+                        <li><strong>Post-Money Valuation:</strong> Nilai perusahaan *setelah* investasi masuk (Pre-Money + Nilai Investasi).</li>
+                    </ul>
+
+                    <div class="mt-6 p-4 bg-teal-50 border-l-4 border-teal-400 rounded-md">
+                        <strong>Perencanaan Strategis:</strong> Pastikan Anda menghitung BEP pada berbagai skenario (optimis, realistis, pesimis) untuk memahami ambang batas risiko bisnis Anda sebelum mencari pendanaan.
+                    </div>
+                `
+            },
+            'pemasaran': {
+                icon: 'megaphone',
+                title: "Strategi Pemasaran, Distribusi, dan Metrik Kinerja",
+                content: `
+                    <p>Pemasaran adalah proses untuk menciptakan, mengkomunikasikan, dan menyampaikan nilai kepada pelanggan, serta mengelola hubungan pelanggan dengan cara yang menguntungkan organisasi dan pemangku kepentingan. Keberhasilan pemasaran didasarkan pada strategi holistik yang mencakup produk hingga pengalaman pelanggan.</p>
+                    
+                    <h3 class="content-body-h3">1. Fondasi: Marketing Mix (4P's)</h3>
+                    <p>Strategi pemasaran yang efektif berakar pada keseimbangan empat elemen utama ini:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+                        <li><strong>Product (Produk):</strong> Apa yang Anda tawarkan, termasuk kualitas, fitur, desain, dan branding.</li>
+                        <li><strong>Price (Harga):</strong> Strategi penetapan harga, diskon, dan syarat pembayaran, yang mencerminkan nilai yang dirasakan (perceived value) oleh pelanggan.</li>
+                        <li><strong>Place (Tempat/Distribusi):</strong> Bagaimana produk tersedia untuk konsumen—fokus utama kita.</li>
+                        <li><strong>Promotion (Promosi):</strong> Kegiatan komunikasi untuk menginformasikan, membujuk, dan mengingatkan pasar (Iklan, PR, Penjualan Personal).</li>
+                    </ul>
+
+                    <h3 class="content-body-h3">2. Strategi Distribusi (Place) dan Saluran</h3>
+                    <p>Distribusi (Place) adalah tentang membuat produk tersedia bagi konsumen pada waktu dan tempat yang tepat. Pilihan saluran distribusi harus selaras dengan positioning merek dan target audiens.</p>
+
+                    <h4 class="content-body-h4">A. Struktur Saluran Distribusi</h4>
+                    <ul class="list-disc list-inside space-y-2 ml-6 mb-4">
+                        <li><strong>Saluran Langsung (Direct):</strong> Produk dijual langsung dari produsen ke konsumen tanpa perantara (Contoh: Toko *online* milik sendiri, *factory outlet*). Memberikan kontrol maksimum atas harga dan merek.</li>
+                        <li><strong>Saluran Tidak Langsung (Indirect):</strong> Melibatkan satu atau lebih perantara.
+                            <ul>
+                                <li><strong>Satu Tingkat:</strong> Produsen $\to$ Pengecer $\to$ Konsumen (Contoh: Merek memasok ke supermarket besar).</li>
+                                <li><strong>Dua Tingkat:</strong> Produsen $\to$ Grosir $\to$ Pengecer $\to$ Konsumen (Umum untuk produk yang tersebar luas/murah).</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4 class="content-body-h4">B. Intensitas Distribusi</h4>
+                    <ul class="list-disc list-inside space-y-2 ml-6 mb-4">
+                        <li><strong>Intensive Distribution (Intensif):</strong> Menjual produk di sebanyak mungkin gerai. Cocok untuk produk kebutuhan sehari-hari yang berharga rendah (Convenience Goods), seperti permen atau air mineral.</li>
+                        <li><strong>Selective Distribution (Selektif):</strong> Menggunakan perantara yang terbatas tetapi sangat diseleksi di wilayah tertentu. Cocok untuk barang *shopping* di mana konsumen membandingkan merek (Contoh: Peralatan elektronik, furnitur).</li>
+                        <li><strong>Exclusive Distribution (Eksklusif):</strong> Memberikan hak eksklusif kepada satu atau dua perantara di area tertentu. Cocok untuk produk mewah atau khusus yang membutuhkan layanan purna jual tinggi (Contoh: Merek mobil mewah, butik desainer).</li>
+                    </ul>
+                    
+                    <h3 class="content-body-h3">3. Pemasaran Digital dan Metrik Kritis</h3>
+                    <p>Pemasaran digital mencakup dua model utama dan diukur melalui KPI yang ketat:</p>
+                    
+                    <h4 class="content-body-h4">Model Pemasaran Inti</h4>
+                    <ul class="list-disc list-inside space-y-2 ml-6 mb-4">
+                        <li><strong>Inbound Marketing:</strong> Menarik pelanggan dengan konten (SEO, Blog, Media Sosial Organik). Tujuannya membuat pelanggan menemukan Anda.</li>
+                        <li><strong>Outbound Marketing:</strong> Mendorong pesan ke pelanggan (Iklan Berbayar/SEM, Iklan Tradisional).</li>
+                    </ul>
+
+                    <h4 class="content-body-h4">Metrik Kinerja Kritis (KPI)</h4>
+                    <ul class="list-disc list-inside space-y-2 ml-6 mb-4">
+                        <li><strong>CAC (Customer Acquisition Cost):</strong> Total biaya untuk mendapatkan satu pelanggan baru.</li>
+                        <li><strong>LTV (Lifetime Value):</strong> Total pendapatan yang dihasilkan oleh rata-rata pelanggan. <strong>Kunci: LTV harus selalu jauh lebih tinggi dari CAC.</strong></li>
+                        <li><strong>Conversion Rate:</strong> Persentase pengunjung yang melakukan tindakan yang diinginkan (misalnya, pembelian, pendaftaran).</li>
+                    </ul>
+
+                    <div class="mt-6 p-4 bg-teal-50 border-l-4 border-teal-400 rounded-md">
+                        <strong>Logistik Terbalik (Reverse Logistics):</strong> Bagian penting dari Place adalah mengelola pengembalian produk dan daur ulang. Efisiensi di sini sangat mempengaruhi kepuasan pelanggan dan keberlanjutan.
+                    </div>
+                `
+            }
+
+        };
+
+        const contentArea = document.getElementById('material-content');
+        const menuContainer = document.getElementById('menu-container');
+
+        // Fungsi untuk menampilkan konten default (Welcome/Intro)
+        function showWelcomeMessage() {
+            contentArea.innerHTML = `
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Selamat Datang di Modul Kewirausahaan!</h2>
+                <p class="text-lg text-gray-600 mb-8">Ini adalah panduan lengkap yang kami siapkan untuk mendukung perjalanan bisnis Anda. Setiap topik dirancang untuk memberikan pemahaman teknis dan strategis.</p>
+                
+                <div class="bg-teal-50 p-6 rounded-lg border border-teal-200 shadow-inner">
+                    <h3 class="text-xl font-semibold text-teal-700 mb-3 flex items-center">
+                        <i data-lucide="zap" class="w-5 h-5 mr-2"></i>
+                        Ayo Mulai Belajar!
+                    </h3>
+                    <p class="text-teal-600">Silakan pilih menu di samping kiri (Pilihan Topik Inti) untuk menampilkan materi yang lebih panjang dan mendalam mengenai Merek, Kemasan, HAKI, Modal, dan Pemasaran. Selamat menjelajah!</p>
+                </div>
+
+                <div class="text-center mt-12 opacity-50">
+                    <i data-lucide="lightbulb" class="w-12 h-12 mx-auto text-gray-300"></i>
+                </div>
+            `;
+            // Re-render lucide icons in the new content
+            lucide.createIcons();
+        }
+
+        // Fungsi untuk menampilkan materi yang dipilih
+        function showMaterial(key) {
+            const material = materials[key];
+            if (!material) {
+                showWelcomeMessage();
+                return;
+            }
+
+            // Hapus kelas aktif dari semua item menu
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('bg-teal-50', 'border-teal-500', 'font-bold');
+                item.classList.add('bg-white', 'border-gray-200', 'hover:bg-gray-50');
+            });
+
+            // Tambahkan kelas aktif ke item menu yang diklik
+            const activeItem = document.querySelector(`.menu-item[data-key="${key}"]`);
+            if (activeItem) {
+                activeItem.classList.add('bg-teal-50', 'border-teal-500', 'font-bold', 'shadow-md');
+                activeItem.classList.remove('bg-white', 'border-gray-200', 'hover:bg-gray-50', 'shadow-sm');
+            }
+
+            // Transisi konten (Fade Out)
+            contentArea.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+
+            setTimeout(() => {
+                // Ganti konten
+                contentArea.innerHTML = `
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-teal-500 pb-3 flex items-center">
+                        <i data-lucide="${material.icon}" class="w-7 h-7 mr-3 text-teal-500"></i>
+                        ${material.title}
+                    </h2>
+                    <div class="text-gray-700 leading-relaxed content-body">${material.content}</div>
+                `;
+                
+                // Re-render lucide icons in the new content
+                lucide.createIcons();
+
+                // Transisi konten (Fade In)
+                contentArea.classList.remove('opacity-0');
+            }, 300); // Tunggu hingga fade-out selesai
+        }
+
+        // 2. INIT: Membangun Menu Navigasi
+        function buildMenu() {
+            Object.keys(materials).forEach(key => {
+                const material = materials[key];
+                const button = document.createElement('button');
+                button.setAttribute('data-key', key);
+                button.className = 'menu-item w-full text-left p-4 rounded-xl border-2 transition duration-300 ease-in-out flex items-center bg-white border-gray-200 shadow-sm text-gray-700';
+                button.innerHTML = `
+                    <i data-lucide="${material.icon}" class="w-5 h-5 mr-3 text-teal-600"></i>
+                    <span class="font-medium">${material.title}</span>
+                `;
+                
+                button.addEventListener('click', () => showMaterial(key));
+                menuContainer.appendChild(button);
+            });
+            // Re-render lucide icons for the menu
+            lucide.createIcons();
+        }
+
+        // 3. INIT: Memulai aplikasi saat dokumen dimuat
+        window.onload = function() {
+            buildMenu();
+            showWelcomeMessage(); // Tampilkan pesan selamat datang di awal
+        };
+
+    </script>
+</body>
+</html>
+

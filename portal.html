@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Pembelajaran Interaktif</title>
+    <!-- Muat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Muat Ikon Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transform-origin: center;
+        }
+        .material-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3); /* Cyan shadow on hover */
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen p-6 sm:p-10">
+
+    <!-- Kontainer Utama -->
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header Portal -->
+        <header class="text-center mb-12 p-8 bg-white rounded-2xl shadow-xl border-b-8 border-cyan-500">
+            <h1 class="text-5xl font-extrabold text-cyan-700 mb-3">Pilih Kategori Materi</h1>
+            <p class="text-xl text-gray-500">Jelajahi berbagai bidang ilmu pengetahuan dan keterampilan. Klik kartu untuk memulai!</p>
+        </header>
+
+        <!-- Area Kartu Materi -->
+        <div id="materi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Kartu materi akan di-render di sini oleh JavaScript -->
+        </div>
+        
+    </div>
+
+    <script>
+        // Data Struktur Materi (Array of Objects)
+        const categories = [
+            
+            {
+                id: 'agama-islam',
+                title: "Agama Islam",
+                description: "Studi tentang akidah, fiqih, sejarah peradaban Islam, dan etika Islami dalam kehidupan sehari-hari.",
+                icon: 'mosque',
+                color: 'bg-amber-600',
+                link: 'agama_islam.html' // Tautan diperbarui
+            },
+            {
+                id: 'bahasa-indonesia',
+                title: "Bahasa Indonesia",
+                description: "Materi tata bahasa, penulisan karya ilmiah, retorika, dan analisis teks sastra dan non-sastra.",
+                icon: 'book-text',
+                color: 'bg-rose-600',
+                link: 'bahasa_indonesia.html' // Tautan diperbarui
+            },
+            {
+                id: 'jaringan-komputer',
+                title: "Jaringan Komputer dan Telekomunikasi",
+                description: "Materi tentang TCP/IP, topologi jaringan, routing, subnetting, dan keamanan siber dasar.",
+                icon: 'signal-high',
+                color: 'bg-green-500',
+                link: 'jaringan_komputer.html' // Tautan diperbarui
+            },
+            {
+                id: 'kewirausahaan',
+                title: "Kewirausahaan (Wirausaha)",
+                description: "Panduan lengkap mengenai strategi merek, perencanaan modal, HAKI, dan pemasaran digital.",
+                icon: 'rocket',
+                color: 'bg-cyan-500',
+                link: 'kewirausahaan.html' // Tautan tetap
+            },
+            {
+                id: 'fisika',
+                title: "Fisika Dasar",
+                description: "Mempelajari mekanika, termodinamika, elektromagnetisme, dan konsep fisika kuantum.",
+                icon: 'atom',
+                color: 'bg-yellow-600',
+                link: 'fisika.html' // Tautan diperbarui
+            },
+            {
+                id: 'coding',
+                title: "Dasar Pemrograman",
+                description: "Pengantar logika pemrograman, struktur data, dan bahasa dasar seperti Python atau JavaScript.",
+                icon: 'code',
+                color: 'bg-blue-700',
+                link: 'coding.html' // Tautan diperbarui
+            }
+        ];
+
+        const gridContainer = document.getElementById('materi-grid');
+
+        // Fungsi untuk merender kartu materi
+        function renderMaterialCards() {
+            // Urutkan kategori berdasarkan judul (alfabetis)
+            categories.sort((a, b) => a.title.localeCompare(b.title));
+
+            categories.forEach(cat => {
+                const card = document.createElement('a');
+                card.href = cat.link;
+                card.className = 'material-card block p-6 bg-white rounded-xl border border-gray-200 shadow-md hover:border-cyan-400 hover:text-cyan-700';
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 rounded-full ${cat.color} text-white shadow-lg">
+                            <i data-lucide="${cat.icon}" class="w-7 h-7"></i>
+                        </div>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400 transition duration-300"></i>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold mb-2 text-gray-800">${cat.title}</h2>
+                    <p class="text-gray-500 text-sm">${cat.description}</p>
+                `;
+                gridContainer.appendChild(card);
+            });
+
+            // Re-render lucide icons
+            lucide.createIcons();
+        }
+
+        // Jalankan fungsi rendering saat dokumen dimuat
+        window.onload = function() {
+            renderMaterialCards();
+        };
+
+    </script>
+</body>
+</html>
+
