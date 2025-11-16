@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡️ ESPORTS TIGER CHAMPIONSHIP S1 (1 Vs 1) ⚡️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Roboto:wght@400;700&display=swap');
+
+        /* -----------------------
+           GLOBAL STYLES & FONT
+           ----------------------- */
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #121212; /* Latar belakang gelap, standar gaming */
+            color: #E0E0E0; /* Warna teks abu-abu terang */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><pattern id="p" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2" stroke="%23333333" stroke-width="0.5" /></pattern></defs><rect width="100" height="100" fill="url(%23p)" /></svg>'); /* Tekstur subtil */
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 30px auto;
+            background: #1F1F1F; /* Kontainer sedikit lebih terang */
+            padding: 30px 50px;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            border: 2px solid #3A3A3A;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* -----------------------
+           HEADER & TITLE
+           ----------------------- */
+        h1, h2 {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+
+        h1 {
+            color: #FF5722; /* Deep Orange/Esports Red */
+            font-size: 2.8em;
+            text-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
+            margin-top: 10px;
+            padding-bottom: 5px;
+        }
+
+        h2 {
+            color: #00BCD4; /* Cyan/Teal - Sorotan sekunder */
+            font-size: 1.6em;
+            border-bottom: 3px solid #00BCD4;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        /* -----------------------
+           LIST & TEXT STYLES
+           ----------------------- */
+        ul, ol {
+            margin-left: 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-left: 5px;
+            border-left: 2px solid transparent;
+            transition: border-left 0.2s ease;
+        }
+        
+        li:hover {
+            border-left: 2px solid #FF5722;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .note {
+            background-color: #2A2A2A;
+            border-left: 5px solid #FF5722;
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 8px;
+            font-style: italic;
+            box-shadow: 0 0 15px rgba(255, 87, 34, 0.2);
+        }
+
+        /* -----------------------
+           HIGHLIGHTS
+           ----------------------- */
+        .highlight {
+            font-weight: 800;
+            color: #00BCD4; /* Cyan */
+            text-shadow: 0 0 5px rgba(0, 188, 212, 0.4);
+        }
+
+        .alert-rule {
+            color: #FF5722; /* Deep Orange */
+            font-weight: 900;
+        }
+        
+        /* -----------------------
+           REGISTRATION FEE STYLES
+           ----------------------- */
+        .fee-banner {
+            background-color: #4CAF50; /* Hijau - Untuk penekanan uang/pendaftaran */
+            color: #FFF;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 20px auto;
+            width: fit-content;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5em;
+            font-weight: 900;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* -----------------------
+           BUTTON STYLE (Call to Action)
+           ----------------------- */
+        .join-button {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 40px auto;
+            padding: 18px 40px;
+            background-color: #25D366; /* WhatsApp Green */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1.3em;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+            text-transform: uppercase;
+        }
+
+        .join-button:hover {
+            background-color: #1DA851;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
+        }
+        
+        /* -----------------------
+           TABLE STYLES (NEW)
+           ----------------------- */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #2A2A2A;
+            color: #E0E0E0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .schedule-table th, .schedule-table td {
+            padding: 12px 10px; 
+            text-align: left;
+            border-bottom: 1px solid #3A3A3A;
+            vertical-align: top;
+        }
+
+        .schedule-table thead th {
+            background-color: #00BCD4; /* Cyan Header */
+            color: #121212;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-weight: 800;
+            font-size: 0.9em;
+        }
+
+        .schedule-table tbody tr:nth-child(even) {
+            background-color: #252525;
+        }
+        
+        .schedule-table tbody tr:hover {
+            background-color: #333333;
+            color: #FF5722;
+        }
+        
+        .match-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .match-list li {
+            margin-bottom: 8px; /* Added spacing between match entries */
+            border-left: none;
+            padding-left: 0;
+            font-size: 0.95em;
+        }
+        .match-time {
+            color: #FFEB3B;
+            font-weight: 700;
+        }
+        .winner {
+            color: #FFEB3B;
+            font-weight: bold;
+        }
+
+        /* -----------------------
+           Responsive Adjustments
+           ----------------------- */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px auto;
+                padding: 15px 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .schedule-table th, .schedule-table td {
+                padding: 8px 5px; 
+                font-size: 0.75em;
+            }
+            .schedule-table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡️ ESPORTS TIGER CHAMPIONSHIP S1 (1 Vs 1) ⚡️</h1>
+        <h2>RESMI: Duel Keterampilan & Strategi Total</h2>
+        
+        <div class="fee-banner">
+            BIAYA PENDAFTARAN: <span style="color: #FFEB3B; font-size: 1.2em;">HANYA RP 1.000!</span>
+        </div>
+
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSddzRSxlhVgh4Urb-qCckfeLJ0Ix8Icw5VSwTGsy38w7otA5Q/viewform?usp=dialog" class="join-button" target="_blank">🔥 DAFTAR SEKARANG & GABUNG GRUP 🔥</a>
+
+        <div class="note">
+            <p><strong>PENTING!</strong> Aturan telah disesuaikan dengan fitur terbaru MLBB 1v1. Strategi <em>farming</em> dan <em>draft pick</em> hero <span class="highlight">DIPERBOLEHKAN</span>. Ini adalah duel strategis 1 lawan 1!</p>
+        </div>
+
+        <h2>1. Informasi Umum & Turnamen</h2>
+        <ul>
+            <li><strong>Nama Turnamen:</strong> <span class="highlight">ESPORTS TIGER CHAMPIONSHIP S1 (1 Vs 1)</span></li>
+            <li><strong>Platform:</strong> <span class="highlight">Mobile Legends: Bang Bang</span></li>
+            <li><strong>Peserta:</strong> Terbuka untuk Umum (Individu).</li>
+            <li><strong>Mode Pertandingan:</strong> Custom 1v1 Fair (Hanya Map 1 Jalur)</li>
+            <li><strong>Sistem:</strong> Single Elimination (Gugur Tunggal)</li>
+            <li><strong>Format:</strong> BO1 (Best of 1) hingga Semifinal. Grand Final <span class="alert-rule">BO3 (Best of 3)</span>.</li>
+            <li><strong>Kuota:</strong> <span class="alert-rule">16 Slot Individu</span> (Sistem Gugur 5 Minggu)</li>
+        </ul>
+
+        <h2>2. Syarat Peserta & Pendaftaran</h2>
+        <ul>
+            <li><strong>Jumlah Pemain:</strong> 1 Pemain (Individu) per Slot.</li>
+            <li><strong>Nama Akun:</strong> Tidak boleh mengandung unsur SARA, pornografi, atau kata-kata kasar.</li>
+            <li><strong>Biaya Pendaftaran:</strong> <span class="alert-rule">Rp 1.000,- (Seribu Rupiah)</span></li>
+            <li><strong>Periode Pendaftaran:</strong> <span class="highlight">Sekarang</span> - <span class="highlight">30 November 2025</span> (Segera Daftar!)</li>
+            <li><strong>Metode Pendaftaran:</strong> Melalui Admin/Panitia di Grup WhatsApp.</li>
+        </ul>
+
+        <h2>3. Syarat Kemenangan (Win Condition)</h2>
+        <p>Pertandingan <em>HANYA</em> berakhir jika salah satu kondisi berikut terpenuhi:</p>
+        <ol>
+            <li><strong>FIRST BLOOD x3:</strong> Pemain pertama yang mencapai <span class="alert-rule">3 KILL</span>.</li>
+            <li><strong>TOWER DOWN:</strong> Pemain pertama yang menghancurkan <span class="alert-rule">TOWER PERTAMA</span> musuh.</li>
+            <li><strong>SURRENDER:</strong> Lawan menekan tombol menyerah.</li>
+        </ol>
+
+        <h2>4. Aturan Main & Draft Pick</h2>
+        <p>Turnamen ini menggunakan mekanisme permainan 1v1 Fair:</p>
+        <ul>
+            <li><strong>Draft Pick (Ban/Pick):</strong>
+                <ul>
+                    <li>Digunakan sistem <span class="highlight">Draft Pick Mode</span>.</li>
+                    <li>Setiap pemain berhak melakukan <span class="alert-rule">BAN MAKSIMAL 3 HERO</span> secara bersamaan.</li>
+                    <li>Hero yang tersedia setelah fase ban, bebas dipilih.</li>
+                </ul>
+            </li>
+            <li><strong>Skin:</strong> Diperbolehkan (Skin ON).</li>
+        </ul>
+        
+        <h2>5. Etika, Teknis & Disconnect</h2>
+        <p>Peraturan ini wajib dipatuhi untuk menjamin Fair Play dan kelancaran turnamen:</p>
+        <ul>
+            <li><strong>Koneksi/Lag:</strong> Setiap masalah teknis (Disconnect, Lag, device error) yang berasal dari sisi pemain adalah <span class="highlight">TANGGUNG JAWAB PRIBADI</span>. Pertandingan akan terus berjalan tanpa pause.</li>
+            <li><strong>Bug/Glitch Eksploitasi:</strong> Penggunaan bug atau glitch yang disengaja untuk keuntungan pemain akan berakibat <span class="alert-rule">DISKUALIFIKASI INSTAN</span>.</li>
+            <li><strong>Sportivitas & Toxicity:</strong> Dilarang keras melakukan tindakan provokasi, rasisme, atau pelecehan verbal. Dilarang Chat All / Radio All. Tunjukkan sportivitas.</li>
+            <li><strong>Keputusan Panitia:</strong> Keputusan panitia terkait hasil pertandingan, diskualifikasi, dan hal lain bersifat <span class="alert-rule">MUTLAK DAN TIDAK DAPAT DIGANGGU GUGAT</span>.</li>
+        </ul>
+        
+        <h2>6. Jadwal Pertandingan Mingguan (5 Minggu)</h2>
+        <p>Seluruh pertandingan dilaksanakan setiap minggu pada hari yang sama, dimulai pukul <span class="highlight">13:00 WIB</span>. Setiap pertandingan BO1 dialokasikan <span class="alert-rule">15 menit</span>.</p>
+        
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>Minggu ke-</th>
+                    <th>Babak</th>
+                    <th>Waktu Presisi</th>
+                    <th>Pertandingan Minggu Ini (Match ID)</th>
+                    <th>Hasil/Pemenang</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- MINGGU 1: 16 BESAR A (4 Match) -->
+                <tr>
+                    <td>Minggu 1</td>
+                    <td>16 Besar (Penyisihan A)</td>
+                    <td>13:00 - 14:00 WIB</td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="match-time">13:00 - 13:15:</span> M1: [Slot 1] vs [Slot 2]</li>
+                            <li><span class="match-time">13:15 - 13:30:</span> M2: [Slot 3] vs [Slot 4]</li>
+                            <li><span class="match-time">13:30 - 13:45:</span> M3: [Slot 5] vs [Slot 6]</li>
+                            <li><span class="match-time">13:45 - 14:00:</span> M4: [Slot 7] vs [Slot 8]</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="winner">[Pemenang M1]</span></li>
+                            <li><span class="winner">[Pemenang M2]</span></li>
+                            <li><span class="winner">[Pemenang M3]</span></li>
+                            <li><span class="winner">[Pemenang M4]</span></li>
+                        </ul>
+                    </td>
+                </tr>
+                
+                <!-- MINGGU 2: 16 BESAR B (4 Match) -->
+                <tr>
+                    <td>Minggu 2</td>
+                    <td>16 Besar (Penyisihan B)</td>
+                    <td>13:00 - 14:00 WIB</td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="match-time">13:00 - 13:15:</span> M5: [Slot 9] vs [Slot 10]</li>
+                            <li><span class="match-time">13:15 - 13:30:</span> M6: [Slot 11] vs [Slot 12]</li>
+                            <li><span class="match-time">13:30 - 13:45:</span> M7: [Slot 13] vs [Slot 14]</li>
+                            <li><span class="match-time">13:45 - 14:00:</span> M8: [Slot 15] vs [Slot 16]</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="winner">[Pemenang M5]</span></li>
+                            <li><span class="winner">[Pemenang M6]</span></li>
+                            <li><span class="winner">[Pemenang M7]</span></li>
+                            <li><span class="winner">[Pemenang M8]</span></li>
+                        </ul>
+                    </td>
+                </tr>
+                
+                <!-- MINGGU 3: QUARTER FINAL (4 Match) -->
+                <tr>
+                    <td>Minggu 3</td>
+                    <td>Quarter Final (8 Besar)</td>
+                    <td>13:00 - 14:00 WIB</td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="match-time">13:00 - 13:15:</span> QF1: [Pemenang M1] vs [Pemenang M2]</li>
+                            <li><span class="match-time">13:15 - 13:30:</span> QF2: [Pemenang M3] vs [Pemenang M4]</li>
+                            <li><span class="match-time">13:30 - 13:45:</span> QF3: [Pemenang M5] vs [Pemenang M6]</li>
+                            <li><span class="match-time">13:45 - 14:00:</span> QF4: [Pemenang M7] vs [Pemenang M8]</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="winner">[Pemenang QF1]</span></li>
+                            <li><span class="winner">[Pemenang QF2]</span></li>
+                            <li><span class="winner">[Pemenang QF3]</span></li>
+                            <li><span class="winner">[Pemenang QF4]</span></li>
+                        </ul>
+                    </td>
+                </tr>
+                
+                <!-- MINGGU 4: SEMI FINAL (2 Match) -->
+                <tr>
+                    <td>Minggu 4</td>
+                    <td>Semi Final (4 Besar)</td>
+                    <td>13:00 - 13:30 WIB</td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="match-time">13:00 - 13:15:</span> SF1: [Pemenang QF1] vs [Pemenang QF2]</li>
+                            <li><span class="match-time">13:15 - 13:30:</span> SF2: [Pemenang QF3] vs [Pemenang QF4]</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="winner">[Pemenang SF1]</span></li>
+                            <li><span class="winner">[Pemenang SF2]</span></li>
+                        </ul>
+                    </td>
+                </tr>
+                
+                <!-- MINGGU 5: GRAND FINAL (BO3 DENGAN SLOT WAKTU TERPISAH) -->
+                <tr>
+                    <td>Minggu 5</td>
+                    <td>Grand Final (BO3)</td>
+                    <td>13:00 - 13:45 WIB</td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="match-time">13:00 - 13:15:</span> FINAL Game 1: [Pemenang SF1] vs [Pemenang SF2]</li>
+                            <li><span class="match-time">13:15 - 13:30:</span> FINAL Game 2: [Pemenang SF1] vs [Pemenang SF2]</li>
+                            <li><span class="match-time">13:30 - 13:45:</span> FINAL Game 3: *Jika Dibutuhkan (Decider Match)</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="match-list">
+                            <li><span class="winner">Skor Akhir: [2 - 0] atau [2 - 1]</span></li>
+                            <li><span class="winner">JUARA: [Nama Juara]</span></li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>7. Hadiah & Glory</h2>
+        <ul>
+            <li><strong>Juara 1:</strong> Uang / Diamond & Sertifikat Digital (The True Mechanic Master)</li>
+            <li><strong>Juara 2:</strong> Uang / Diamond & Sertifikat Digital</li>
+            <!--li><strong>Juara 3:</strong> Sertifikat</li-->
+        </ul>
+
+        <h2>8. Perangkat & Lain-lain</h2>
+        <ul>
+            <li><strong>Perangkat:</strong> Pemain bertanggung jawab atas perangkat (smartphone/tablet) dan koneksi internet pribadi mereka selama turnamen berlangsung.</li>
+            <li><strong>Streaming:</strong> Jika turnamen disiarkan (live stream), pemain dilarang membuka atau melihat siaran pertandingan mereka sendiri untuk menghindari lag.</li>
+            <li><strong>Keterlambatan:</strong>
+                <ul>
+                    <li>Peserta wajib siap di lobby 10 menit sebelum jadwal.</li>
+                    <li>Toleransi keterlambatan maksimal <span class="alert-rule">7 Menit = WO (Walkout)</span>.</li>
+                </ul>
+            </li>
+            <li><strong>Perubahan Aturan:</strong> Peraturan dapat berubah sewaktu-waktu sesuai kebijakan panitia dengan pemberitahuan terlebih dahulu.</li>
+        </ul>
+        
+        <div class="note" style="border-left: 5px solid #00BCD4;">
+            <p style="text-align: center; font-style: normal;">*Mainkan dengan Sportif, Menang dengan Keterampilan!*</p>
+        </div>
+    </div>
+</body>
+</html>
+
