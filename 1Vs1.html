@@ -12,27 +12,35 @@
            ----------------------- */
         body {
             font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
+            line-height: 1.7; /* Sedikit lebih renggang agar mudah dibaca */
             margin: 0;
             padding: 0;
-            background: #121212; /* Latar belakang gelap, standar gaming */
-            color: #E0E0E0; /* Warna teks abu-abu terang */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><pattern id="p" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2" stroke="%23333333" stroke-width="0.5" /></pattern></defs><rect width="100" height="100" fill="url(%23p)" /></svg>'); /* Tekstur subtil */
+            background: #0D1117; /* Latar Belakang Sangat Gelap (Dark Charcoal) - Bersih dan Profesional */
+            color: #C9D1D9; /* Warna teks abu-abu terang yang lembut */
+            /* Menghapus tekstur agar lebih bersih */
             background-attachment: fixed;
         }
 
         .container {
             max-width: 950px;
-            margin: 30px auto;
-            background: #1F1F1F; /* Kontainer sedikit lebih terang */
+            margin: 40px auto;
+            background: #161B22; /* Kontainer sedikit lebih terang dari body */
             padding: 30px 50px;
-            border-radius: 12px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-            border: 2px solid #3A3A3A;
+            border-radius: 16px; /* Lebih halus */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Bayangan yang lebih dalam */
+            border: 1px solid #30363D; /* Border halus */
             position: relative;
             z-index: 1;
         }
         
+        /* -----------------------
+           COLOR PALETTE
+           Primary Accent (Aksi/Judul): #4B7BEC (Electric Blue/Cool Blue)
+           Secondary Accent (Sorotan/Peringatan): #FFD700 (Soft Gold/Emas Lembut)
+           Success/CTA: #28A745 (Clean Green)
+           ----------------------- */
+
+
         /* -----------------------
            HEADER & TITLE
            ----------------------- */
@@ -46,19 +54,21 @@
         }
 
         h1 {
-            color: #FF5722; /* Deep Orange/Esports Red */
+            color: #4B7BEC; /* Electric Blue/Cool Blue */
             font-size: 2.8em;
-            text-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
+            text-shadow: 0 0 15px rgba(75, 123, 236, 0.7); /* Bayangan yang lebih halus */
             margin-top: 10px;
             padding-bottom: 5px;
         }
 
         h2 {
-            color: #00BCD4; /* Cyan/Teal - Sorotan sekunder */
-            font-size: 1.6em;
-            border-bottom: 3px solid #00BCD4;
+            color: #C9D1D9; /* Warna teks utama untuk subjudul */
+            font-size: 1.5em;
+            border-bottom: 2px solid #30363D; /* Garis bawah yang lembut */
             padding-bottom: 10px;
-            margin-top: 40px;
+            margin-top: 35px;
+            text-align: left; /* Subjudul kembali ke kiri untuk tampilan profesional */
+            letter-spacing: 1px;
         }
 
         /* -----------------------
@@ -71,65 +81,67 @@
 
         li {
             margin-bottom: 12px;
-            padding-left: 5px;
-            border-left: 2px solid transparent;
-            transition: border-left 0.2s ease;
+            padding-left: 10px;
+            border-left: 3px solid transparent;
+            transition: border-left 0.2s ease, color 0.2s ease;
         }
         
         li:hover {
-            border-left: 2px solid #FF5722;
+            border-left: 3px solid #4B7BEC; /* Border hover dengan warna biru */
+            color: #E6EDF3; /* Sedikit lebih terang saat di-hover */
         }
 
         p {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .note {
-            background-color: #2A2A2A;
-            border-left: 5px solid #FF5722;
+            background-color: #1F2630; /* Latar belakang note yang lebih gelap dari container */
+            border-left: 5px solid #4B7BEC; /* Border biru untuk note */
             padding: 20px;
-            margin-top: 25px;
-            border-radius: 8px;
+            margin-top: 30px;
+            border-radius: 10px;
             font-style: italic;
-            box-shadow: 0 0 15px rgba(255, 87, 34, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            line-height: 1.5;
         }
 
         /* -----------------------
            HIGHLIGHTS
            ----------------------- */
         .highlight {
-            font-weight: 800;
-            color: #00BCD4; /* Cyan */
-            text-shadow: 0 0 5px rgba(0, 188, 212, 0.4);
+            font-weight: 700;
+            color: #4B7BEC; /* Electric Blue */
         }
 
         .alert-rule {
-            color: #FF5722; /* Deep Orange */
-            font-weight: 900;
+            color: #FFD700; /* Soft Gold untuk peringatan penting */
+            font-weight: 800;
         }
         
         /* -----------------------
            REGISTRATION FEE STYLES
            ----------------------- */
         .fee-banner {
-            background-color: #4CAF50; /* Hijau - Untuk penekanan uang/pendaftaran */
-            color: #FFF;
-            padding: 15px 25px;
-            border-radius: 8px;
-            margin: 20px auto;
+            background-color: #4B7BEC; /* Menggunakan Electric Blue sebagai banner utama */
+            color: #0D1117; /* Teks gelap di latar terang */
+            padding: 18px 30px;
+            border-radius: 10px;
+            margin: 25px auto;
             width: fit-content;
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.5em;
+            font-size: 1.6em;
             font-weight: 900;
             letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            animation: pulse 1.5s infinite;
+            box-shadow: 0 6px 20px rgba(75, 123, 236, 0.4);
+            animation: none; /* Menghapus animasi pulse agar lebih tenang */
+            text-transform: none;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
+        .fee-banner span {
+             color: #FFD700; /* Sorotan emas untuk "GRATIS!" */
+             text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
+             font-style: italic;
         }
 
         /* -----------------------
@@ -138,24 +150,25 @@
         .join-button {
             display: block;
             width: fit-content;
-            margin: 30px auto 40px auto;
-            padding: 18px 40px;
-            background-color: #25D366; /* WhatsApp Green */
+            margin: 40px auto 50px auto;
+            padding: 18px 45px;
+            background-color: #28A745; /* Clean Green - Lebih profesional dari WhatsApp Green */
             color: white;
             text-align: center;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 800;
             font-size: 1.3em;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.5);
             text-transform: uppercase;
+            border: none;
         }
 
         .join-button:hover {
-            background-color: #1DA851;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
+            background-color: #1E7E34;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.7);
         }
         
         /* -----------------------
@@ -164,37 +177,38 @@
         .schedule-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #2A2A2A;
-            color: #E0E0E0;
+            margin-top: 25px;
+            background-color: #1F2630;
+            color: #C9D1D9;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
         }
 
         .schedule-table th, .schedule-table td {
-            padding: 12px 10px; 
+            padding: 14px 15px; /* Padding yang lebih baik */
             text-align: left;
-            border-bottom: 1px solid #3A3A3A;
+            border-bottom: 1px solid #30363D;
             vertical-align: top;
+            font-size: 0.95em;
         }
 
         .schedule-table thead th {
-            background-color: #00BCD4; /* Cyan Header */
-            color: #121212;
+            background-color: #4B7BEC; /* Electric Blue Header */
+            color: #0D1117;
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
-            font-weight: 800;
+            font-weight: 900;
             font-size: 0.9em;
         }
 
         .schedule-table tbody tr:nth-child(even) {
-            background-color: #252525;
+            background-color: #161B22; /* Warna genap dari background container */
         }
         
         .schedule-table tbody tr:hover {
-            background-color: #333333;
-            color: #FF5722;
+            background-color: #30363D; /* Hover lebih gelap */
+            color: #FFFFFF;
         }
         
         .match-list {
@@ -203,17 +217,17 @@
             margin: 0;
         }
         .match-list li {
-            margin-bottom: 8px; /* Added spacing between match entries */
+            margin-bottom: 6px; 
             border-left: none;
             padding-left: 0;
-            font-size: 0.95em;
+            font-size: 1em;
         }
         .match-time {
-            color: #FFEB3B;
+            color: #92B4F4; /* Biru muda yang lebih halus */
             font-weight: 700;
         }
         .winner {
-            color: #FFEB3B;
+            color: #FFD700; /* Soft Gold untuk pemenang */
             font-weight: bold;
         }
 
@@ -222,37 +236,49 @@
            ----------------------- */
         @media (max-width: 768px) {
             .container {
-                margin: 20px auto;
-                padding: 15px 20px;
+                margin: 20px 10px;
+                padding: 15px;
+                border-radius: 10px;
             }
             h1 {
                 font-size: 2em;
             }
-            .schedule-table th, .schedule-table td {
-                padding: 8px 5px; 
-                font-size: 0.75em;
+            .fee-banner {
+                font-size: 1.2em;
+                padding: 15px 20px;
             }
-            .schedule-table {
-                font-size: 0.9em;
+            .join-button {
+                font-size: 1.1em;
+                padding: 15px 30px;
+                margin: 30px auto;
+            }
+            .schedule-table th, .schedule-table td {
+                padding: 10px 8px; 
+                font-size: 0.75em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- JUDUL UTAMA -->
         <h1>⚡️ ESPORTS TIGER CHAMPIONSHIP S1 (1 Vs 1) ⚡️</h1>
-        <h2>RESMI: Duel Keterampilan & Strategi Total</h2>
         
+        <!-- SUB JUDUL DAN BANNER PENDAFTARAN -->
+        <h2 style="text-align: center; border-bottom: none; margin-top: 0; margin-bottom: 10px;">RESMI: Duel Keterampilan & Strategi Total</h2>
+
         <div class="fee-banner">
-            BIAYA PENDAFTARAN: <span style="color: #FFEB3B; font-size: 1.2em;">GRATIS!</span>
+            BIAYA PENDAFTARAN: <span>GRATIS!</span>
         </div>
 
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSddzRSxlhVgh4Urb-qCckfeLJ0Ix8Icw5VSwTGsy38w7otA5Q/viewform?usp=dialog" class="join-button" target="_blank">🔥 DAFTAR SEKARANG & GABUNG GRUP 🔥</a>
 
+        <!-- CATATAN PENTING -->
         <div class="note">
             <p><strong>PENTING!</strong> Aturan telah disesuaikan dengan fitur terbaru MLBB 1v1. Strategi <em>farming</em> dan <em>draft pick</em> hero <span class="highlight">DIPERBOLEHKAN</span>. Ini adalah duel strategis 1 lawan 1!</p>
         </div>
 
+        <!-- 1. INFORMASI UMUM -->
         <h2>1. Informasi Umum & Turnamen</h2>
         <ul>
             <li><strong>Nama Turnamen:</strong> <span class="highlight">ESPORTS TIGER CHAMPIONSHIP S1 (1 Vs 1)</span></li>
@@ -264,6 +290,7 @@
             <li><strong>Kuota:</strong> <span class="alert-rule">16 Slot Individu</span> (Sistem Gugur 5 Minggu)</li>
         </ul>
 
+        <!-- 2. SYARAT PESERTA -->
         <h2>2. Syarat Peserta & Pendaftaran</h2>
         <ul>
             <li><strong>Jumlah Pemain:</strong> 1 Pemain (Individu) per Slot.</li>
@@ -273,6 +300,7 @@
             <li><strong>Metode Pendaftaran:</strong> Melalui Google Form dengan Klik Daftar Sekarang!.</li>
         </ul>
 
+        <!-- 3. SYARAT KEMENANGAN -->
         <h2>3. Syarat Kemenangan (Win Condition)</h2>
         <p>Pertandingan <em>HANYA</em> berakhir jika salah satu kondisi berikut terpenuhi:</p>
         <ol>
@@ -281,6 +309,7 @@
             <li><strong>SURRENDER:</strong> Lawan menekan tombol menyerah.</li>
         </ol>
 
+        <!-- 4. ATURAN MAIN -->
         <h2>4. Aturan Main & Draft Pick</h2>
         <p>Turnamen ini menggunakan mekanisme permainan 1v1 Fair:</p>
         <ul>
@@ -294,6 +323,7 @@
             <li><strong>Skin:</strong> Diperbolehkan (Skin ON).</li>
         </ul>
         
+        <!-- 5. ETIKA & TEKNIS -->
         <h2>5. Etika, Teknis & Disconnect</h2>
         <p>Peraturan ini wajib dipatuhi untuk menjamin Fair Play dan kelancaran turnamen:</p>
         <ul>
@@ -303,6 +333,7 @@
             <li><strong>Keputusan Panitia:</strong> Keputusan panitia terkait hasil pertandingan, diskualifikasi, dan hal lain bersifat <span class="alert-rule">MUTLAK DAN TIDAK DAPAT DIGANGGU GUGAT</span>.</li>
         </ul>
         
+        <!-- 6. JADWAL PERTANDINGAN -->
         <h2>6. Jadwal Pertandingan Mingguan (5 Minggu)</h2>
         <p>Seluruh pertandingan dilaksanakan setiap minggu pada hari yang sama, dimulai pukul <span class="highlight">13:00 WIB</span>. Setiap pertandingan BO1 dialokasikan <span class="alert-rule">15 menit</span>.</p>
         
@@ -427,6 +458,7 @@
             </tbody>
         </table>
         
+        <!-- 7. HADIAH -->
         <h2>7. Hadiah & Glory</h2>
         <ul>
             <li><strong>Juara 1:</strong> Uang & Sertifikat Digital (The True Mechanic Master)</li>
@@ -434,6 +466,7 @@
             <!--li><strong>Juara 3:</strong> Sertifikat</li-->
         </ul>
 
+        <!-- 8. PERANGKAT & LAIN-LAIN -->
         <h2>8. Perangkat & Lain-lain</h2>
         <ul>
             <li><strong>Perangkat:</strong> Pemain bertanggung jawab atas perangkat (smartphone/tablet) dan koneksi internet pribadi mereka selama turnamen berlangsung.</li>
@@ -447,8 +480,8 @@
             <li><strong>Perubahan Aturan:</strong> Peraturan dapat berubah sewaktu-waktu sesuai kebijakan panitia dengan pemberitahuan terlebih dahulu.</li>
         </ul>
         
-        <div class="note" style="border-left: 5px solid #00BCD4;">
-            <p style="text-align: center; font-style: normal;">*Mainkan dengan Sportif, Menang dengan Keterampilan!*</p>
+        <div class="note" style="border-left: 5px solid #FFD700; margin-bottom: 20px;">
+            <p style="text-align: center; font-style: normal; font-weight: bold; color: #FFD700;">*Mainkan dengan Sportif, Menang dengan Keterampilan!*</p>
         </div>
     </div>
 </body>
