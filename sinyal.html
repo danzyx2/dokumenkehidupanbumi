@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analisis RSI & Bollinger Bands</title>
+    <!-- Library Grafik Profesional (Lightweight Charts) -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0b0e11;
+            --card-bg: #1e2329;
+            --text-main: #eaecef;
+            --text-dim: #848e9c;
+            --green: #02c076;
+            --red: #f84960;
+            --yellow: #f0b90b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        input, select, button {
+            background: #2b3139;
+            border: 1px solid #474d57;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        button {
+            background: var(--yellow);
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background: #d4a30a;
+        }
+
+        #chart-container {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        #chart {
+            width: 100%;
+            height: 450px;
+        }
+
+        .table-container {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            color: var(--text-dim);
+            border-bottom: 1px solid #333;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #2b3139;
+            font-size: 14px;
+        }
+
+        .signal-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .buy { color: var(--green); background: rgba(2, 192, 118, 0.1); }
+        .sell { color: var(--red); background: rgba(248, 73, 96, 0.1); }
+        .wait { color: var(--text-dim); }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h2>Analisis Teknikal Binance (RSI & BB)</h2>
+        <div id="lastUpdate" style="font-size: 12px; color: var(--text-dim);">Memuat data...</div>
+    </header>
+
+    <div class="controls">
+        <input type="text" id="symbolInput" value="BTCUSDT" placeholder="Contoh: ETHUSDT">
+        <select id="intervalInput">
+            <option value="15m">15 Menit</option>
+            <option value="1h" selected>1 Jam</option>
+            <option value="4h">4 Jam</option>
+            <option value="1d">1 Hari</option>
+        </select>
+        <button onclick="updateMainChart()">Update Grafik</button>
+    </div>
+
+    <div id="chart-container">
+        <div class="loading-overlay" id="loader">Memperbarui...</div>
+        <div id="chart"></div>
+    </div>
+
+    <h3>Pantauan Multi-Market (1 Jam)</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Market</th>
+                    <th>Harga</th>
+                    <th>RSI</th>
+                    <th>Bollinger Band</th>
+                    <th>Sinyal (Konfirmasi)</th>
+                    <th>Stop Loss (8%)</th>
+                    <th>Take Profit (16%)</th>
+                </tr>
+            </thead>
+            <tbody id="marketBody">
+                <!-- Data otomatis dari JS -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const watchList = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'ADAUSDT', 'DOGEUSDT'];
+    let chart, candleSeries, rsiSeries;
+
+    // Inisialisasi Grafik
+    function initChart() {
+        const chartElement = document.getElementById('chart');
+        chart = LightweightCharts.createChart(chartElement, {
+            layout: { 
+                backgroundColor: '#1e2329', 
+                textColor: '#d1d4dc',
+                fontSize: 12
+            },
+            grid: { 
+                vertLines: { color: '#2b3139' }, 
+                horzLines: { color: '#2b3139' } 
+            },
+            crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+            rightPriceScale: { borderColor: '#474d57' },
+            timeScale: { borderColor: '#474d57', timeVisible: true, secondsVisible: false }
+        });
+
+        candleSeries = chart.addCandlestickSeries({
+            upColor: '#02c076', downColor: '#f84960', 
+            borderUpColor: '#02c076', borderDownColor: '#f84960',
+            wickUpColor: '#02c076', wickDownColor: '#f84960',
+        });
+
+        rsiSeries = chart.addLineSeries({
+            color: '#f0b90b',
+            lineWidth: 2,
+            priceScaleId: 'rsi-pane',
+        });
+
+        chart.applyOptions({
+            leftPriceScale: {
+                id: 'rsi-pane',
+                visible: true,
+                borderColor: '#474d57',
+                mode: 0, // Normal
+                autoScale: false,
+                scaleMargins: { top: 0.7, bottom: 0.05 } // Letakkan RSI di bagian bawah
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            chart.resize(chartElement.clientWidth, 450);
+        });
+    }
+
+    // Fungsi Hitung RSI
+    function calculateRSI(prices, period = 14) {
+        if (prices.length <= period) return [];
+        let rsiResults = [];
+        let gains = 0, losses = 0;
+
+        for (let i = 1; i <= period; i++) {
+            let diff = prices[i] - prices[i - 1];
+            if (diff >= 0) gains += diff; else losses -= diff;
+        }
+
+        let avgGain = gains / period;
+        let avgLoss = losses / period;
+
+        for (let i = period + 1; i < prices.length; i++) {
+            let diff = prices[i] - prices[i - 1];
+            let gain = diff >= 0 ? diff : 0;
+            let loss = diff < 0 ? -diff : 0;
+            avgGain = (avgGain * (period - 1) + gain) / period;
+            avgLoss = (avgLoss * (period - 1) + loss) / period;
+            let rs = avgGain / avgLoss;
+            rsiResults.push({ index: i, value: 100 - (100 / (1 + rs)) });
+        }
+        return rsiResults;
+    }
+
+    // Fungsi Hitung Bollinger Bands
+    function calculateBB(prices, period = 20) {
+        if (prices.length < period) return null;
+        const slice = prices.slice(-period);
+        const sma = slice.reduce((a, b) => a + b) / period;
+        const variance = slice.reduce((a, b) => a + Math.pow(b - sma, 2), 0) / period;
+        const stdDev = Math.sqrt(variance);
+        return {
+            upper: sma + (stdDev * 2),
+            middle: sma,
+            lower: sma - (stdDev * 2)
+        };
+    }
+
+    // Ambil Data dari API Binance
+    async function getKlines(symbol, interval) {
+        try {
+            const response = await fetch(`https://data-api.binance.vision/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=${interval}&limit=200`);
+            const data = await response.json();
+            return data.map(d => ({
+                time: d[0] / 1000,
+                open: parseFloat(d[1]),
+                high: parseFloat(d[2]),
+                low: parseFloat(d[3]),
+                close: parseFloat(d[4])
+            }));
+        } catch (e) {
+            console.error("Fetch Error:", e);
+            return null;
+        }
+    }
+
+    // Update Grafik Utama
+    async function updateMainChart() {
+        const loader = document.getElementById('loader');
+        loader.style.display = 'flex';
+        
+        const symbol = document.getElementById('symbolInput').value;
+        const interval = document.getElementById('intervalInput').value;
+        const candles = await getKlines(symbol, interval);
+        
+        if (candles) {
+            candleSeries.setData(candles);
+            const rsiValues = calculateRSI(candles.map(c => c.close));
+            const rsiChartData = rsiValues.map(r => ({
+                time: candles[r.index].time,
+                value: r.value
+            }));
+            rsiSeries.setData(rsiChartData);
+            chart.timeScale().fitContent();
+        }
+        
+        loader.style.display = 'none';
+        updateMultiMarket();
+    }
+
+    // Update Tabel Pantauan
+    async function updateMultiMarket() {
+        const tableBody = document.getElementById('marketBody');
+        const updateText = document.getElementById('lastUpdate');
+        
+        for (let symbol of watchList) {
+            const candles = await getKlines(symbol, '1h');
+            if (!candles) continue;
+
+            const closes = candles.map(c => c.close);
+            const lastPrice = closes[closes.length - 1];
+            
+            // Indikator
+            const rsiData = calculateRSI(closes);
+            const currentRSI = rsiData[rsiData.length - 1].value;
+            const bb = calculateBB(closes);
+
+            // Sinyal Dasar
+            let signal = "Netral";
+            let signalClass = "wait";
+            
+            // Konfirmasi BB
+            let bbPos = "Di Tengah";
+            if (lastPrice <= bb.lower) bbPos = "Menyentuh Bawah (Oversold)";
+            else if (lastPrice >= bb.upper) bbPos = "Menyentuh Atas (Overbought)";
+
+            // Logika Strategi: RSI < 30 (Buy) & RSI > 65 (Sell)
+            if (currentRSI < 30 && lastPrice <= bb.lower) {
+                signal = "STRONG BUY";
+                signalClass = "buy";
+            } else if (currentRSI > 65 && lastPrice >= bb.upper) {
+                signal = "STRONG SELL";
+                signalClass = "sell";
+            } else if (currentRSI < 30) {
+                signal = "BUY (Wait BB)";
+                signalClass = "buy";
+            } else if (currentRSI > 65) {
+                signal = "SELL (Wait BB)";
+                signalClass = "sell";
+            }
+
+            // Manajemen Risiko
+            const sl = lastPrice * 0.92;
+            const tp = lastPrice * 1.16;
+
+            // Update baris tabel atau buat baru
+            let row = document.getElementById(`row-${symbol}`);
+            if (!row) {
+                row = document.createElement('tr');
+                row.id = `row-${symbol}`;
+                tableBody.appendChild(row);
+            }
+
+            row.innerHTML = `
+                <td style="font-weight:bold">${symbol}</td>
+                <td>$${lastPrice.toLocaleString()}</td>
+                <td style="color:${currentRSI < 30 ? 'var(--green)' : (currentRSI > 65 ? 'var(--red)' : 'white')}">
+                    ${currentRSI.toFixed(2)}
+                </td>
+                <td style="font-size: 11px">${bbPos}</td>
+                <td><span class="signal-badge ${signalClass}">${signal}</span></td>
+                <td style="color:var(--red)">$${sl.toFixed(2)}</td>
+                <td style="color:var(--green)">$${tp.toFixed(2)}</td>
+            `;
+        }
+        updateText.innerText = "Terakhir diperbarui: " + new Date().toLocaleTimeString();
+    }
+
+    // Jalankan Dashboard
+    window.onload = () => {
+        initChart();
+        updateMainChart();
+        // Auto refresh setiap 1 menit
+        setInterval(updateMainChart, 60000);
+    };
+</script>
+
+</body>
+</html>
+
