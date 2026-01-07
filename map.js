@@ -25,7 +25,7 @@ mymap.on('click', function(e) {
   var popupText = `
     Lat: ${e.latlng.lat.toFixed(5)} Long: ${e.latlng.lng.toFixed(5)}<br><br>
     <span style="font-weight: bold;">Koordinat telah di-copy, silahkan<br>
-    paste di Youtube livechat</span>
+    paste di Bot whatsapp</span>
   `;
   marker.bindPopup(popupText, { offset: popupOffset, className: 'custom-popup' }).openPopup();
 });
