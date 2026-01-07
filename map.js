@@ -7,7 +7,7 @@ var markerIcon = L.icon({
   var marker;
 var marker;
 
-L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=en&key=AIzaSyD0U_Q9bCY4FvFayVUM2vxFrRzuChJkKtY', {
+L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=en&key=AI', {
     minZoom: 2,
     maxZoom: 21,
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
