@@ -119,7 +119,7 @@
                 <li><a href="#inputPengguna">Mengambil Input Pengguna</a></li>
                 <li><a href="#fileIO">Membaca dan Menulis File</a></li>
                 <li><a href="#jumlahKata">Menghitung Jumlah Kata dalam Kalimat</a></li>
-                <!--<li><a href="#pythonCode">Code Python</a></li>-->
+                <li><a href="#botturnamen">Bot Turnamen</a></li>
             </ul>
         </div>
         
@@ -149,6 +149,1252 @@
         <!-- Table of Contents End -->
     
         <!-- ISI PROGRAM Start -->
+        <div class="container my-5" id="botturnamen">
+            <h2 class="text-primary mb-4" style="color: #ff6347;">BOT TURNAMEN</h2>
+            <div id="code-to-copy">
+            <pre style="background-color: #0d1117; padding: 15px; border-radius: 8px;">
+                <code style="color: #d3d3d3;">
+    const { 
+    default: makeWASocket, 
+    useMultiFileAuthState, 
+    DisconnectReason, 
+    fetchLatestBaileysVersion 
+} = require('@whiskeysockets/baileys');
+const pino = require('pino');
+const fs = require('fs');
+const qrcode = require('qrcode-terminal'); 
+const axios = require('axios');
+const RSI = require('technicalindicators').RSI;
+const { EMA, MACD, BollingerBands } = require('technicalindicators');
+
+
+// --- KONFIGURASI PENTING ---
+const prefix = '#'; // Prefix untuk perintah
+// <<< WAJIB GANTI DENGAN JID WHATSAPP LENGKAP PRIBADI ANDA!
+// PERHATIAN: Pastikan JID di bawah ini diakhiri dengan '@s.whatsapp.net'
+const ownerJidFull = '152591900086397@s.whatsapp.net'; // JID Owner Anda (Pastikan format ini benar)
+const ownerJidNumber = ownerJidFull.split('@')[0]; // Ambil hanya bagian nomornya
+// ----------------------------
+
+
+// --- FUNGSI DATABASE SEDERHANA (JSON) ---
+
+// Path file database pendaftaran MLBB
+const dbPath = './daftar.json';
+// Path file database grup yang DILARANG (Blacklisted)
+const blacklistedGroupsPath = './blacklisted_groups.json';
+// [BARU] Path file database TURNAMEN
+const tournamentPath = './tournament.json';
+
+// Di bawah `const tournamentPath = './tournament.json';`
+
+// [BARU] Path file database konfigurasi fitur
+const configPath = './config.json';
+
+
+// Di bawah inisialisasi file turnamen `if (!fs.existsSync(tournamentPath)) { ... }`
+
+// [BARU] Inisialisasi file konfigurasi, default antiSticker nonaktif
+if (!fs.existsSync(configPath)) {
+    fs.writeFileSync(configPath, JSON.stringify({
+        antiSticker: false // Default: nonaktif
+    }, null, 2));
+}
+
+
+// Di bawah fungsi `saveTournament`
+
+// [BARU] Baca data dari database Konfigurasi
+const loadConfig = () => {
+    try {
+        const data = fs.readFileSync(configPath);
+        return JSON.parse(data);
+    } catch (e) {
+        console.error('Error saat memuat database konfigurasi:', e);
+        return { antiSticker: false };
+    }
+};
+
+// [BARU] Simpan data ke database Konfigurasi
+const saveConfig = (data) => {
+    fs.writeFileSync(configPath, JSON.stringify(data, null, 2));
+};
+
+
+// Pastikan file database ada
+if (!fs.existsSync(dbPath)) {
+    fs.writeFileSync(dbPath, '[]');
+}
+if (!fs.existsSync(blacklistedGroupsPath)) {
+    fs.writeFileSync(blacklistedGroupsPath, '[]');
+}
+// [BARU] Inisialisasi file turnamen
+if (!fs.existsSync(tournamentPath)) { 
+    fs.writeFileSync(tournamentPath, JSON.stringify({
+        currentRound: 0, 
+        players: [], // Daftar peserta di babak awal
+        matches: [], // Struktur pertandingan babak saat ini
+        status: 'idle' // idle, started, finished
+    }, null, 2));
+}
+
+// Baca data dari database pendaftaran
+const loadData = () => {
+    try {
+        const data = fs.readFileSync(dbPath);
+        return JSON.parse(data);
+    } catch (e) {
+        console.error('Error saat memuat database daftar:', e);
+        return [];
+    }
+};
+
+// Simpan data ke database pendaftaran
+const saveData = (data) => {
+    fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
+};
+
+// Baca data dari database grup yang DILARANG
+const loadBlacklistedGroups = () => {
+    try {
+        const data = fs.readFileSync(blacklistedGroupsPath);
+        return JSON.parse(data);
+    } catch (e) {
+        console.error('Error saat memuat database grup:', e);
+        return [];
+    }
+};
+
+// Simpan data ke database grup yang DILARANG
+const saveBlacklistedGroups = (groups) => {
+    fs.writeFileSync(blacklistedGroupsPath, JSON.stringify(groups, null, 2));
+};
+
+// [BARU] Baca data dari database TURNAMEN
+const loadTournament = () => {
+    try {
+        const data = fs.readFileSync(tournamentPath);
+        return JSON.parse(data);
+    } catch (e) {
+        console.error('Error saat memuat database turnamen:', e);
+        return { currentRound: 0, players: [], matches: [], status: 'idle' };
+    }
+};
+
+// [BARU] Simpan data ke database TURNAMEN
+const saveTournament = (data) => {
+    fs.writeFileSync(tournamentPath, JSON.stringify(data, null, 2));
+};
+
+
+
+// [BARU] Path file database GeoGuess
+const geoguessPath = './geoguess.json';
+
+// Inisialisasi file GeoGuess jika belum ada
+if (!fs.existsSync(geoguessPath)) {
+    fs.writeFileSync(geoguessPath, JSON.stringify({
+        status: 'idle', // idle atau started
+        location: { lat: 0, lng: 0 },
+        guesses: [] // { jid: '', name: '', lat: 0, lng: 0, distance: 0 }
+    }, null, 2));
+}
+
+// Fungsi Load/Save GeoGuess
+const loadGeoGuess = () => JSON.parse(fs.readFileSync(geoguessPath));
+const saveGeoGuess = (data) => fs.writeFileSync(geoguessPath, JSON.stringify(data, null, 2));
+
+// Fungsi Matematika untuk menghitung jarak (Haversine Formula)
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius bumi dalam KM
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Hasil dalam KM
+}
+
+// Path untuk menyimpan daftar ID Grup yang menerima sinyal
+const marketGroupsPath = './market_groups.json';
+
+// Buat file jika belum ada
+if (!fs.existsSync(marketGroupsPath)) {
+    fs.writeFileSync(marketGroupsPath, '[]');
+}
+
+// Fungsi bantu untuk baca/tulis daftar grup
+const loadMarketGroups = () => JSON.parse(fs.readFileSync(marketGroupsPath));
+const saveMarketGroups = (data) => fs.writeFileSync(marketGroupsPath, JSON.stringify(data, null, 2));
+
+
+// Tambahkan ini di sekitar baris 150
+const tradeStatsPath = './trade_stats.json'; 
+
+// Inisialisasi file statistik jika belum ada
+if (!fs.existsSync(tradeStatsPath)) {
+    fs.writeFileSync(tradeStatsPath, JSON.stringify({ buyCounts: {}, sellCounts: {} }, null, 2));
+}
+
+// Tambahkan fungsi load ini karena Anda memanggilnya di baris 254
+const loadTradeStats = () => JSON.parse(fs.readFileSync(tradeStatsPath));
+
+
+
+const tradingStatePath = './trading_state.json';
+if (!fs.existsSync(tradingStatePath)) {
+    fs.writeFileSync(tradingStatePath, '{}');
+}
+
+const loadTradingState = () => JSON.parse(fs.readFileSync(tradingStatePath));
+const saveTradingState = (data) => fs.writeFileSync(tradingStatePath, JSON.stringify(data, null, 2));
+
+// Fungsi Save Statistik
+const saveTradeStats = (data) => {
+    fs.writeFileSync(tradeStatsPath, JSON.stringify(data, null, 2));
+};
+
+// Daftar Market dari btc_C.py
+const MARKETS_TO_ANALYZE = [
+  // Aset Utama & High Cap
+  "BTCUSDT", "ETHUSDT", "BNBUSDT", "SOLUSDT", "XRPUSDT", "ADAUSDT", "DOGEUSDT", "AVAXUSDT", "DOTUSDT", "TRXUSDT",
+  "LINKUSDT", "MATICUSDT", "SHIBUSDT", "LTCUSDT", "BCHUSDT", "ATOMUSDT", "UNIUSDT", "XLMUSDT", "NEARUSDT", "APTUSDT",
+
+  // Layer 1 & Ecosystems
+  "SUIUSDT", "SEIUSDT", "TIAUSDT", "KASUSDT", "FTMUSDT", "INJUSDT", "ALGOUSDT", "EGLDUSDT", "STXUSDT", "HBARUSDT",
+  "EOSUSDT", "VETUSDT", "IMXUSDT", "FLOWUSDT", "ROSEUSDT", "KAVAUSDT", "MINAUSDT", "NEOUSDT", "XMRUSDT", "ZECUSDT",
+
+  // Layer 2 & Scaling
+  "OPUSDT", "ARBUSDT", "STRKUSDT", "METISUSDT", "MNTUSDT", "ZKUSDT", "ZKFUSDT", "CANTOUSDT", "BOBAUSDT", "SKLUSDT",
+
+  // Artificial Intelligence (AI)
+  "FETUSDT", "RNDRUSDT", "AGIXUSDT", "OCEANUSDT", "TAOUSDT", "AKTUSDT", "WLDUSDT", "PHBUSDT", "ARKMUSDT", "NFPUSDT",
+
+  // Decentralized Finance (DeFi)
+  "AAVEUSDT", "MKRUSDT", "CRVUSDT", "SNXUSDT", "COMPUSDT", "DYDXUSDT", "RUNEUSDT", "LDOUSDT", "PENDLEUSDT", "ENAUSDT",
+  "JUPUSDT", "CAKEUSDT", "JOEUSDT", "LRCUSDT", "RAYUSDT", "GMXUSDT", "CVXUSDT", "BALUSDT", "1INCHUSDT",
+
+  // Meme Coins
+  "PEPEUSDT", "BONKUSDT", "FLOKIUSDT", "WIFUSDT", "MEMEUSDT", "BOMEUSDT", "MYROUSDT", "TURBOUSDT", "ORDIUSDT", "1000SATSUSDT",
+
+  // Gaming & Metaverse
+  "GALAUSDT", "SANDUSDT", "MANAUSDT", "AXSUSDT", "ILVUSDT", "MAGICUSDT", "BEAMUSDT", "PORTALUSDT", "XAIUSDT", "PIXELUSDT",
+  "YGGUSDT", "ALICEUSDT", "ENJUSDT", "TLMUSDT", "CHZUSDT", "RONUSDT", "ACEUSDT", "VANRYUSDT", "MAVIAUSDT",
+
+  // Storage & Infrastructure
+  "FILUSDT", "ARUSDT", "GRTUSDT", "THETAUSDT", "LPTUSDT", "ENSUSDT", "PYTHUSDT", "JTOUSDT", "ANKRUSDT", "STORJUSDT",
+  "SCUSDT", "RLCUSDT", "HOTUSDT", "QTUMUSDT", "ONTUSDT", "GLMRUSDT", "MOVRUSDT", "ASTRUSDT", "ICXUSDT", "WANUSDT",
+
+  // New Listings & Trending (2024-2025)
+  "SKYUSDT", "ASTERUSDT", "IOUSDT", "ZKUSDT", "LISTAUSDT", "TAIKOUSDT", "BBUSDT", "REZUSDT", "OMNIUSDT", "SAGAUSDT",
+  "TNSRUSDT", "WUSDT", "ETHFIUSDT", "AEVOUSDT", "METISUSDT", "VANRYUSDT", "ALTUSDT", "MANTAUSDT", "XAIUSDT", "AIUSDT",
+
+  // Others & Mid-Cap
+  "LUNCUSDT", "USTCUSDT", "CELOUSDT", "ZILUSDT", "IOTAUSDT", "KNCUSDT", "GTCUSDT", "MASKUSDT", "LPTUSDT", "BANDUSDT",
+  "NMRUSDT", "TRBUSDT", "UMAUSDT", "API3USDT", "BLZUSDT", "OXTUSDT", "COTIUSDT", "DUSKUSDT", "CHRUSDT", "CTSIUSDT",
+  "STPTUSDT", "PERPUSDT", "MTLUSDT", "BELUSDT", "ARPAUSDT", "UNFIUSDT", "HARDUSDT", "RIFUSDT",
+  "PROMUSDT", "PONDUSDT", "TKOUSDT", "FORTHUSDT", "BAKEUSDT", "TLMUSDT", "ATAUSDT", "GNSUSDT", "SSVUSDT",
+  "CKBUSDT", "GLMUSDT", "WOOUSDT", "GASUSDT", "TUSDT", "MDTUSDT", "IDUSDT", "EDUUSDT", "RDNTUSDT",
+  "LOOMUSDT", "POLYXUSDT", "STEEMUSDT", "BICOUSDT", "STGUSDT", "ARKUSDT", "POWRUSDT", "ORBSUSDT", "MINAUSDT", "WBTCUSDT",
+  "WAXPUSDT", "HIVEUSDT", "SYSUSDT", "QUICKUSDT", "DARUSDT", "BORAUSDT", "C98USDT", "DOGEUSDT", "SFPUSDT", "XECUSDT",
+  "ZENUSDT", "DGBUSDT", "LSKUSDT", "CLVUSDT", "SCRTUSDT", "ACAUSDT", "GLMRUSDT", "ASTRUSDT", "NKNUSDT"
+];
+
+
+
+
+
+
+
+
+// --- FUNGSI UTILITIES BARU ---
+
+// Fungsi untuk mengocok (shuffle) array menggunakan algoritma Fisher-Yates
+const shuffleArray = (array) => {
+    const newArray = [...array]; // Buat salinan
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+};
+
+
+// Objek untuk melacak koin yang sudah dikirim (Anti-Spam)
+let lastSentSignals = {};
+
+// Fungsi helper untuk memberikan jeda waktu
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Daftar 100 Simbol Terpopuler
+const SYMBOLS = [
+    'BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUSDT', 'AVAXUSDT', 'DOGEUSDT', 'DOTUSDT', 'LINKUSDT',
+    'MATICUSDT', 'SHIBUSDT', 'LTCUSDT', 'TRXUSDT', 'BCHUSDT', 'UNIUSDT', 'NEARUSDT', 'FILUSDT', 'ATOMUSDT', 'APTUSDT',
+    'ARBUSDT', 'OPUSDT', 'INJUSDT', 'TIAUSDT', 'RNDRUSDT', 'SUIUSDT', 'SEIUSDT', 'ORDIUSDT', 'STXUSDT', 'ICPUSDT',
+    'GRTUSDT', 'AAVEUSDT', 'IMXUSDT', 'FTMUSDT', 'EGLDUSDT', 'THETAUSDT', 'ALGOUSDT', 'QNTUSDT', 'VETUSDT', 'FLOWUSDT',
+    'MKRUSDT', 'RUNEUSDT', 'DYDXUSDT', 'SNXUSDT', 'GALAUSDT', 'LDOUSDT', 'PENDLEUSDT', 'AXSUSDT', 'SANDUSDT', 'MANAUSDT',
+    'APEUSDT', 'CHZUSDT', 'BEAMXUSDT', 'FETUSDT', 'AGIXUSDT', 'OCEANUSDT', 'ROSEUSDT', 'WOOUSDT', 'JUPUSDT', 'PYTHUSDT',
+    'BONKUSDT', 'PEPEUSDT', 'FLOKIUSDT', 'WIFUSDT', 'STRKUSDT', 'DYMUSDT', 'PIXELUSDT', 'RONINUSDT', 'ALTUSDT', 'MANTAUSDT',
+    'ENSUSDT', 'CRVUSDT', 'COMPUSDT', 'ZILUSDT', 'ENJUSDT', 'ANKRUSDT', 'KAVAUSDT', 'LRCUSDT', 'JASMYUSDT', 'IOTAUSDT',
+    'MINAUSDT', 'GMXUSDT', 'GLMRUSDT', 'KSMUSDT', 'ASTRUSDT', 'HBARUSDT', 'EGLDUSDT', 'RVNUSDT', 'IOTXUSDT', 'BATUSDT',
+    'STGUSDT', 'MAGICUSDT', 'IDUSDT', 'RDNTUSDT', 'TRBUSDT', 'LOOMUSDT', 'POWRUSDT', 'GASUSDT', 'BLZUSDT', 'FRONTUSDT'
+];
+
+
+async function checkTradingSignals(sock) {
+    const marketGroups = loadMarketGroups();
+    if (marketGroups.length === 0) return;
+
+    let state = loadTradingState();
+    let stats = loadTradeStats(); // Memuat statistik volume
+    let combinedSignals = []; 
+
+    for (const symbol of MARKETS_TO_ANALYZE) {
+        try {
+            const res = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1h&limit=100`);
+            
+            // --- DATA UNTUK VOLUME ---
+            const latestKline = res.data[res.data.length - 1];
+            const openPrice = parseFloat(latestKline[1]);
+            const closePrice = parseFloat(latestKline[4]);
+            const volume = parseFloat(latestKline[5]);
+
+            // --- DATA UNTUK RSI ---
+            const closes = res.data.map(c => parseFloat(c[4]));
+            const currentPrice = closes[closes.length - 1];
+            const rsiValues = RSI.calculate({ values: closes, period: 14 });
+            const currentRSI = rsiValues[rsiValues.length - 1];
+
+            // 1. LOGIKA AKUMULASI VOLUME (Untuk #rankbuy dan #ranksell)
+            if (!stats.buyCounts[symbol]) stats.buyCounts[symbol] = 0;
+            if (!stats.sellCounts[symbol]) stats.sellCounts[symbol] = 0;
+
+            if (closePrice > openPrice) {
+                stats.buyCounts[symbol] += volume; // Candle Hijau = Dominan Buy
+            } else if (closePrice < openPrice) {
+                stats.sellCounts[symbol] += volume; // Candle Merah = Dominan Sell
+            }
+
+            // 2. LOGIKA SINYAL TRADING (RSI)
+            if (!state[symbol]) state[symbol] = { last_signal: 'none', entry_price: null };
+
+            if (currentRSI < 30) {
+                if (state[symbol].last_signal !== 'BUY') {
+                    state[symbol].entry_price = currentPrice;
+                    state[symbol].last_signal = 'BUY';
+                    combinedSignals.push(`🚀 *BUY: ${symbol}* | Price: ${currentPrice} | RSI: ${currentRSI.toFixed(2)}`);
+                }
+            } else if (state[symbol].last_signal === 'BUY') {
+                const entryPrice = state[symbol].entry_price;
+                const isSL = currentPrice <= (entryPrice * 0.90);
+                const isTP = currentRSI > 65; 
+
+                if (isTP || isSL) {
+                    const tip = isSL ? "🛑 SL (10%)" : "💰 TP (RSI>65)";
+                    combinedSignals.push(`🔻 *SELL: ${symbol}* | ${tip} | Price: ${currentPrice}`);
+                    state[symbol].last_signal = 'SELL';
+                    state[symbol].entry_price = null;
+                }
+            }
+            // Delay agar tidak kena ban API Binance
+            await new Promise(resolve => setTimeout(resolve, 100)); 
+        } catch (e) {
+            console.log(`Error pada ${symbol}: ${e.message}`);
+        }
+    }
+
+    // Simpan semua perubahan ke database JSON
+    saveTradeStats(stats);
+    saveTradingState(state);
+
+    // Kirim laporan jika ada sinyal beli/jual yang baru ditemukan
+    if (combinedSignals.length > 0) {
+        let reportMsg = `📊 *LAPORAN SINYAL TRADING* 📊\n`;
+        reportMsg += `📅 ${new Date().toLocaleString('id-ID')}\n`;
+        reportMsg += `──────────────────\n\n`;
+        reportMsg += combinedSignals.join('\n');
+        reportMsg += `\n\n──────────────────\n_Total: ${combinedSignals.length} Sinyal_`;
+
+        marketGroups.forEach(jid => {
+            sock.sendMessage(jid, { text: reportMsg });
+        });
+    }
+}
+
+
+
+
+
+
+// --- LOGIKA BOT UTAMA ---
+
+async function startBot() {
+    // Kredensial akan disimpan di folder 'auth_info_baileys'
+    const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys');
+    const { version } = await fetchLatestBaileysVersion();
+
+    const sock = makeWASocket({
+        logger: pino({ level: 'silent' }),
+        browser: ['TermuxBot', 'Safari', '1.0.0'],
+        auth: state,
+        version
+    });
+
+    // Simpan kredensial secara berkala
+    sock.ev.on('creds.update', saveCreds);
+
+    // Penanganan Koneksi
+    sock.ev.on('connection.update', (update) => {
+        const { connection, lastDisconnect, qr } = update;
+        
+        if (qr) {
+            qrcode.generate(qr, { small: true }); 
+            console.log('\n======================================');
+            console.log('SCAN QR CODE DI ATAS UNTUK LOGIN BOT!');
+            console.log('======================================\n');
+            return;
+        }
+        
+        if (connection === 'close') {
+            const shouldReconnect = lastDisconnect.error?.output?.statusCode !== DisconnectReason.loggedOut;
+            console.log('Koneksi tertutup, coba hubungkan ulang...', shouldReconnect);
+            if (shouldReconnect) {
+                startBot();
+            }
+        } else if (connection === 'open') {
+    console.log('Bot terhubung dan siap digunakan!');
+    
+    // Matikan startMarketScanner(sock) jika tidak ingin spam 100 koin
+    // startMarketScanner(sock); 
+
+    const DUA_JAM = 2 * 60 * 60 * 1000;
+    setInterval(() => {
+        checkTradingSignals(sock);
+    }, DUA_JAM);
+
+    checkTradingSignals(sock); // Jalankan sekali saat start
+}
+
+
+    });
+
+    // Penanganan Pesan
+    sock.ev.on('messages.upsert', async ({ messages }) => {
+        const m = messages[0];
+        if (!m.message) return;
+        
+        const from = m.key.remoteJid; // JID Grup atau JID Personal Chat
+        const isGroup = from.endsWith('@g.us'); // Cek apakah pesan dari grup
+
+        // Dapatkan JID pengirim individu yang benar
+        const senderJidFull = m.key.participant || from; 
+        const senderJid = senderJidFull.split('@')[0]; // ID unik per individu (hanya angka)
+        
+        const type = Object.keys(m.message)[0];
+        const body = (type === 'conversation' && m.message.conversation) ? m.message.conversation : (type === 'extendedTextMessage' && m.message.extendedTextMessage.text) ? m.message.extendedTextMessage.text : '';
+        const isCmd = body.startsWith(prefix);
+        const command = isCmd ? body.slice(prefix.length).trim().split(' ')[0].toLowerCase() : '';
+        const args = body.trim().split(' ').slice(1).filter(a => a);
+        const pushName = m.pushName || "Pengguna";
+        
+        // Cek izin Owner
+        const isOwner = senderJid === ownerJidNumber;
+        
+
+        // --- LOGIKA ANTI-STIKER (BARU) ---
+        const isSticker = type === 'sticker';
+        const config = loadConfig(); // Memuat status konfigurasi
+
+        // Hapus stiker jika dari grup, pesan adalah stiker, BUKAN owner, dan fitur aktif
+        if (isGroup && isSticker && !isOwner && config.antiSticker) {
+            
+            try {
+                // Hapus pesan stiker
+                await sock.sendMessage(from, { delete: m.key }); 
+                console.log(`[ANTI-STIKER AKTIF] Stiker dari ${pushName} (${senderJidFull}) di grup ${from} telah dihapus.`);
+            } catch (error) {
+                // Catatan: Bot harus menjadi Admin Grup dan memiliki izin hapus!
+                console.error("Gagal menghapus stiker. Bot mungkin bukan admin.", error);
+            }
+            return; // Hentikan pemrosesan perintah lainnya
+        }
+        // ------------------------------------
+
+        //        // --- LOGIKA FILTER GRUP (BLACKLIST) ---
+        if (isGroup) { // AWAL: Jika pesan dari grup
+            const blacklistedGroups = loadBlacklistedGroups();
+            if (blacklistedGroups.includes(from) && command !== 'whitelist' && command !== 'blacklist' && command !== 'menu') {
+                return; // Jika grup di-blacklist, hentikan pemrosesan perintah
+            }
+        } // AKHIR: Penutup if (isGroup)
+
+        // ------------------------------------------
+        // ------------------------------------------
+
+        // Cek jika pesan adalah perintah
+        if (isCmd) {
+            console.log(`[PERINTAH] ${command} dari ${pushName} (${senderJidFull})`);
+            
+            switch (command) {
+                // --- PERINTAH ADMINISTRASI GRUP ---
+                case 'blacklist':
+                    if (!isOwner) {
+                        return sock.sendMessage(from, { text: '🚫 Perintah ini hanya bisa digunakan oleh *Owner Bot*.' }, { quoted: m });
+                    }
+                    if (!isGroup) {
+                        return sock.sendMessage(from, { text: '⚠️ Perintah ini hanya bisa digunakan di dalam Grup.' }, { quoted: m });
+                    }
+                    
+                    let groupsToAdd = loadBlacklistedGroups();
+                    if (groupsToAdd.includes(from)) {
+                        return sock.sendMessage(from, { text: `⚠️ Grup ini sudah ada dalam daftar DILARANG (Blacklisted).` }, { quoted: m });
+                    }
+                    
+                    groupsToAdd.push(from);
+                    saveBlacklistedGroups(groupsToAdd);
+                    sock.sendMessage(from, { text: '❌ Grup ini berhasil ditambahkan ke daftar DILARANG (Blacklisted).\nBot akan mengabaikan perintah selanjutnya di sini.' }, { quoted: m });
+                    break;
+                    
+                                case 'whitelist':
+                    if (!isOwner) {
+                        return sock.sendMessage(from, { text: '🚫 Perintah ini hanya bisa digunakan oleh *Owner Bot*.' }, { quoted: m });
+                    }
+                    if (!isGroup) {
+                        return sock.sendMessage(from, { text: '⚠️ Perintah ini hanya bisa digunakan di dalam Grup.' }, { quoted: m });
+                    }
+                    
+                    let groupsToRemove = loadBlacklistedGroups();
+                    const index = groupsToRemove.indexOf(from);
+                    
+                    if (index === -1) {
+                        return sock.sendMessage(from, { text: `⚠️ Grup ini tidak ada dalam daftar DILARANG (Blacklisted).` }, { quoted: m });
+                    }
+                    
+                    groupsToRemove.splice(index, 1);
+                    saveBlacklistedGroups(groupsToRemove);
+                    sock.sendMessage(from, { text: '✅ Grup ini berhasil dihapus dari daftar DILARANG.\nBot sekarang akan merespons perintah di sini.' }, { quoted: m });
+                    break; // <<< Break yang wajib ada
+
+               // --- PERINTAH MARKET & SINYAL ---
+
+case 'addmarket': {
+    if (!isOwner) return sock.sendMessage(from, { text: '🚫 Owner Only.' });
+    let groups = loadMarketGroups();
+    if (!groups.includes(from)) {
+        groups.push(from);
+        saveMarketGroups(groups);
+        sock.sendMessage(from, { text: '✅ Grup ini sekarang akan menerima sinyal Bullish.' });
+    }
+    break;
+}
+
+case 'delmarket': {
+    if (!isOwner) return sock.sendMessage(from, { text: '🚫 Owner Only.' });
+    let groups = loadMarketGroups();
+    let filtered = groups.filter(id => id !== from);
+    saveMarketGroups(filtered);
+    sock.sendMessage(from, { text: '❌ Grup ini berhenti menerima sinyal Bullish.' });
+    break;
+}
+
+case 'aktifkansinyal': {
+    if (!isOwner) return sock.sendMessage(from, { text: 'Hanya Owner yang bisa mengaktifkan!' });
+    let groups = loadMarketGroups();
+    if (!groups.includes(from)) {
+        groups.push(from);
+        saveMarketGroups(groups);
+        sock.sendMessage(from, { text: '✅ Grup ini akan menerima sinyal Trading setiap 2 jam.' });
+    } else {
+        sock.sendMessage(from, { text: 'ℹ️ Grup ini sudah terdaftar.' });
+    }
+    break;
+}
+
+case 'matikansinyal': {
+    if (!isOwner) return;
+    let groups = loadMarketGroups();
+    let filtered = groups.filter(id => id !== from);
+    saveMarketGroups(filtered);
+    sock.sendMessage(from, { text: '❌ Grup ini berhenti menerima sinyal.' });
+    break;
+}
+
+case 'backuptourney':
+case 'backup': {
+    if (!isOwner) return sock.sendMessage(from, { text: '🚫 Hanya Owner yang bisa melakukan backup.' });
+
+    try {
+        // Cek apakah file tournament.json ada
+        if (!fs.existsSync(tournamentPath)) {
+            return sock.sendMessage(from, { text: '⚠️ File tournament.json tidak ditemukan.' });
+        }
+
+        // Buat nama file backup dengan timestamp (Contoh: backup_tournament_2023-10-27.json)
+        const date = new Date().toISOString().split('T')[0];
+        const time = new Date().getTime();
+        const backupName = `./backup_tournament_${date}_${time}.json`;
+
+        // Proses Copy File
+        fs.copyFileSync(tournamentPath, backupName);
+
+        // Kirim konfirmasi dan juga kirim filenya ke WhatsApp (opsional tapi sangat berguna)
+        await sock.sendMessage(from, { text: `✅ Backup berhasil dibuat: *${backupName}*` });
+        
+        // Mengirim file backup ke chat agar aman jika server/termux terhapus
+        const fileContent = fs.readFileSync(backupName);
+        await sock.sendMessage(from, { 
+            document: fileContent, 
+            mimetype: 'application/json', 
+            fileName: backupName 
+        });
+
+    } catch (e) {
+        console.error(e);
+        sock.sendMessage(from, { text: `❌ Gagal melakukan backup: ${e.message}` });
+    }
+    break;
+}
+
+
+case 'jadwal': {
+    const tournamentData = loadTournament();
+    
+    if (tournamentData.status !== 'started') {
+        return sock.sendMessage(from, { text: '⚠️ Turnamen belum dimulai atau sudah selesai.' }, { quoted: m });
+    }
+
+    // Mendapatkan tanggal saat ini tanpa jam (Format: 28 Desember 2025)
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    const tanggalHariIni = new Date().toLocaleDateString('id-ID', options);
+
+    let jadwalText = `📅 **JADWAL PERTANDINGAN**\n`;
+    jadwalText += `🗓️ Tanggal: ${tanggalHariIni}\n`;
+    jadwalText += `🏆 Babak: ${tournamentData.currentRound}\n`;
+    jadwalText += `──────────────────\n\n`;
+
+    const pendingMatches = tournamentData.matches.filter(match => match.status === 'pending');
+    
+    if (pendingMatches.length === 0) {
+        jadwalText += `✅ Semua pertandingan untuk babak ini telah selesai.`;
+    } else {
+        pendingMatches.forEach((match) => {
+            jadwalText += `🎮 *MATCH ${match.matchId}*\n`;
+            jadwalText += `⚔️ ${match.player1} *VS* ${match.player2}\n`;
+            jadwalText += `──────────────────\n`;
+        });
+        jadwalText += `\n*Gunakan ${prefix}win (No Match) (Nama Pemenang) untuk update hasil.*`;
+    }
+
+    sock.sendMessage(from, { text: jadwalText }, { quoted: m });
+    break;
+}
+
+
+
+                
+                // [BARU] PERINTAH ANTI-STIKER
+                case 'antisticker':
+                    if (!isOwner) {
+                         return sock.sendMessage(from, { text: '🚫 Perintah ini hanya bisa digunakan oleh *Owner Bot*.' }, { quoted: m });
+                    }
+                    if (!isGroup) {
+                         return sock.sendMessage(from, { text: '⚠️ Perintah ini hanya bisa digunakan di dalam Grup.' }, { quoted: m });
+                    }
+
+                    const currentConfig = loadConfig();
+                    const stateArg = args[0]?.toLowerCase();
+
+                    if (stateArg === 'on') {
+                        currentConfig.antiSticker = true;
+                        saveConfig(currentConfig);
+                        sock.sendMessage(from, { text: '✅ Fitur **Anti-Sticker** berhasil **DIAKTIFKAN**.\nBot akan otomatis menghapus stiker dari non-owner.' }, { quoted: m });
+                    } else if (stateArg === 'off') {
+                        currentConfig.antiSticker = false;
+                        saveConfig(currentConfig);
+                        sock.sendMessage(from, { text: '❌ Fitur **Anti-Sticker** berhasil **DINONAKTIFKAN**.' }, { quoted: m });
+                    } else {
+                        const status = currentConfig.antiSticker ? 'AKTIF' : 'NONAKTIF';
+                        return sock.sendMessage(from, { text: `⚠️ Format salah. Status Anti-Sticker saat ini: *${status}*.\n\nGunakan: \n${prefix}antisticker on\n${prefix}antisticker off` }, { quoted: m });
+                    }
+                    break;
+
+
+                    case 'rankbuy': {
+    const stats = loadTradeStats();
+    const sortedBuy = Object.entries(stats.buyCounts)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10);
+
+    if (sortedBuy.length === 0) return sock.sendMessage(from, { text: '⚠️ Data belum tersedia.' });
+
+    let msg = `🔥 *TOP 10 BUY PRESSURE (VOLUME)* 🔥\n`;
+    msg += `_Market dengan akumulasi pembelian tertinggi_\n`;
+    msg += `──────────────────\n`;
+    sortedBuy.forEach(([coin, vol], i) => {
+        msg += `${i + 1}. *${coin}*\n   Buy Vol: ${vol.toLocaleString()}\n`;
+    });
+    sock.sendMessage(from, { text: msg }, { quoted: m });
+    break;
+}
+
+case 'ranksell': {
+    const stats = loadTradeStats();
+    const sortedSell = Object.entries(stats.sellCounts)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10);
+
+    if (sortedSell.length === 0) return sock.sendMessage(from, { text: '⚠️ Data belum tersedia.' });
+
+    let msg = `🔻 *TOP 10 SELL PRESSURE (VOLUME)* 🔻\n`;
+    msg += `_Market dengan akumulasi penjualan tertinggi_\n`;
+    msg += `──────────────────\n`;
+    sortedSell.forEach(([coin, vol], i) => {
+        msg += `${i + 1}. *${coin}*\n   Sell Vol: ${vol.toLocaleString()}\n`;
+    });
+    sock.sendMessage(from, { text: msg }, { quoted: m });
+    break;
+}
+        
+               
+
+
+
+                case 'daftar':
+                    if (args.length < 1) {
+                        return sock.sendMessage(from, { text: `⚠️ Format salah. Gunakan: ${prefix}daftar (Nama MLBB Anda)\nContoh: ${prefix}daftar Lemon` }, { quoted: m });
+                    }
+                    
+                    const mlbbName = args.join(' ').trim();
+                    let daftarData = loadData();
+                    
+                    const existingUserIndex = daftarData.findIndex(user => user.jid === senderJid);
+
+                    if (existingUserIndex !== -1) {
+                        daftarData[existingUserIndex].mlbbName = mlbbName;
+                        sock.sendMessage(from, { text: `✅ Berhasil update pendaftaran Anda.\nNama MLBB baru: *${mlbbName}*` }, { quoted: m });
+                    } else {
+                        daftarData.push({
+                            jid: senderJid, 
+                            pushName: pushName,
+                            mlbbName: mlbbName,
+                            tanggal: new Date().toISOString()
+                        });
+                        sock.sendMessage(from, { text: `🎉 Pendaftaran Berhasil!\nNama MLBB Anda: *${mlbbName}*` }, { quoted: m });
+                    }
+                    
+                    saveData(daftarData);
+                    break;
+                    
+                case 'listdaftar':
+                    const listUsers = loadData().filter(user => user.mlbbName && user.mlbbName.trim() !== '');
+                    
+                    if (listUsers.length === 0) {
+                        return sock.sendMessage(from, { text: '⚠️ Belum ada peserta yang terdaftar.' }, { quoted: m });
+                    }
+                    
+                    let responseText = '📜 **DAFTAR PESERTA MLBB**\n\n';
+                    listUsers.forEach((user, index) => {
+                        responseText += `${index + 1}. *${user.mlbbName}* (${user.pushName || 'Anonim'})\n`;
+                    });
+                    responseText += `\nTotal: ${listUsers.length} peserta.`;
+                    sock.sendMessage(from, { text: responseText }, { quoted: m });
+                    break;
+                
+                case 'resetdaftar':
+                    if (!isOwner) {
+                        return sock.sendMessage(from, { text: '🚫 Perintah ini hanya bisa digunakan oleh *Owner Bot*.' }, { quoted: m });
+                    }
+
+                    let allUsers = loadData();
+                    let resetCount = 0;
+                    
+                    const updatedUsers = allUsers.map(u => {
+                        if (u.mlbbName && u.mlbbName !== '') {
+                            u.mlbbName = '';
+                            resetCount++;
+                        }
+                        return u;
+                    });
+                    
+                    saveData(updatedUsers); 
+
+                    // [BARU] Reset data turnamen
+                    saveTournament({ currentRound: 0, players: [], matches: [], status: 'idle' });
+    
+                    if (resetCount > 0) {
+                         sock.sendMessage(from, { text: `✅ [ADMIN MODE] Berhasil mereset data pendaftaran MLBB dan status Turnamen!\\nTotal ${resetCount} nama peserta telah dikosongkan.` }, { quoted: m });
+                    } else {
+                         sock.sendMessage(from, { text: `⚠️ [ADMIN MODE] Tidak ada peserta yang terdaftar untuk direset.` }, { quoted: m });
+                    }
+                    break;
+
+
+                    // --- FITUR GEOGUESS ---
+
+case 'setloc': {
+    if (!isOwner) return sock.sendMessage(from, { text: '🚫 Hanya Owner yang bisa mengatur lokasi.' });
+    if (args.length < 2) return sock.sendMessage(from, { text: `⚠️ Format: ${prefix}setloc lat, lng\nContoh: ${prefix}setloc -10.42187, 105.67803` });
+
+    const input = args.join('').split(',');
+    const lat = parseFloat(input[0]);
+    const lng = parseFloat(input[1]);
+
+    if (isNaN(lat) || isNaN(lng)) return sock.sendMessage(from, { text: '⚠️ Koordinat tidak valid!' });
+
+    const geoData = {
+        status: 'started',
+        location: { lat, lng },
+        guesses: []
+    };
+    saveGeoGuess(geoData);
+    
+    sock.sendMessage(from, { text: '🌎 *GEOGUESS DIMULAI!* 🌎\n\nOwner telah menetapkan lokasi rahasia. Silakan tebak koordinatnya!\n\n*Cara main:* \n#guess lat, lng' });
+    break;
+}
+
+case 'guess': {
+    const geoData = loadGeoGuess();
+    if (geoData.status !== 'started') return sock.sendMessage(from, { text: '⚠️ Tidak ada sesi GeoGuess yang aktif.' });
+    if (args.length < 2) return sock.sendMessage(from, { text: `⚠️ Format: ${prefix}guess lat, lng` });
+
+    const input = args.join('').split(',');
+    const lat = parseFloat(input[0]);
+    const lng = parseFloat(input[1]);
+
+    if (isNaN(lat) || isNaN(lng)) return sock.sendMessage(from, { text: '⚠️ Koordinat tidak valid!' });
+
+    // Hitung jarak
+    const distance = getDistance(geoData.location.lat, geoData.location.lng, lat, lng);
+
+    // Cek apakah user sudah pernah menebak, jika ya, update tebakannya
+    const userIdx = geoData.guesses.findIndex(g => g.jid === senderJidFull);
+    if (userIdx !== -1) {
+        geoData.guesses[userIdx] = { jid: senderJidFull, name: pushName, lat, lng, distance };
+    } else {
+        geoData.guesses.push({ jid: senderJidFull, name: pushName, lat, lng, distance });
+    }
+
+    saveGeoGuess(geoData);
+    sock.sendMessage(from, { text: `📍 Tebakan diterima!\nJarak tebakan Anda: *${distance.toFixed(2)} KM* dari lokasi asli.` }, { quoted: m });
+    break;
+}
+
+case 'ranking':
+case 'georank': {
+    const geoData = loadGeoGuess();
+    if (geoData.guesses.length === 0) return sock.sendMessage(from, { text: '⚠️ Belum ada yang menebak.' });
+
+    // Urutkan berdasarkan jarak terdekat
+    const sorted = geoData.guesses.sort((a, b) => a.distance - b.distance);
+
+    let rankMsg = `🏆 *RANKING GEOGUESS* 🏆\n──────────────────\n`;
+    sorted.forEach((res, i) => {
+        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '👤';
+        rankMsg += `${medal} *${res.name}*\n   Jarak: ${res.distance.toFixed(3)} KM\n`;
+    });
+    rankMsg += `──────────────────\n_Total: ${sorted.length} Penebak_`;
+
+    sock.sendMessage(from, { text: rankMsg }, { quoted: m });
+    break;
+}
+
+case 'endgeo': {
+    if (!isOwner) return;
+    const geoData = loadGeoGuess();
+    geoData.status = 'idle';
+    saveGeoGuess(geoData);
+    sock.sendMessage(from, { text: '✅ Sesi GeoGuess telah dihentikan.' });
+    break;
+}
+                
+
+
+                // --- PERINTAH TURNAMEN (Owner Only) ---
+                                case 'brackettim': {
+                    if (!isOwner) {
+                        return sock.sendMessage(from, { text: '🚫 Perintah ini hanya bisa digunakan oleh *Owner Bot*.' }, { quoted: m });
+                    }
+                    
+                    let tournamentData = loadTournament();
+                    
+                    if (tournamentData.status === 'started' && tournamentData.currentRound > 0) {
+                        return sock.sendMessage(from, { text: '⚠️ Turnamen sudah berjalan. Gunakan `.nextround` untuk babak baru atau `.resetdaftar` untuk reset.' }, { quoted: m });
+                    }
+                    
+                    // FILTER: Ambil data dengan type 'team'
+                    let allParticipants = loadData();
+                    const registeredTeams = allParticipants.filter(item => item.type === 'team' && item.teamName);
+                    
+                    if (registeredTeams.length < 2) {
+                        return sock.sendMessage(from, { text: '⚠️ Minimal harus ada 2 TIM yang terdaftar untuk membuat bracket.' }, { quoted: m });
+                    }
+                    
+                    // Acak Tim
+                    const shuffledTeams = shuffleArray(registeredTeams);
+                    let currentMatches = [];
+                    let teamsLeft = [...shuffledTeams]; 
+                    let roundNumber = 1;
+
+                    // Penanganan BYE jika jumlah tim ganjil
+                    if (teamsLeft.length % 2 !== 0) {
+                        const teamBye = teamsLeft.pop(); 
+                        currentMatches.push({
+                            matchId: currentMatches.length + 1,
+                            player1: teamBye.teamName,
+                            player2: 'BYE', 
+                            winner: teamBye.teamName, 
+                            status: 'finished'
+                        });
+                        await sock.sendMessage(from, { text: `✅ Tim *${teamBye.teamName}* otomatis lolos (BYE) ke babak berikutnya.` });
+                    }
+                    
+                    // Pasangkan Tim
+                    for (let i = 0; i < teamsLeft.length; i += 2) {
+                        currentMatches.push({
+                            matchId: currentMatches.length + 1,
+                            player1: teamsLeft[i].teamName,
+                            player2: teamsLeft[i+1].teamName,
+                            winner: null,
+                            status: 'pending' 
+                        });
+                    }
+                    
+                    // Simpan ke Database Turnamen
+                    tournamentData.currentRound = roundNumber;
+                    tournamentData.players = shuffledTeams.map(t => t.teamName); 
+                    tournamentData.matches = currentMatches;
+                    tournamentData.status = 'started';
+                    saveTournament(tournamentData);
+                    
+                    // Kirim Bracket ke Grup
+                    let bracketText = `⚔️ **BRACKET TURNAMEN TIM: Babak ${roundNumber}** ⚔️\n\n`;
+                    currentMatches.forEach(match => {
+                        if (match.player2 === 'BYE') {
+                            bracketText += `[BYE] **MATCH ${match.matchId}**: ${match.player1}\n`;
+                        } else {
+                            bracketText += `[Pending] **MATCH ${match.matchId}**: ${match.player1} VS ${match.player2}\n`;
+                        }
+                    });
+                    
+                    bracketText += `\n*Gunakan ${prefix}win (No Match) (Nama Tim Pemenang) untuk update skor.*`;
+                    sock.sendMessage(from, { text: bracketText }, { quoted: m });
+                    break;
+                }
+
+
+                                        // --- PERINTAH PENDAFTARAN TIM ---
+
+                        case 'daftartim': {
+                            if (args.length < 2) {
+                                return sock.sendMessage(from, { text: `⚠️ Format salah.\nGunakan: ${prefix}daftartim (Nama Tim) | (Nama Anggota 1), (Anggota 2), dst...\n\nContoh:\n${prefix}daftartim EVOS | Rekt, Wann, Lemon, Kenjii, Vyn` }, { quoted: m });
+                            }
+
+                            const input = args.join(' ').split('|');
+                            if (input.length < 2) {
+                                return sock.sendMessage(from, { text: `⚠️ Gunakan pemisah vertical bar (|) untuk memisahkan Nama Tim dan Anggota.` }, { quoted: m });
+                            }
+
+                            const teamName = input[0].trim();
+                            const members = input[1].trim();
+                            let daftarData = loadData();
+
+                            // Cek apakah pengirim sudah pernah mendaftarkan tim
+                            const existingTeamIndex = daftarData.findIndex(item => item.jid === senderJid && item.type === 'team');
+
+                            if (existingTeamIndex !== -1) {
+                                daftarData[existingTeamIndex].teamName = teamName;
+                                daftarData[existingTeamIndex].members = members;
+                                sock.sendMessage(from, { text: `✅ Berhasil update pendaftaran Tim Anda.\nNama Tim: *${teamName}*\nAnggota: ${members}` }, { quoted: m });
+                            } else {
+                                daftarData.push({
+                                    type: 'team', // Pembeda dengan pendaftaran individu
+                                    jid: senderJid,
+                                    pushName: pushName,
+                                    teamName: teamName,
+                                    members: members,
+                                    tanggal: new Date().toISOString()
+                                });
+                                sock.sendMessage(from, { text: `🎉 Pendaftaran Tim Berhasil!\n\nNama Tim: *${teamName}*\nAnggota: ${members}\n\n_Gunakan ${prefix}listtim untuk melihat semua tim._` }, { quoted: m });
+                            }
+
+                            saveData(daftarData);
+                            break;
+                        }
+
+                        case 'listtim': {
+                            const allData = loadData();
+                            const listTeams = allData.filter(item => item.type === 'team');
+
+                            if (listTeams.length === 0) {
+                                return sock.sendMessage(from, { text: '⚠️ Belum ada tim yang terdaftar.' }, { quoted: m });
+                            }
+
+                            let teamResponse = '🏆 **DAFTAR TIM MLBB** 🏆\n\n';
+                            listTeams.forEach((team, index) => {
+                                teamResponse += `${index + 1}. *Tim: ${team.teamName}*\n`;
+                                teamResponse += `   👥 Anggota: ${team.members}\n`;
+                                teamResponse += `   👤 Pendaftar: ${team.pushName}\n`;
+                                teamResponse += `   ──────────────────\n`;
+                            });
+                            teamResponse += `\nTotal: ${listTeams.length} Tim terdaftar.`;
+                            sock.sendMessage(from, { text: teamResponse }, { quoted: m });
+                            break;
+                        }
+
+
+                case 'bracket': // Memulai Turnamen / Membuat Babak Pertama
+                    if (!isOwner) {
+                        return sock.sendMessage(from, { text: '🚫 Perintah ini hanya bisa digunakan oleh *Owner Bot*.' }, { quoted: m });
+                    }
+                    
+                    let tournamentData = loadTournament();
+                    
+                    if (tournamentData.status === 'started' && tournamentData.currentRound > 0) {
+                        return sock.sendMessage(from, { text: '⚠️ Turnamen sudah berjalan. Gunakan `.nextround` untuk melanjutkan babak atau `.resetdaftar` untuk memulai ulang.' }, { quoted: m });
+                    }
+                    
+                    let participants = loadData();
+                    const registeredPlayers = participants.filter(user => user.mlbbName && user.mlbbName.trim() !== '');
+                    
+                    if (registeredPlayers.length < 2) {
+                        return sock.sendMessage(from, { text: '⚠️ Minimal harus ada 2 peserta yang sudah mendaftar untuk memulai turnamen.' }, { quoted: m });
+                    }
+                    
+                    // --- LOGIKA PEMBUATAN BABAK 1 ---
+                    
+                    const shuffledPlayers = shuffleArray(registeredPlayers);
+                    
+                    let currentMatches = [];
+                    let playersLeft = [...shuffledPlayers]; 
+                    let roundNumber = 1;
+
+                    // Penanganan BYE (jika ganjil)
+                    if (playersLeft.length % 2 !== 0) {
+                        const playerBye = playersLeft.pop(); 
+                        currentMatches.push({
+                            matchId: currentMatches.length + 1,
+                            player1: playerBye.mlbbName,
+                            player2: 'BYE', 
+                            winner: playerBye.mlbbName, 
+                            status: 'finished'
+                        });
+                        await sock.sendMessage(from, { text: `✅ ${playerBye.mlbbName} otomatis lolos (BYE) karena jumlah peserta ganjil.` });
+                    }
+                    
+                    // Pasangkan pemain
+                    for (let i = 0; i < playersLeft.length; i += 2) {
+                        const player1 = playersLeft[i];
+                        const player2 = playersLeft[i + 1];
+                        
+                        currentMatches.push({
+                            matchId: currentMatches.length + 1,
+                            player1: player1.mlbbName,
+                            player2: player2.mlbbName,
+                            winner: null,
+                            status: 'pending' 
+                        });
+                    }
+                    
+                    // Simpan data turnamen
+                    tournamentData.currentRound = roundNumber;
+                    tournamentData.players = shuffledPlayers.map(p => p.mlbbName); 
+                    tournamentData.matches = currentMatches;
+                    tournamentData.status = 'started';
+                    saveTournament(tournamentData);
+                    
+                    // Kirim hasil babak 1
+                    let bracketText = `⚔️ **TURNAMEN DIMULAI! Babak ${roundNumber}** ⚔️\n\n`;
+                    currentMatches.forEach(match => {
+                        if (match.player2 === 'BYE') {
+                             bracketText += `[Lolos Otomatis (BYE)] **MATCH ${match.matchId}**: ${match.player1}\n`;
+                        } else {
+                             bracketText += `[Pending] **MATCH ${match.matchId}**: ${match.player1} vs ${match.player2}\n`;
+                        }
+                    });
+                    
+                    bracketText += `\n*Gunakan ${prefix}win (Nomor Match) (Nama Pemenang) untuk mencatat hasil.*`;
+                    sock.sendMessage(from, { text: bracketText }, { quoted: m });
+                    break;
+                    
+                case 'win':
+                    if (!isOwner) {
+                        return sock.sendMessage(from, { text: '🚫 Perintah ini hanya bisa digunakan oleh *Owner Bot*.' }, { quoted: m });
+                    }
+                    if (args.length < 2) {
+                         return sock.sendMessage(from, { text: `⚠️ Format salah. Gunakan: ${prefix}win (Nomor Match) (Nama Pemenang)\nContoh: ${prefix}win 2 Lemon` }, { quoted: m });
+                    }
+                    
+                    let winTournamentData = loadTournament();
+                    if (winTournamentData.status !== 'started') {
+                        return sock.sendMessage(from, { text: '⚠️ Turnamen belum dimulai. Gunakan `.bracket` untuk memulainya.' }, { quoted: m });
+                    }
+
+                    const matchIdToUpdate = parseInt(args[0]);
+                    const winnerName = args.slice(1).join(' ').trim();
+                    
+                    const matchIndex = winTournamentData.matches.findIndex(m => m.matchId === matchIdToUpdate);
+                    
+                    if (matchIndex === -1 || winTournamentData.matches[matchIndex].player2 === 'BYE') {
+                        return sock.sendMessage(from, { text: `⚠️ Match ${matchIdToUpdate} tidak valid atau sudah selesai (BYE).` }, { quoted: m });
+                    }
+                    
+                    const targetMatch = winTournamentData.matches[matchIndex];
+                    
+                    if (targetMatch.status === 'finished') {
+                         return sock.sendMessage(from, { text: `⚠️ Match ${matchIdToUpdate} sudah selesai. Pemenangnya adalah ${targetMatch.winner}.` }, { quoted: m });
+                    }
+                    
+                    if (winnerName !== targetMatch.player1 && winnerName !== targetMatch.player2) {
+                        return sock.sendMessage(from, { text: `⚠️ Nama pemenang *${winnerName}* tidak ada dalam Match ${matchIdToUpdate} (${targetMatch.player1} vs ${targetMatch.player2}).` }, { quoted: m });
+                    }
+                    
+                    winTournamentData.matches[matchIndex].winner = winnerName;
+                    winTournamentData.matches[matchIndex].status = 'finished';
+                    saveTournament(winTournamentData);
+
+                    sock.sendMessage(from, { text: `✅ Match ${matchIdToUpdate} selesai!\n🏆 **Pemenang:** ${winnerName}\nYang kalah tereliminasi dan tidak akan masuk ke babak berikutnya.` }, { quoted: m });
+                    break;
+
+                case 'nextround':
+                    if (!isOwner) {
+                        return sock.sendMessage(from, { text: '🚫 Perintah ini hanya bisa digunakan oleh *Owner Bot*.' }, { quoted: m });
+                    }
+
+                    let nextTournamentData = loadTournament();
+                    if (nextTournamentData.status !== 'started') {
+                         return sock.sendMessage(from, { text: '⚠️ Turnamen belum dimulai. Gunakan `.bracket` untuk memulainya.' }, { quoted: m });
+                    }
+                    
+                    // Cek apakah semua match babak saat ini sudah selesai
+                    const pendingMatches = nextTournamentData.matches.filter(m => m.status === 'pending');
+                    if (pendingMatches.length > 0) {
+                        let pendingList = pendingMatches.map(m => `Match ${m.matchId}`).join(', ');
+                        return sock.sendMessage(from, { text: `⚠️ Masih ada Match yang belum selesai: ${pendingList}.\nCatat pemenang mereka menggunakan ${prefix}win terlebih dahulu!` }, { quoted: m });
+                    }
+
+                    // Kumpulkan semua pemenang
+                    const winners = nextTournamentData.matches.map(m => m.winner).filter(w => w !== null);
+                    
+                    if (winners.length === 1) {
+                         // Turnamen Selesai!
+                         nextTournamentData.status = 'finished';
+                         saveTournament(nextTournamentData);
+                         return sock.sendMessage(from, { text: `🎉 **TURNAMEN SELESAI!** 🎉\n\nSelamat kepada *${winners[0]}* sebagai **Juara Turnamen!**` });
+                    }
+                    
+                    // --- Buat Babak Baru ---
+                    nextTournamentData.currentRound++;
+                    const newRoundMatches = [];
+                    
+                    let playersForNextRound = shuffleArray(winners.map(name => ({ mlbbName: name }))); // Konversi kembali ke objek sementara
+                    
+                    // Penanganan BYE (jika ganjil)
+                    if (playersForNextRound.length % 2 !== 0) {
+                        const playerBye = playersForNextRound.pop();
+                        newRoundMatches.push({
+                            matchId: newRoundMatches.length + 1,
+                            player1: playerBye.mlbbName,
+                            player2: 'BYE', 
+                            winner: playerBye.mlbbName, 
+                            status: 'finished'
+                        });
+                         await sock.sendMessage(from, { text: `✅ ${playerBye.mlbbName} otomatis lolos (BYE) di Babak ${nextTournamentData.currentRound} karena jumlah peserta ganjil.` });
+                    }
+                    
+                    // Pasangkan pemain yang tersisa
+                    for (let i = 0; i < playersForNextRound.length; i += 2) {
+                        const player1 = playersForNextRound[i];
+                        const player2 = playersForNextRound[i + 1];
+                        
+                        newRoundMatches.push({
+                            matchId: newRoundMatches.length + 1,
+                            player1: player1.mlbbName,
+                            player2: player2.mlbbName,
+                            winner: null,
+                            status: 'pending' 
+                        });
+                    }
+                    
+                    // Simpan dan kirim
+                    nextTournamentData.matches = newRoundMatches;
+                    saveTournament(nextTournamentData);
+                    
+                    let nextRoundText = `⚔️ **Babak Baru: Babak ${nextTournamentData.currentRound}** ⚔️\n\n`;
+                    newRoundMatches.forEach(match => {
+                        if (match.player2 === 'BYE') {
+                             nextRoundText += `[Lolos Otomatis (BYE)] **MATCH ${match.matchId}**: ${match.player1}\n`;
+                        } else {
+                             nextRoundText += `[Pending] **MATCH ${match.matchId}**: ${match.player1} vs ${match.player2}\n`;
+                        }
+                    });
+                    
+                    nextRoundText += `\n*Gunakan ${prefix}win (Nomor Match) (Nama Pemenang) untuk mencatat hasil.*`;
+                    sock.sendMessage(from, { text: nextRoundText }, { quoted: m });
+                    break;
+                
+                                case 'menu':
+                    if (!isOwner) { // Batasi menu hanya untuk owner
+                        return sock.sendMessage(from, { text: '🚫 Perintah ini hanya bisa digunakan oleh *Owner Bot*.' }, { quoted: m });
+                    }
+                    
+                    // Ambil status saat ini
+                    const configData = loadConfig();
+                    const currentStatus = configData.antiSticker ? 'AKTIF' : 'NONAKTIF';
+
+                    const menuText = `
+*BOT DAFTAR & TURNAMEN MLBB*
+
+--- PERINTAH PENDAFTARAN ---
+1. ${prefix}daftar (Nama MLBB)
+   -> Daftar Turnamen Solo/Individu.
+2. ${prefix}listdaftar
+   -> Lihat daftar peserta Solo.
+3. ${prefix}daftartim (Nama Tim) | (Anggota1, Anggota2, ...)
+   -> Daftar Turnamen Squad/Tim.
+4. ${prefix}listtim
+   -> Lihat daftar tim yang terdaftar.
+
+--- PERINTAH TURNAMEN (OWNER) ---
+5. ${prefix}bracket
+   -> Buat Bracket khusus Turnamen Solo.
+6. ${prefix}brackettim
+   -> Buat Bracket khusus Turnamen Tim.
+7. ${prefix}jadwal
+   -> Lihat jadwal pertandingan yang pending.
+8. ${prefix}win (No. Match) (Nama Pemenang)
+   -> Catat pemenang (Nama orang/tim harus sesuai).
+9. ${prefix}nextround
+   -> Lanjut ke babak berikutnya (Semi-final/Final).
+10. ${prefix}resetdaftar
+    -> Hapus semua data pendaftaran & reset turnamen.
+
+--- ADMIN & UTILITY (OWNER) ---
+11. ${prefix}antisticker (on/off)
+    -> Status: *${currentStatus}*
+12. ${prefix}backup
+    -> Backup database turnamen ke file JSON.
+13. ${prefix}aktifkansinyal / ${prefix}matikansinyal
+    -> Fitur sinyal trading kripto.
+14. ${prefix}blacklist / ${prefix}whitelist
+    -> Blokir/Izinkan bot di grup ini.
+                    `;
+                    sock.sendMessage(from, { text: menuText }, { quoted: m });
+                    break;
+            }
+        }
+    });
+}
+
+startBot();
+
+
+                </code>
+            </pre>
+            </div>
+        </div>
+
+        
         <div class="container my-5" id="faktorial">
             <h2 class="text-primary mb-4" style="color: #ff6347;">Menghitung Faktorial</h2>
             <div id="code-to-copy">
@@ -333,3 +1579,4 @@
 </body>
 
 </html>
+
