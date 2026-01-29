@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fotograph_pro2zdn | Portofolio Fotografi Profesional</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans&display=swap" rel="stylesheet">
+    
+    <!-- Ikon FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            /* Proteksi seleksi teks */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, .brand-font {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* Layer Proteksi Foto Transparan */
+        .img-protection {
+            position: relative;
+        }
+        .img-protection::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: rgba(0,0,0,0);
+        }
+
+        /* Mematikan interaksi klik pada gambar asli */
+        img {
+            pointer-events: none;
+            -webkit-touch-callout: none;
+        }
+
+        /* Animasi Custom */
+        .shutterstock-red {
+            background-color: #eb3323;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .shutterstock-red:hover {
+            background-color: #c41e10;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(235, 51, 35, 0.3);
+        }
+
+        .nav-blur {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Gaya Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #eb3323;
+        }
+    </style>
+</head>
+<body class="antialiased" oncontextmenu="return false;">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="fixed w-full z-50 top-0 nav-blur border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand Logo Area -->
+                <div class="flex-shrink-0 flex items-center">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3004/3004613.png" alt="Logo" class="h-8 w-auto mr-3 filter invert opacity-80">
+                    <span class="brand-font font-black text-xl tracking-tighter text-white">
+                        fotograph_<span class="text-red-600">pro2zdn</span>
+                    </span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#gallery" class="text-xs font-bold tracking-widest text-gray-400 hover:text-white transition">GALLERY</a>
+                    <a href="https://www.instagram.com/fotograph_pro2zdn?igsh=cHplaXRneTJ5OHBi" target="_blank" class="flex items-center space-x-2 border border-white/20 px-6 py-2 rounded-full hover:bg-white hover:text-black transition text-white">
+                        <i class="fab fa-instagram"></i>
+                        <span class="text-xs font-bold">FOLLOW</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Icon -->
+                <div class="md:hidden">
+                    <a href="https://www.instagram.com/fotograph_pro2zdn?igsh=cHplaXRneTJ5OHBi" target="_blank" class="text-white p-2">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?q=80&w=1920" alt="Background Kamera" class="w-full h-full object-cover opacity-30 grayscale">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-[#0a0a0a]"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <p class="text-red-600 font-bold tracking-[0.5em] uppercase text-[10px] md:text-xs mb-4 animate-pulse">Professional Stock Contributor</p>
+            <h1 class="text-5xl md:text-8xl font-black text-white mb-6 tracking-tighter leading-tight">
+                VISUAL<br>MOMENTUM
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base leading-relaxed mb-10">
+                Karya visual orisinal dengan lisensi resmi. Setiap foto dikurasi untuk memenuhi standar kualitas komersial dan kreatif global.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#gallery" class="px-10 py-4 bg-white text-black font-black text-xs tracking-widest rounded-full hover:bg-gray-200 transition transform hover:scale-105 shadow-xl">
+                    EXPLORE COLLECTION
+                </a>
+                <a href="https://www.shutterstock.com/g/fotograph_pro2zdn" target="_blank" class="px-10 py-4 border border-white/20 text-white font-black text-xs tracking-widest rounded-full hover:bg-white hover:text-black transition">
+                    VIEW ON SHUTTERSTOCK
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- GALLERY SECTION -->
+    <section id="gallery" class="py-24 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 uppercase tracking-[0.2em]">Latest Assets</h2>
+            <div class="w-16 h-1 bg-red-600 mx-auto mb-4"></div>
+            <p class="text-gray-500 text-xs italic">Proteksi gambar aktif: Lisensi tersedia di link terkait</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            
+            <!-- FOTO CARD 1 -->
+            <div class="group relative bg-[#121212] rounded-2xl overflow-hidden shadow-2xl border border-white/5 transition-all duration-500 transform hover:-translate-y-2">
+                <!-- Image Wrapper with Protection Layer -->
+                <div class="img-protection relative h-72 overflow-hidden">
+                    <img src="https://image.shutterstock.com/image-photo/260nw-2730320491.jpg" 
+                         onerror="this.src='https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800'"
+                         alt="Cinematic Photography" 
+                         class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    <div class="absolute top-4 right-4 bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-full z-20 shadow-lg">
+                        LICENSED
+                    </div>
+                </div>
+                
+                <!-- Card Content -->
+                <div class="p-6">
+                    <h3 class="text-white font-bold text-lg mb-1 uppercase tracking-tight">Cinematic Portrait</h3>
+                    <p class="text-gray-500 text-xs mb-6 font-medium">Urban & Lifestyle Series</p>
+                    
+                    <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                        <div>
+                            <p class="text-gray-600 text-[10px] uppercase font-bold tracking-widest">Asset ID</p>
+                            <p class="text-white text-xs font-mono">2730320491</p>
+                        </div>
+                        <a href="https://www.shutterstock.com/image-image/2730320491" target="_blank" class="shutterstock-red text-white px-5 py-2 rounded-lg font-bold text-[10px] tracking-widest flex items-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> BUY LICENSE
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOTO CARD 2 (Coming Soon Placeholder) -->
+            <div class="group relative bg-[#121212] rounded-2xl overflow-hidden shadow-2xl border border-white/5 opacity-50 hover:opacity-100 transition duration-500">
+                <div class="img-protection relative h-72 overflow-hidden grayscale group-hover:grayscale-0 transition duration-700">
+                    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800" alt="Nature" class="w-full h-full object-cover">
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-gray-500 font-bold text-sm uppercase tracking-widest mb-4">Nature Series</h3>
+                    <div class="inline-block px-4 py-2 border border-gray-800 text-gray-600 rounded text-[10px] font-bold">COMING SOON</div>
+                </div>
+            </div>
+
+            <!-- FOTO CARD 3 (Coming Soon Placeholder) -->
+            <div class="group relative bg-[#121212] rounded-2xl overflow-hidden shadow-2xl border border-white/5 opacity-50 hover:opacity-100 transition duration-500">
+                <div class="img-protection relative h-72 overflow-hidden grayscale group-hover:grayscale-0 transition duration-700">
+                    <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800" alt="Landscape" class="w-full h-full object-cover">
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-gray-500 font-bold text-sm uppercase tracking-widest mb-4">Landscape Series</h3>
+                    <div class="inline-block px-4 py-2 border border-gray-800 text-gray-600 rounded text-[10px] font-bold">COMING SOON</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION & FOOTER (Web 2 Style) -->
+    <footer class="bg-black border-t border-white/5 pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-5xl font-black text-white mb-6 tracking-tighter uppercase">Tertarik Bekerja Sama?</h2>
+            <p class="text-gray-400 mb-12 max-w-xl mx-auto text-sm leading-relaxed">
+                Butuh fotografi khusus untuk brand Anda atau ingin membeli koleksi eksklusif dalam jumlah besar? Hubungi saya melalui media sosial.
+            </p>
+            
+            <div class="flex justify-center space-x-6 mb-20">
+                <a href="https://www.instagram.com/fotograph_pro2zdn?igsh=cHplaXRneTJ5OHBi" target="_blank" class="w-16 h-16 rounded-full bg-[#121212] border border-white/10 flex items-center justify-center text-white hover:bg-red-600 hover:border-red-600 hover:scale-110 transition duration-300 shadow-2xl group">
+                    <i class="fab fa-instagram text-2xl group-hover:animate-bounce"></i>
+                </a>
+                <a href="https://www.shutterstock.com/g/fotograph_pro2zdn" target="_blank" class="w-16 h-16 rounded-full bg-[#121212] border border-white/10 flex items-center justify-center text-white hover:bg-red-600 hover:border-red-600 hover:scale-110 transition duration-300 shadow-2xl group" title="Shutterstock Profile">
+                    <i class="fas fa-camera text-2xl group-hover:animate-bounce"></i>
+                </a>
+            </div>
+            
+            <div class="border-t border-white/5 pt-12">
+                <p class="brand-font font-black text-xl text-white mb-3 tracking-tighter">
+                    fotograph_<span class="text-red-600">pro2zdn</span>
+                </p>
+                <p class="text-gray-600 text-[9px] uppercase tracking-[0.5em] mb-4">
+                    Member of Shutterstock Contributor Network
+                </p>
+                <p class="text-gray-700 text-[10px] uppercase tracking-widest">
+                    &copy; 2024 fotograph_pro2zdn. Semua Hak Cipta Dilindungi.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT PROTEKSI -->
+    <script>
+        // Mematikan Klik Kanan
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Mematikan Shorcut Keyboard (Inspect Element, Save, dll)
+        document.onkeydown = function(e) {
+            // Disable F12, Ctrl+U, Ctrl+S, Ctrl+Shift+I, Ctrl+C
+            if (e.keyCode === 123 || 
+                (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74))) {
+                return false;
+            }
+        };
+
+        // Anti-drag untuk semua gambar
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('dragstart', e => e.preventDefault());
+        });
+    </script>
+
+</body>
+</html>
