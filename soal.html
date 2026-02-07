@@ -204,6 +204,7 @@
           <option value="umum3">Mail Server</option>
           <option value="umum4">Firewall</option>
           <option value="umum6">PKK</option>
+          <option value="umum7">Mikrotik Jaringan WAN, LAN dan WLAN</option>
         
         </select>
       </div>
@@ -246,6 +247,7 @@
     // =================== DATA SOAL ===================
     const namaKategori = {
       "umum": "Bahasa Indonesia",
+      "umum7": "Mikrotik Jaringan WAN, LAN dan WLAN",
       "umum6": "PKK",
       "umum1": "Pendidikan Agama Islam",
       "umum5": "Pendidikan Kewarganegaraan", 
@@ -257,11 +259,319 @@
     
     
     const soalPerKategori = {
-  umum7: [
+  umum8: [
     { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
     { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
   ],
-  
+
+
+
+  umum7: [
+    // --- Soal Materi Konfigurasi MikroTik (Hotspot/Router) ---
+    {
+      pertanyaan: "Pada konfigurasi DHCP Client, interface mana yang dipilih agar router mendapatkan koneksi internet secara otomatis?",
+      pilihan: [
+        "ether1",
+        "ether2",
+        "wlan1",
+        "bridge1"
+      ],
+      jawaban: "ether1"
+    },
+    {
+      pertanyaan: "Berapa prefix (CIDR) yang digunakan untuk konfigurasi IP Address pada interface ether2 (LAN) sesuai instruksi?",
+      pilihan: [
+        "/24",
+        "/25",
+        "/28",
+        "/30"
+      ],
+      jawaban: "/28"
+    },
+    {
+      pertanyaan: "Berapa prefix (CIDR) yang digunakan untuk konfigurasi IP Address pada interface wlan1 (WLAN)?",
+      pilihan: [
+        "/24",
+        "/25",
+        "/28",
+        "/29"
+      ],
+      jawaban: "/25"
+    },
+    {
+      pertanyaan: "Dalam pengaturan DHCP Pool untuk LAN, berapakah rentang IP host terakhir yang dialokasikan?",
+      pilihan: [
+        ".10",
+        ".14",
+        ".50",
+        ".100"
+      ],
+      jawaban: ".14"
+    },
+    {
+      pertanyaan: "Alamat DNS yang digunakan pada konfigurasi DHCP Server Network adalah...",
+      pilihan: [
+        "8.8.8.8",
+        "8.8.4.4",
+        "192.168.1.1",
+        "1.1.1.1"
+      ],
+      jawaban: "8.8.8.8"
+    },
+    {
+      pertanyaan: "Berapakah batas akhir IP (range) yang diatur pada DHCP Pool untuk pengguna nirkabel (WLAN)?",
+      pilihan: [
+        ".14",
+        ".50",
+        ".100",
+        ".254"
+      ],
+      jawaban: ".100"
+    },
+    {
+      pertanyaan: "Untuk mengaktifkan NAT agar client bisa internetan, chain apa yang dipilih pada menu Firewall > NAT?",
+      pilihan: [
+        "dstnat",
+        "srcnat",
+        "input",
+        "forward"
+      ],
+      jawaban: "srcnat"
+    },
+    {
+      pertanyaan: "Action yang dipilih pada konfigurasi NAT agar IP lokal dapat diterjemahkan ke IP publik adalah...",
+      pilihan: [
+        "accept",
+        "redirect",
+        "masquerade",
+        "drop"
+      ],
+      jawaban: "masquerade"
+    },
+    {
+      pertanyaan: "Untuk memblokir Ping ke Router, chain apa yang digunakan pada Firewall Filter Rules?",
+      pilihan: [
+        "input",
+        "forward",
+        "output",
+        "prerouting"
+      ],
+      jawaban: "input"
+    },
+    {
+      pertanyaan: "Rentang src-address mana yang diblokir saat melakukan Ping ke Router?",
+      pilihan: [
+        ".2 - .5",
+        ".6 - .10",
+        ".11 - .14",
+        ".20 - .50"
+      ],
+      jawaban: ".2 - .5"
+    },
+    {
+      pertanyaan: "Protokol apa yang dipilih untuk membuat aturan blokir Ping?",
+      pilihan: [
+        "tcp",
+        "udp",
+        "icmp",
+        "gre"
+      ],
+      jawaban: "icmp"
+    },
+    {
+      pertanyaan: "Pada aturan blokir Ping ke Client (Wireless), chain apa yang digunakan?",
+      pilihan: [
+        "input",
+        "forward",
+        "output",
+        "postrouting"
+      ],
+      jawaban: "forward"
+    },
+    {
+      pertanyaan: "Rentang src-address mana yang diblokir saat melakukan Ping ke Client Wireless?",
+      pilihan: [
+        ".2 - .5",
+        ".6 - .10",
+        ".11 - .20",
+        ".50 - .100"
+      ],
+      jawaban: ".6 - .10"
+    },
+    {
+      pertanyaan: "Berapa nomor port yang digunakan saat mengaktifkan Web Proxy?",
+      pilihan: [
+        "80",
+        "3128",
+        "8080",
+        "443"
+      ],
+      jawaban: "8080"
+    },
+    {
+      pertanyaan: "Apa yang harus diisikan pada kolom 'Cache Administrator' di pengaturan Web Proxy?",
+      pilihan: [
+        "admin",
+        "webmaster",
+        "email peserta",
+        "nama router"
+      ],
+      jawaban: "email peserta"
+    },
+    {
+      pertanyaan: "Parameter apa yang diisi untuk memblokir situs seperti Facebook atau YouTube pada Web Proxy Access?",
+      pilihan: [
+        "src-address",
+        "dst-host",
+        "path",
+        "method"
+      ],
+      jawaban: "dst-host"
+    },
+    {
+      pertanyaan: "Parameter apa yang digunakan untuk memblokir file berekstensi tertentu (misal: *.mp3) di Web Proxy?",
+      pilihan: [
+        "dst-host",
+        "path",
+        "port",
+        "dst-address"
+      ],
+      jawaban: "path"
+    },
+    {
+      pertanyaan: "Action apa yang dipilih untuk aturan blokir situs/file pada Web Proxy?",
+      pilihan: [
+        "allow",
+        "deny",
+        "drop",
+        "reject"
+      ],
+      jawaban: "deny"
+    },
+    {
+      pertanyaan: "Agar Web Proxy menjadi Transparent, trafik port 80 harus dialihkan ke port berapa?",
+      pilihan: [
+        "80",
+        "443",
+        "3128",
+        "8080"
+      ],
+      jawaban: "8080"
+    },
+    {
+      pertanyaan: "Pada konfigurasi Transparent Proxy di NAT, chain yang digunakan adalah...",
+      pilihan: [
+        "srcnat",
+        "dstnat",
+        "input",
+        "output"
+      ],
+      jawaban: "dstnat"
+    },
+    {
+      pertanyaan: "Mode apa yang harus dipilih pada interface Wireless (wlan1) agar berfungsi sebagai Access Point?",
+      pilihan: [
+        "station",
+        "ap-bridge",
+        "bridge",
+        "alignment-only"
+      ],
+      jawaban: "ap-bridge"
+    },
+    {
+      pertanyaan: "Fitur apa yang harus dicentang saat melakukan Hotspot Setup agar bisa menggunakan server autentikasi eksternal?",
+      pilihan: [
+        "WPS",
+        "Radius",
+        "Cookie",
+        "Trial"
+      ],
+      jawaban: "Radius"
+    },
+    {
+      pertanyaan: "Alamat server NTP yang digunakan untuk sinkronisasi waktu adalah...",
+      pilihan: [
+        "id.pool.ntp.org",
+        "0.pool.ntp.org",
+        "time.windows.com",
+        "clock.google.com"
+      ],
+      jawaban: "id.pool.ntp.org"
+    },
+    {
+      pertanyaan: "Berapa alamat IP yang diisikan saat menambahkan Radius Server di menu Radius?",
+      pilihan: [
+        "192.168.1.1",
+        "127.0.0.1",
+        "0.0.0.0",
+        "10.10.10.1"
+      ],
+      jawaban: "127.0.0.1"
+    },
+    {
+      pertanyaan: "Password (secret) yang digunakan untuk konfigurasi Radius sesuai materi adalah...",
+      pilihan: [
+        "123456",
+        "admin",
+        "password123",
+        "rahasia"
+      ],
+      jawaban: "password123"
+    },
+    {
+      pertanyaan: "Pada Hotspot User Profile, parameter 'status-autorefresh' diatur menjadi...",
+      pilihan: [
+        "1 menit",
+        "5 menit",
+        "30 detik",
+        "1 jam"
+      ],
+      jawaban: "1 menit"
+    },
+    {
+      pertanyaan: "Pukul berapa scheduler 'BukaInternet' dijalankan?",
+      pilihan: [
+        "07:00:00",
+        "07:30:00",
+        "08:00:00",
+        "06:30:00"
+      ],
+      jawaban: "07:30:00"
+    },
+    {
+      pertanyaan: "Apa perintah (event) yang dijalankan oleh scheduler 'BukaInternet'?",
+      pilihan: [
+        "disable wlan1",
+        "enable wlan1",
+        "restart router",
+        "enable ether1"
+      ],
+      jawaban: "enable wlan1"
+    },
+    {
+      pertanyaan: "Pukul berapa scheduler 'TutupInternet' dijalankan untuk mematikan wlan1?",
+      pilihan: [
+        "15:00:00",
+        "15:30:00",
+        "16:00:00",
+        "16:30:00"
+      ],
+      jawaban: "15:30:00"
+    },
+    {
+      pertanyaan: "Perintah 'action redirect to-ports 8080' pada Firewall NAT bertujuan untuk...",
+      pilihan: [
+        "Memblokir situs web",
+        "Membuat Transparent Proxy",
+        "Mengaktifkan Hotspot",
+        "Membatasi bandwidth"
+      ],
+      jawaban: "Membuat Transparent Proxy"
+    }
+  ], 
+
+
+      
   umum6: [
     // --- Kategori: Keluhan Pelanggan (berdasarkan Kisi-kisi PKK) ---
     {
