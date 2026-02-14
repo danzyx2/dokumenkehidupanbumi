@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Sholat - Kehidupan Bumi Official</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f0fdf4;
+            color: #1e293b;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+        .active-prayer {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.3);
+            border: none;
+        }
+        .active-prayer .label-text { opacity: 1; color: #a7f3d0; }
+        .active-prayer .prayer-time { color: white; }
+        
+        .next-badge {
+            animation: pulse-badge 2s infinite;
+        }
+        @keyframes pulse-badge {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-emerald-900 text-white shadow-lg sticky top-0 z-50 border-b border-emerald-700">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-800 p-2 rounded-lg">
+                    <i class="fa-solid fa-kaaba text-emerald-400 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-wide leading-none">Kehidupan Bumi</h1>
+                    <span class="text-xs text-emerald-400 font-medium tracking-widest uppercase">Official App</span>
+                </div>
+            </div>
+            <div class="text-xs md:text-sm bg-emerald-800/50 px-3 py-1 rounded-full border border-emerald-700">
+                <i class="fa-solid fa-signal mr-1 text-emerald-400"></i> API Online
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6 max-w-5xl flex-grow">
+        
+        <!-- Controls & Date Header -->
+        <div class="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
+            <div class="w-full md:w-auto">
+                <label class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">Pilih Wilayah</label>
+                <div class="relative group">
+                    <select id="regionSelector" class="appearance-none w-full md:w-64 bg-white border border-emerald-200 text-emerald-900 py-3 px-4 pr-10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm font-semibold transition-all hover:border-emerald-400 cursor-pointer">
+                        <option value="1501">Yogyakarta</option>
+                        <option value="1301">Jakarta</option>
+                        <option value="1638">Surabaya</option>
+                        <option value="1219">Bandung</option>
+                        <option value="1101">Semarang</option>
+                        <option value="2251">Makassar</option>
+                        <option value="3211">Denpasar</option>
+                        <option value="0115">Medan</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-emerald-600 group-hover:text-emerald-800">
+                        <i class="fa-solid fa-chevron-down text-sm"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right w-full md:w-auto bg-emerald-100/50 p-3 rounded-xl border border-emerald-100 min-w-[200px]">
+                <div id="gregorianDate" class="text-lg font-bold text-emerald-900">...</div>
+                <div id="locationDisplay" class="text-xs text-emerald-600 font-medium mt-1 uppercase tracking-tighter">
+                    <i class="fa-solid fa-location-dot mr-1"></i> Menentukan Lokasi...
+                </div>
+            </div>
+        </div>
+
+        <!-- HERO: Countdown & Clock -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+            <div class="md:col-span-7 lg:col-span-8 glass-card rounded-3xl p-6 md:p-10 shadow-xl relative overflow-hidden bg-gradient-to-br from-emerald-900 to-teal-800 text-white flex flex-col justify-center items-center md:items-start text-center md:text-left">
+                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+                <i class="fa-solid fa-mosque absolute -bottom-6 -right-6 text-[10rem] text-emerald-800 opacity-30 rotate-12"></i>
+
+                <div class="relative z-10 w-full">
+                    <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+                        <span class="px-2 py-0.5 bg-emerald-500/20 rounded text-[10px] font-bold tracking-widest uppercase text-emerald-300 border border-emerald-500/30">Waktu Sekarang</span>
+                    </div>
+                    <div id="clock" class="text-5xl md:text-7xl font-bold tracking-tight font-mono mb-2 drop-shadow-lg">00:00:00</div>
+                    <p class="text-emerald-200 text-sm font-light">"Sholatlah tepat pada waktunya."</p>
+                </div>
+            </div>
+
+            <div class="md:col-span-5 lg:col-span-4 bg-white rounded-3xl p-6 shadow-lg border border-emerald-100 flex flex-col justify-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <i class="fa-solid fa-hourglass-half text-6xl text-emerald-600"></i>
+                </div>
+                
+                <h3 class="text-emerald-800 text-sm font-bold uppercase tracking-wider mb-1">Menuju Sholat</h3>
+                <h2 id="nextPrayerName" class="text-3xl font-bold text-emerald-600 mb-4">...</h2>
+                
+                <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100 text-center">
+                    <div id="countdown" class="text-3xl font-mono font-bold text-emerald-700 tracking-wider">-- : -- : --</div>
+                    <div class="text-xs text-emerald-500 mt-1 font-medium">Hitung Mundur</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Schedule -->
+        <div class="mb-10">
+            <h3 class="text-lg font-bold text-emerald-900 mb-4 flex items-center gap-2 px-1">
+                <span class="bg-emerald-600 w-1 h-6 rounded-full inline-block"></span>
+                Jadwal Hari Ini
+            </h3>
+            <div id="todayScheduleGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- Full Schedule Table -->
+        <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
+            <div class="p-5 bg-emerald-50 border-b border-emerald-100 flex flex-col md:flex-row justify-between md:items-center gap-2">
+                <h3 class="font-bold text-emerald-800 text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-table-list text-emerald-600"></i> 
+                    Jadwal Bulan <span id="currentMonthName">...</span>
+                </h3>
+                <span class="text-[10px] font-bold text-emerald-500 bg-white px-3 py-1 rounded-full border border-emerald-100 shadow-sm uppercase tracking-widest">
+                    Data Real-Time API
+                </span>
+            </div>
+            <div class="overflow-x-auto max-h-[500px] scrollbar-hide">
+                <table class="w-full text-sm text-left relative">
+                    <thead class="text-[10px] text-emerald-700 uppercase bg-emerald-100/80 sticky top-0 z-20 backdrop-blur-sm tracking-widest font-black">
+                        <tr>
+                            <th class="px-6 py-4">Tanggal</th>
+                            <th class="px-4 py-4">Imsak</th>
+                            <th class="px-4 py-4">Subuh</th>
+                            <th class="px-4 py-4">Dzuhur</th>
+                            <th class="px-4 py-4">Ashar</th>
+                            <th class="px-4 py-4">Maghrib</th>
+                            <th class="px-4 py-4">Isya</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleTableBody" class="divide-y divide-emerald-50">
+                        <!-- Rows Injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="mt-12 mb-6 text-center">
+            <p class="text-emerald-800 font-bold text-sm tracking-widest uppercase">Kehidupan Bumi Official</p>
+            <p class="text-[10px] text-emerald-500 mt-1 uppercase tracking-widest">© 2026 - Digital Prayer Schedule System</p>
+        </footer>
+    </div>
+
+    <script>
+        /**
+         * SISTEM JADWAL SHOLAT OTOMATIS API
+         * API Source: MyQuran (api.myquran.com) - Data Resmi Kemenag
+         */
+        
+        const API_BASE = "https://api.myquran.com/v2/sholat/jadwal";
+        let currentCityId = "1501"; // Default Yogyakarta
+        let monthlySchedule = [];
+
+        // 1. Ambil Data dari API
+        async function fetchPrayerData() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            
+            document.getElementById('locationDisplay').innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Mengambil data...';
+
+            try {
+                const response = await fetch(`${API_BASE}/${currentCityId}/${year}/${month}`);
+                const result = await response.json();
+                
+                if (result.status && result.data) {
+                    monthlySchedule = result.data.jadwal;
+                    document.getElementById('locationDisplay').innerText = result.data.lokasi;
+                    document.getElementById('currentMonthName').innerText = new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' }).format(now);
+                    
+                    renderTable();
+                    startClock();
+                }
+            } catch (error) {
+                console.error("API Error:", error);
+                document.getElementById('locationDisplay').innerText = "Koneksi API Terputus";
+            }
+        }
+
+        // 2. Render Tabel Jadwal Lengkap
+        function renderTable() {
+            const tbody = document.getElementById('scheduleTableBody');
+            const todayStr = new Date().toISOString().split('T')[0];
+            tbody.innerHTML = '';
+
+            monthlySchedule.forEach(day => {
+                const isToday = day.date === todayStr;
+                const tr = document.createElement('tr');
+                tr.className = isToday ? 'bg-emerald-100/60 font-bold border-l-4 border-emerald-600' : 'hover:bg-slate-50 transition-colors';
+                
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-emerald-900">
+                        ${day.tanggal.split(',')[0]}
+                        ${isToday ? '<span class="ml-2 text-[9px] bg-emerald-600 text-white px-2 py-0.5 rounded-full uppercase tracking-tighter">Hari Ini</span>' : ''}
+                    </td>
+                    <td class="px-4 py-4 font-mono">${day.imsak}</td>
+                    <td class="px-4 py-4 font-mono">${day.subuh}</td>
+                    <td class="px-4 py-4 font-mono">${day.dzuhur}</td>
+                    <td class="px-4 py-4 font-mono">${day.ashar}</td>
+                    <td class="px-4 py-4 font-mono text-emerald-600">${day.maghrib}</td>
+                    <td class="px-4 py-4 font-mono">${day.isya}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Format Tanggal Header
+            document.getElementById('gregorianDate').innerText = new Intl.DateTimeFormat('id-ID', { 
+                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
+            }).format(new Date());
+        }
+
+        // 3. Logic Realtime Clock & Countdown
+        function startClock() {
+            if(window.prayerTimer) clearInterval(window.prayerTimer);
+
+            window.prayerTimer = setInterval(() => {
+                const now = new Date();
+                document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+
+                const todayStr = now.toISOString().split('T')[0];
+                const todayData = monthlySchedule.find(s => s.date === todayStr);
+
+                if (todayData) {
+                    const prayers = [
+                        { name: 'Imsak', time: todayData.imsak, icon: 'fa-cloud-moon' },
+                        { name: 'Subuh', time: todayData.subuh, icon: 'fa-sun' },
+                        { name: 'Dzuhur', time: todayData.dzuhur, icon: 'fa-sun' },
+                        { name: 'Ashar', time: todayData.ashar, icon: 'fa-cloud-sun' },
+                        { name: 'Maghrib', time: todayData.maghrib, icon: 'fa-cloud-moon' },
+                        { name: 'Isya', time: todayData.isya, icon: 'fa-moon' }
+                    ];
+
+                    const nowSecs = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+                    let next = null;
+
+                    for (let p of prayers) {
+                        const [h, m] = p.time.split(':').map(Number);
+                        const pSecs = (h * 3600) + (m * 60);
+                        if (pSecs > nowSecs) {
+                            next = { ...p, targetSecs: pSecs };
+                            break;
+                        }
+                    }
+
+                    // Jika sudah Isya, ambil Imsak besok
+                    if (!next) {
+                        const tomorrow = new Date(now);
+                        tomorrow.setDate(now.getDate() + 1);
+                        const tomorrowISO = tomorrow.toISOString().split('T')[0];
+                        const tomorrowData = monthlySchedule.find(s => s.date === tomorrowISO);
+                        
+                        if (tomorrowData) {
+                            const [h, m] = tomorrowData.imsak.split(':').map(Number);
+                            next = { name: 'Imsak', time: tomorrowData.imsak, targetSecs: (h * 3600) + (m * 60) + 86400 };
+                        }
+                    }
+
+                    // Render Countdown
+                    if (next) {
+                        const diff = next.targetSecs - nowSecs;
+                        const h = Math.floor(diff / 3600);
+                        const m = Math.floor((diff % 3600) / 60);
+                        const s = Math.floor(diff % 60);
+                        
+                        document.getElementById('nextPrayerName').innerText = next.name;
+                        document.getElementById('countdown').innerText = 
+                            `${String(h).padStart(2,'0')} : ${String(m).padStart(2,'0')} : ${String(s).padStart(2,'0')}`;
+                    }
+
+                    renderGrid(prayers, next ? next.name : '');
+                }
+            }, 1000);
+        }
+
+        // 4. Render Grid Card Hari Ini
+        function renderGrid(prayers, nextName) {
+            const grid = document.getElementById('todayScheduleGrid');
+            grid.innerHTML = '';
+
+            prayers.forEach(p => {
+                const isActive = p.name === nextName;
+                const cardClass = isActive ? 'active-prayer' : 'bg-white border border-emerald-100 text-emerald-800 hover:border-emerald-300';
+                
+                grid.innerHTML += `
+                    <div class="${cardClass} rounded-2xl p-4 flex flex-col items-center justify-center text-center transition-all duration-300 h-32 relative overflow-hidden group">
+                        ${isActive ? '<div class="absolute top-2 right-2 w-2 h-2 bg-yellow-400 rounded-full animate-ping"></div>' : ''}
+                        <div class="text-[9px] font-bold uppercase tracking-widest mb-2 label-text opacity-70 group-hover:opacity-100">${p.name}</div>
+                        <i class="fa-solid ${p.icon} text-xl mb-2 opacity-80 group-hover:scale-110 transition-transform"></i>
+                        <div class="text-2xl font-bold font-mono prayer-time tracking-tight">${p.time}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // 5. Event Listeners
+        document.getElementById('regionSelector').addEventListener('change', (e) => {
+            currentCityId = e.target.value;
+            fetchPrayerData();
+        });
+
+        // Start App
+        fetchPrayerData();
+
+    </script>
+</body>
+</html>
+
