@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Monitor V23 - Kehidupan Bumi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Technical Indicators Lib -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; }
+        .glass-card { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .signal-buy { background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+        .signal-sell { background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); color: white; shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+        .signal-wait { background: linear-gradient(135deg, #475569 0%, #64748b 100%); color: white; }
+        .price-flash-up { animation: flash-up 0.5s ease-out; }
+        .price-flash-down { animation: flash-down 0.5s ease-out; }
+        @keyframes flash-up { from { background: rgba(16, 185, 129, 0.3); } to { background: transparent; } }
+        @keyframes flash-down { from { background: rgba(239, 68, 68, 0.3); } to { background: transparent; } }
+        .pulse-emerald { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- Navbar -->
+    <nav class="bg-slate-900/90 sticky top-0 z-50 border-b border-white/5 backdrop-blur-md">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-500 p-2 rounded-xl shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-microchip text-slate-900 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-tight">V23 <span class="text-emerald-400">Engine</span></h1>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Kehidupan Bumi Official</p>
+                </div>
+            </div>
+
+            <!-- Search Bar Manual -->
+            <div class="relative w-full md:w-96">
+                <input type="text" id="searchInput" placeholder="Cari Pair (Contoh: BTC, ETH, SOL)..." 
+                    class="w-full bg-slate-800/50 border border-white/10 rounded-2xl py-3 px-12 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-medium text-sm">
+                <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                <button onclick="handleSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-emerald-500 text-slate-900 px-4 py-1.5 rounded-xl text-xs font-bold hover:bg-emerald-400 transition-colors">Cari</button>
+            </div>
+
+            <div class="flex items-center gap-4 text-xs">
+                <div class="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-white/5">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full pulse-emerald"></span>
+                    <span class="text-slate-300 font-mono" id="lastUpdate">00:00:00</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 mt-8 max-w-7xl">
+        
+        <!-- Current Asset Focus -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+            
+            <!-- Left: Price & Strategy Panel -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                <div class="glass-card rounded-[2.5rem] p-8 relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex items-center gap-3">
+                            <div id="coinIcon" class="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl font-bold text-emerald-400 border border-emerald-500/20">B</div>
+                            <div>
+                                <h2 id="coinName" class="text-2xl font-black">BITCOIN</h2>
+                                <span id="coinSymbol" class="text-xs text-slate-500 font-mono uppercase tracking-widest">BTC/USDT</span>
+                            </div>
+                        </div>
+                        <div id="priceChange" class="px-3 py-1 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400">+0.00%</div>
+                    </div>
+
+                    <div id="mainPrice" class="text-5xl font-mono font-black mb-8 tracking-tighter">$ --,---.--</div>
+
+                    <!-- STRATEGY V23 SIGNAL BOX -->
+                    <div id="signalBox" class="signal-wait rounded-3xl p-6 text-center transition-all duration-500">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.3em] mb-2 opacity-80">Rekomendasi Strategi V23</p>
+                        <h3 id="signalText" class="text-3xl font-black tracking-widest uppercase">MENGANALISA...</h3>
+                        <p id="signalDesc" class="text-xs mt-2 font-medium opacity-90 italic">Sedang menghitung indikator teknikal</p>
+                    </div>
+                </div>
+
+                <!-- Technical Indicators List -->
+                <div class="glass-card rounded-[2.5rem] p-6">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 px-2">Data Indikator</h4>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <span class="text-sm font-semibold">RSI (14)</span>
+                            <span id="valRsi" class="font-mono text-emerald-400 font-bold">--.--</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <span class="text-sm font-semibold">EMA (50)</span>
+                            <span id="valEma50" class="font-mono text-blue-400 font-bold">--.--</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <span class="text-sm font-semibold">MACD</span>
+                            <span id="valMacd" class="font-mono text-purple-400 font-bold">--.--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Chart & Analysis Summary -->
+            <div class="lg:col-span-8 flex flex-col gap-6">
+                <!-- CHART PLACEHOLDER -->
+                <div class="glass-card rounded-[2.5rem] p-6 flex-grow min-h-[400px] flex flex-col">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-sm font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-chart-area text-emerald-500"></i>
+                            Grafik Analisis Real-Time
+                        </h4>
+                        <div class="flex gap-2">
+                            <button class="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-3 py-1 rounded-lg border border-emerald-500/20 uppercase">1m</button>
+                            <button class="bg-white/5 text-slate-400 text-[10px] font-bold px-3 py-1 rounded-lg border border-white/5 uppercase">5m</button>
+                            <button class="bg-white/5 text-slate-400 text-[10px] font-bold px-3 py-1 rounded-lg border border-white/5 uppercase">15m</button>
+                        </div>
+                    </div>
+                    <div id="tvChart" class="w-full flex-grow rounded-2xl overflow-hidden bg-slate-900/50">
+                        <!-- TradingView Lite Chart will be here -->
+                        <div class="h-full w-full flex items-center justify-center text-slate-600 italic">
+                             Koneksi Visual Market Aktif...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card rounded-3xl p-6 border-l-4 border-blue-500">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Volume 24h</p>
+                        <h5 id="vol24" class="text-lg font-mono font-bold">--</h5>
+                    </div>
+                    <div class="glass-card rounded-3xl p-6 border-l-4 border-emerald-500">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">High 24h</p>
+                        <h5 id="high24" class="text-lg font-mono font-bold text-emerald-400">--</h5>
+                    </div>
+                    <div class="glass-card rounded-3xl p-6 border-l-4 border-red-500">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Low 24h</p>
+                        <h5 id="low24" class="text-lg font-mono font-bold text-red-400">--</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        /**
+         * ENGINE STRATEGY V23 - WEB VERSION
+         * Mengambil data dari Binance API & Menghitung Strategi Bot WA anda secara lokal
+         */
+
+        let currentSymbol = "BTCUSDT";
+        let lastPrice = 0;
+
+        // Inisialisasi TradingView Light Chart
+        let chart, lineSeries;
+        function initChart() {
+            const chartElement = document.getElementById('tvChart');
+            chart = LightweightCharts.createChart(chartElement, {
+                layout: { backgroundColor: 'transparent', textColor: '#64748b' },
+                grid: { vertLines: { color: 'rgba(255,255,255,0.05)' }, horzLines: { color: 'rgba(255,255,255,0.05)' } },
+                crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                timeScale: { borderColor: 'rgba(255,255,255,0.1)' },
+            });
+            lineSeries = chart.addLineSeries({ color: '#10b981', lineWidth: 2 });
+            
+            // Resize handler
+            window.addEventListener('resize', () => {
+                chart.resize(chartElement.clientWidth, chartElement.clientHeight);
+            });
+        }
+
+        async function fetchMarketData() {
+            try {
+                // 1. Fetch 24hr Ticker
+                const tickerRes = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${currentSymbol}`);
+                const ticker = await tickerRes.json();
+                
+                // 2. Fetch Candlestick (Klines) untuk Indikator (V23 Strategy)
+                const klinesRes = await fetch(`https://api.binance.com/api/v3/klines?symbol=${currentSymbol}&interval=1m&limit=100`);
+                const klines = await klinesRes.json();
+                
+                updateUI(ticker, klines);
+            } catch (err) {
+                console.error("Gagal ambil data:", err);
+            }
+        }
+
+        function updateUI(ticker, klines) {
+            const currentP = parseFloat(ticker.lastPrice);
+            const priceEl = document.getElementById('mainPrice');
+            
+            // Animasi Flash Harga
+            if (currentP > lastPrice) {
+                priceEl.className = 'text-5xl font-mono font-black mb-8 tracking-tighter price-flash-up text-emerald-400';
+            } else if (currentP < lastPrice) {
+                priceEl.className = 'text-5xl font-mono font-black mb-8 tracking-tighter price-flash-down text-red-400';
+            }
+            lastPrice = currentP;
+
+            // Header Info
+            document.getElementById('coinName').innerText = currentSymbol.replace('USDT', '');
+            document.getElementById('coinSymbol').innerText = `${currentSymbol}`;
+            document.getElementById('mainPrice').innerText = `$ ${currentP.toLocaleString()}`;
+            
+            const change = parseFloat(ticker.priceChangePercent);
+            const changeEl = document.getElementById('priceChange');
+            changeEl.innerText = `${change > 0 ? '+' : ''}${change.toFixed(2)}%`;
+            changeEl.className = `px-3 py-1 rounded-lg text-xs font-bold ${change >= 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`;
+
+            document.getElementById('vol24').innerText = `${parseFloat(ticker.quoteVolume).toLocaleString()}`;
+            document.getElementById('high24').innerText = `$ ${parseFloat(ticker.highPrice).toLocaleString()}`;
+            document.getElementById('low24').innerText = `$ ${parseFloat(ticker.lowPrice).toLocaleString()}`;
+            document.getElementById('lastUpdate').innerText = new Date().toLocaleTimeString();
+
+            // KONTEN STRATEGI V23 (LOGIKA DARI index.js)
+            const closes = klines.map(k => parseFloat(k[4]));
+            
+            // Simulasi Indikator Sederhana (Web Version)
+            const rsi = calculateRSI(closes, 14);
+            const ema50 = calculateEMA(closes, 50);
+            
+            document.getElementById('valRsi').innerText = rsi.toFixed(2);
+            document.getElementById('valEma50').innerText = ema50.toFixed(2);
+            document.getElementById('valMacd').innerText = (currentP - ema50).toFixed(2); // Proxy MACD
+
+            // DECISION ENGINE V23
+            const signalBox = document.getElementById('signalBox');
+            const signalText = document.getElementById('signalText');
+            const signalDesc = document.getElementById('signalDesc');
+
+            if (rsi < 35 && currentP > ema50) {
+                signalBox.className = "signal-buy rounded-3xl p-6 text-center transition-all duration-500";
+                signalText.innerText = "BUY SIGNAL";
+                signalDesc.innerText = "Kondisi: RSI Oversold & Harga di atas EMA (Bullish Momentum)";
+            } else if (rsi > 65 || currentP < (ema50 * 0.99)) {
+                signalBox.className = "signal-sell rounded-3xl p-6 text-center transition-all duration-500";
+                signalText.innerText = "SELL SIGNAL";
+                signalDesc.innerText = "Kondisi: RSI Overbought atau Harga Breakout ke bawah EMA";
+            } else {
+                signalBox.className = "signal-wait rounded-3xl p-6 text-center transition-all duration-500";
+                signalText.innerText = "WAITING...";
+                signalDesc.innerText = "Pasar sedang konsolidasi. Menunggu konfirmasi indikator V23.";
+            }
+
+            // Update Chart Data
+            const chartData = klines.map(k => ({ time: k[0] / 1000, value: parseFloat(k[4]) }));
+            lineSeries.setData(chartData);
+        }
+
+        // --- MATH HELPERS ---
+        function calculateRSI(closes, period) {
+            let gains = 0, losses = 0;
+            for (let i = closes.length - period; i < closes.length; i++) {
+                let diff = closes[i] - closes[i - 1];
+                if (diff >= 0) gains += diff; else losses -= diff;
+            }
+            let rs = gains / losses;
+            return 100 - (100 / (1 + rs));
+        }
+
+        function calculateEMA(closes, period) {
+            let k = 2 / (period + 1);
+            let ema = closes[0];
+            for (let i = 1; i < closes.length; i++) {
+                ema = (closes[i] * k) + (ema * (1 - k));
+            }
+            return ema;
+        }
+
+        // --- HANDLERS ---
+        function handleSearch() {
+            const val = document.getElementById('searchInput').value.toUpperCase();
+            if (val) {
+                // Tambahkan USDT jika tidak ada
+                currentSymbol = val.includes('USDT') ? val : val + 'USDT';
+                fetchMarketData();
+            }
+        }
+
+        // Masukkan event enter pada search
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') handleSearch();
+        });
+
+        // Init
+        window.onload = () => {
+            initChart();
+            fetchMarketData();
+            setInterval(fetchMarketData, 3000); // 3 Detik refresh
+        };
+    </script>
+</body>
+</html>
+
