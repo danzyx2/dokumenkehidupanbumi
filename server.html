@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MLBB Server Time PRO - Fixed Offset</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --panel-bg: #111;
+            --gold: #ffd700;
+            --gold-dim: #8a7500;
+            --text-main: #e0e0e0;
+            --neon-green: #00ff41;
+            --neon-red: #ff003c;
+            --accent: #00d2ff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            background: linear-gradient(180deg, rgba(255,215,0,0.1) 0%, transparent 100%);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--gold-dim);
+        }
+
+        .alert-box {
+            font-size: 1rem;
+            color: var(--gold);
+            height: 25px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .clock-panel {
+            background: var(--panel-bg);
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 25px 45px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            transition: all 0.3s ease;
+        }
+
+        .clock-panel.active-golden {
+            border-color: var(--gold);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .time-display {
+            font-size: 4rem;
+            font-weight: bold;
+            line-height: 1;
+            color: white;
+            letter-spacing: -2px;
+        }
+        
+        .ms-display {
+            font-size: 2rem;
+            color: var(--gold);
+            display: block;
+            margin-top: 5px;
+            font-weight: 300;
+        }
+
+        .metronome-container {
+            width: 90%;
+            max-width: 400px;
+            height: 8px;
+            background: #222;
+            margin: 25px 0;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .metronome-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            transition: width 0.05s linear;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 90%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            background: #161616;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 0.65rem;
+            color: #777;
+            margin-bottom: 6px;
+        }
+
+        input[type="number"] {
+            background: #000;
+            border: 1px solid #333;
+            color: var(--gold);
+            padding: 8px;
+            width: 100%;
+            font-family: inherit;
+            font-size: 1.1rem;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #222;
+            color: white;
+            border: 1px solid #333;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+        
+        button.active { background: var(--gold); color: black; border-color: var(--gold); }
+
+        .schedule-box {
+            width: 90%;
+            max-width: 400px;
+            background: #0a0a0a;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #1a1a1a;
+            font-size: 0.85rem;
+            color: #999;
+        }
+        
+        .schedule-item:last-child { border-bottom: none; }
+        .schedule-item.next { color: var(--gold); font-weight: bold; }
+
+        .indicator-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+            background: #444;
+        }
+        .indicator-dot.active { background: var(--neon-red); box-shadow: 0 0 5px var(--neon-red); }
+
+        @media (max-width: 400px) {
+            .time-display { font-size: 3rem; }
+            .ms-display { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SERVER TIME <span style="color:var(--gold);">MLBB</span></h1>
+    </header>
+
+    <div class="alert-box" id="status-text">MENGHUBUNGKAN...</div>
+
+    <div class="clock-panel" id="clock-panel">
+        <div class="label"><span class="indicator-dot" id="live-dot"></span>Waktu Server (WIB -15)</div>
+        <div class="time-display" id="server-time">00:00:00</div>
+        <div class="ms-display" id="ms-time">.000</div>
+    </div>
+
+    <div class="metronome-container">
+        <div class="metronome-bar" id="visual-bar"></div>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>PING GAME (MS)</label>
+            <input type="number" id="ping-input" value="80" min="0" max="999">
+        </div>
+        <div class="control-group" style="display: flex; align-items: flex-end;">
+            <button id="sound-btn" onclick="toggleSound()">🔇 AUDIO: OFF</button>
+        </div>
+    </div>
+    
+    <div style="font-size: 0.7rem; color: #444; margin-bottom: 20px; text-align: center; max-width: 80%;">
+        *Klik saat bar berkedip putih atau tepat pada detik 59.9xx (sesuai ping).
+    </div>
+
+    <div class="schedule-box">
+        <div class="label" style="border-bottom: 1px solid #222; padding-bottom: 8px; margin-bottom: 5px;">ESTIMASI GOLDEN MINUTE</div>
+        <div id="schedule-list"></div>
+    </div>
+
+    <script>
+        let soundEnabled = false;
+        let audioCtx = null;
+        
+        // --- LOGIKA OFFSET BARU ---
+        // WIB 15:00 = Server 00:00
+        // Berarti Server = WIB - 15 Jam
+        const OFFSET_MS = -15 * 60 * 60 * 1000; 
+
+        const statusText = document.getElementById('status-text');
+        const clockPanel = document.getElementById('clock-panel');
+        const visualBar = document.getElementById('visual-bar');
+        const pingInput = document.getElementById('ping-input');
+        const liveDot = document.getElementById('live-dot');
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('sound-btn');
+            if (soundEnabled) {
+                btn.innerText = "🔊 AUDIO: ON";
+                btn.classList.add('active');
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                playBeep(880, 0.1);
+            } else {
+                btn.innerText = "🔇 AUDIO: OFF";
+                btn.classList.remove('active');
+            }
+        }
+
+        function playBeep(freq, duration) {
+            if (!soundEnabled || !audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.value = freq;
+            osc.type = 'sine';
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        // Pola Golden Minute :15, :19, :23 dst. 
+        // Rumus: (Menit - 3) % 4 === 0 ATAU (Menit + 1) % 4 === 0 jika dihitung dari 15
+        function isGolden(m) {
+            return (m - 3) % 4 === 0;
+        }
+
+        function getSchedules(serverDate) {
+            let res = [];
+            let temp = new Date(serverDate.getTime());
+            temp.setSeconds(0); temp.setMilliseconds(0);
+            temp.setMinutes(temp.getMinutes() + 1);
+
+            while(res.length < 5) {
+                if (isGolden(temp.getMinutes())) {
+                    let hh = temp.getHours().toString().padStart(2, '0');
+                    let mm = temp.getMinutes().toString().padStart(2, '0');
+                    res.push(`${hh}:${mm}:00`);
+                }
+                temp.setMinutes(temp.getMinutes() + 1);
+            }
+            return res;
+        }
+
+        function updateUIList(serverDate) {
+            const list = getSchedules(serverDate);
+            const container = document.getElementById('schedule-list');
+            container.innerHTML = '';
+            list.forEach((t, i) => {
+                const item = document.createElement('div');
+                item.className = i === 0 ? 'schedule-item next' : 'schedule-item';
+                item.innerHTML = `<span>Server Event</span> <span>${t}</span>`;
+                container.appendChild(item);
+            });
+        }
+
+        let lastSec = -1;
+
+        function tick() {
+            const now = new Date();
+            const serverDate = new Date(now.getTime() + OFFSET_MS);
+
+            const h = serverDate.getHours();
+            const m = serverDate.getMinutes();
+            const s = serverDate.getSeconds();
+            const ms = serverDate.getMilliseconds();
+
+            // Render Time
+            document.getElementById('server-time').innerText = 
+                `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            document.getElementById('ms-time').innerText = `.${ms.toString().padStart(3,'0')}`;
+
+            // Blink Dot
+            liveDot.className = ms < 500 ? "indicator-dot active" : "indicator-dot";
+
+            // Golden State Logic
+            const currentIsGolden = isGolden(m);
+            const nextIsGolden = isGolden((m + 1) % 60);
+            
+            let barW = 0;
+            let barColor = 'var(--accent)';
+
+            // Periode Kritis: 10 detik sebelum menit Golden
+            if (nextIsGolden && s >= 50) {
+                statusText.innerText = "SIAP-SIAP EKSEKUSI!";
+                statusText.style.color = "var(--neon-green)";
+                clockPanel.classList.add('active-golden');
+                
+                // Audio Countdown
+                if (s !== lastSec && s >= 57) {
+                    playBeep(s === 59 ? 1200 : 600, 0.1);
+                    lastSec = s;
+                }
+
+                // Bar Progress 50-60 detik
+                barW = ((s - 50) * 1000 + ms) / 100; // 0-100%
+                
+                // Ping Sync Flash
+                const ping = parseInt(pingInput.value) || 0;
+                const targetMs = 1000 - ping;
+                
+                if (s === 59 && ms >= targetMs - 30 && ms <= targetMs + 30) {
+                    barColor = "#fff";
+                    statusText.innerText = "!!! KLIK SEKARANG !!!";
+                } else {
+                    barColor = "var(--gold)";
+                }
+            } 
+            else if (currentIsGolden && s < 5) {
+                statusText.innerText = "GOLDEN MINUTE AKTIF!";
+                statusText.style.color = "var(--gold)";
+                barW = 100;
+                barColor = "var(--gold)";
+            }
+            else {
+                statusText.innerText = "STATUS: MONITORING";
+                statusText.style.color = "#555";
+                clockPanel.classList.remove('active-golden');
+                barW = (s * 1000 + ms) / 600; // Normal flow
+            }
+
+            visualBar.style.width = barW + "%";
+            visualBar.style.background = barColor;
+
+            // Refresh Schedule List every minute
+            if (s === 0 && ms < 20) updateUIList(serverDate);
+        }
+
+        // Initial run
+        const initialServer = new Date(new Date().getTime() + OFFSET_MS);
+        updateUIList(initialServer);
+        setInterval(tick, 16);
+    </script>
+</body>
+</html>
+
