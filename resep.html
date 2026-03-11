@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kumpulan Resep dari KHB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f2fbf5; /* Background putih dengan hint hijau mint */
+}
+.tab-active {
+    border-bottom: 2px solid #10b981; /* Warna Emerald Green yang segar dan terang */
+    color: #10b981;
+    font-weight: 600;
+}
+.tab-inactive {
+    color: #6b7280; /* Warna abu-abu netral */
+}
+.recipe-card {
+    transition: transform 0.2s ease-in-out;
+}
+.recipe-card:hover {
+    transform: translateY(-4px);
+}
+
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-fire text-red-500 text-2xl"></i>
+                <h1 class="text-xl font-bold text-slate-800">Kumpulan Resep Inspirasi</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+<!-- Pengantar Umum -->
+​<div class="bg-teal-50 rounded-2xl p-6 mb-8 border border-teal-100">
+<h2 class="text-2xl font-bold text-teal-700 mb-2">Eksplorasi Rasa & Inspirasi Dapur</h2>
+<p class="text-slate-600">Temukan kumpulan resep pilihan mulai dari masakan rumahan hingga hidangan modern. Pelajari teknik memasak, takaran bahan yang pas, serta tips rahasia untuk menyajikan hidangan istimewa setiap hari.</p>
+</div>
+
+        <!-- Pilihan Resep (Di-generate dari Array JS) -->
+        <h3 class="text-xl font-bold mb-4">Pilih Resep:</h3>
+        <div id="recipe-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <!-- Kartu resep akan dimuat di sini oleh JavaScript -->
+        </div>
+
+        <!-- Container Detail Resep -->
+        <div id="recipe-detail-container" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            
+            <!-- Header Resep Detail -->
+            <div class="bg-slate-800 text-white p-6 relative">
+                <button onclick="closeRecipe()" class="absolute top-4 right-4 text-slate-300 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+                <h2 id="detail-title" class="text-2xl font-bold mb-2">Nama Resep</h2>
+                <div class="flex gap-4 text-sm text-slate-300">
+                    <span id="detail-time"><i class="far fa-clock mr-1"></i> Waktu</span>
+                    <span id="detail-difficulty"><i class="fas fa-signal mr-1"></i> Tingkat Kesulitan</span>
+                </div>
+            </div>
+
+            <!-- Tabs Navigasi -->
+            <div class="flex border-b border-slate-200 bg-slate-50">
+                <button onclick="switchTab('alatbahan')" id="tab-alatbahan" class="flex-1 py-3 px-4 text-center tab-active transition-colors">
+                    <i class="fas fa-utensils mr-2"></i>Alat & Bahan
+                </button>
+                <button onclick="switchTab('langkah')" id="tab-langkah" class="flex-1 py-3 px-4 text-center tab-inactive transition-colors hover:bg-slate-100">
+                    <i class="fas fa-list-ol mr-2"></i>Cara Membuat
+                </button>
+                <button onclick="switchTab('tips')" id="tab-tips" class="flex-1 py-3 px-4 text-center tab-inactive transition-colors hover:bg-slate-100">
+                    <i class="fas fa-lightbulb mr-2"></i>Tips & Trik
+                </button>
+            </div>
+
+            <!-- Konten Tabs -->
+            <div class="p-6">
+                <!-- Tab: Alat & Bahan -->
+                <div id="content-alatbahan" class="block">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="font-bold text-lg mb-4 text-slate-800 flex items-center border-b pb-2">
+                                <i class="fas fa-fire-burner text-orange-500 mr-2"></i> Alat yang Dibutuhkan
+                            </h4>
+                            <ul id="list-alat" class="space-y-2 text-slate-600 list-disc pl-5 marker:text-orange-400">
+                                <!-- Alat dimuat di sini -->
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-4 text-slate-800 flex items-center border-b pb-2">
+                                <i class="fas fa-carrot text-green-500 mr-2"></i> Bahan Utama & Bumbu
+                            </h4>
+                            <ul id="list-bahan" class="space-y-2 text-slate-600 list-disc pl-5 marker:text-green-400">
+                                <!-- Bahan dimuat di sini -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Langkah Pembuatan -->
+                <div id="content-langkah" class="hidden">
+                    <h4 class="font-bold text-lg mb-4 text-slate-800 border-b pb-2">Langkah-langkah Memasak</h4>
+                    <div id="list-langkah" class="space-y-6">
+                        <!-- Langkah dimuat di sini -->
+                    </div>
+                </div>
+
+                <!-- Tab: Tips & Trik -->
+                <div id="content-tips" class="hidden">
+                    <div class="bg-amber-50 rounded-xl p-5 border border-amber-200">
+                        <h4 class="font-bold text-lg mb-4 text-amber-800 flex items-center">
+                            <i class="fas fa-star text-amber-500 mr-2"></i> Rahasia Anti Gagal
+                        </h4>
+                        <ul id="list-tips" class="space-y-3 text-amber-900 list-disc pl-5">
+                            <!-- Tips dimuat di sini -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ==========================================
+        // DATABASE RESEP (ARRAY OBJEK)
+        // Anda bisa menambahkan resep baru ke dalam array ini
+        // ==========================================
+        const resepData = [
+            {
+                id: "samyang-original",
+                judul: "Ayam Bakar Samyang Original (Marinasi 12 Jam)",
+                deskripsi: "Resep klasik menggunakan bumbu Samyang Buldak. Daging ayam meresap sempurna, pedas nendang, dan warna karamel yang menggugah selera.",
+                waktu: "12 Jam (Marinasi) + 30 Menit (Bakar)",
+                kesulitan: "Menengah",
+                icon: "fa-drumstick-bite",
+                warna: "red",
+                alat: [
+                    "Wadah kedap udara atau Plastik Zip-lock (untuk marinasi)",
+                    "Alat pemanggang (Teflon anti-lengket atau Panggangan Arang)",
+                    "Kuas silikon (untuk mengoles bumbu)",
+                    "Capitan makanan (Tongs)",
+                    "Pisau dan telenan"
+                ],
+                bahan: [
+                    "500 gram Ayam (Paha fillet atau Sayap direkomendasikan)",
+                    "1-2 bungkus Bumbu Minyak Samyang Buldak (sesuaikan selera pedas)",
+                    "2 sdm Kecap Manis (penyeimbang pedas dan pembentuk karamel)",
+                    "1 sdm Minyak Goreng / Minyak Zaitun (agar bumbu merata dan ayam tidak kering)",
+                    "1 sdt Air perasan Jeruk Nipis / Lemon (menghilangkan amis)",
+                    "1 siung Bawang Putih, haluskan (opsional, untuk aroma tambahan)",
+                    "Biji Wijen sangrai (untuk taburan akhir)"
+                ],
+                langkah: [
+                    {
+                        judul: "Persiapan Ayam",
+                        teks: "Cuci bersih ayam. Jika menggunakan potongan tebal, kerat-kerat sedikit dagingnya agar bumbu lebih mudah masuk. Keringkan permukaan ayam dengan tisu dapur."
+                    },
+                    {
+                        judul: "Membuat Bumbu Marinasi",
+                        teks: "Dalam mangkuk kecil, campurkan bumbu minyak Samyang, kecap manis, minyak goreng, air jeruk nipis, dan bawang putih halus. Aduk rata hingga menjadi saus kental."
+                    },
+                    {
+                        judul: "Proses Marinasi (12 Jam)",
+                        teks: "Masukkan ayam dan bumbu marinasi ke dalam plastik Zip-lock. Keluarkan udara dari plastik lalu tutup rapat. Remas-remas plastik agar bumbu menyelimuti <b>seluruh</b> permukaan ayam. Simpan di dalam kulkas (chiller) selama 12 jam. Balik posisi plastik setelah 6 jam agar merata."
+                    },
+                    {
+                        judul: "Persiapan Membakar",
+                        teks: "Keluarkan ayam dari kulkas 20 menit sebelum dibakar agar suhunya kembali normal (tidak dingin). Pisahkan ayam dari sisa bumbu marinasi di plastik (sisa bumbu ini akan dipakai untuk olesan)."
+                    },
+                    {
+                        judul: "Proses Membakar",
+                        teks: "Panaskan teflon dengan api sedang-kecil (atau siapkan arang dengan panas sedang). Letakkan ayam. Panggang hingga setengah matang, bolak-balik agar tidak gosong."
+                    },
+                    {
+                        judul: "Glazing (Pengolesan Akhir)",
+                        teks: "Saat ayam hampir matang, gunakan kuas untuk mengoleskan sisa bumbu marinasi ke permukaan ayam. Panggang sebentar saja (sekitar 1-2 menit tiap sisi) hingga bumbu berkaramelisasi dan mengkilap. Jangan terlalu lama agar tidak pahit."
+                    },
+                    {
+                        judul: "Penyajian",
+                        teks: "Angkat ayam, taburi dengan biji wijen sangrai. Sajikan selagi hangat."
+                    }
+                ],
+                tips: [
+                    "<b>Wajib Tercelup Semua:</b> Penggunaan plastik zip-lock sangat disarankan karena bumbu yang sedikit bisa ditekan menempel menutupi seluruh ayam tanpa rongga udara.",
+                    "<b>Awas Api Besar:</b> Bumbu Samyang mengandung banyak gula. Menggunakan api besar akan membuat luar ayam gosong menghitam dan pahit, sementara dalamnya masih mentah.",
+                    "<b>Jangan Tambah Garam:</b> Bumbu instan sudah cukup asin. Proses marinasi 12 jam akan mengintensifkan rasa asin tersebut. Kecap manis sudah cukup sebagai penyeimbang.",
+                    "<b>Menggunakan Arang:</b> Jika memakai arang, pastikan apinya sudah menjadi bara (tidak ada lidah api). Aroma asap arang sangat cocok dengan bumbu ini."
+                ]
+            },
+            {
+                id: "samyang-creamy",
+                judul: "Sapi Panggang Samyang Carbonara",
+                deskripsi: "Varian menggunakan daging sapi slice (shortplate) dengan bumbu Samyang Carbonara. Rasanya pedas, creamy, dan sangat cepat disajikan.",
+                waktu: "15 Menit",
+                kesulitan: "Mudah",
+                icon: "fa-bacon",
+                warna: "pink",
+                alat: [
+                    "Teflon datar atau Wajan datar (Griddle)",
+                    "Spatula / Capitan",
+                    "Mangkuk pencampur"
+                ],
+                bahan: [
+                    "300 gram Daging Sapi Slice (Shortplate/Yoshinoya style)",
+                    "1 bungkus Bumbu Samyang Carbonara (Bumbu bubuk + Minyaknya)",
+                    "1 sdm Susu Cair / Krimer (untuk melarutkan bumbu)",
+                    "1/2 Bawang Bombay, iris tipis",
+                    "Mentega secukupnya untuk memanggang"
+                ],
+                langkah: [
+                    {
+                        judul: "Buat Saus Olesan",
+                        teks: "Campurkan bumbu bubuk Samyang Carbonara, bumbu minyaknya, dan 1 sdm susu cair. Aduk rata hingga menjadi pasta."
+                    },
+                    {
+                        judul: "Panggang Sapi",
+                        teks: "Panaskan teflon, lelehkan sedikit mentega. Tumis bawang bombay hingga layu, lalu masukkan daging sapi slice. Panggang cepat hingga daging berubah warna (tidak perlu sampai kering)."
+                    },
+                    {
+                        judul: "Campur Bumbu",
+                        teks: "Kecilkan api. Masukkan pasta bumbu Carbonara ke atas daging. Aduk cepat merata selama 30 detik hingga bumbu menempel di daging."
+                    },
+                    {
+                        judul: "Sajikan",
+                        teks: "Angkat segera. Sangat cocok disajikan di atas nasi hangat."
+                    }
+                ],
+                tips: [
+                    "<b>Tidak Perlu Marinasi Lama:</b> Daging slice sangat tipis, marinasi terlalu lama akan membuatnya hancur dan terlalu asin. Cukup campur bumbu di akhir proses memasak (teknik <i>tossing</i>).",
+                    "<b>Lemak Sapi:</b> Lemak dari shortplate sudah gurih, jadi jangan terlalu banyak menambahkan minyak/mentega di awal.",
+                    "<b>Cepat Angkat:</b> Daging slice matang dalam hitungan detik. Overcook akan membuatnya alot seperti karet."
+                ]
+            }
+            // TAMBAHKAN RESEP LAIN DI SINI DENGAN FORMAT YANG SAMA
+        ];
+
+        // ==========================================
+        // LOGIKA APLIKASI
+        // ==========================================
+
+        // Fungsi untuk me-render daftar resep di halaman depan
+        function renderRecipeList() {
+            const container = document.getElementById('recipe-list');
+            container.innerHTML = '';
+
+            resepData.forEach(resep => {
+                // Tentukan warna tema berdasarkan properti 'warna'
+                const colorClasses = resep.warna === 'red' 
+                    ? 'bg-red-50 text-red-600 border-red-200 hover:border-red-400 hover:shadow-red-100' 
+                    : 'bg-pink-50 text-pink-600 border-pink-200 hover:border-pink-400 hover:shadow-pink-100';
+                
+                const iconColor = resep.warna === 'red' ? 'text-red-500' : 'text-pink-500';
+
+                const cardHTML = `
+                    <div onclick="openRecipe('${resep.id}')" class="recipe-card cursor-pointer border rounded-2xl p-5 shadow-sm bg-white hover:shadow-md transition-all flex flex-col h-full">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center ${colorClasses.split(' ')[0]} ${colorClasses.split(' ')[1]} bg-opacity-20">
+                                <i class="fas ${resep.icon} text-xl ${iconColor}"></i>
+                            </div>
+                            <h4 class="font-bold text-lg text-slate-800 leading-tight">${resep.judul}</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 flex-grow mb-4">${resep.deskripsi}</p>
+                        <div class="flex items-center text-xs text-slate-500 gap-4 mt-auto pt-4 border-t">
+                            <span><i class="far fa-clock mr-1"></i> ${resep.waktu}</span>
+                            <span><i class="fas fa-signal mr-1"></i> ${resep.kesulitan}</span>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        // Fungsi untuk membuka detail resep
+        function openRecipe(id) {
+            const resep = resepData.find(r => r.id === id);
+            if (!resep) return;
+
+            // Isi Header Detail
+            document.getElementById('detail-title').innerText = resep.judul;
+            document.getElementById('detail-time').innerHTML = `<i class="far fa-clock mr-1"></i> ${resep.waktu}`;
+            document.getElementById('detail-difficulty').innerHTML = `<i class="fas fa-signal mr-1"></i> ${resep.kesulitan}`;
+
+            // Isi Alat
+            const listAlat = document.getElementById('list-alat');
+            listAlat.innerHTML = resep.alat.map(item => `<li>${item}</li>`).join('');
+
+            // Isi Bahan
+            const listBahan = document.getElementById('list-bahan');
+            listBahan.innerHTML = resep.bahan.map(item => `<li>${item}</li>`).join('');
+
+            // Isi Langkah
+            const listLangkah = document.getElementById('list-langkah');
+            listLangkah.innerHTML = resep.langkah.map((item, index) => `
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold">
+                        ${index + 1}
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-slate-800 mb-1">${item.judul}</h5>
+                        <p class="text-slate-600 text-sm leading-relaxed">${item.teks}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Isi Tips
+            const listTips = document.getElementById('list-tips');
+            listTips.innerHTML = resep.tips.map(item => `<li>${item}</li>`).join('');
+
+            // Tampilkan container detail dan scroll ke sana
+            document.getElementById('recipe-detail-container').classList.remove('hidden');
+            
+            // Default buka tab alat bahan
+            switchTab('alatbahan');
+
+            // Scroll perlahan ke detail
+            document.getElementById('recipe-detail-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Fungsi untuk menutup detail resep
+        function closeRecipe() {
+            document.getElementById('recipe-detail-container').classList.add('hidden');
+            // Scroll kembali ke atas
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Fungsi untuk ganti tab (AlatBahan, Langkah, Tips)
+        function switchTab(tabName) {
+            // Sembunyikan semua konten
+            document.getElementById('content-alatbahan').style.display = 'none';
+            document.getElementById('content-langkah').style.display = 'none';
+            document.getElementById('content-tips').style.display = 'none';
+
+            // Reset gaya semua tombol tab
+            const tabs = ['tab-alatbahan', 'tab-langkah', 'tab-tips'];
+            tabs.forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('tab-active', 'bg-white');
+                el.classList.add('tab-inactive', 'hover:bg-slate-100');
+            });
+
+            // Tampilkan konten yang dipilih
+            document.getElementById(`content-${tabName}`).style.display = 'block';
+            
+            // Aktifkan gaya tombol yang dipilih
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.classList.remove('tab-inactive', 'hover:bg-slate-100');
+            activeTab.classList.add('tab-active', 'bg-white');
+        }
+
+        // Jalankan saat halaman pertama kali dimuat
+        window.onload = () => {
+            renderRecipeList();
+        };
+
+    </script>
+</body>
+</html>
+
