@@ -1,193 +1,209 @@
-import React, { useState } from 'react';
-import { 
-  Users, 
-  Wallet, 
-  TrendingUp, 
-  ArrowRight, 
-  ShieldCheck, 
-  MessageCircle,
-  Copy,
-  Check
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoTeam | Peluang Cuan Tim Promosi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+        }
+        .bg-shopee {
+            background-color: #ee4d2d;
+        }
+        .text-shopee {
+            color: #ee4d2d;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #fff5f3, #ffffff);
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="text-slate-900 leading-relaxed">
 
-const App = () => {
-  const [copied, setCopied] = useState(false);
-  const waGroupLink = "https://chat.whatsapp.com/KcGYsOSABpwHNCvtDYe8vz?mode=gi_t";
-  const formatDaftar = "#tambah [nomorhp] [nama]";
-
-  const copyToClipboard = () => {
-    const el = document.createElement('textarea');
-    el.value = formatDaftar;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const FeatureCard = ({ icon: Icon, title, desc }) => (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-      <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4 text-orange-600">
-        <Icon size={24} />
-      </div>
-      <h3 className="font-bold text-lg mb-2 text-gray-800">{title}</h3>
-      <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-gray-900">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="bg-orange-600 p-1.5 rounded-lg">
-              <TrendingUp size={20} className="text-white" />
-            </div>
-            <span className="font-bold text-xl tracking-tight text-orange-600">PromoTeam</span>
-          </div>
-          <a 
-            href={waGroupLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-green-600 text-white px-5 py-2 rounded-full font-medium text-sm hover:bg-green-700 transition-colors flex items-center gap-2"
-          >
-            <MessageCircle size={18} /> Join Grup
-          </a>
-        </div>
-      </nav>
-
-      <main>
-        {/* Hero Section */}
-        <section className="max-w-6xl mx-auto px-4 py-16 md:py-24 text-center">
-          <span className="bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6 inline-block">
-            Sistem Upah Progresif
-          </span>
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
-            Komisi <span className="text-orange-600">40% Individu</span> <br />
-            & Bonus <span className="text-blue-600">2% Bagi Rata</span>
-          </h1>
-          <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-            Bergabunglah dengan tim promosi kami. Cukup lapor penjualan via WhatsApp, komisi langsung cair ke ShopeePay Anda.
-          </p>
-          
-          <div className="flex flex-col items-center gap-6">
-            <a 
-              href={waGroupLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-green-600 text-white px-10 py-5 rounded-3xl font-bold text-xl flex items-center justify-center gap-3 hover:bg-green-700 transition-all shadow-xl shadow-green-200 group"
-            >
-              <MessageCircle size={28} /> Join Grup WhatsApp Sekarang
-            </a>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <ShieldCheck size={16} className="text-green-600" />
-              <span>Verifikasi otomatis via sistem bot WhatsApp</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Step Guide */}
-        <section className="bg-white py-16 border-y border-gray-100">
-          <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-2xl font-bold mb-10 text-center">Cara Mendaftar</h2>
-            <div className="grid md:grid-cols-3 gap-8 relative">
-              <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold mb-4">1</div>
-                <h4 className="font-bold mb-2">Klik Tombol Join</h4>
-                <p className="text-sm text-gray-500">Masuk ke grup WhatsApp resmi tim promosi kami.</p>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold mb-4">2</div>
-                <h4 className="font-bold mb-2">Copy Format</h4>
-                <p className="text-sm text-gray-500">Gunakan format pendaftaran yang tersedia di bawah.</p>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold mb-4">3</div>
-                <h4 className="font-bold mb-2">Kirim di Grup</h4>
-                <p className="text-sm text-gray-500">Kirim format ke grup untuk aktivasi akun Anda.</p>
-              </div>
-            </div>
-
-            {/* Copy Format Box */}
-            <div className="mt-12 bg-slate-900 rounded-3xl p-6 md:p-8 text-white relative overflow-hidden">
-              <div className="relative z-10">
-                <p className="text-slate-400 text-sm mb-4">Salin format ini dan kirim ke grup:</p>
-                <div className="bg-slate-800 p-4 rounded-2xl flex items-center justify-between border border-slate-700">
-                  <code className="text-orange-400 font-mono text-lg">{formatDaftar}</code>
-                  <button 
-                    onClick={copyToClipboard}
-                    className="p-3 bg-slate-700 rounded-xl hover:bg-slate-600 transition-colors"
-                  >
-                    {copied ? <Check size={20} className="text-green-400" /> : <Copy size={20} />}
-                  </button>
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-orange-50">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-shopee rounded-xl flex items-center justify-center shadow-lg shadow-orange-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
                 </div>
-                <p className="mt-4 text-xs text-slate-500">
-                  *Ganti [nomorhp] dengan nomor ShopeePay Anda dan [nama] dengan nama asli.
-                </p>
-              </div>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-orange-600/10 blur-3xl -mr-16 -mt-16"></div>
+                <span class="font-extrabold text-2xl tracking-tight text-slate-800">Promo<span class="text-shopee">Team</span></span>
             </div>
-          </div>
-        </section>
-
-        {/* Benefits */}
-        <section className="max-w-6xl mx-auto px-4 py-20">
-          <div className="grid md:grid-cols-3 gap-8">
-            <FeatureCard 
-              icon={TrendingUp}
-              title="Komisi 40%"
-              desc="Setiap penjualan yang Anda lakukan, 40% dari harga barang adalah milik Anda sepenuhnya."
-            />
-            <FeatureCard 
-              icon={Users}
-              title="Keadilan Tim (2%)"
-              desc="Kami menyisihkan 2% dari TOTAL penjualan siapapun untuk dibagi rata ke seluruh anggota tim."
-            />
-            <FeatureCard 
-              icon={Wallet}
-              title="Wajib ShopeePay"
-              desc="Pembayaran komisi dilakukan secara massal ke ShopeePay untuk kecepatan dan bebas biaya admin."
-            />
-          </div>
-        </section>
-
-        {/* Requirements */}
-        <section className="max-w-4xl mx-auto px-4 pb-24">
-          <div className="bg-orange-50 rounded-3xl p-8 border border-orange-100">
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <ShieldCheck className="text-orange-600" /> Syarat & Ketentuan
-            </h3>
-            <ul className="space-y-3 text-sm text-gray-700">
-              <li className="flex gap-2">
-                <div className="mt-1 min-w-[6px] h-1.5 bg-orange-400 rounded-full"></div>
-                <span>Wajib memiliki akun ShopeePay aktif sesuai nomor HP yang didaftarkan.</span>
-              </li>
-              <li className="flex gap-2">
-                <div className="mt-1 min-w-[6px] h-1.5 bg-orange-400 rounded-full"></div>
-                <span>Laporan jualan menggunakan format <strong>#lapor nomorhp harga</strong> di dalam grup.</span>
-              </li>
-              <li className="flex gap-2">
-                <div className="mt-1 min-w-[6px] h-1.5 bg-orange-400 rounded-full"></div>
-                <span>Pembayaran dilakukan setiap periode mingguan (Senin) setelah rekap selesai.</span>
-              </li>
-            </ul>
-          </div>
-        </section>
-      </main>
-
-      <footer className="bg-gray-900 text-gray-500 py-12 border-t border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-xs uppercase tracking-widest font-bold text-gray-400 mb-4">PromoTeam Management</p>
-          <p className="max-w-md mx-auto text-[10px] leading-relaxed">
-            Sistem ini dirancang untuk transparansi dan kemajuan bersama. Pastikan data nomor HP ShopeePay Anda benar untuk menghindari kegagalan transfer komisi.
-          </p>
+            <a href="https://chat.whatsapp.com/KcGYsOSABpwHNCvtDYe8vz?mode=gi_t" target="_blank" class="bg-shopee text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-all active:scale-95 shadow-lg shadow-orange-200">
+                Join Grup
+            </a>
         </div>
-      </footer>
-    </div>
-  );
-};
+    </nav>
 
-export default App;
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section class="hero-gradient px-6 pt-16 pb-24 overflow-hidden">
+            <div class="max-w-4xl mx-auto text-center relative">
+                <div class="inline-flex items-center gap-2 bg-orange-50 text-shopee px-4 py-2 rounded-full text-xs font-extrabold tracking-wider mb-8 border border-orange-100 uppercase">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-shopee"></span>
+                    </span>
+                    Kesempatan Terbatas
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight text-slate-900 leading-[1.1]">
+                    Kerja <span class="text-shopee">Promosi</span><br/>Dapat Gaji <span class="underline decoration-orange-200 underline-offset-8 text-slate-800">Ganda</span>
+                </h1>
+                <p class="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-medium">
+                    Gabung tim promosi kami. Dapatkan komisi pribadi <span class="font-bold text-slate-800">40%</span> dan bonus kebersamaan tim <span class="font-bold text-slate-800">2%</span> setiap minggu.
+                </p>
+                
+                <div class="flex flex-col md:flex-row items-center justify-center gap-5">
+                    <a href="https://chat.whatsapp.com/KcGYsOSABpwHNCvtDYe8vz?mode=gi_t" target="_blank" class="w-full md:w-auto bg-green-600 text-white px-10 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-green-700 transition-all shadow-xl shadow-green-100 active:scale-95">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.938 3.659 1.434 5.63 1.434h.011c6.551 0 11.884-5.338 11.887-11.896a11.821 11.821 0 00-3.418-8.413z"/></svg>
+                        Join Grup WhatsApp
+                    </a>
+                    <div class="px-8 py-5 rounded-2xl border border-slate-200 font-bold text-slate-500 bg-white flex items-center gap-2">
+                        <img src="https://logolook.net/wp-content/uploads/2023/11/Shopee-Logo.png" class="h-4" alt="Shopee"> ShopeePay Wajib
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stepper -->
+        <section class="max-w-5xl mx-auto px-6 -mt-16 relative z-10">
+            <div class="bg-white rounded-[2.5rem] p-10 shadow-2xl shadow-orange-100 border border-orange-50 grid md:grid-cols-3 gap-12">
+                <div class="text-center group">
+                    <div class="w-16 h-16 bg-orange-50 text-shopee rounded-2xl flex items-center justify-center font-black text-2xl mb-6 mx-auto group-hover:bg-shopee group-hover:text-white transition-all duration-300">1</div>
+                    <h4 class="font-bold text-lg mb-3">Klik Join</h4>
+                    <p class="text-sm text-slate-500 font-medium">Masuk ke pusat informasi grup WhatsApp kami.</p>
+                </div>
+                <div class="text-center group">
+                    <div class="w-16 h-16 bg-orange-50 text-shopee rounded-2xl flex items-center justify-center font-black text-2xl mb-6 mx-auto group-hover:bg-shopee group-hover:text-white transition-all duration-300">2</div>
+                    <h4 class="font-bold text-lg mb-3">Salin Format</h4>
+                    <p class="text-sm text-slate-500 font-medium">Gunakan perintah pendaftaran otomatis di bawah.</p>
+                </div>
+                <div class="text-center group">
+                    <div class="w-16 h-16 bg-orange-50 text-shopee rounded-2xl flex items-center justify-center font-black text-2xl mb-6 mx-auto group-hover:bg-shopee group-hover:text-white transition-all duration-300">3</div>
+                    <h4 class="font-bold text-lg mb-3">Kirim & Aktif</h4>
+                    <p class="text-sm text-slate-500 font-medium">Kirim ke grup dan Anda siap untuk mulai jualan.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Format Copy Box -->
+        <section class="max-w-4xl mx-auto px-6 py-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold mb-4">Salin Perintah Pendaftaran</h2>
+                <p class="text-slate-500 font-medium">Klik tombol salin dan langsung tempelkan di grup WhatsApp.</p>
+            </div>
+            <div class="bg-slate-900 rounded-[2rem] p-8 md:p-12 text-white shadow-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-shopee opacity-20 blur-[100px] -mr-32 -mt-32 transition-all duration-500 group-hover:opacity-30"></div>
+                <div class="relative z-10">
+                    <div class="flex flex-col md:flex-row items-center gap-6 bg-slate-800/50 p-6 rounded-2xl border border-slate-700 backdrop-blur-sm">
+                        <code id="formatText" class="text-orange-400 font-mono text-xl md:text-2xl flex-grow">#tambah [nomorhp] [nama]</code>
+                        <button onclick="copyText()" id="copyBtn" class="w-full md:w-auto bg-shopee text-white px-8 py-4 rounded-xl font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2">
+                            <span id="btnText">Salin Kode</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                                <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-8 flex items-start gap-4 text-slate-400 text-sm italic leading-relaxed">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 shrink-0"></div>
+                        <p>Ganti <span class="text-orange-300 font-bold">[nomorhp]</span> dengan No. ShopeePay & <span class="text-orange-300 font-bold">[nama]</span> dengan nama asli Anda.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Terms -->
+        <section class="max-w-4xl mx-auto px-6 pb-24">
+            <div class="bg-slate-50 rounded-[2rem] p-10 border border-slate-200">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="p-2 bg-white rounded-lg shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-shopee" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-slate-800">Syarat & Ketentuan</h3>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                            <span class="font-bold text-shopee">01</span>
+                            <p class="text-sm font-medium text-slate-600">Nomor HP yang didaftarkan harus terhubung dengan <span class="font-bold text-slate-800">ShopeePay Aktif</span>.</p>
+                        </div>
+                        <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                            <span class="font-bold text-shopee">02</span>
+                            <p class="text-sm font-medium text-slate-600">Laporan transaksi wajib menggunakan format <span class="font-bold text-slate-800">#lapor</span> yang benar di grup.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                            <span class="font-bold text-shopee">03</span>
+                            <p class="text-sm font-medium text-slate-600">Pembayaran komisi cair setiap <span class="font-bold text-slate-800">Hari Senin</span> secara otomatis.</p>
+                        </div>
+                        <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                            <span class="font-bold text-shopee">04</span>
+                            <p class="text-sm font-medium text-slate-600">Dilarang melakukan spam atau promosi produk lain di dalam grup resmi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white py-16 border-t border-slate-100 text-center">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex justify-center items-center gap-3 mb-6">
+                <div class="w-8 h-8 bg-shopee rounded-lg flex items-center justify-center text-white font-bold">↗</div>
+                <span class="font-bold text-xl tracking-tight text-slate-800">Promo<span class="text-shopee">Team</span></span>
+            </div>
+            <p class="text-slate-400 text-xs font-bold tracking-widest uppercase mb-4">Official Management Team</p>
+            <p class="text-slate-400 text-xs max-w-sm mx-auto leading-relaxed italic">
+                Sistem upah transparan untuk kesejahteraan bersama. Mari bertumbuh dan sukses bersama tim promosi kami.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function copyText() {
+            const text = document.getElementById("formatText").innerText;
+            const temp = document.createElement("textarea");
+            document.body.appendChild(temp);
+            temp.value = text;
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
+            
+            const btn = document.getElementById("copyBtn");
+            const btnText = document.getElementById("btnText");
+            
+            btnText.innerText = "Tersalin!";
+            btn.classList.replace("bg-shopee", "bg-green-600");
+            
+            setTimeout(() => {
+                btnText.innerText = "Salin Kode";
+                btn.classList.replace("bg-green-600", "bg-shopee");
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
 
