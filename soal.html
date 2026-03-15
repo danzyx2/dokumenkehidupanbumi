@@ -384,6 +384,112 @@
       pilihan: ["IP > Hotspot > Active", "IP > Hotspot > Users", "IP > DHCP Server > Leases", "Interface > wlan1"],
       jawaban: "IP > Hotspot > Active"
     }
+        {
+      pertanyaan: "21. Pada perintah '/ip proxy set enabled=yes port=8080', apa fungsi dari parameter 'port=8080'?",
+      pilihan: [
+        "Menentukan port layanan yang digunakan oleh Web Proxy",
+        "Membuka jalur internet untuk admin",
+        "Menutup akses browsing user",
+        "Mengatur kecepatan download"
+      ],
+      jawaban: "Menentukan port layanan yang digunakan oleh Web Proxy"
+    },
+    {
+      pertanyaan: "22. Apa fungsi penggunaan tanda bintang (*) pada penulisan '*facebook.com*' di menu '/ip proxy access'?",
+      pilihan: [
+        "Sebagai tanda bahwa situs tersebut penting",
+        "Wildcard untuk mencakup semua subdomain (seperti m.facebook atau web.facebook)",
+        "Untuk mempercepat proses pemblokiran",
+        "Hanya sebagai hiasan penulisan"
+      ],
+      jawaban: "Wildcard untuk mencakup semua subdomain (seperti m.facebook atau web.facebook)"
+    },
+
+    // --- Detail Langkah 3: Transparent Proxy (NAT) ---
+    {
+      pertanyaan: "23. Pada perintah NAT Redirect, mengapa 'dst-port' yang dipilih adalah port 80?",
+      pilihan: [
+        "Karena port 80 adalah port standar untuk trafik HTTP (web)",
+        "Karena port 80 adalah port untuk masuk ke Winbox",
+        "Karena port 80 lebih aman dari serangan virus",
+        "Karena port 80 khusus untuk YouTube saja"
+      ],
+      jawaban: "Karena port 80 adalah port standar untuk trafik HTTP (web)"
+    },
+    {
+      pertanyaan: "24. Apa yang terjadi jika kita lupa mengonfigurasi 'Action=redirect' pada Firewall NAT port 80?",
+      pilihan: [
+        "Router akan restart otomatis",
+        "User harus menyetel proxy secara manual di browser mereka agar pemblokiran proxy bekerja",
+        "Internet akan mati total",
+        "Pesan Cache Administrator akan muncul di semua situs"
+      ],
+      jawaban: "User harus menyetel proxy secara manual di browser mereka agar pemblokiran proxy bekerja"
+    },
+
+    // --- Detail Langkah 4: Layer 7 & HTTPS ---
+    {
+      pertanyaan: "25. Mengapa pemblokiran YouTube di '/ip proxy access' sering dianggap gagal oleh sistem?",
+      pilihan: [
+        "Karena YouTube tidak memiliki server di Indonesia",
+        "Karena YouTube menggunakan HTTPS (Port 443) yang trafiknya terenkripsi dan tidak bisa dibaca sempurna oleh proxy standar",
+        "Karena YouTube terlalu berat untuk dijalankan di Mikrotik",
+        "Karena password admin salah"
+      ],
+      jawaban: "Karena YouTube menggunakan HTTPS (Port 443) yang trafiknya terenkripsi dan tidak bisa dibaca sempurna oleh proxy standar"
+    },
+    {
+      pertanyaan: "26. Pada perintah L7 Protocol, simbol '^.+' dalam Regexp '^.+(facebook.com|youtube.com).*$' berfungsi untuk...",
+      pilihan: [
+        "Menghapus nama domain",
+        "Mencocokkan karakter apa pun yang muncul di awal sebelum nama domain",
+        "Menandakan bahwa situs tersebut diizinkan",
+        "Mengalihkan trafik ke port 8080"
+      ],
+      jawaban: "Mencocokkan karakter apa pun yang muncul di awal sebelum nama domain"
+    },
+    {
+      pertanyaan: "27. Di dalam '/ip firewall filter', mengapa kita menggunakan 'chain=forward' untuk memblokir L7 Protocol?",
+      pilihan: [
+        "Karena paket data tersebut berasal dari client dan melewati router menuju internet",
+        "Karena paket data tersebut ditujukan langsung ke IP router",
+        "Karena paket data tersebut keluar dari router",
+        "Agar router bisa diakses dari luar jaringan"
+      ],
+      jawaban: "Karena paket data tersebut berasal dari client dan melewati router menuju internet"
+    },
+
+    // --- Detail Langkah 5: Verifikasi & Logika ---
+    {
+      pertanyaan: "28. Perintah CLI untuk mengecek apakah aturan pemblokiran situs di Web Proxy sudah benar adalah...",
+      pilihan: [
+        "/ip proxy access print",
+        "/ip proxy check",
+        "/system proxy show",
+        "/ip firewall filter print"
+      ],
+      jawaban: "/ip proxy access print"
+    },
+    {
+      pertanyaan: "29. Berdasarkan 'Catatan Penting', apa yang akan terlihat di browser user saat membuka YouTube (HTTPS) yang diblokir?",
+      pilihan: [
+        "Halaman bertuliskan 'Cache Administrator'",
+        "Pesan kesalahan SSL/Privacy atau 'Timed Out'",
+        "Halaman kosong berwarna putih",
+        "Halaman utama Google"
+      ],
+      jawaban: "Pesan kesalahan SSL/Privacy atau 'Timed Out'"
+    },
+    {
+      pertanyaan: "30. Apa perintah CLI untuk melihat daftar aturan Layer 7 Protocol yang sudah kita buat?",
+      pilihan: [
+        "/ip firewall l7-protocol print",
+        "/ip l7-print",
+        "/show l7-protocol",
+        "/ip firewall filter l7-print"
+      ],
+      jawaban: "/ip firewall l7-protocol print"
+    }
 ], 
 
 
