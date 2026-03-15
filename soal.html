@@ -204,6 +204,7 @@
           <option value="umum3">Mail Server</option>
           <option value="umum4">Firewall</option>
           <option value="umum6">PKK</option>
+          <option value="umum8">Mikrotik Jaringan#2</option>
           <option value="umum7">Mikrotik Jaringan WAN, LAN dan WLAN</option>
         
         </select>
@@ -247,6 +248,7 @@
     // =================== DATA SOAL ===================
     const namaKategori = {
       "umum": "Bahasa Indonesia",
+      "umum8": "Mikrotik Jaringan",
       "umum7": "Mikrotik Jaringan WAN, LAN dan WLAN",
       "umum6": "PKK",
       "umum1": "Pendidikan Agama Islam",
@@ -259,10 +261,131 @@
     
     
     const soalPerKategori = {
-  umum8: [
+  umum9: [
     { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
     { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
   ],
+
+
+      umum8: [
+    // --- SESI 1: KONFIGURASI WAN & WAKTU ---
+    {
+      pertanyaan: "1. Langkah pertama agar Router mendapat akses internet dari ISP secara otomatis melalui ether1 adalah...",
+      pilihan: ["IP > Address > Add", "IP > DHCP Client > Add", "IP > DNS > Settings", "System > NTP Client"],
+      jawaban: "IP > DHCP Client > Add"
+    },
+    {
+      pertanyaan: "2. Pada menu NTP Client, bagian mana yang harus dicentang agar sinkronisasi waktu berjalan?",
+      pilihan: ["Primary NTP Server", "Enabled", "Broadcast", "Multicast"],
+      jawaban: "Enabled"
+    },
+
+    // --- SESI 2: KONFIGURASI LAN & WIRELESS ---
+    {
+      pertanyaan: "3. Untuk memberi IP pada ether2 (LAN) dengan nomor absen 07, penulisan yang benar di menu Address adalah...",
+      pilihan: ["192.168.107.1/28", "192.168.7.1/24", "192.168.100.7/28", "192.168.107.1/25"],
+      jawaban: "192.168.107.1/28"
+    },
+    {
+      pertanyaan: "4. Sebelum membuat Hotspot, interface wlan1 harus diaktifkan (enable) dan diatur Mode-nya menjadi...",
+      pilihan: ["station", "bridge", "ap bridge", "wds slave"],
+      jawaban: "ap bridge"
+    },
+    {
+      pertanyaan: "5. Di menu mana Anda mengatur agar client LAN mendapatkan IP otomatis dari router?",
+      pilihan: ["IP > DHCP Client", "IP > DHCP Server > DHCP Setup", "IP > Pool", "IP > DNS"],
+      jawaban: "IP > DHCP Server > DHCP Setup"
+    },
+
+    // --- SESI 3: FIREWALL & NAT ---
+    {
+      pertanyaan: "6. Agar client bisa terhubung ke internet, Anda harus menambahkan NAT dengan Action...",
+      pilihan: ["accept", "drop", "redirect", "masquerade"],
+      jawaban: "masquerade"
+    },
+    {
+      pertanyaan: "7. Di menu Firewall NAT, interface mana yang dipilih sebagai 'Out Interface' untuk Masquerade?",
+      pilihan: ["ether1", "ether2", "wlan1", "bridge1"],
+      jawaban: "ether1"
+    },
+
+    // --- SESI 4: WEB PROXY & BLOKIR (PRAKTEK) ---
+    {
+      pertanyaan: "8. Untuk mengaktifkan Web Proxy, port default yang sering digunakan adalah...",
+      pilihan: ["80", "21", "8080", "443"],
+      jawaban: "8080"
+    },
+    {
+      pertanyaan: "9. Di mana Anda memasukkan email 'eka@smkn2pengasih.sch.id' agar muncul di halaman blokir?",
+      pilihan: ["Cache Administrator", "Src. Address", "System Identity", "Web Master"],
+      jawaban: "Cache Administrator"
+    },
+    {
+      pertanyaan: "10. Langkah praktek untuk memblokir domain 'facebook.com' di Web Proxy adalah melalui tombol...",
+      pilihan: ["Cache", "Access", "Direct", "Connections"],
+      jawaban: "Access"
+    },
+    {
+      pertanyaan: "11. Agar trafik HTTP otomatis masuk ke Proxy, Anda harus membuat NAT Redirect dari port 80 ke port...",
+      pilihan: ["80", "8080", "3128", "443"],
+      jawaban: "8080"
+    },
+    {
+      pertanyaan: "12. Karena YouTube menggunakan HTTPS, praktek pemblokiran yang paling tepat dilakukan di menu...",
+      pilihan: ["IP > Web Proxy", "IP > Firewall > Layer 7 Protocols", "IP > DNS > Static", "IP > Firewall > NAT"],
+      jawaban: "IP > Firewall > Layer 7 Protocols"
+    },
+    {
+      pertanyaan: "13. Setelah membuat daftar di Layer 7, langkah selanjutnya adalah membuat aturan di Firewall Filter dengan Action...",
+      pilihan: ["accept", "log", "drop", "reject"],
+      jawaban: "drop"
+    },
+
+    // --- SESI 5: HOTSPOT & USER MANAGER ---
+    {
+      pertanyaan: "14. Langkah termudah untuk membuat server Hotspot pada wlan1 adalah menggunakan tombol...",
+      pilihan: ["Add (+)", "Hotspot Setup", "Profiles", "Users"],
+      jawaban: "Hotspot Setup"
+    },
+    {
+      pertanyaan: "15. Saat Hotspot Setup, apa yang harus diisi pada kolom 'DNS Name'?",
+      pilihan: ["Alamat IP Server", "Nama domain (misal: eka.net)", "Nama SSID Wifi", "Email admin"],
+      jawaban: "Nama domain (misal: eka.net)"
+    },
+    {
+      pertanyaan: "16. Untuk menggunakan User Manager, di menu Hotspot Server Profile, bagian mana yang harus dicentang?",
+      pilihan: ["HTTP PAP", "Cookie", "RADIUS", "Trial"],
+      jawaban: "RADIUS"
+    },
+    {
+      pertanyaan: "17. Di menu 'Radius > Add', Service apa yang harus dicentang untuk integrasi User Manager?",
+      pilihan: ["ppp", "login", "hotspot", "dhcp"],
+      jawaban: "hotspot"
+    },
+    {
+      pertanyaan: "18. Berapa alamat IP 'Address' yang diisi saat konfigurasi Radius Server jika dilakukan di router yang sama?",
+      pilihan: ["192.168.1.1", "8.8.8.8", "127.0.0.1", "0.0.0.0"],
+      jawaban: "127.0.0.1"
+    },
+    {
+      pertanyaan: "19. Apa perintah terminal untuk mencetak voucher yang sudah di-generate di User Manager?",
+      pilihan: [
+        "/user-manager/user/print",
+        "/user-manager/user/generate-voucher",
+        "/ip hotspot user print",
+        "/system backup save"
+      ],
+      jawaban: "/user-manager/user/generate-voucher"
+    },
+
+    // --- SESI 6: VERIFIKASI ---
+    {
+      pertanyaan: "20. Di menu mana Anda bisa melihat daftar perangkat client yang sedang terhubung ke WiFi Hotspot?",
+      pilihan: ["IP > Hotspot > Active", "IP > Hotspot > Users", "IP > DHCP Server > Leases", "Interface > wlan1"],
+      jawaban: "IP > Hotspot > Active"
+    }
+], 
+
 
 
 
