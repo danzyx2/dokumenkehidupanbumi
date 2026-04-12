@@ -197,10 +197,12 @@
         <label for="kategori-select">Kategori</label>
         <select id="kategori-select">
           <option value="umum">Bahasa Indonesia</option>
+          <option value="indo">Bahasa Indonesia 2</option>
           <option value="umum1">Pendidikan Agama Islam</option>
           <option value="umum2">Teknik Jaringan Komputer dan Telekomunikasi</option>
           <option value="tjkt1">AIJ</option>
           <option value="umum5">Pendidikan Kewarganegaraan</option>
+<option value="ppkn">Pendidikan Kewarganegaraan 2</option>
           <option value="umum3">Mail Server</option>
           <option value="umum4">Firewall</option>
           <option value="umum6">PKK</option>
@@ -247,12 +249,14 @@
   <script>
     // =================== DATA SOAL ===================
     const namaKategori = {
-      "umum": "Bahasa Indonesia",
+      "umum": "Bahasa Indonesia", 
+"indo": "Bahasa Indonesia 2",
       "umum8": "Mikrotik Jaringan",
       "umum7": "Mikrotik Jaringan WAN, LAN dan WLAN",
       "umum6": "PKK",
       "umum1": "Pendidikan Agama Islam",
-      "umum5": "Pendidikan Kewarganegaraan", 
+      "umum5": "Pendidikan Kewarganegaran", 
+"ppkn": "Pendidikan Kewarganegaraan 2",
       "umum3": "Mail Server", 
       "umum4": "Firewall", 
       "umum2": "Teknik Jaringan Komputer dan Telekomunikasi",
@@ -265,6 +269,914 @@
     { pertanyaan:"Apa ibukota Indonesia?", pilihan:["Bandung","Jakarta","Surabaya","Medan","Makassar"], jawaban:"Jakarta" },
     { pertanyaan:"7 x 8 = ?", pilihan:["54","56","64","63","48"], jawaban:"56" }
   ],
+
+
+
+
+indo: [
+    // --- Indikator 1: Kalimat definisi dan deskripsi (Laporan Hasil Observasi) ---
+    {
+      paragraf: "(1) Harimau sumatera adalah subspesies harimau yang habitat aslinya di pulau Sumatera. (2) Hewan ini memiliki bulu berwarna loreng cokelat kehitaman dengan garis yang lebih rapat.",
+      pertanyaan: "Berdasarkan penggalan teks laporan hasil observasi di atas, kalimat definisi dan kalimat deskripsi berturut-turut ditunjukkan oleh nomor...",
+      pilihan: [
+        "(1) dan (2)",
+        "(2) dan (1)",
+        "(1) dan (1)",
+        "(2) dan (2)"
+      ],
+      jawaban: "(1) dan (2)"
+    },
+    // --- Indikator 2: Makna istilah (Laporan Hasil Observasi) ---
+    {
+      paragraf: "Komodo merupakan hewan endemik purba yang saat ini dilindungi oleh pemerintah agar terhindar dari kepunahan.",
+      pertanyaan: "Makna istilah 'endemik' pada penggalan teks laporan hasil observasi tersebut adalah...",
+      pilihan: [
+        "Hewan pemakan daging yang buas",
+        "Hewan yang hidup berkelompok di alam liar",
+        "Spesies organisme yang hanya ditemukan di suatu wilayah geografis tertentu",
+        "Hewan langka yang dilindungi di suaka margasatwa"
+      ],
+      jawaban: "Spesies organisme yang hanya ditemukan di suatu wilayah geografis tertentu"
+    },
+    // --- Indikator 3: Penulisan preposisi (Laporan Hasil Observasi) ---
+    {
+      pertanyaan: "Penulisan preposisi (kata depan) 'di' yang tepat sesuai PUEBI dalam teks laporan hasil observasi terdapat pada kalimat...",
+      pilihan: [
+        "Terumbu karang banyak ditemukan didasar laut.",
+        "Burung cenderawasih dapat di jumpai di Papua.",
+        "Bunga bangkai mekar di Kebun Raya Bogor.",
+        "Hewan ini di kelompokkan ke dalam mamalia."
+      ],
+      jawaban: "Bunga bangkai mekar di Kebun Raya Bogor."
+    },
+    // --- Indikator 4: Struktur teks anekdot ---
+    {
+      paragraf: "Seorang dosen Fakultas Hukum sedang memberi kuliah Hukum Pidana. Saat tiba sesi tanya jawab, Ali bertanya, 'Pak, kalau pejabat negara korupsi, hukumannya apa?' Dosen menjawab santai, 'Hukuman potong masa tahanan.' Seluruh mahasiswa tertawa terbahak-bahak.",
+      pertanyaan: "Bagian yang menunjukkan kelucuan atau puncak cerita (sindiran) pada penggalan teks anekdot tersebut disebut bagian...",
+      pilihan: [
+        "Abstraksi",
+        "Orientasi",
+        "Krisis",
+        "Koda"
+      ],
+      jawaban: "Krisis"
+    },
+    // --- Indikator 5: Ciri kebahasaan hikayat ---
+    {
+      paragraf: "Hatta, beberapa lamanya, maka datanglah seorang mualim, lalu ia masuk ke dalam kedai itu meminta sedekah.",
+      pertanyaan: "Ciri kebahasaan teks hikayat yang menonjol pada penggalan paragraf tersebut adalah...",
+      pilihan: [
+        "Menggunakan gaya bahasa metafora",
+        "Menggunakan kata-kata arkais atau konjungsi kuno",
+        "Banyak menggunakan kalimat imperatif",
+        "Mengandung nilai moral yang tersirat"
+      ],
+      jawaban: "Menggunakan kata-kata arkais atau konjungsi kuno"
+    },
+    // --- Indikator 6: Karakter tokoh (Hikayat) ---
+    {
+      paragraf: "Maka Baginda pun tersenyum seraya berkata, 'Hai anakku, janganlah engkau bersedih. Biarlah Ayahanda yang membagikan harta ini secara adil agar tiada pertikaian di antara kalian.'",
+      pertanyaan: "Karakter tokoh Baginda dalam penggalan teks hikayat tersebut adalah...",
+      pilihan: [
+        "Egois",
+        "Pemberani",
+        "Bijaksana",
+        "Pendendam"
+      ],
+      jawaban: "Bijaksana"
+    },
+    // --- Indikator 7: Gaya bahasa (Hikayat) ---
+    {
+      paragraf: "Wajah putri raja itu bersinar terang laksana bulan purnama di malam hari ke empat belas.",
+      pertanyaan: "Gaya bahasa (majas) yang digunakan dalam penggalan teks hikayat tersebut adalah...",
+      pilihan: [
+        "Personifikasi",
+        "Hiperbola",
+        "Litotes",
+        "Simile (Perumpamaan)"
+      ],
+      jawaban: "Simile (Perumpamaan)"
+    },
+    // --- Indikator 8: Unsur intrinsik cerpen (Latar) ---
+    {
+      paragraf: "Suara jangkrik bersahutan memecah kesunyian. Angin berhembus dingin menembus jaket tebal yang kukenakan. Aku masih duduk termenung di pos ronda ini, menunggu kedatangan ayah.",
+      pertanyaan: "Latar waktu dan tempat yang tergambar dalam penggalan cerpen tersebut adalah...",
+      pilihan: [
+        "Pagi hari, di pos ronda",
+        "Sore hari, di jalanan",
+        "Malam hari, di teras rumah",
+        "Malam hari, di pos ronda"
+      ],
+      jawaban: "Malam hari, di pos ronda"
+    },
+    // --- Indikator 9: Unsur intrinsik cerpen (Amanat) ---
+    {
+      paragraf: "Walaupun perutnya sangat lapar dan ia hanya memiliki uang dua ribu rupiah, Budi tetap mengembalikan dompet tebal yang ia temukan di jalan kepada pemiliknya tanpa meminta imbalan.",
+      pertanyaan: "Amanat yang dapat diambil dari penggalan cerpen tersebut adalah...",
+      pilihan: [
+        "Ambillah kesempatan yang ada di depan mata.",
+        "Bersikaplah jujur dan amanah meski dalam keadaan sulit.",
+        "Orang kaya harus selalu memberikan imbalan.",
+        "Jangan pernah berjalan sendirian di jalanan."
+      ],
+      jawaban: "Bersikaplah jujur dan amanah meski dalam keadaan sulit."
+    },
+    // --- Indikator 10: Unsur intrinsik cerpen (Sudut Pandang) ---
+    {
+      paragraf: "Aku menatap nanar kalender di dinding kamarku. Hari ini adalah hari keberangkatanku ke kota, meninggalkan desa yang telah membesarkanku.",
+      pertanyaan: "Sudut pandang penceritaan yang digunakan pengarang dalam penggalan cerpen tersebut adalah...",
+      pilihan: [
+        "Orang pertama pelaku utama",
+        "Orang pertama pelaku sampingan",
+        "Orang ketiga serba tahu",
+        "Orang ketiga pengamat"
+      ],
+      jawaban: "Orang pertama pelaku utama"
+    },
+    // --- Indikator 11: Kalimat imperatif (Teks Prosedur) ---
+    {
+      pertanyaan: "Berikut ini yang merupakan contoh kalimat imperatif dalam teks prosedur adalah...",
+      pilihan: [
+        "Adonan harus didiamkan selama 30 menit.",
+        "Masukkan tepung terigu secara perlahan sambil terus diaduk!",
+        "Gula pasir digunakan untuk memberikan rasa manis.",
+        "Banyak orang yang menyukai kue bolu karena teksturnya yang lembut."
+      ],
+      jawaban: "Masukkan tepung terigu secara perlahan sambil terus diaduk!"
+    },
+    // --- Indikator 12: Kalimat imperatif (Teks Prosedur) ---
+    {
+      pertanyaan: "Salah satu ciri kalimat imperatif dalam teks prosedur adalah...",
+      pilihan: [
+        "Menggunakan kata ganti orang pertama.",
+        "Diakhiri dengan tanda tanya.",
+        "Menggunakan verba dasar atau verba berakhiran -kan, -i, dan partikel -lah.",
+        "Memberikan informasi sejarah benda tersebut."
+      ],
+      jawaban: "Menggunakan verba dasar atau verba berakhiran -kan, -i, dan partikel -lah."
+    },
+    // --- Indikator 13: Kalimat imperatif (Teks Prosedur) ---
+    {
+      paragraf: "(1) Siapkan blender. (2) Jangan tambahkan air terlalu banyak agar jus tidak encer. (3) Buah mangga mengandung banyak vitamin C. (4) Tuangkan jus ke dalam gelas.",
+      pertanyaan: "Kalimat imperatif yang berupa larangan ditunjukkan oleh nomor...",
+      pilihan: [
+        "(1)",
+        "(2)",
+        "(3)",
+        "(4)"
+      ],
+      jawaban: "(2)"
+    },
+    // --- Indikator 14: Diksi konotatif (Puisi) ---
+    {
+      paragraf: "Aku ini binatang jalang\nDari kumpulannya terbuang",
+      pertanyaan: "Makna konotatif dari frasa 'binatang jalang' dalam penggalan puisi Chairil Anwar tersebut adalah...",
+      pilihan: [
+        "Hewan peliharaan yang lepas",
+        "Orang yang bebas, mandiri, dan tidak mau terikat oleh aturan penjajah",
+        "Hewan buas yang berbahaya",
+        "Seseorang yang senang hidup di hutan"
+      ],
+      jawaban: "Orang yang bebas, mandiri, dan tidak mau terikat oleh aturan penjajah"
+    },
+    // --- Indikator 15: Tema puisi ---
+    {
+      paragraf: "Pagiku hilang sudah melayang,\nHari mudaku sudah pergi\nSekarang petang datang membayang\nBatang usiaku sudah tinggi",
+      pertanyaan: "Tema dari penggalan puisi karya Ali Hasjmy tersebut adalah...",
+      pilihan: [
+        "Keindahan alam pada sore hari",
+        "Semangat masa muda",
+        "Penyesalan di hari tua karena menyia-nyiakan masa muda",
+        "Kesedihan karena ditinggal kekasih"
+      ],
+      jawaban: "Penyesalan di hari tua karena menyia-nyiakan masa muda"
+    },
+    // --- Indikator 16: Gaya bahasa (Puisi) ---
+    {
+      paragraf: "Ombak berkejar-kejaran ke tepi pantai\nMenyapa butiran pasir yang bisu",
+      pertanyaan: "Gaya bahasa yang menonjol pada penggalan larik puisi tersebut adalah...",
+      pilihan: [
+        "Hiperbola",
+        "Metafora",
+        "Personifikasi",
+        "Paradoks"
+      ],
+      jawaban: "Personifikasi"
+    },
+    // --- Indikator 17: Informasi utama (Paragraf) ---
+    {
+      paragraf: "Sarapan pagi sangat penting bagi tubuh manusia. Dengan sarapan, tubuh mendapatkan energi untuk beraktivitas sepanjang hari. Selain itu, sarapan juga membantu meningkatkan konsentrasi dan daya ingat, terutama bagi pelajar dan pekerja.",
+      pertanyaan: "Informasi utama dalam penggalan paragraf tersebut adalah...",
+      pilihan: [
+        "Sarapan dapat meningkatkan daya ingat.",
+        "Pentingnya sarapan pagi untuk memberikan energi tubuh.",
+        "Pelajar diwajibkan sarapan sebelum sekolah.",
+        "Menu sarapan menentukan konsentrasi seseorang."
+      ],
+      jawaban: "Pentingnya sarapan pagi untuk memberikan energi tubuh."
+    },
+    // --- Indikator 18: Kalimat fakta dan opini (Teks Argumentasi) ---
+    {
+      paragraf: "(1) Indonesia memiliki ribuan pulau yang tersebar dari Sabang sampai Merauke. (2) Keindahan alam Indonesia sangat luar biasa dan tidak ada duanya di dunia. (3) Berdasarkan data BPS tahun 2022, jumlah penduduk Indonesia mencapai 275 juta jiwa. (4) Pantai Kuta terletak di Pulau Bali.",
+      pertanyaan: "Kalimat opini pada penggalan teks argumentasi tersebut ditunjukkan oleh nomor...",
+      pilihan: [
+        "(1)",
+        "(2)",
+        "(3)",
+        "(4)"
+      ],
+      jawaban: "(2)"
+    },
+    // --- Indikator 19: Unsur drama (Karakter fisik/batin) ---
+    {
+      paragraf: "Arman : (Sambil menggebrak meja dan menatap tajam) \"Aku sudah bilang, jangan pernah sentuh barang-barangku!\"\nDino : (Menunduk takut) \"Ma.. maaf, Man. Aku cuma mau meminjam penamu.\"",
+      pertanyaan: "Berdasarkan kutipan naskah drama tersebut, karakter batin Arman adalah...",
+      pilihan: [
+        "Penyabar",
+        "Penakut",
+        "Pemarah / Emosional",
+        "Pemaaf"
+      ],
+      jawaban: "Pemarah / Emosional"
+    },
+    // --- Indikator 20: Unsur drama (Latar fisik/batin) ---
+    {
+      paragraf: "(Terdengar suara bel berdering panjang. Siswa-siswa berhamburan berlari menuju lapangan membawa seragam olahraga.)",
+      pertanyaan: "Latar tempat yang tergambar jelas dari petunjuk lakuan (kramagung) naskah drama tersebut adalah...",
+      pilihan: [
+        "Di dalam kelas",
+        "Di rumah siswa",
+        "Di lingkungan sekolah (lapangan)",
+        "Di jalan raya"
+      ],
+      jawaban: "Di lingkungan sekolah (lapangan)"
+    },
+    // --- Indikator 21: Sistematika Surat Lamaran (Tempat & Tanggal) ---
+    {
+      pertanyaan: "Penulisan tempat dan tanggal surat lamaran pekerjaan yang sesuai dengan kaidah bahasa Indonesia adalah...",
+      pilihan: [
+        "Jakarta, 12-Agustus-2023",
+        "Jakarta 12 Agustus 2023.",
+        "Jakarta, 12 Agustus 2023",
+        "Jakarta, 12 agustus 2023"
+      ],
+      jawaban: "Jakarta, 12 Agustus 2023"
+    },
+    // --- Indikator 22: Sistematika Surat Lamaran (Hal & Lampiran) ---
+    {
+      pertanyaan: "Pernyataan yang tepat mengenai penulisan bagian Hal dan Lampiran pada surat lamaran pekerjaan adalah...",
+      pilihan: [
+        "Hal: Lamaran Pekerjaan\nLampiran: Lima berkas",
+        "Hal : Lamaran Pekerjaan\nLamp : 5 (lima) lembar",
+        "Hal: Permohonan\nLampiran: 5 lembar",
+        "Hal: lamaran pekerjaan\nLampiran: lima berkas"
+      ],
+      jawaban: "Hal: Lamaran Pekerjaan\nLampiran: Lima berkas"
+    },
+    // --- Indikator 23: Sistematika Surat Lamaran (Alamat Tujuan) ---
+    {
+      pertanyaan: "Penulisan alamat tujuan surat lamaran pekerjaan yang tepat adalah...",
+      pilihan: [
+        "Kepada Yth. Bapak Direktur PT. Maju Jaya\nJalan Mawar No. 10\nJakarta",
+        "Yth. Direktur PT Maju Jaya\nJalan Mawar Nomor 10\nJakarta",
+        "Kepada Direktur PT Maju Jaya\nJl. Mawar 10\nJakarta",
+        "Yth. Pimpinan PT. Maju Jaya\ndi tempat"
+      ],
+      jawaban: "Yth. Direktur PT Maju Jaya\nJalan Mawar Nomor 10\nJakarta"
+    },
+    // --- Indikator 24: Sistematika Surat Lamaran (Salam Pembuka) ---
+    {
+      pertanyaan: "Penulisan salam pembuka yang benar dan baku dalam surat lamaran pekerjaan adalah...",
+      pilihan: [
+        "Dengan Hormat,",
+        "Dengan hormat,",
+        "Dengan hormat.",
+        "dengan hormat,"
+      ],
+      jawaban: "Dengan hormat,"
+    },
+    // --- Indikator 25: Sistematika Surat Lamaran (Alinea Pembuka - Inisiatif) ---
+    {
+      pertanyaan: "Kalimat pembuka surat lamaran pekerjaan yang dibuat atas inisiatif sendiri yang paling tepat adalah...",
+      pilihan: [
+        "Memenuhi iklan Bapak, saya melamar pekerjaan di perusahaan ini.",
+        "Yang bertanda tangan di bawah ini, saya bermaksud melamar pekerjaan sebagai...",
+        "Saya mendengar ada lowongan di perusahaan Bapak, maka saya melamar.",
+        "Dengan ini saya mengirimkan surat lamaran untuk Bapak baca."
+      ],
+      jawaban: "Yang bertanda tangan di bawah ini, saya bermaksud melamar pekerjaan sebagai..."
+    },
+    // --- Indikator 26: Sistematika Surat Lamaran (Alinea Pembuka - Iklan) ---
+    {
+      paragraf: "Iklan lowongan kerja di harian Suara Rakyat, tanggal 5 November 2023, membutuhkan seorang teknisi jaringan.",
+      pertanyaan: "Alinea pembuka surat lamaran yang tepat berdasarkan ilustrasi iklan tersebut adalah...",
+      pilihan: [
+        "Setelah membaca koran Suara Rakyat tanggal 5 November 2023, saya ingin menjadi teknisi.",
+        "Berdasarkan iklan lowongan pekerjaan di harian Suara Rakyat, 5 November 2023, dengan ini saya mengajukan lamaran...",
+        "Melalui surat ini, saya membalas iklan Bapak di Suara Rakyat tanggal 5 November 2023.",
+        "Sehubungan dengan iklan teknisi jaringan di Suara Rakyat, saya datang melamar."
+      ],
+      jawaban: "Berdasarkan iklan lowongan pekerjaan di harian Suara Rakyat, 5 November 2023, dengan ini saya mengajukan lamaran..."
+    },
+    // --- Indikator 27: Sistematika Surat Lamaran (Identitas Pelamar) ---
+    {
+      pertanyaan: "Penulisan pemerincian identitas pelamar yang benar (setelah kata 'sebagai berikut:') adalah...",
+      pilihan: [
+        "Nama: Andi Darmawan\nTempat, tanggal lahir: Solo, 2 Mei 2000",
+        "Nama: andi darmawan\ntempat, tanggal lahir: Solo, 2 Mei 2000",
+        "nama: Andi Darmawan\ntempat, tanggal lahir: Solo, 2 Mei 2000",
+        "nama: Andi Darmawan,\nTempat, Tanggal Lahir: Solo, 2 Mei 2000."
+      ],
+      jawaban: "nama: Andi Darmawan\ntempat, tanggal lahir: Solo, 2 Mei 2000"
+    },
+    // --- Indikator 28: Sistematika Surat Lamaran (Bagian Isi/Argumentasi) ---
+    {
+      pertanyaan: "Dalam surat lamaran pekerjaan, bagian yang berisi informasi tentang kualifikasi, keahlian, dan alasan mengapa pelamar cocok untuk posisi tersebut disebut bagian...",
+      pilihan: [
+        "Tesis (Pernyataan Umum)",
+        "Argumentasi",
+        "Penegasan",
+        "Orientasi"
+      ],
+      jawaban: "Argumentasi"
+    },
+    // --- Indikator 29: Sistematika Surat Lamaran (Alinea Penutup) ---
+    {
+      pertanyaan: "Penulisan kalimat penutup surat lamaran pekerjaan yang efektif dan santun adalah...",
+      pilihan: [
+        "Atas perhatiannya, saya ucapkan banyak terima kasih.",
+        "Atas perhatian Bapak/Ibu, saya mengucapkan terima kasih.",
+        "Sekian surat dari saya, atas perhatian Bapak saya haturkan terima kasih.",
+        "Atas perhatian perusahaan, diucapkan terima kasih."
+      ],
+      jawaban: "Atas perhatian Bapak/Ibu, saya mengucapkan terima kasih."
+    },
+    // --- Indikator 30: Sistematika Surat Lamaran (Salam Penutup) ---
+    {
+      pertanyaan: "Salam penutup yang paling tepat digunakan dalam surat lamaran pekerjaan adalah...",
+      pilihan: [
+        "Wassalam,",
+        "Hormat saya,",
+        "Salam sejahtera,",
+        "Hormat Kami,"
+      ],
+      jawaban: "Hormat saya,"
+    },
+    // --- Indikator 31: Sistematika Surat Lamaran (Tanda Tangan & Nama Terang) ---
+    {
+      pertanyaan: "Posisi penulisan tanda tangan dan nama terang pelamar pada surat lamaran pekerjaan terletak di...",
+      pilihan: [
+        "Pojok kiri atas",
+        "Pojok kiri bawah",
+        "Pojok kanan atas",
+        "Pojok kanan bawah, di bawah salam penutup"
+      ],
+      jawaban: "Pojok kanan bawah, di bawah salam penutup"
+    },
+    // --- Indikator 32: Hal yang dibahas (Teks Editorial) ---
+    {
+      paragraf: "Kemacetan di kota-kota besar kembali menjadi sorotan. Kebijakan ganjil-genap yang diterapkan pemerintah daerah dinilai belum efektif mengurai volume kendaraan yang terus bertambah setiap tahunnya.",
+      pertanyaan: "Hal atau masalah utama yang dibahas dalam penggalan teks editorial tersebut adalah...",
+      pilihan: [
+        "Dampak kemacetan terhadap ekonomi",
+        "Ketidakefektifan kebijakan ganjil-genap dalam mengatasi kemacetan",
+        "Jumlah kendaraan yang diproduksi setiap tahun",
+        "Kinerja pemerintah daerah secara umum"
+      ],
+      jawaban: "Ketidakefektifan kebijakan ganjil-genap dalam mengatasi kemacetan"
+    },
+    // --- Indikator 33: Sistematika Daftar Riwayat Hidup (Bagian Pertama) ---
+    {
+      pertanyaan: "Bagian paling awal yang wajib dicantumkan dalam sebuah daftar riwayat hidup (Curriculum Vitae) adalah...",
+      pilihan: [
+        "Riwayat Pendidikan",
+        "Pengalaman Kerja",
+        "Data Pribadi / Identitas Diri",
+        "Referensi"
+      ],
+      jawaban: "Data Pribadi / Identitas Diri"
+    },
+    // --- Indikator 34: Sistematika Daftar Riwayat Hidup (Riwayat Pendidikan) ---
+    {
+      pertanyaan: "Cara penulisan riwayat pendidikan dalam daftar riwayat hidup yang paling tepat dan profesional adalah...",
+      pilihan: [
+        "Ditulis acak sesuai yang diingat",
+        "Disusun kronologis dari jenjang pendidikan terakhir (tertinggi) ke jenjang sebelumnya",
+        "Hanya menuliskan pendidikan SD saja",
+        "Ditulis mulai dari TK hingga Perguruan Tinggi tanpa menyertakan tahun kelulusan"
+      ],
+      jawaban: "Disusun kronologis dari jenjang pendidikan terakhir (tertinggi) ke jenjang sebelumnya"
+    },
+    // --- Indikator 35: Sistematika Daftar Riwayat Hidup (Pengalaman Kerja) ---
+    {
+      pertanyaan: "Komponen informasi pokok yang harus ada saat menuliskan pengalaman kerja pada daftar riwayat hidup adalah...",
+      pilihan: [
+        "Nama instansi/perusahaan, posisi/jabatan, dan rentang waktu bekerja",
+        "Nama pimpinan, alamat rumah, dan gaji yang diterima",
+        "Alasan keluar kerja, nama teman, dan jabatan",
+        "Nama perusahaan dan nomor telepon HRD"
+      ],
+      jawaban: "Nama instansi/perusahaan, posisi/jabatan, dan rentang waktu bekerja"
+    },
+    // --- Indikator 36: Sistematika Daftar Riwayat Hidup (Keahlian) ---
+    {
+      paragraf: "Mahir mengoperasikan perangkat lunak desain grafis (Adobe Illustrator, Photoshop) dan menguasai bahasa Inggris pasif maupun aktif.",
+      pertanyaan: "Kutipan tersebut pada sistematika daftar riwayat hidup termasuk ke dalam bagian...",
+      pilihan: [
+        "Pengalaman Organisasi",
+        "Data Pribadi",
+        "Kecakapan / Keahlian Khusus",
+        "Riwayat Pendidikan"
+      ],
+      jawaban: "Kecakapan / Keahlian Khusus"
+    },
+    // --- Indikator 37: Sistematika Daftar Riwayat Hidup (Hubungan dengan Surat Lamaran) ---
+    {
+      pertanyaan: "Fungsi utama daftar riwayat hidup (CV) yang dilampirkan bersama surat lamaran pekerjaan adalah untuk...",
+      pilihan: [
+        "Menjadi syarat formalitas perusahaan",
+        "Memberikan perincian latar belakang pendidikan, pengalaman, dan kualifikasi pelamar",
+        "Menggantikan surat lamaran pekerjaan",
+        "Menunjukkan bukti bahwa pelamar bisa menulis surat"
+      ],
+      jawaban: "Memberikan perincian latar belakang pendidikan, pengalaman, dan kualifikasi pelamar"
+    },
+    // --- Indikator 38: Sistematika Daftar Riwayat Hidup (Bentuk CV) ---
+    {
+      pertanyaan: "Berdasarkan cara penulisannya, daftar riwayat hidup dapat dibuat dalam bentuk...",
+      pilihan: [
+        "Narasi (berbentuk paragraf bercerita) dan Blanko (berbentuk daftar/poin)",
+        "Puisi dan Prosa",
+        "Tabel dan Grafik",
+        "Fiksi dan Nonfiksi"
+      ],
+      jawaban: "Narasi (berbentuk paragraf bercerita) dan Blanko (berbentuk daftar/poin)"
+    },
+    // --- Indikator 39: Sistematika Daftar Riwayat Hidup (Kalimat Penutup) ---
+    {
+      pertanyaan: "Pada bagian akhir daftar riwayat hidup, biasanya penulis mencantumkan kalimat pernyataan penutup yang berbunyi...",
+      pilihan: [
+        "Demikian surat lamaran ini saya sampaikan.",
+        "Semoga saya diterima bekerja di perusahaan Bapak/Ibu.",
+        "Demikian daftar riwayat hidup ini saya buat dengan sebenar-benarnya.",
+        "Atas perhatiannya, saya ucapkan terima kasih yang sebesar-besarnya."
+      ],
+      jawaban: "Demikian daftar riwayat hidup ini saya buat dengan sebenar-benarnya."
+    },
+    // --- Indikator 40: Bagian-bagian Iklan ---
+    {
+      paragraf: "DIBUTUHKAN SEGERA!\nStaf Administrasi (Pria/Wanita, Min. SMA/SMK, Menguasai MS. Office).\nKirimkan lamaran ke HRD PT Sinar Terang, Jl. Pahlawan No. 12, Bandung. Paling lambat 20 Agustus.",
+      pertanyaan: "Bagian iklan yang menunjukkan orientasi (judul/kepala) pada teks tersebut adalah...",
+      pilihan: [
+        "Kirimkan lamaran ke HRD PT Sinar Terang",
+        "Staf Administrasi",
+        "DIBUTUHKAN SEGERA!",
+        "Paling lambat 20 Agustus"
+      ],
+      jawaban: "DIBUTUHKAN SEGERA!"
+    }
+], 
+
+
+
+
+
+
+
+
+
+ppkn: [
+    // ================== I. PANCASILA ==================
+
+    // --- Indikator 1: Menganalisis pemikiran para pendiri negara tentang rumusan Pancasila ---
+    {
+      pertanyaan: "Gagasan mengenai dasar negara yang dikemukakan oleh Ir. Soekarno pada tanggal 1 Juni 1945 menyebutkan lima prinsip dasar. Salah satu prinsip utama yang ditekankan oleh Soekarno yang mencerminkan rasa persatuan dan keutuhan bangsa adalah...",
+      pilihan: [
+        "Peri Kebangsaan",
+        "Nasionalisme (Kebangsaan Indonesia)",
+        "Mufakat atau Demokrasi",
+        "Kesejahteraan Sosial"
+      ],
+      jawaban: "Nasionalisme (Kebangsaan Indonesia)"
+    },
+    // --- Indikator 2: Mengidentifikasi kedudukan Pancasila sebagai pandangan hidup ---
+    {
+      pertanyaan: "Pancasila digunakan sebagai petunjuk arah semua kegiatan atau aktivitas hidup dan kehidupan masyarakat di segala bidang. Hal ini menunjukkan kedudukan Pancasila sebagai...",
+      pilihan: [
+        "Ideologi negara",
+        "Dasar negara",
+        "Pandangan hidup bangsa",
+        "Perjanjian luhur"
+      ],
+      jawaban: "Pandangan hidup bangsa"
+    },
+    // --- Indikator 3: Mengidentifikasi gagasan solutif bertentangan dengan nilai Pancasila ---
+    {
+      pertanyaan: "Maraknya penyebaran berita bohong (hoaks) di media sosial dapat memicu perpecahan, yang jelas bertentangan dengan sila ketiga Pancasila. Gagasan solutif yang paling rasional untuk diterapkan di lingkungan sekolah guna mengatasi masalah tersebut adalah...",
+      pilihan: [
+        "Membatasi penggunaan internet secara total bagi seluruh siswa.",
+        "Mengadakan kampanye literasi digital dan edukasi verifikasi informasi.",
+        "Menghukum berat siswa yang ketahuan membawa gawai ke sekolah.",
+        "Menghapus akun media sosial semua siswa tanpa pengecualian."
+      ],
+      jawaban: "Mengadakan kampanye literasi digital dan edukasi verifikasi informasi."
+    },
+    // --- Indikator 4: Mendeskripsikan keterkaitan sila-sila dalam Pancasila ---
+    {
+      pertanyaan: "Pelaksanaan pemilihan umum (Pemilu) yang jujur, bebas dari politik uang, dan hasilnya digunakan untuk mewujudkan kesejahteraan seluruh rakyat menunjukkan keterkaitan antara sila...",
+      pilihan: [
+        "Pertama dan kedua",
+        "Kedua dan ketiga",
+        "Keempat dan kelima",
+        "Ketiga dan kelima"
+      ],
+      jawaban: "Keempat dan kelima"
+    },
+    // --- Indikator 5: Menjelaskan kedudukan Pancasila sebagai ideologi negara ---
+    {
+      pertanyaan: "Sebagai ideologi negara, Pancasila berfungsi sebagai landasan untuk memahami dan menafsirkan kejadian-kejadian di lingkungan masyarakat. Makna pokok Pancasila sebagai ideologi negara adalah...",
+      pilihan: [
+        "Pancasila hanya berlaku untuk penyelenggara pemerintahan (pejabat negara).",
+        "Pancasila merupakan kumpulan doktrin kaku buatan penguasa di masa lalu.",
+        "Pancasila menjadi cita-cita dan pedoman arah dalam penyelenggaraan hidup bernegara.",
+        "Pancasila mudah diubah kapan saja sesuai dengan tuntutan zaman internasional."
+      ],
+      jawaban: "Pancasila menjadi cita-cita dan pedoman arah dalam penyelenggaraan hidup bernegara."
+    },
+    // --- Indikator 6: Mengidentifikasi peluang penerapan nilai Pancasila dalam kehidupan global ---
+    {
+      pertanyaan: "Di era globalisasi, batasan antarnegara menjadi semakin kabur. Salah satu peluang penerapan nilai Pancasila di tingkat global yang sesuai dengan sila kemanusiaan yang adil dan beradab adalah...",
+      pilihan: [
+        "Menolak masuknya investasi dan budaya asing secara mutlak.",
+        "Berpartisipasi aktif dalam misi perdamaian dunia dan menyalurkan bantuan kemanusiaan antarbangsa.",
+        "Menguasai pasar internasional dengan cara mengorbankan ekonomi negara berkembang lain.",
+        "Memaksa negara lain untuk menganut sistem pemerintahan demokrasi Pancasila."
+      ],
+      jawaban: "Berpartisipasi aktif dalam misi perdamaian dunia dan menyalurkan bantuan kemanusiaan antarbangsa."
+    },
+    // --- Indikator 7: Mengidentifikasi tantangan penerapan nilai Pancasila dalam kehidupan global ---
+    {
+      pertanyaan: "Masuknya paham individualisme dan gaya hidup konsumerisme dari luar negeri melalui media sosial dan budaya populer merupakan salah satu bentuk...",
+      pilihan: [
+        "Peluang penerapan Pancasila",
+        "Tantangan penerapan nilai Pancasila di era global",
+        "Keuntungan adanya globalisasi bagi masyarakat Indonesia",
+        "Ciri khas bangsa yang modern, maju, dan sejahtera"
+      ],
+      jawaban: "Tantangan penerapan nilai Pancasila di era global"
+    },
+
+    // ================== II. UUD NRI TAHUN 1945 ==================
+
+    // --- Indikator 8: Mengidentifikasi ciri kesadaran hukum ---
+    {
+      pertanyaan: "Seseorang yang memiliki kesadaran hukum yang tinggi di masyarakat akan menunjukkan perilaku...",
+      pilihan: [
+        "Mematuhi hukum hanya karena takut pada aparat kepolisian yang bertugas.",
+        "Mematuhi peraturan yang dirasa hanya menguntungkan dirinya atau kelompoknya saja.",
+        "Mematuhi peraturan lalu lintas dan rutin membayar pajak atas dasar kesadaran pribadi.",
+        "Selalu mencari celah hukum (loopholes) untuk menghindari sanksi hukuman."
+      ],
+      jawaban: "Mematuhi peraturan lalu lintas dan rutin membayar pajak atas dasar kesadaran pribadi."
+    },
+    // --- Indikator 9: Mengidentifikasi produk hukum sesuai tata urutan perundang-undangan ---
+    {
+      pertanyaan: "Berdasarkan tata urutan peraturan perundang-undangan di Indonesia (UU No. 12 Tahun 2011), peraturan perundang-undangan yang dibentuk oleh DPR dengan persetujuan bersama Presiden adalah...",
+      pilihan: [
+        "Peraturan Pemerintah (PP)",
+        "Undang-Undang (UU)",
+        "Peraturan Presiden (Perpres)",
+        "Peraturan Daerah (Perda)"
+      ],
+      jawaban: "Undang-Undang (UU)"
+    },
+    // --- Indikator 10: Mengidentifikasi periodisasi pemberlakuan UUD di Indonesia ---
+    {
+      pertanyaan: "Pada periode sejarah ketatanegaraan antara 27 Desember 1949 sampai dengan 17 Agustus 1950, konstitusi yang berlaku di Indonesia adalah...",
+      pilihan: [
+        "UUD 1945 periode pertama",
+        "Konstitusi Republik Indonesia Serikat (RIS)",
+        "Undang-Undang Dasar Sementara (UUDS) 1950",
+        "UUD 1945 masa Orde Baru"
+      ],
+      jawaban: "Konstitusi Republik Indonesia Serikat (RIS)"
+    },
+    // --- Indikator 11: Mengidentifikasi perubahan UUD NRI Tahun 1945 ---
+    {
+      pertanyaan: "Salah satu hasil penting dari amandemen UUD NRI Tahun 1945 terkait pembatasan kekuasaan eksekutif agar tidak memunculkan pemerintahan otoriter adalah...",
+      pilihan: [
+        "Presiden dipilih langsung oleh Majelis Permusyawaratan Rakyat (MPR).",
+        "Presiden memegang jabatan selama lima tahun dan dapat dipilih kembali dalam jabatan yang sama hanya untuk satu kali masa jabatan.",
+        "Presiden memiliki kekuasaan penuh untuk membubarkan DPR jika terjadi penolakan kebijakan.",
+        "Presiden tidak lagi memiliki hak prerogatif sama sekali dalam pemerintahan."
+      ],
+      jawaban: "Presiden memegang jabatan selama lima tahun dan dapat dipilih kembali dalam jabatan yang sama hanya untuk satu kali masa jabatan."
+    },
+    // --- Indikator 12: Mengidentifikasi sikap demokratis berdasarkan UUD NRI Tahun 1945 ---
+    {
+      pertanyaan: "Pasal 28E ayat (3) UUD NRI Tahun 1945 menjamin kemerdekaan berserikat dan berkumpul, mengeluarkan pikiran dengan lisan dan tulisan. Sikap demokratis yang paling sesuai dengan pelaksanaan pasal tersebut adalah...",
+      pilihan: [
+        "Memaksakan pendapat pribadi untuk disetujui saat musyawarah karang taruna.",
+        "Menghargai perbedaan pendapat dan menerima hasil keputusan musyawarah dengan lapang dada.",
+        "Melakukan demonstrasi anarkis dan merusak fasilitas umum karena tuntutan tidak dipenuhi.",
+        "Membungkam kritik membangun yang disampaikan oleh kelompok minoritas."
+      ],
+      jawaban: "Menghargai perbedaan pendapat dan menerima hasil keputusan musyawarah dengan lapang dada."
+    },
+    // --- Indikator 13: Mengidentifikasi kasus pelanggaran hak warga negara ---
+    {
+      pertanyaan: "Setiap warga negara berhak mendapat pendidikan sesuai dengan Pasal 31 UUD NRI Tahun 1945. Berikut ini yang merupakan contoh kasus pelanggaran hak warga negara di bidang pendidikan adalah...",
+      pilihan: [
+        "Pemerintah memberikan program beasiswa KIP Kuliah bagi siswa berprestasi.",
+        "Masih banyaknya anak putus sekolah di daerah pedalaman akibat tidak adanya fasilitas dan tenaga pengajar.",
+        "Seorang siswa diberikan sanksi skorsing karena membolos sekolah berturut-turut.",
+        "Masyarakat bergotong royong membangun yayasan sekolah swasta secara mandiri."
+      ],
+      jawaban: "Masih banyaknya anak putus sekolah di daerah pedalaman akibat tidak adanya fasilitas dan tenaga pengajar."
+    },
+
+    // ================== III. BHINNEKA TUNGGAL IKA ==================
+
+    // --- Indikator 14: Menjelaskan makna semboyan Bhinneka Tunggal Ika ---
+    {
+      pertanyaan: "Makna fundamental yang terkandung dalam semboyan 'Bhinneka Tunggal Ika' pada pita yang dicengkeram lambang negara Garuda Pancasila adalah...",
+      pilihan: [
+        "Bangsa Indonesia harus disatukan menjadi satu suku bangsa agar kuat.",
+        "Walaupun berbeda-beda suku, agama, ras, dan antargolongan, bangsa Indonesia tetap merupakan satu kesatuan yang utuh.",
+        "Perbedaan adalah sumber perpecahan di masa lalu yang harus dihapuskan.",
+        "Persatuan nasional hanya bisa dicapai jika semua kebudayaan daerah diseragamkan."
+      ],
+      jawaban: "Walaupun berbeda-beda suku, agama, ras, dan antargolongan, bangsa Indonesia tetap merupakan satu kesatuan yang utuh."
+    },
+    // --- Indikator 15: Mendeskripsikan nilai persatuan dalam harmoni keberagaman ---
+    {
+      pertanyaan: "Dalam masyarakat yang majemuk, harmoni keberagaman dapat tercipta apabila setiap individu mengembangkan sikap toleransi. Nilai persatuan dalam harmoni keberagaman tersebut ditunjukkan dengan perilaku nyata seperti...",
+      pilihan: [
+        "Menghindari pergaulan dengan tetangga yang memiliki keyakinan agama berbeda.",
+        "Pemuda lintas agama ikut serta menjaga keamanan lalu lintas saat umat agama lain sedang merayakan hari raya besar.",
+        "Menganggap kebudayaan daerahnya sendiri sebagai kebudayaan yang paling unggul di Indonesia.",
+        "Membentuk kelompok-kelompok belajar eksklusif yang hanya berisi siswa dari suku yang sama."
+      ],
+      jawaban: "Pemuda lintas agama ikut serta menjaga keamanan lalu lintas saat umat agama lain sedang merayakan hari raya besar."
+    },
+    // --- Indikator 16: Mendeskripsikan perwujudan sistem ekonomi Pancasila yang inklusif ---
+    {
+      pertanyaan: "Sistem ekonomi Pancasila menolak praktik eksploitasi dan monopoli. Perwujudan sistem ekonomi Pancasila yang bersifat inklusif dan berkeadilan di lingkungan masyarakat tercermin pada...",
+      pilihan: [
+        "Monopoli perdagangan bahan pokok oleh satu perusahaan swasta berskala besar.",
+        "Mendirikan Koperasi Unit Desa (KUD) secara bersama untuk memajukan kesejahteraan anggota dan ekonomi masyarakat sekitar.",
+        "Eksploitasi sumber daya alam hutan tanpa memperhatikan reboisasi dan kelestarian lingkungan.",
+        "Pemberlakuan sistem pinjaman berbunga sangat tinggi oleh rentenir kepada pedagang kecil."
+      ],
+      jawaban: "Mendirikan Koperasi Unit Desa (KUD) secara bersama untuk memajukan kesejahteraan anggota dan ekonomi masyarakat sekitar."
+    },
+    // --- Indikator 17: Mengidentifikasi konflik keberagaman di masyarakat ---
+    {
+      pertanyaan: "Pertikaian antarkelompok masyarakat di suatu daerah yang dipicu oleh sentimen kedaerahan, misalnya karena perebutan batas wilayah tanah ulayat/adat, merupakan contoh nyata dari konflik...",
+      pilihan: [
+        "Ideologi",
+        "Politik",
+        "Antargolongan",
+        "Antarsuku"
+      ],
+      jawaban: "Antarsuku"
+    },
+    // --- Indikator 18: Mendeskripsikan solusi yang berkeadilan terhadap konflik keberagaman ---
+    {
+      pertanyaan: "Apabila terjadi perselisihan antarwarga yang berbeda latar belakang budaya, upaya penyelesaian konflik yang paling mencerminkan rasa keadilan sesuai nilai Pancasila adalah...",
+      pilihan: [
+        "Membiarkan kedua pihak yang bertikai menyelesaikannya sendiri lewat adu kekuatan massa.",
+        "Melakukan mediasi atau musyawarah dengan melibatkan tokoh masyarakat, tokoh agama, dan penegak hukum secara netral.",
+        "Menekan salah satu kelompok minoritas agar mengalah dan pergi meninggalkan wilayah konflik.",
+        "Menggunakan tindakan kekerasan secara sepihak untuk membungkam kedua kelompok."
+      ],
+      jawaban: "Melakukan mediasi atau musyawarah dengan melibatkan tokoh masyarakat, tokoh agama, dan penegak hukum secara netral."
+    },
+    // --- Indikator 19: Mengidentifikasi kegiatan bersama dengan prinsip gotong royong ---
+    {
+      pertanyaan: "Di bawah ini yang merupakan contoh penerapan prinsip gotong royong sebagai tradisi luhur masyarakat Indonesia di lingkungan tempat tinggal adalah...",
+      pilihan: [
+        "Siswa saling memberi contekan saat mengerjakan ujian akhir sekolah.",
+        "Warga desa bekerja bakti secara massal membersihkan selokan dan fasilitas umum menjelang musim penghujan.",
+        "Sekelompok masyarakat berkumpul untuk merencanakan demonstrasi anarkis menolak kebijakan bupati.",
+        "Para pedagang pasar saling bersaing menurunkan harga secara tidak sehat untuk mematikan saingannya."
+      ],
+      jawaban: "Warga desa bekerja bakti secara massal membersihkan selokan dan fasilitas umum menjelang musim penghujan."
+    },
+    // --- Indikator 20: Menjelaskan pengertian gotong royong ---
+    {
+      pertanyaan: "Gotong royong merupakan identitas, kepribadian, dan budaya bangsa Indonesia sejak dahulu kala. Pengertian gotong royong secara umum dapat didefinisikan sebagai...",
+      pilihan: [
+        "Bekerja keras secara individu untuk meraih keuntungan materi yang maksimal bagi kelompoknya.",
+        "Melakukan suatu pekerjaan secara bersama-sama, saling membantu, dan sukarela agar pekerjaan menjadi lancar, mudah, dan ringan.",
+        "Bekerja sama dalam menyelesaikan tugas dengan harapan mendapat imbalan berupa uang yang besar.",
+        "Menghindari pekerjaan-pekerjaan berat dengan cara melimpahkannya kepada aparatur desa atau negara."
+      ],
+      jawaban: "Melakukan suatu pekerjaan secara bersama-sama, saling membantu, dan sukarela agar pekerjaan menjadi lancar, mudah, dan ringan."
+    },
+    // --- Indikator 21: Menganalisis kategori kerja sama ---
+    {
+      pertanyaan: "Kerja sama yang dilakukan oleh pihak-pihak dengan cara saling memberikan penawaran untuk memadukan berbagai kepentingan, misalnya perundingan kesepakatan gaji antara serikat pekerja dengan pimpinan perusahaan, termasuk dalam kategori bentuk kerja sama...",
+      pilihan: [
+        "Koersi (Coercion)",
+        "Tawar-menawar (Bargaining)",
+        "Kooptasi (Cooptation)",
+        "Koalisi (Coalition)"
+      ],
+      jawaban: "Tawar-menawar (Bargaining)"
+    },
+    // --- Indikator 22: Mendeskripsikan nilai yang terkandung dalam gotong royong ---
+    {
+      pertanyaan: "Saat terjadi bencana tanah longsor, masyarakat dari desa tetangga berbondong-bondong datang membantu evakuasi korban tanpa mengharapkan bayaran dan tidak membedakan status sosial korban. Nilai utama yang menonjol dalam kegiatan gotong royong tersebut adalah...",
+      pilihan: [
+        "Nilai pamrih",
+        "Nilai kompetisi",
+        "Nilai kemanusiaan dan kebersamaan",
+        "Nilai materiel"
+      ],
+      jawaban: "Nilai kemanusiaan dan kebersamaan"
+    },
+
+    // ================== IV. NKRI ==================
+
+    // --- Indikator 23: Mengidentifikasi perilaku sesuai hak dan kewajiban warga sekolah ---
+    {
+      pertanyaan: "Sebagai warga sekolah, seorang siswa memiliki seperangkat hak dan kewajiban. Perilaku yang mencerminkan keseimbangan dan keselarasan antara hak dan kewajiban di sekolah adalah...",
+      pilihan: [
+        "Menuntut mendapatkan nilai yang bagus meskipun sering membolos dan jarang mengerjakan tugas kelompok.",
+        "Menerima hak mendapat pengajaran dari guru sekaligus menjalankan kewajiban mematuhi tata tertib sekolah, seperti memakai seragam yang rapi.",
+        "Menggunakan fasilitas buku di perpustakaan sepuasnya namun membawanya pulang tanpa izin ke petugas.",
+        "Memiliki hak menggunakan lapangan olahraga namun setelah selesai membiarkan peralatannya berserakan."
+      ],
+      jawaban: "Menerima hak mendapat pengajaran dari guru sekaligus menjalankan kewajiban mematuhi tata tertib sekolah, seperti memakai seragam yang rapi."
+    },
+    // --- Indikator 24: Menjelaskan peran warga negara Indonesia ---
+    {
+      pertanyaan: "Sesuai dengan amanat Pasal 27 ayat (3) UUD NRI Tahun 1945, setiap warga negara berhak dan wajib ikut serta dalam upaya pembelaan negara. Peran paling nyata yang bisa dilakukan oleh pelajar dalam upaya bela negara non-militer saat ini adalah...",
+      pilihan: [
+        "Mengikuti pelatihan kemiliteran dan bersiap diusung ke medan perang internasional.",
+        "Belajar dengan giat, disiplin, dan meraih prestasi guna mengharumkan serta memajukan bangsa.",
+        "Mendaftar menjadi tentara sukarelawan untuk menjaga perbatasan negara menggunakan senjata api.",
+        "Mengkritik dan menolak semua kebijakan pemerintah tanpa henti di media sosial."
+      ],
+      jawaban: "Belajar dengan giat, disiplin, dan meraih prestasi guna mengharumkan serta memajukan bangsa."
+    },
+    // --- Indikator 25: Mengidentifikasi komponen utama dan pendukung sistem pertahanan ---
+    {
+      pertanyaan: "Dalam konsep Sistem Pertahanan dan Keamanan Rakyat Semesta (Sishankamrata) yang dianut Indonesia, pihak yang bertindak secara langsung sebagai komponen atau kekuatan utama (inti) pertahanan dan keamanan adalah...",
+      pilihan: [
+        "Tentara Nasional Indonesia (TNI) dan Kepolisian Negara Republik Indonesia (Polri)",
+        "Seluruh elemen rakyat jelata Indonesia",
+        "Sumber daya alam, sumber daya buatan, dan sarana prasarana nasional",
+        "Organisasi-organisasi kemasyarakatan (Ormas) dan pemuda"
+      ],
+      jawaban: "Tentara Nasional Indonesia (TNI) dan Kepolisian Negara Republik Indonesia (Polri)"
+    },
+    // --- Indikator 26: Mengidentifikasi peran Indonesia dalam hubungan antarbangsa ---
+    {
+      pertanyaan: "Sebagai bentuk perwujudan politik luar negeri bebas aktif, Indonesia memiliki peran historis yang sangat penting dalam dinamika antarbangsa. Salah satu contoh nyata kontribusi diplomasi Indonesia di masa lalu adalah...",
+      pilihan: [
+        "Menjadi negara yang mempelopori pembentukan pakta pertahanan militer NATO di Asia.",
+        "Berperan besar sebagai salah satu pemrakarsa Konferensi Asia Afrika (KAA) dan pembentukan Gerakan Non-Blok (GNB).",
+        "Membentuk aliansi ekonomi radikal untuk memboikot produk dari negara-negara maju.",
+        "Keluar dari keanggotaan PBB untuk membuktikan kemandirian bangsa dari campur tangan asing."
+      ],
+      jawaban: "Berperan besar sebagai salah satu pemrakarsa Konferensi Asia Afrika (KAA) dan pembentukan Gerakan Non-Blok (GNB)."
+    },
+    // --- Indikator 27: Mengidentifikasi nilai Pancasila dalam pembangunan sosial ---
+    {
+      pertanyaan: "Pemerintah secara masif terus berupaya membangun jalan trans, rumah sakit, dan sekolah di daerah-daerah terluar dan tertinggal (3T) dengan tujuan agar tidak terjadi ketimpangan kesejahteraan yang terlalu jauh dengan Pulau Jawa. Upaya pembangunan sosial dan infrastruktur ini merupakan manifestasi dari Pancasila, khususnya sila...",
+      pilihan: [
+        "Ketuhanan Yang Maha Esa",
+        "Kemanusiaan yang adil dan beradab",
+        "Persatuan Indonesia",
+        "Keadilan sosial bagi seluruh rakyat Indonesia"
+      ],
+      jawaban: "Keadilan sosial bagi seluruh rakyat Indonesia"
+    },
+    // --- Indikator 28: Mengidentifikasi contoh praktik demokrasi dalam kehidupan berbangsa ---
+    {
+      pertanyaan: "Praktik penyelenggaraan demokrasi di Indonesia tidak hanya terpusat pada tingkat nasional tetapi juga mengakar hingga ke akar rumput di tingkat desa. Contoh perwujudan praktik demokrasi yang paling nyata di tingkat desa adalah...",
+      pilihan: [
+        "Penunjukan jabatan kepala desa secara mutlak langsung oleh bupati/gubernur tanpa melibatkan warga.",
+        "Pelaksanaan Pemilihan Kepala Desa (Pilkades) secara langsung, umum, bebas, dan rahasia oleh seluruh warga desa.",
+        "Pengambilan keputusan krusial desa yang dilakukan secara sepihak oleh kepala desa beserta perangkatnya.",
+        "Penetapan masa jabatan kepala desa seumur hidup berdasarkan garis keturunan tokoh desa setempat."
+      ],
+      jawaban: "Pelaksanaan Pemilihan Kepala Desa (Pilkades) secara langsung, umum, bebas, dan rahasia oleh seluruh warga desa."
+    },
+    // --- Indikator 29: Mendeskripsikan pentingnya pemilu bagi warga negara ---
+    {
+      pertanyaan: "Pemilihan umum (Pemilu) memegang peranan vital sebagai sarana perwujudan kedaulatan rakyat. Arti dan esensi penting Pemilu bagi warga negara dalam negara demokrasi adalah...",
+      pilihan: [
+        "Sebagai ajang unjuk kekuatan logistik, massa, dan finansial dari tiap-tiap partai politik.",
+        "Sebagai instrumen legal untuk menentukan nasib bangsa dan mengestafetkan kepemimpinan secara sah dan damai.",
+        "Sekadar formalitas administrasi negara yang diwajibkan oleh lembaga internasional agar Indonesia dianggap demokratis.",
+        "Sebagai momentum bagi masyarakat untuk mencari keuntungan finansial sementara dari kandidat yang berkompetisi."
+      ],
+      jawaban: "Sebagai instrumen legal untuk menentukan nasib bangsa dan mengestafetkan kepemimpinan secara sah dan damai."
+    },
+    // --- Indikator 30: Menjelaskan pemilih pemula dalam demokrasi ---
+    {
+      pertanyaan: "Pemilih pemula adalah segmen warga negara (biasanya pelajar kelas XII SMA yang baru genap berusia 17 tahun) yang untuk pertama kalinya memiliki hak suara. Sikap demokratis terpenting yang harus ditanamkan pada diri pemilih pemula adalah kesadaran bahwa...",
+      pilihan: [
+        "Mereka wajib mencoblos partai yang sama dengan pilihan orang tua tanpa perlu menganalisis visi misi calon tersebut.",
+        "Menjadi golongan putih (golput) adalah hak mutlak yang paling baik karena satu suara tidak akan berdampak pada nasib negara.",
+        "Pilihan politik harus didasarkan pada besaran suvenir atau tawaran politik uang (money politics) yang dibagikan tim kampanye.",
+        "Hak suara merupakan amanah yang sangat berharga dan harus digunakan secara cerdas berdasar rekam jejak serta gagasan kandidat."
+      ],
+      jawaban: "Hak suara merupakan amanah yang sangat berharga dan harus digunakan secara cerdas berdasar rekam jejak serta gagasan kandidat."
+    },
+    // --- Indikator 31: Menjelaskan asas pemilu ---
+    {
+      pertanyaan: "Sistem Pemilu di Indonesia harus berpedoman pada asas LUBER JURDIL. Makna dari asas 'Rahasia' dalam penyelenggaraan Pemilu tersebut berarti...",
+      pilihan: [
+        "Pihak penyelenggara pemilu (KPU) dilarang mengumumkan hasil perolehan suara akhir secara terbuka kepada publik.",
+        "Para pemilih yang memberikan suaranya di bilik suara dijamin bahwa pilihan politiknya tidak akan diketahui oleh pihak mana pun.",
+        "Hasil suara pemilih hanya boleh diberitahukan dan dicatat secara khusus oleh petugas KPPS di TPS tersebut.",
+        "Para calon kandidat dan partai politik dilarang keras untuk melakukan kampanye visi misi secara terbuka dan terang-terangan."
+      ],
+      jawaban: "Para pemilih yang memberikan suaranya di bilik suara dijamin bahwa pilihan politiknya tidak akan diketahui oleh pihak mana pun."
+    },
+    // --- Indikator 32: Mengidentifikasi contoh kasus gangguan yang dihadapi Indonesia ---
+    {
+      pertanyaan: "Eksistensi NKRI sering kali diuji oleh berbagai ancaman dan gangguan, baik dari kekuatan asing maupun gejolak internal. Contoh historis gangguan keamanan negara berupa ancaman pemberontakan bersenjata murni dari dalam negeri adalah...",
+      pilihan: [
+        "Peristiwa Agresi Militer Belanda I dan II pasca-kemerdekaan.",
+        "Munculnya berbagai gerakan separatisme seperti DI/TII, PRRI/Permesta, dan GAM.",
+        "Praktik penyelundupan narkotika dan barang-barang terlarang secara masif dari luar negeri.",
+        "Sengketa klaim teritorial batas wilayah blok Ambalat dengan Malaysia di Mahkamah Internasional."
+      ],
+      jawaban: "Munculnya berbagai gerakan separatisme seperti DI/TII, PRRI/Permesta, dan GAM."
+    },
+    // --- Indikator 33: Mengidentifikasi kewenangan Mahkamah Konstitusi ---
+    {
+      pertanyaan: "Mahkamah Konstitusi (MK) dibentuk pasca-amandemen dan merupakan salah satu pelaku kekuasaan kehakiman di Indonesia yang merdeka. Salah satu kewenangan absolut yang dimiliki MK berdasarkan UUD NRI Tahun 1945 adalah...",
+      pilihan: [
+        "Memutus sengketa perdata, pidana, dan mengadili perkara pada tingkat kasasi.",
+        "Menguji materiil dan formil suatu Undang-Undang terhadap Undang-Undang Dasar (Judicial Review).",
+        "Mengangkat duta besar serta menerima penempatan duta dari negara sahabat.",
+        "Memberikan grasi, amnesti, abolisi, dan rehabilitasi kepada narapidana kasus tertentu."
+      ],
+      jawaban: "Menguji materiil dan formil suatu Undang-Undang terhadap Undang-Undang Dasar (Judicial Review)."
+    },
+    // --- Indikator 34: Mengidentifikasi hubungan kerja Presiden dan DPR ---
+    {
+      pertanyaan: "Dalam sistem ketatanegaraan Indonesia kontemporer, Presiden dan DPR memiliki hubungan tata kerja check and balances (saling mengawasi dan menyeimbangkan). Salah satu wujud konkret hubungan kerja tersebut pada pelaksanaan fungsi legislasi DPR adalah...",
+      pilihan: [
+        "Presiden dapat membubarkan anggota DPR kapan saja jika DPR menolak mendukung kebijakan strategis kabinet.",
+        "Presiden dan DPR secara bersama-sama membahas, mengevaluasi, dan memberikan persetujuan terhadap Rancangan Undang-Undang (RUU).",
+        "DPR memiliki kekuasaan mutlak menetapkan Anggaran Pendapatan dan Belanja Negara (APBN) tanpa perlu meminta persetujuan Presiden.",
+        "Presiden berhak sewaktu-waktu mencopot dan mengganti pimpinan DPR yang dianggap melanggar hukum negara."
+      ],
+      jawaban: "Presiden dan DPR secara bersama-sama membahas, mengevaluasi, dan memberikan persetujuan terhadap Rancangan Undang-Undang (RUU)."
+    },
+    // --- Indikator 35: Menjelaskan kewenangan MPR ---
+    {
+      pertanyaan: "Dinamika amandemen UUD NRI 1945 membawa perubahan signifikan pada fungsi dan kewenangan Majelis Permusyawaratan Rakyat (MPR) sehingga tidak lagi menjadi lembaga tertinggi negara. Di bawah ini yang merupakan salah satu wewenang konstitusional MPR saat ini adalah...",
+      pilihan: [
+        "Memilih Presiden dan Wakil Presiden secara langsung melalui pemungutan suara di sidang umum setiap lima tahun sekali.",
+        "Menetapkan Garis-Garis Besar Haluan Negara (GBHN) sebagai pedoman program pembangunan presiden.",
+        "Melantik Presiden dan/atau Wakil Presiden yang telah terpilih dari hasil pemilihan umum yang demokratis.",
+        "Membahas dan mengesahkan seluruh rancangan undang-undang baru bersama eksekutif."
+      ],
+      jawaban: "Melantik Presiden dan/atau Wakil Presiden yang telah terpilih dari hasil pemilihan umum yang demokratis."
+    },
+    // --- Indikator 36: Menganalisis lembaga negara setelah amandemen UUD 1945 ---
+    {
+      pertanyaan: "Perubahan Undang-Undang Dasar melahirkan beberapa lembaga negara baru demi menyempurnakan sistem peradilan. Lembaga negara ekstra yudikatif yang berwenang mengusulkan pengangkatan hakim agung serta menjaga dan menegakkan kehormatan, keluhuran martabat, serta perilaku hakim adalah...",
+      pilihan: [
+        "Mahkamah Agung (MA)",
+        "Mahkamah Konstitusi (MK)",
+        "Dewan Perwakilan Daerah (DPD)",
+        "Komisi Yudisial (KY)"
+      ],
+      jawaban: "Komisi Yudisial (KY)"
+    },
+    // --- Indikator 37: Mengidentifikasi tugas dan kewenangan Bank Sentral ---
+    {
+      pertanyaan: "Negara Indonesia memiliki suatu bank sentral (Bank Indonesia) yang susunan, kedudukan, kewenangan, tanggung jawab, dan independensinya diatur dengan undang-undang khusus. Tujuan tunggal sekaligus tugas utama Bank Indonesia secara makroekonomi adalah...",
+      pilihan: [
+        "Mencapai dan memelihara kestabilan nilai rupiah terhadap barang/jasa maupun terhadap mata uang negara lain.",
+        "Memberikan kredit dan pinjaman modal lunak secara langsung kepada seluruh masyarakat miskin di pedesaan.",
+        "Mencetak lembaran uang kertas dan keping uang logam secara terus-menerus sebanyak-banyaknya untuk menutupi utang negara.",
+        "Menyetujui dan mencairkan anggaran belanja tahunan untuk kementerian dan instansi negara lainnya."
+      ],
+      jawaban: "Mencapai dan memelihara kestabilan nilai rupiah terhadap barang/jasa maupun terhadap mata uang negara lain."
+    },
+    // --- Indikator 38: Mendeskripsikan peran lembaga negara di berbagai bidang ---
+    {
+      pertanyaan: "Badan Pemeriksa Keuangan (BPK) merupakan lembaga negara yang sangat esensial posisinya dalam memastikan tata kelola negara yang bersih (good governance). Peran dan tugas pokok BPK sebagaimana diatur dalam UUD 1945 adalah...",
+      pilihan: [
+        "Menetapkan regulasi perbankan, mengatur suku bunga dasar, dan menentukan besaran tarif pajak yang harus dibayar rakyat.",
+        "Memeriksa pengelolaan keuangan, menganalisis transparansi, dan menuntut pertanggungjawaban atas penggunaan anggaran keuangan negara.",
+        "Menyusun rincian draf Anggaran Pendapatan dan Belanja Negara (APBN) untuk kemudian diajukan pada saat sidang paripurna.",
+        "Melakukan tindakan penangkapan secara langsung terhadap para pejabat maupun kepala daerah yang terindikasi melakukan tindak pidana korupsi."
+      ],
+      jawaban: "Memeriksa pengelolaan keuangan, menganalisis transparansi, dan menuntut pertanggungjawaban atas penggunaan anggaran keuangan negara."
+    }
+], 
+
 
 
       umum8: [
