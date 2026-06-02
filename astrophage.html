@@ -3,198 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TESSERACT ASTROPHAGE</title>
-    <!-- Menggunakan font eksternal & framework Tailwind CSS via CDN agar tampilan modern -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>BingX Monitor Dashboard</title>
     <style>
+        /* Gaya Dasar & Tema Gelap */
+        :root {
+            --bg-color: #121318;
+            --card-bg: #1b1c22;
+            --text-main: #ffffff;
+            --text-muted: #848e9c;
+            --primary: #f0b90b;
+            --green: #0ecb81;
+            --red: #f6465d;
+            --border: #2b2f36;
+        }
+
         body {
-            background-color: #0d1117;
-            color: #c9d1d9;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
         }
-        .glow-text {
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        /* Navigasi Tombol Tab */
+        .tab-navigation {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+        }
+
+        /* Status Koneksi */
+        .status-badge {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: #24262e;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        /* Tampilan Tabel */
+        .dashboard-content {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 500;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Label Warna Tambahan */
+        .badge-long {
+            color: var(--green);
+            background: rgba(14, 203, 129, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .badge-short {
+            color: var(--red);
+            background: rgba(246, 70, 93, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .txt-green { color: var(--green); font-weight: bold; }
+        .txt-red { color: var(--red); font-weight: bold; }
+        
+        .loading {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 0;
+        }
+        
+        .hidden { display: none; }
     </style>
 </head>
-<body class="p-6 md:p-12">
+<body>
 
-    <div class="max-w-6xl mx-auto">
-        <!-- Header -->
-        <header class="text-center mb-12 border-b border-gray-800 pb-6">
-            <h1 class="text-4xl md:text-5xl font-black tracking-widest text-sky-400 glow-text uppercase mb-2">
-                TESSERACT ASTROPHAGE
-            </h1>
-            <p class="text-gray-400 text-sm md:text-base">Futures Monitoring System & Grid Tracker</p>
-        </header>
+<div class="container">
+    <header>
+        <div>
+            <h1>BingX Trading Monitor</h1>
+            <p style="margin: 5px 0 0 0; font-size: 13px; color: var(--text-muted)">Data diperbarui otomatis setiap 10 detik</p>
+        </div>
+        <div class="status-badge" id="status">Menghubungkan ke jembatan...</div>
+    </header>
 
-        <!-- Bagian 1: Semua Posisi Terbuka -->
-        <section class="mb-12">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                    <span class="w-2 h-6 bg-sky-500 rounded-sm"></span> Posisi Aktif Saat Ini
-                </h2>
-                <button onclick="loadPositions()" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-1.5 rounded-lg text-sm transition-all cursor-pointer">
-                    🔄 Refresh Posisi
-                </button>
-            </div>
-            
-            <div class="overflow-x-auto bg-[#161b22] border border-gray-800 rounded-xl shadow-xl">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-[#21262d] text-gray-400 text-sm uppercase tracking-wider">
-                            <th class="p-4 border-b border-gray-800">Simbol / Koin</th>
-                            <th class="p-4 border-b border-gray-800">Posisi (Side)</th>
-                            <th class="p-4 border-b border-gray-800">Ukuran (Size)</th>
-                            <th class="p-4 border-b border-gray-800">Harga Masuk</th>
-                            <th class="p-4 border-b border-gray-800">Harga Mark</th>
-                            <th class="p-4 border-b border-gray-800">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="position-table-body">
-                        <tr>
-                            <td colspan="6" class="p-8 text-center text-gray-500">Memuat data posisi...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Bagian 2: Jaring / Open Orders (Akan muncul jika tombol diklik) -->
-        <section id="orders-section" class="hidden transition-all duration-300">
-            <div class="flex justify-between items-center mb-4 border-t border-gray-800 pt-8">
-                <h2 class="text-xl font-bold text-amber-400 flex items-center gap-2">
-                    <span class="w-2 h-6 bg-amber-500 rounded-sm"></span> Daftar Jaring Aktif (<span id="active-symbol-title">-</span>)
-                </h2>
-                <button onclick="closeOrdersSection()" class="text-gray-400 hover:text-white text-sm">
-                    ❌ Tutup Jaring
-                </button>
-            </div>
-
-            <div class="overflow-x-auto bg-[#161b22] border border-gray-800 rounded-xl shadow-xl">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-[#21262d] text-gray-400 text-sm uppercase tracking-wider">
-                            <th class="p-4 border-b border-gray-800">ID Order</th>
-                            <th class="p-4 border-b border-gray-800">Tipe</th>
-                            <th class="p-4 border-b border-gray-800">Side</th>
-                            <th class="p-4 border-b border-gray-800">Harga Jaring</th>
-                            <th class="p-4 border-b border-gray-800">Jumlah Koin</th>
-                            <th class="p-4 border-b border-gray-800">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orders-table-body">
-                        <tr>
-                            <td colspan="6" class="p-8 text-center text-gray-500">Klik tombol "Lihat Jaring" pada posisi di atas.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+    <!-- Tombol Navigasi Utama -->
+    <div class="tab-navigation" style="margin-bottom: 20px;">
+        <button class="tab-btn active" id="btn-posisi" onclick="pindahTab('position')">Posisi Aktif (Open)</button>
+        <button class="tab-btn" id="btn-jaring" onclick="pindahTab('orders')">Antrean Jaring (Pending Orders)</button>
     </div>
 
-    <!-- LOGIKA JAVASCRIPT -->
-    <script>
-        // MASUKKAN URL WORKER CLOUDFLARE ANDA DI SINI
-        const WORKER_URL = "https://bingx-proxy.paku683.workers.dev/"; 
+    <!-- Konten Utama Dashboard -->
+    <div class="dashboard-content">
+        
+        <!-- SEKSI 1: TABEL POSISI -->
+        <div id="panel-posisi">
+            <table id="tabel-posisi">
+                <thead>
+                    <tr>
+                        <th>Simbol</th>
+                        <th>Posisi</th>
+                        <th>Leverage</th>
+                        <th>Harga Masuk (Avg)</th>
+                        <th>Harga Saat Ini</th>
+                        <th>Ukuran Posisi</th>
+                        <th>Unrealized PNL (Margin)</th>
+                    </tr>
+                </thead>
+                <tbody id="data-posisi">
+                    <tr><td colspan="7" class="loading">Memuat data posisi aktif dari BingX...</td></tr>
+                </tbody>
+            </table>
+        </div>
 
-        // Fungsi Otomatis Jalan Saat Web Dibuka
-        document.addEventListener("DOMContentLoaded", () => {
-            loadPositions();
-        });
+        <!-- SEKSI 2: TABEL JARING / ORDERS -->
+        <div id="panel-jaring" class="hidden">
+            <table id="tabel-jaring">
+                <thead>
+                    <tr>
+                        <th>Simbol</th>
+                        <th>Tipe / Sisi</th>
+                        <th>Harga Jaring</th>
+                        <th>Jumlah Koin</th>
+                        <th>Total Nilai</th>
+                        <th>Waktu Pasang</th>
+                    </tr>
+                </thead>
+                <tbody id="data-jaring">
+                    <tr><td colspan="6" class="loading">Memuat data antrean jaring dari BingX...</td></tr>
+                </tbody>
+            </table>
+        </div>
 
-        // 1. Fungsi Mengambil Data Posisi dari Worker
-        async function loadPositions() {
-            const tbody = document.getElementById("position-table-body");
-            tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-sky-400 animate-pulse">Menghubungkan ke Tesseract Engine...</td></tr>`;
+    </div>
+</div>
 
-            try {
-                const response = await fetch(`${WORKER_URL}?type=position`);
-                const result = await response.json();
+<script>
+    // ==========================================
+    // MASUKKAN URL CLOUDFLARE WORKER ANDA DI SINI
+    // ==========================================
+    const PROXY_URL = "https://bingx-proxy.paku683.workers.dev/"; 
 
-                // Validasi data dari BingX API
-                if (result.code !== 0 || !result.data || result.data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">Tidak ada posisi terbuka saat ini.</td></tr>`;
-                    return;
-                }
+    let tabAktif = "position"; // Default tab saat web dibuka
 
-                tbody.innerHTML = ""; // Bersihkan loading
-                
-                result.data.forEach(pos => {
-                    // Cari tahu apakah Long atau Short
-                    const side = parseFloat(pos.positionAmt) > 0 ? "LONG" : "SHORT";
-                    const sideClass = side === "LONG" ? "text-green-400 font-bold" : "text-red-400 font-bold";
+    // Fungsi Pengendali Tombol Tab
+    function pindahTab(namaTab) {
+        tabAktif = namaTab;
+        
+        const btnPosisi = document.getElementById('btn-posisi');
+        const btnJaring = document.getElementById('btn-jaring');
+        const panelPosisi = document.getElementById('panel-posisi');
+        const panelJaring = document.getElementById('panel-jaring');
 
-                    tbody.innerHTML += `
-                        <tr class="border-b border-gray-800 hover:bg-[#21262d] transition-colors">
-                            <td class="p-4 font-semibold text-white">${pos.symbol}</td>
-                            <td class="p-4 ${sideClass}">${side}</td>
-                            <td class="p-4">${Math.abs(pos.positionAmt)}</td>
-                            <td class="p-4 text-gray-300">$${parseFloat(pos.avgPrice).toFixed(4)}</td>
-                            <td class="p-4 text-gray-300">$${parseFloat(pos.markPrice).toFixed(4)}</td>
-                            <td class="p-4">
-                                <button onclick="loadOrders('${pos.symbol}')" class="bg-amber-600 hover:bg-amber-500 text-white text-xs px-3 py-1.5 rounded font-medium cursor-pointer transition-colors">
-                                    🕸️ Lihat Jaring
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
-
-            } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-400">Gagal memuat data: ${error.message}</td></tr>`;
-            }
+        if (namaTab === 'position') {
+            btnPosisi.classList.add('active');
+            btnJaring.classList.remove('active');
+            panelPosisi.classList.remove('hidden');
+            panelJaring.classList.add('hidden');
+            tarikDataPosisi();
+        } else {
+            btnJaring.classList.add('active');
+            btnPosisi.classList.remove('active');
+            panelJaring.classList.remove('hidden');
+            panelPosisi.classList.add('hidden');
+            tarikDataJaring();
         }
+    }
 
-        // 2. Fungsi Mengambil Data Jaring (Open Orders) Berdasarkan Koin yang Diklik
-        async function loadOrders(symbol) {
-            const section = document.getElementById("orders-section");
-            const title = document.getElementById("active-symbol-title");
-            const tbody = document.getElementById("orders-table-body");
+    // Fungsi Format Tanggal untuk Jaring
+    function formatWaktu(timestamp) {
+        const d = new Date(timestamp);
+        return d.toLocaleString('id-ID');
+    }
 
-            // Munculkan section jaring dan beri indikasi loading
-            section.classList.remove("hidden");
-            title.innerText = symbol;
-            tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-amber-400 animate-pulse">Mencari jaring untuk ${symbol}...</td></tr>`;
+    // 1. Ambil Data Posisi dari Cloudflare Worker
+    async function tarikDataPosisi() {
+        if (tabAktif !== 'position') return;
+        
+        try {
+            const response = await fetch(`${PROXY_URL}?type=position`);
+            const resData = await response.json();
+            const tbody = document.getElementById('data-posisi');
+            
+            // Cek jika error / data kosong
+            if (resData.code !== 0 || !resData.data || resData.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="loading">Tidak ada posisi yang sedang terbuka saat ini.</td></tr>`;
+                document.getElementById('status').innerText = "Koneksi Bagus (Kosong)";
+                return;
+            }
 
-            // Scroll otomatis ke bagian tabel jaring agar user langsung melihatnya
-            section.scrollIntoView({ behavior: 'smooth' });
-
-            try {
-                const response = await fetch(`${WORKER_URL}?type=orders&symbol=${symbol}`);
-                const result = await response.json();
-
-                if (result.code !== 0 || !result.data || result.data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">Tidak ada antrean jaring (Open Orders) untuk ${symbol}.</td></tr>`;
-                    return;
-                }
-
-                tbody.innerHTML = ""; // Bersihkan loading
-
-                result.data.forEach(order => {
-                    const orderSideClass = order.side === "BUY" ? "text-green-400" : "text-red-400";
+            let htmlContent = "";
+            resData.data.forEach(pos => {
+                // Memastikan hanya mengambil data yang ukurannya di atas 0 (posisi yang benar-benar aktif)
+                if (parseFloat(pos.positionAmt) !== 0) {
+                    const isLong = parseFloat(pos.positionAmt) > 0;
+                    const sideBadge = isLong ? '<span class="badge-long">LONG</span>' : '<span class="badge-short">SHORT</span>';
                     
-                    tbody.innerHTML += `
-                        <tr class="border-b border-gray-800 hover:bg-[#21262d] transition-colors">
-                            <td class="p-4 text-xs text-gray-500">${order.orderId}</td>
-                            <td class="p-4 text-gray-300">${order.type}</td>
-                            <td class="p-4 font-medium ${orderSideClass}">${order.side}</td>
-                            <td class="p-4 font-semibold text-amber-400">$${parseFloat(order.price).toFixed(4)}</td>
-                            <td class="p-4">${order.origQty}</td>
-                            <td class="p-4"><span class="bg-gray-800 text-gray-300 text-xs px-2 py-0.5 rounded">${order.status}</span></td>
+                    const pnl = parseFloat(pos.unrealizedProfit || 0);
+                    const pnlClass = pnl >= 0 ? "txt-green" : "txt-red";
+                    const pnlSign = pnl >= 0 ? "+" : "";
+
+                    htmlContent += `
+                        <tr>
+                            <td><strong>${pos.symbol}</strong></td>
+                            <td>${sideBadge}</td>
+                            <td>${pos.leverage}x</td>
+                            <td>$${parseFloat(pos.entryPrice).toFixed(4)}</td>
+                            <td>$${parseFloat(pos.isolatedPrice || pos.markPrice).toFixed(4)}</td>
+                            <td>${Math.abs(parseFloat(pos.positionAmt))}</td>
+                            <td class="${pnlClass}">${pnlSign}${pnl.toFixed(2)} USDT</td>
                         </tr>
                     `;
-                });
+                }
+            });
 
-            } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-400">Gagal memuat jaring: ${error.message}</td></tr>`;
+            tbody.innerHTML = htmlContent || `<tr><td colspan="7" class="loading">Tidak ada posisi aktif.</td></tr>`;
+            document.getElementById('status').innerText = "Update Terakhir: " + new Date().toLocaleTimeString();
+
+        } catch (error) {
+            document.getElementById('status').innerText = "Error mengambil data posisi";
+            console.error(error);
+        }
+    }
+
+    // 2. Ambil Data Jaring (Pending Orders) dari Cloudflare Worker
+    async function tarikDataJaring() {
+        if (tabAktif !== 'orders') return;
+
+        try {
+            const response = await fetch(`${PROXY_URL}?type=orders`);
+            const resData = await response.json();
+            const tbody = document.getElementById('data-jaring');
+
+            if (resData.code !== 0 || !resData.data || resData.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="loading">Tidak ada antrean jaring (Open Orders).</td></tr>`;
+                document.getElementById('status').innerText = "Koneksi Bagus (Kosong)";
+                return;
             }
-        }
 
-        // Fungsi menutup panel jaring
-        function closeOrdersSection() {
-            document.getElementById("orders-section").classList.add("hidden");
+            let htmlContent = "";
+            resData.data.forEach(order => {
+                const sideClass = order.side === "BUY" ? "txt-green" : "txt-red";
+                const totalNilai = parseFloat(order.price) * parseFloat(order.origQty);
+
+                htmlContent += `
+                    <tr>
+                        <td><strong>${order.symbol}</strong></td>
+                        <td><span class="${sideClass}">${order.type} / ${order.side}</span></td>
+                        <td>$${parseFloat(order.price).toFixed(4)}</td>
+                        <td>${parseFloat(order.origQty)}</td>
+                        <td>$${totalNilai.toFixed(2)}</td>
+                        <td>${formatWaktu(order.time)}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = htmlContent;
+            document.getElementById('status').innerText = "Update Terakhir: " + new Date().toLocaleTimeString();
+
+        } catch (error) {
+            document.getElementById('status').innerText = "Error mengambil data jaring";
+            console.error(error);
         }
-    </script>
+    }
+
+    // Jalankan penarikan data pertama kali saat web dibuka
+    tarikDataPosisi();
+
+    // Jalankan perulangan otomatis (Auto Refresh) setiap 10 detik (10000 ms)
+    setInterval(() => {
+        if (tabAktif === 'position') {
+            tarikDataPosisi();
+        } else {
+            tarikDataJaring();
+        }
+    }, 10000);
+</script>
+
 </body>
 </html>
