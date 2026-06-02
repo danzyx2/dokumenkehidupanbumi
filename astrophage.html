@@ -1,94 +1,187 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BingX Monitor Dashboard</title>
+    <title>BingX Professional Trading Dashboard</title>
+    <!-- Mengimpor Font Inter untuk tampilan tipografi modern -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Gaya Dasar & Tema Gelap */
+        /* Desain Sistem Token Warna & Variabel */
         :root {
-            --bg-color: #121318;
-            --card-bg: #1b1c22;
-            --text-main: #ffffff;
-            --text-muted: #848e9c;
-            --primary: #f0b90b;
-            --green: #0ecb81;
-            --red: #f6465d;
-            --border: #2b2f36;
+            --bg-main: #0B0E11;
+            --bg-card: #14181F;
+            --bg-card-hover: #1A202C;
+            --border: #212630;
+            --text-primary: #F0F3F6;
+            --text-secondary: #909BB0;
+            --accent: #F0B90B;
+            --accent-green: #0ECB81;
+            --accent-red: #F6465D;
+            --accent-green-bg: rgba(14, 203, 129, 0.12);
+            --accent-red-bg: rgba(246, 70, 93, 0.12);
+            --accent-gold-bg: rgba(240, 185, 11, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            padding: 24px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
+        /* Header Dashboard */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 20px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
             border-bottom: 1px solid var(--border);
-            margin-bottom: 30px;
         }
 
-        h1 {
-            margin: 0;
-            font-size: 24px;
-            color: var(--primary);
-        }
-
-        /* Navigasi Tombol Tab */
-        .tab-navigation {
+        .header-title h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
             display: flex;
+            align-items: center;
             gap: 10px;
         }
 
-        .tab-btn {
-            background-color: var(--card-bg);
-            color: var(--text-muted);
+        .header-title h1 span {
+            color: var(--accent);
+        }
+
+        .header-title p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Status Sinkronisasi Real-time */
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            padding: 10px 20px;
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(14, 203, 129, 0.7);
+            animation: pulse 1.8s infinite;
+        }
+
+        /* Statistik Panel Atas (Overview Cards) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            border-color: #2D3440;
+            transform: translateY(-2px);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .stat-val {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Navigasi Tab Profesional */
+        .tab-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .tab-navigation {
+            display: flex;
+            background: var(--bg-card);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 10px 24px;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
             font-size: 14px;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
 
         .tab-btn:hover {
-            border-color: var(--primary);
-            color: var(--text-main);
+            color: var(--text-primary);
         }
 
         .tab-btn.active {
-            background-color: var(--primary);
-            color: #000;
-            border-color: var(--primary);
+            background-color: var(--border);
+            color: var(--accent);
         }
 
-        /* Status Koneksi */
-        .status-badge {
-            font-size: 12px;
-            color: var(--text-muted);
-            background: #24262e;
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
-
-        /* Tampilan Tabel */
-        .dashboard-content {
-            background-color: var(--card-bg);
-            border-radius: 8px;
+        /* Tampilan Utama Panel Dashboard */
+        .dashboard-panel {
+            background-color: var(--bg-card);
             border: 1px solid var(--border);
-            padding: 20px;
+            border-radius: 16px;
+            padding: 8px 0;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+
+        .table-responsive {
+            width: 100%;
             overflow-x: auto;
         }
 
@@ -100,107 +193,196 @@
         }
 
         th {
-            color: var(--text-muted);
+            color: var(--text-secondary);
             font-weight: 500;
-            padding: 12px 16px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 16px 24px;
             border-bottom: 1px solid var(--border);
+            background-color: rgba(20, 24, 31, 0.5);
         }
 
         td {
-            padding: 16px;
+            padding: 18px 24px;
             border-bottom: 1px solid var(--border);
+            font-weight: 500;
         }
 
         tr:last-child td {
             border-bottom: none;
         }
 
-        /* Label Warna Tambahan */
-        .badge-long {
-            color: var(--green);
-            background: rgba(14, 203, 129, 0.15);
-            padding: 2px 6px;
+        tr:hover td {
+            background-color: rgba(33, 38, 48, 0.2);
+        }
+
+        /* Label Warna Indikator */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
             border-radius: 4px;
-            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-long {
+            color: var(--accent-green);
+            background: var(--accent-green-bg);
+            border: 1px solid rgba(14, 203, 129, 0.2);
         }
 
         .badge-short {
-            color: var(--red);
-            background: rgba(246, 70, 93, 0.15);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
+            color: var(--accent-red);
+            background: var(--accent-red-bg);
+            border: 1px solid rgba(246, 70, 93, 0.2);
         }
 
-        .txt-green { color: var(--green); font-weight: bold; }
-        .txt-red { color: var(--red); font-weight: bold; }
-        
-        .loading {
+        .val-profit { color: var(--accent-green); }
+        .val-loss { color: var(--accent-red); }
+        .text-muted { color: var(--text-secondary); font-size: 12px; font-weight: 400; }
+
+        /* Desain Animasi Loading & Status */
+        .loading-state {
             text-align: center;
-            color: var(--text-muted);
-            padding: 40px 0;
+            padding: 64px 0;
+            color: var(--text-secondary);
         }
-        
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(240, 185, 11, 0.1);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            margin: 0 auto 16px auto;
+            animation: spin 0.8s linear infinite;
+        }
+
         .hidden { display: none; }
+
+        /* Media Responsif */
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            header { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .tab-wrapper { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .tab-navigation { width: 100%; }
+            .tab-btn { flex: 1; text-align: center; }
+        }
+
+        /* Animasi */
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(14, 203, 129, 0.5); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(14, 203, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(14, 203, 129, 0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+    
+    <!-- Bagian Header Utama -->
     <header>
-        <div>
-            <h1>BingX Trading Monitor</h1>
-            <p style="margin: 5px 0 0 0; font-size: 13px; color: var(--text-muted)">Data diperbarui otomatis setiap 10 detik</p>
+        <div class="header-title">
+            <h1>BingX <span>Trading Desk</span></h1>
+            <p>Sistem Pemantauan Aset dan Antrean Jaring Real-Time</p>
         </div>
-        <div class="status-badge" id="status">Menghubungkan ke jembatan...</div>
+        <div class="status-badge">
+            <div class="pulse-dot" id="pulse-indicator"></div>
+            <span id="status-text">Sinkronisasi Pertama...</span>
+        </div>
     </header>
 
-    <!-- Tombol Navigasi Utama -->
-    <div class="tab-navigation" style="margin-bottom: 20px;">
-        <button class="tab-btn active" id="btn-posisi" onclick="pindahTab('position')">Posisi Aktif (Open)</button>
-        <button class="tab-btn" id="btn-jaring" onclick="pindahTab('orders')">Antrean Jaring (Pending Orders)</button>
+    <!-- Baris Widget Statistik Finansial -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total Keuntungan Berjalan (Unrealized PNL)</div>
+            <div class="stat-val" id="total-pnl">0.00 USDT</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Margin Terpakai</div>
+            <div class="stat-val" id="total-margin" style="color: var(--text-primary);">0.00 USDT</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Jumlah Posisi Berjalan</div>
+            <div class="stat-val" id="total-positions" style="color: var(--accent);">0 Posisi</div>
+        </div>
     </div>
 
-    <!-- Konten Utama Dashboard -->
-    <div class="dashboard-content">
+    <!-- Tab Navigasi & Aksi -->
+    <div class="tab-wrapper">
+        <div class="tab-navigation">
+            <button class="tab-btn active" id="btn-posisi" onclick="switchTab('position')">Posisi Aktif</button>
+            <button class="tab-btn" id="btn-jaring" onclick="switchTab('orders')">Antrean Jaring (Pending)</button>
+        </div>
+    </div>
+
+    <!-- Kotak Panel Konten Dashboard -->
+    <div class="dashboard-panel">
         
-        <!-- SEKSI 1: TABEL POSISI -->
+        <!-- PANEL POSISI AKTIF (TAB 1) -->
         <div id="panel-posisi">
-            <table id="tabel-posisi">
-                <thead>
-                    <tr>
-                        <th>Simbol</th>
-                        <th>Posisi</th>
-                        <th>Leverage</th>
-                        <th>Harga Masuk (Avg)</th>
-                        <th>Harga Saat Ini</th>
-                        <th>Ukuran Posisi</th>
-                        <th>Unrealized PNL (Margin)</th>
-                    </tr>
-                </thead>
-                <tbody id="data-posisi">
-                    <tr><td colspan="7" class="loading">Memuat data posisi aktif dari BingX...</td></tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Simbol Koin</th>
+                            <th>Arah</th>
+                            <th>Leverage</th>
+                            <th>Harga Masuk (Avg)</th>
+                            <th>Harga Pasar</th>
+                            <th>Ukuran Posisi</th>
+                            <th style="text-align: right;">Unrealized PNL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-posisi">
+                        <tr>
+                            <td colspan="7">
+                                <div class="loading-state">
+                                    <div class="spinner"></div>
+                                    <p>Menghubungkan ke API BingX...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <!-- SEKSI 2: TABEL JARING / ORDERS -->
+        <!-- PANEL ANTREAN JARING / PENDING ORDERS (TAB 2) -->
         <div id="panel-jaring" class="hidden">
-            <table id="tabel-jaring">
-                <thead>
-                    <tr>
-                        <th>Simbol</th>
-                        <th>Tipe / Sisi</th>
-                        <th>Harga Jaring</th>
-                        <th>Jumlah Koin</th>
-                        <th>Total Nilai</th>
-                        <th>Waktu Pasang</th>
-                    </tr>
-                </thead>
-                <tbody id="data-jaring">
-                    <tr><td colspan="6" class="loading">Memuat data antrean jaring dari BingX...</td></tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Simbol Koin</th>
+                            <th>Tipe & Sisi Jaring</th>
+                            <th>Harga Trigger Jaring</th>
+                            <th>Volume (Qty)</th>
+                            <th>Total Nilai</th>
+                            <th style="text-align: right;">Waktu Pasang</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-jaring">
+                        <tr>
+                            <td colspan="6">
+                                <div class="loading-state">
+                                    <div class="spinner"></div>
+                                    <p>Mengambil antrean jaring dari API...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
@@ -212,99 +394,136 @@
     // ==========================================
     const PROXY_URL = "https://bingx-proxy.paku683.workers.dev/"; 
 
-    let tabAktif = "position"; // Default tab saat web dibuka
+    let activeTab = "position";
 
-    // Fungsi Pengendali Tombol Tab
-    function pindahTab(namaTab) {
-        tabAktif = namaTab;
+    // Pengendali Perpindahan Tab Navigasi
+    function switchTab(targetTab) {
+        activeTab = targetTab;
         
         const btnPosisi = document.getElementById('btn-posisi');
         const btnJaring = document.getElementById('btn-jaring');
         const panelPosisi = document.getElementById('panel-posisi');
         const panelJaring = document.getElementById('panel-jaring');
 
-        if (namaTab === 'position') {
+        if (targetTab === 'position') {
             btnPosisi.classList.add('active');
             btnJaring.classList.remove('active');
             panelPosisi.classList.remove('hidden');
             panelJaring.classList.add('hidden');
-            tarikDataPosisi();
+            fetchPositions();
         } else {
             btnJaring.classList.add('active');
             btnPosisi.classList.remove('active');
             panelJaring.classList.remove('hidden');
             panelPosisi.classList.add('hidden');
-            tarikDataJaring();
+            fetchGridOrders();
         }
     }
 
-    // Fungsi Format Tanggal untuk Jaring
-    function formatWaktu(timestamp) {
-        const d = new Date(timestamp);
-        return d.toLocaleString('id-ID');
+    // Fungsi Format Tanggal
+    function formatDate(timestamp) {
+        const date = new Date(timestamp);
+        return date.toLocaleDateString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
     }
 
-    // 1. Ambil Data Posisi dari Cloudflare Worker
-    async function tarikDataPosisi() {
-        if (tabAktif !== 'position') return;
+    // Pembantu untuk Desimal Harga agar pas sesuai ukuran koin
+    function formatPrice(price, symbol) {
+        const val = parseFloat(price);
+        if (symbol.startsWith("BTC") || symbol.startsWith("ETH")) {
+            return val.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+        }
+        return val.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+    }
+
+    // 1. Ambil & Gambar Data Posisi Aktif
+    async function fetchPositions() {
+        if (activeTab !== 'position') return;
         
         try {
             const response = await fetch(`${PROXY_URL}?type=position`);
             const resData = await response.json();
             const tbody = document.getElementById('data-posisi');
-            
-            // Cek jika error / data kosong
+
             if (resData.code !== 0 || !resData.data || resData.data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="loading">Tidak ada posisi yang sedang terbuka saat ini.</td></tr>`;
-                document.getElementById('status').innerText = "Koneksi Bagus (Kosong)";
+                tbody.innerHTML = `<tr><td colspan="7" class="loading-state"><p>Tidak ada posisi aktif yang sedang terbuka.</p></td></tr>`;
+                updateOverview(0, 0, 0);
+                setSyncStatus("Koneksi Bagus (Kosong)");
                 return;
             }
 
             let htmlContent = "";
+            let overallPnl = 0;
+            let overallMargin = 0;
+            let activeCount = 0;
+
             resData.data.forEach(pos => {
-                // Memastikan hanya mengambil data yang ukurannya di atas 0 (posisi yang benar-benar aktif)
-                if (parseFloat(pos.positionAmt) !== 0) {
-                    const isLong = parseFloat(pos.positionAmt) > 0;
-                    const sideBadge = isLong ? '<span class="badge-long">LONG</span>' : '<span class="badge-short">SHORT</span>';
+                const amt = parseFloat(pos.positionAmt || 0);
+                if (amt !== 0) {
+                    activeCount++;
                     
+                    // Mendeteksi arah transaksi asli dari properti BingX
+                    const side = (pos.positionSide || "LONG").toUpperCase();
+                    const isLong = side === "LONG" || side === "PANJANG";
+                    const badgeClass = isLong ? 'badge-long' : 'badge-short';
+                    const sideText = isLong ? 'LONG' : 'SHORT';
+
+                    const entryPrice = parseFloat(pos.entryPrice || 0);
+                    const markPrice = parseFloat(pos.markPrice || pos.isolatedPrice || 0);
+                    const margin = parseFloat(pos.margin || pos.initialMargin || 0);
+                    
+                    // Akumulasi PNL
                     const pnl = parseFloat(pos.unrealizedProfit || 0);
-                    const pnlClass = pnl >= 0 ? "txt-green" : "txt-red";
+                    overallPnl += pnl;
+                    overallMargin += margin;
+
+                    const pnlClass = pnl >= 0 ? "val-profit" : "val-loss";
                     const pnlSign = pnl >= 0 ? "+" : "";
 
                     htmlContent += `
                         <tr>
                             <td><strong>${pos.symbol}</strong></td>
-                            <td>${sideBadge}</td>
+                            <td><span class="badge ${badgeClass}">${sideText}</span></td>
                             <td>${pos.leverage}x</td>
-                            <td>$${parseFloat(pos.entryPrice).toFixed(4)}</td>
-                            <td>$${parseFloat(pos.isolatedPrice || pos.markPrice).toFixed(4)}</td>
-                            <td>${Math.abs(parseFloat(pos.positionAmt))}</td>
-                            <td class="${pnlClass}">${pnlSign}${pnl.toFixed(2)} USDT</td>
+                            <td>$${formatPrice(entryPrice, pos.symbol)}</td>
+                            <td>$${formatPrice(markPrice, pos.symbol)}</td>
+                            <td>${Math.abs(amt)} <span class="text-muted">${pos.symbol.split('-')[0]}</span></td>
+                            <td class="${pnlClass}" style="text-align: right; font-weight: 700;">
+                                ${pnlSign}${pnl.toFixed(4)} USDT
+                            </td>
                         </tr>
                     `;
                 }
             });
 
-            tbody.innerHTML = htmlContent || `<tr><td colspan="7" class="loading">Tidak ada posisi aktif.</td></tr>`;
-            document.getElementById('status').innerText = "Update Terakhir: " + new Date().toLocaleTimeString();
+            if (activeCount === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="loading-state"><p>Tidak ada posisi aktif.</p></td></tr>`;
+            } else {
+                tbody.innerHTML = htmlContent;
+            }
+
+            // Update Tampilan Stats Panel Atas
+            updateOverview(overallPnl, overallMargin, activeCount);
+            setSyncStatus("Selesai sinkronisasi");
 
         } catch (error) {
-            document.getElementById('status').innerText = "Error mengambil data posisi";
+            setSyncStatus("Gagal mengambil posisi");
             console.error(error);
         }
     }
 
-    // 2. Ambil Data Jaring (Pending Orders) dari Cloudflare WorkeWorke 
-       // 2. Ambil Data Jaring (Pending Orders) - VERSI FIX UNTUK JSON ANDA
-    async function tarikDataJaring() {
-        if (tabAktif !== 'orders') return;
+    // 2. Ambil & Gambar Data Jaring / Antrean Orders
+    async function fetchGridOrders() {
+        if (activeTab !== 'orders') return;
 
         try {
             const response = await fetch(`${PROXY_URL}?type=orders`);
             const resData = await response.json();
             const tbody = document.getElementById('data-jaring');
 
-            // Menyesuaikan dengan JSON Anda: data -> orders
             let dataArray = [];
             if (resData.data && resData.data.orders) {
                 dataArray = resData.data.orders;
@@ -315,74 +534,95 @@
             }
 
             if (dataArray.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="loading">Tidak ada antrean jaring (Open Orders).</td></tr>`;
-                document.getElementById('status').innerText = "Koneksi Bagus (Kosong)";
+                tbody.innerHTML = `<tr><td colspan="6" class="loading-state"><p>Tidak ada antrean jaring (Open Orders) aktif.</p></td></tr>`;
+                setSyncStatus("Koneksi Bagus (Kosong)");
                 return;
             }
 
             let htmlContent = "";
             dataArray.forEach(order => {
-                const simbol = order.symbol || "-";
+                const symbol = order.symbol || "-";
                 
-                // Terjemahkan tipe order biar rapi di tabel (contoh: TAKE_PROFIT_MARKET -> TP Market)
-                let tipe = order.type || "LIMIT";
-                if (tipe === "TAKE_PROFIT_MARKET" || tipe === "AMBIL_KEUNTUNGAN_PASAR") tipe = "TP Market";
-                if (tipe === "STOP_LOSS_MARKET") tipe = "SL Market";
+                // Konversi istilah tipe agar mudah dipahami trader lokal
+                let typeText = order.type || "LIMIT";
+                if (typeText === "TAKE_PROFIT_MARKET" || typeText === "AMBIL_KEUNTUNGAN_PASAR") typeText = "TP Market";
+                if (typeText === "STOP_LOSS_MARKET") typeText = "SL Market";
 
-                // Normalisasi Sisi Jual / Beli (Antisipasi teks campuran)
-                let sisi = (order.side || "BUY").toUpperCase();
-                if (sisi === "JUAL") sisi = "SELL";
-                if (sisi === "BELI") sisi = "BUY";
-                const sideClass = sisi === "BUY" ? "txt-green" : "txt-red";
-
-                // PENTING: Jika harga biasa 0, ambil dari stopPrice (Harga Trigger Jaring TP/SL)
-                const hargaBiasa = parseFloat(order.price || 0);
-                const hargaStop = parseFloat(order.stopPrice || 0);
-                const hargaFinal = hargaBiasa > 0 ? hargaBiasa : hargaStop;
-
-                // Ambil Kuantitas (Jumlah Koin)
-                const jumlah = parseFloat(order.origQty || order.qty || 0);
+                let side = (order.side || "BUY").toUpperCase();
+                if (side === "JUAL") side = "SELL";
+                if (side === "BELI") side = "BUY";
                 
-                // Hitung estimasi nilai total jaring
-                const totalNilai = hargaFinal * jumlah;
+                const sideClass = side === "BUY" ? "val-profit" : "val-loss";
 
-                // Waktu Pasang Jaring
-                const waktuRaw = order.time || order.updateTime || Date.now();
+                // Gunakan StopPrice jika ordernya berjenis trigger jaring (TP/SL)
+                const basePrice = parseFloat(order.price || 0);
+                const stopPrice = parseFloat(order.stopPrice || 0);
+                const finalPrice = basePrice > 0 ? basePrice : stopPrice;
+
+                const qty = parseFloat(order.origQty || order.qty || 0);
+                const totalVal = finalPrice * qty;
+                const timeStr = formatDate(order.time || order.updateTime || Date.now());
 
                 htmlContent += `
                     <tr>
-                        <td><strong>${simbol}</strong> <span style="font-size:11px; color:var(--text-muted);">${order.leverage || ''}</span></td>
-                        <td><span class="${sideClass}">${tipe} / ${sisi}</span></td>
-                        <td>$${hargaFinal.toFixed(3)}</td>
-                        <td>${jumlah}</td>
-                        <td>$${totalNilai.toFixed(2)}</td>
-                        <td>${formatWaktu(waktuRaw)}</td>
+                        <td><strong>${symbol}</strong> <span class="text-muted">${order.leverage || ''}</span></td>
+                        <td><span class="${sideClass}" style="font-weight: 700;">${typeText} / ${side}</span></td>
+                        <td>$${formatPrice(finalPrice, symbol)}</td>
+                        <td>${qty}</td>
+                        <td>$${totalVal.toFixed(2)}</td>
+                        <td style="text-align: right;" class="text-muted">${timeStr}</td>
                     </tr>
                 `;
             });
 
             tbody.innerHTML = htmlContent;
-            document.getElementById('status').innerText = "Update Terakhir: " + new Date().toLocaleTimeString();
+            setSyncStatus("Selesai sinkronisasi");
 
         } catch (error) {
-            document.getElementById('data-jaring').innerHTML = `<tr><td colspan="6" class="loading" style="color:red;">Gagal memproses data jaring: ${error.message}</td></tr>`;
-            document.getElementById('status').innerText = "Error membaca JSON jaring";
-            console.error("Detail Error:", error);
+            setSyncStatus("Gagal mengambil jaring");
+            console.error(error);
         }
     }
 
-    // Jalankan penarikan data pertama kali saat web dibuka
-    tarikDataPosisi();
+    // Fungsi Pengubah Data Ringkasan Atas (Stats Card)
+    function updateOverview(totalPnl, totalMargin, totalPositions) {
+        const pnlElement = document.getElementById('total-pnl');
+        const marginElement = document.getElementById('total-margin');
+        const positionsElement = document.getElementById('total-positions');
 
-    // Jalankan perulangan otomatis (Auto Refresh) setiap 10 detik (10000 ms)
-    setInterval(() => {
-        if (tabAktif === 'position') {
-            tarikDataPosisi();
+        // Render PNL dengan perubahan warna dinamis
+        pnlElement.innerText = `${totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(4)} USDT`;
+        if (totalPnl > 0) {
+            pnlElement.className = "stat-val val-profit";
+        } else if (totalPnl < 0) {
+            pnlElement.className = "stat-val val-loss";
         } else {
-            tarikDataJaring();
+            pnlElement.className = "stat-val";
+        }
+
+        // Render Margin & Jumlah Posisi
+        marginElement.innerText = `${totalMargin.toFixed(2)} USDT`;
+        positionsElement.innerText = `${totalPositions} Posisi`;
+    }
+
+    // Fungsi Mengubah Status & Animasi di Header
+    function setSyncStatus(text) {
+        document.getElementById('status-text').innerText = text;
+    }
+
+    // Inisialisasi awal saat halaman terbuka
+    fetchPositions();
+
+    // Jalankan Sinkronisasi Otomatis setiap 10 detik (10.000 ms)
+    setInterval(() => {
+        if (activeTab === 'position') {
+            fetchPositions();
+        } else {
+            fetchGridOrders();
         }
     }, 10000);
 </script>
 
 </body>
 </html>
+
