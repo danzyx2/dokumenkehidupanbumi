@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TESSERACT ASTROPHAGE</title>
+    <!-- Menggunakan font eksternal & framework Tailwind CSS via CDN agar tampilan modern -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-12 border-b border-gray-800 pb-6">
+            <h1 class="text-4xl md:text-5xl font-black tracking-widest text-sky-400 glow-text uppercase mb-2">
+                TESSERACT ASTROPHAGE
+            </h1>
+            <p class="text-gray-400 text-sm md:text-base">Futures Monitoring System & Grid Tracker</p>
+        </header>
+
+        <!-- Bagian 1: Semua Posisi Terbuka -->
+        <section class="mb-12">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <span class="w-2 h-6 bg-sky-500 rounded-sm"></span> Posisi Aktif Saat Ini
+                </h2>
+                <button onclick="loadPositions()" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-1.5 rounded-lg text-sm transition-all cursor-pointer">
+                    🔄 Refresh Posisi
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto bg-[#161b22] border border-gray-800 rounded-xl shadow-xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#21262d] text-gray-400 text-sm uppercase tracking-wider">
+                            <th class="p-4 border-b border-gray-800">Simbol / Koin</th>
+                            <th class="p-4 border-b border-gray-800">Posisi (Side)</th>
+                            <th class="p-4 border-b border-gray-800">Ukuran (Size)</th>
+                            <th class="p-4 border-b border-gray-800">Harga Masuk</th>
+                            <th class="p-4 border-b border-gray-800">Harga Mark</th>
+                            <th class="p-4 border-b border-gray-800">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="position-table-body">
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-gray-500">Memuat data posisi...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Bagian 2: Jaring / Open Orders (Akan muncul jika tombol diklik) -->
+        <section id="orders-section" class="hidden transition-all duration-300">
+            <div class="flex justify-between items-center mb-4 border-t border-gray-800 pt-8">
+                <h2 class="text-xl font-bold text-amber-400 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-amber-500 rounded-sm"></span> Daftar Jaring Aktif (<span id="active-symbol-title">-</span>)
+                </h2>
+                <button onclick="closeOrdersSection()" class="text-gray-400 hover:text-white text-sm">
+                    ❌ Tutup Jaring
+                </button>
+            </div>
+
+            <div class="overflow-x-auto bg-[#161b22] border border-gray-800 rounded-xl shadow-xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#21262d] text-gray-400 text-sm uppercase tracking-wider">
+                            <th class="p-4 border-b border-gray-800">ID Order</th>
+                            <th class="p-4 border-b border-gray-800">Tipe</th>
+                            <th class="p-4 border-b border-gray-800">Side</th>
+                            <th class="p-4 border-b border-gray-800">Harga Jaring</th>
+                            <th class="p-4 border-b border-gray-800">Jumlah Koin</th>
+                            <th class="p-4 border-b border-gray-800">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-gray-500">Klik tombol "Lihat Jaring" pada posisi di atas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- LOGIKA JAVASCRIPT -->
+    <script>
+        // MASUKKAN URL WORKER CLOUDFLARE ANDA DI SINI
+        const WORKER_URL = "https://bingx-proxy.paku683.workers.dev/"; 
+
+        // Fungsi Otomatis Jalan Saat Web Dibuka
+        document.addEventListener("DOMContentLoaded", () => {
+            loadPositions();
+        });
+
+        // 1. Fungsi Mengambil Data Posisi dari Worker
+        async function loadPositions() {
+            const tbody = document.getElementById("position-table-body");
+            tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-sky-400 animate-pulse">Menghubungkan ke Tesseract Engine...</td></tr>`;
+
+            try {
+                const response = await fetch(`${WORKER_URL}?type=position`);
+                const result = await response.json();
+
+                // Validasi data dari BingX API
+                if (result.code !== 0 || !result.data || result.data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">Tidak ada posisi terbuka saat ini.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = ""; // Bersihkan loading
+                
+                result.data.forEach(pos => {
+                    // Cari tahu apakah Long atau Short
+                    const side = parseFloat(pos.positionAmt) > 0 ? "LONG" : "SHORT";
+                    const sideClass = side === "LONG" ? "text-green-400 font-bold" : "text-red-400 font-bold";
+
+                    tbody.innerHTML += `
+                        <tr class="border-b border-gray-800 hover:bg-[#21262d] transition-colors">
+                            <td class="p-4 font-semibold text-white">${pos.symbol}</td>
+                            <td class="p-4 ${sideClass}">${side}</td>
+                            <td class="p-4">${Math.abs(pos.positionAmt)}</td>
+                            <td class="p-4 text-gray-300">$${parseFloat(pos.avgPrice).toFixed(4)}</td>
+                            <td class="p-4 text-gray-300">$${parseFloat(pos.markPrice).toFixed(4)}</td>
+                            <td class="p-4">
+                                <button onclick="loadOrders('${pos.symbol}')" class="bg-amber-600 hover:bg-amber-500 text-white text-xs px-3 py-1.5 rounded font-medium cursor-pointer transition-colors">
+                                    🕸️ Lihat Jaring
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-400">Gagal memuat data: ${error.message}</td></tr>`;
+            }
+        }
+
+        // 2. Fungsi Mengambil Data Jaring (Open Orders) Berdasarkan Koin yang Diklik
+        async function loadOrders(symbol) {
+            const section = document.getElementById("orders-section");
+            const title = document.getElementById("active-symbol-title");
+            const tbody = document.getElementById("orders-table-body");
+
+            // Munculkan section jaring dan beri indikasi loading
+            section.classList.remove("hidden");
+            title.innerText = symbol;
+            tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-amber-400 animate-pulse">Mencari jaring untuk ${symbol}...</td></tr>`;
+
+            // Scroll otomatis ke bagian tabel jaring agar user langsung melihatnya
+            section.scrollIntoView({ behavior: 'smooth' });
+
+            try {
+                const response = await fetch(`${WORKER_URL}?type=orders&symbol=${symbol}`);
+                const result = await response.json();
+
+                if (result.code !== 0 || !result.data || result.data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">Tidak ada antrean jaring (Open Orders) untuk ${symbol}.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = ""; // Bersihkan loading
+
+                result.data.forEach(order => {
+                    const orderSideClass = order.side === "BUY" ? "text-green-400" : "text-red-400";
+                    
+                    tbody.innerHTML += `
+                        <tr class="border-b border-gray-800 hover:bg-[#21262d] transition-colors">
+                            <td class="p-4 text-xs text-gray-500">${order.orderId}</td>
+                            <td class="p-4 text-gray-300">${order.type}</td>
+                            <td class="p-4 font-medium ${orderSideClass}">${order.side}</td>
+                            <td class="p-4 font-semibold text-amber-400">$${parseFloat(order.price).toFixed(4)}</td>
+                            <td class="p-4">${order.origQty}</td>
+                            <td class="p-4"><span class="bg-gray-800 text-gray-300 text-xs px-2 py-0.5 rounded">${order.status}</span></td>
+                        </tr>
+                    `;
+                });
+
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-400">Gagal memuat jaring: ${error.message}</td></tr>`;
+            }
+        }
+
+        // Fungsi menutup panel jaring
+        function closeOrdersSection() {
+            document.getElementById("orders-section").classList.add("hidden");
+        }
+    </script>
+</body>
+</html>
