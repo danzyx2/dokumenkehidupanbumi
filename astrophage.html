@@ -294,7 +294,8 @@
         }
     }
 
-    // 2. Ambil Data Jaring (Pending Orders) dari Cloudflare Worker
+    // 2. Ambil Data Jaring (Pending Orders) dari Cloudflare WorkeWorke 
+       // 2. Ambil Data Jaring (Pending Orders) - VERSI FIX UNTUK JSON ANDA
     async function tarikDataJaring() {
         if (tabAktif !== 'orders') return;
 
@@ -303,25 +304,59 @@
             const resData = await response.json();
             const tbody = document.getElementById('data-jaring');
 
-            if (resData.code !== 0 || !resData.data || resData.data.length === 0) {
+            // Menyesuaikan dengan JSON Anda: data -> orders
+            let dataArray = [];
+            if (resData.data && resData.data.orders) {
+                dataArray = resData.data.orders;
+            } else if (Array.isArray(resData.data)) {
+                dataArray = resData.data;
+            } else if (Array.isArray(resData)) {
+                dataArray = resData;
+            }
+
+            if (dataArray.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="loading">Tidak ada antrean jaring (Open Orders).</td></tr>`;
                 document.getElementById('status').innerText = "Koneksi Bagus (Kosong)";
                 return;
             }
 
             let htmlContent = "";
-            resData.data.forEach(order => {
-                const sideClass = order.side === "BUY" ? "txt-green" : "txt-red";
-                const totalNilai = parseFloat(order.price) * parseFloat(order.origQty);
+            dataArray.forEach(order => {
+                const simbol = order.symbol || "-";
+                
+                // Terjemahkan tipe order biar rapi di tabel (contoh: TAKE_PROFIT_MARKET -> TP Market)
+                let tipe = order.type || "LIMIT";
+                if (tipe === "TAKE_PROFIT_MARKET" || tipe === "AMBIL_KEUNTUNGAN_PASAR") tipe = "TP Market";
+                if (tipe === "STOP_LOSS_MARKET") tipe = "SL Market";
+
+                // Normalisasi Sisi Jual / Beli (Antisipasi teks campuran)
+                let sisi = (order.side || "BUY").toUpperCase();
+                if (sisi === "JUAL") sisi = "SELL";
+                if (sisi === "BELI") sisi = "BUY";
+                const sideClass = sisi === "BUY" ? "txt-green" : "txt-red";
+
+                // PENTING: Jika harga biasa 0, ambil dari stopPrice (Harga Trigger Jaring TP/SL)
+                const hargaBiasa = parseFloat(order.price || 0);
+                const hargaStop = parseFloat(order.stopPrice || 0);
+                const hargaFinal = hargaBiasa > 0 ? hargaBiasa : hargaStop;
+
+                // Ambil Kuantitas (Jumlah Koin)
+                const jumlah = parseFloat(order.origQty || order.qty || 0);
+                
+                // Hitung estimasi nilai total jaring
+                const totalNilai = hargaFinal * jumlah;
+
+                // Waktu Pasang Jaring
+                const waktuRaw = order.time || order.updateTime || Date.now();
 
                 htmlContent += `
                     <tr>
-                        <td><strong>${order.symbol}</strong></td>
-                        <td><span class="${sideClass}">${order.type} / ${order.side}</span></td>
-                        <td>$${parseFloat(order.price).toFixed(4)}</td>
-                        <td>${parseFloat(order.origQty)}</td>
+                        <td><strong>${simbol}</strong> <span style="font-size:11px; color:var(--text-muted);">${order.leverage || ''}</span></td>
+                        <td><span class="${sideClass}">${tipe} / ${sisi}</span></td>
+                        <td>$${hargaFinal.toFixed(3)}</td>
+                        <td>${jumlah}</td>
                         <td>$${totalNilai.toFixed(2)}</td>
-                        <td>${formatWaktu(order.time)}</td>
+                        <td>${formatWaktu(waktuRaw)}</td>
                     </tr>
                 `;
             });
@@ -330,8 +365,9 @@
             document.getElementById('status').innerText = "Update Terakhir: " + new Date().toLocaleTimeString();
 
         } catch (error) {
-            document.getElementById('status').innerText = "Error mengambil data jaring";
-            console.error(error);
+            document.getElementById('data-jaring').innerHTML = `<tr><td colspan="6" class="loading" style="color:red;">Gagal memproses data jaring: ${error.message}</td></tr>`;
+            document.getElementById('status').innerText = "Error membaca JSON jaring";
+            console.error("Detail Error:", error);
         }
     }
 
