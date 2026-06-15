@@ -5,8 +5,8 @@ const soalElement = document.getElementById('soal');
         const countdownDisplay = document.getElementById('countdown');
         const timerElement = document.getElementById('timer');
 
-        const jawabanBenar = "nitrogen";
-        const linkBenar = "https://app.shopeepay.co.id/u/Ze2E6YcJSsQdXVEqCLrR2";
+        const jawabanBenar = "tiram";
+        const linkBenar = "https://app.shopeepay.co.id/u/rbMZnmEB4nWLtvg8MiByz";
         const linkBantuan = "petunjuk.html";
 
         let waktuHabis = false;
@@ -14,7 +14,7 @@ const soalElement = document.getElementById('soal');
         let intervalId;
 
         // Set the target date and time
-        const targetDate = new Date("October 20, 2025 17:00:00").getTime();  // Ubah tanggal dan waktu hitung mundur
+        const targetDate = new Date("June 16, 2026 17:00:00").getTime();  // Ubah tanggal dan waktu hitung mundur
 
         function startCountdown() {
             intervalId = setInterval(function() {
