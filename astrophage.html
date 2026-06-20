@@ -400,22 +400,51 @@
 
 <script>
     // ==========================================
-    // MASUKKAN URL CLOUDFLARE WORKER ANDA DI SINI
+    // CONFIGURATION & VARIABLE INITIALIZATION
     // ==========================================
     const PROXY_URL = "https://bingx-proxy.paku683.workers.dev/"; 
 
-// Otomatis mengambil kunci yang pernah disimpan di browser, jika belum ada kosongkan dulu
-let LISENSI_SAYA = localStorage.getItem("user_api_license") || "";
-let activeTab = "position";
+    // Ambil lisensi dari localStorage, jika belum ada kosongkan
+    let LISENSI_SAYA = localStorage.getItem("user_api_license") || "";
+    let activeTab = "position"; // Deklarasi cukup SATU KALI di sini
 
-// Masukkan otomatis kunci ke kolom input jika sebelumnya sudah pernah disimpan
-document.addEventListener("DOMContentLoaded", () => {
-    if (LISENSI_SAYA) {
-        document.getElementById("input-lisensi").value = LISENSI_SAYA;
+    // Jalankan setup saat elemen HTML selesai dimuat oleh browser
+    document.addEventListener("DOMContentLoaded", () => {
+        // Isi kolom input otomatis jika lisensi sudah tersimpan
+        if (LISENSI_SAYA) {
+            const inputElem = document.getElementById("input-lisensi");
+            if (inputElem) inputElem.value = LISENSI_SAYA;
+        }
+        // Jalankan fetch pertama kali setelah halaman siap
+        fetchPositions();
+    });
+
+    // ==========================================
+    // ACTION FUNCTIONS
+    // ==========================================
+    
+    // Fungsi untuk menyimpan lisensi dari kolom input ke browser
+    function simpanLisensi() {
+        const inputVal = document.getElementById("input-lisensi").value.trim();
+        
+        if (!inputVal) {
+            alert("Harap masukkan kunci lisensi Anda terlebih dahulu!");
+            return;
+        }
+        
+        // Simpan ke localStorage browser
+        localStorage.setItem("user_api_license", inputVal);
+        LISENSI_SAYA = inputVal;
+        
+        alert("Kunci lisensi berhasil diterapkan! Menghubungkan ulang...");
+        
+        // Refresh data secara instan sesuai tab aktif
+        if (activeTab === 'position') {
+            fetchPositions();
+        } else {
+            fetchGridOrders();
+        }
     }
-}); 
-
-    let activeTab = "position";
 
     // Pengendali Perpindahan Tab Navigasi
     function switchTab(targetTab) {
@@ -441,33 +470,34 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Fungsi Format Tanggal
-    function formatDate(timestamp) {
-        const date = new Date(timestamp);
-        return date.toLocaleDateString('id-ID', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
-    }
-
-    // Pembantu untuk Desimal Harga agar pas sesuai ukuran koin
-    function formatPrice(price, symbol) {
-        const val = parseFloat(price);
-        if (symbol.startsWith("BTC") || symbol.startsWith("ETH")) {
-            return val.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
-        }
-        return val.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
-    }
+    // ==========================================
+    // CORE FETCH DATA (WITH LICENSE HEADER)
+    // ==========================================
 
     // 1. Ambil & Gambar Data Posisi Aktif
     async function fetchPositions() {
         if (activeTab !== 'position') return;
         
         try {
-            const response = await fetch(`${PROXY_URL}?type=position`);
+            setSyncStatus("Menghubungkan...");
+            
+            // Menyuntikkan header lisensi ke Cloudflare Worker
+            const response = await fetch(`${PROXY_URL}?type=position`, {
+                method: "GET",
+                headers: {
+                    "X-Premium-Key": LISENSI_SAYA
+                }
+            });
+            
             const resData = await response.json();
             const tbody = document.getElementById('data-posisi');
+
+            // Tangani jika respon API gagal atau ditolak Worker (401/403/dll)
+            if (!response.ok) {
+                tbody.innerHTML = `<tr><td colspan="7" class="loading-state"><p style="color: var(--accent-red); font-weight: bold;">Error ${response.status}: ${resData.error || 'Akses Ditolak'}</p><p class="text-muted">${resData.message || 'Periksa kembali lisensi Anda.'}</p></td></tr>`;
+                setSyncStatus(resData.error || "Gagal sinkronisasi");
+                return;
+            }
 
             if (resData.code !== 0 || !resData.data || resData.data.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" class="loading-state"><p>Tidak ada posisi aktif yang sedang terbuka.</p></td></tr>`;
@@ -486,7 +516,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (amt !== 0) {
                     activeCount++;
                     
-                    // Mendeteksi arah transaksi asli dari properti BingX
                     const side = (pos.positionSide || "LONG").toUpperCase();
                     const isLong = side === "LONG" || side === "PANJANG";
                     const badgeClass = isLong ? 'badge-long' : 'badge-short';
@@ -496,7 +525,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     const markPrice = parseFloat(pos.markPrice || pos.isolatedPrice || 0);
                     const margin = parseFloat(pos.margin || pos.initialMargin || 0);
                     
-                    // Akumulasi PNL
                     const pnl = parseFloat(pos.unrealizedProfit || 0);
                     overallPnl += pnl;
                     overallMargin += margin;
@@ -526,7 +554,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 tbody.innerHTML = htmlContent;
             }
 
-            // Update Tampilan Stats Panel Atas
             updateOverview(overallPnl, overallMargin, activeCount);
             setSyncStatus("Selesai sinkronisasi");
 
@@ -541,9 +568,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (activeTab !== 'orders') return;
 
         try {
-            const response = await fetch(`${PROXY_URL}?type=orders`);
+            setSyncStatus("Menghubungkan...");
+            
+            // Menyuntikkan header lisensi ke Cloudflare Worker
+            const response = await fetch(`${PROXY_URL}?type=orders`, {
+                method: "GET",
+                headers: {
+                    "X-Premium-Key": LISENSI_SAYA
+                }
+            });
+            
             const resData = await response.json();
             const tbody = document.getElementById('data-jaring');
+
+            // Tangani jika respon API gagal atau ditolak Worker
+            if (!response.ok) {
+                tbody.innerHTML = `<tr><td colspan="6" class="loading-state"><p style="color: var(--accent-red); font-weight: bold;">Error ${response.status}: ${resData.error || 'Akses Ditolak'}</p><p class="text-muted">${resData.message || 'Periksa kembali lisensi Anda.'}</p></td></tr>`;
+                setSyncStatus(resData.error || "Gagal sinkronisasi");
+                return;
+            }
 
             let dataArray = [];
             if (resData.data && resData.data.orders) {
@@ -564,7 +607,6 @@ document.addEventListener("DOMContentLoaded", () => {
             dataArray.forEach(order => {
                 const symbol = order.symbol || "-";
                 
-                // Konversi istilah tipe agar mudah dipahami trader lokal
                 let typeText = order.type || "LIMIT";
                 if (typeText === "TAKE_PROFIT_MARKET" || typeText === "AMBIL_KEUNTUNGAN_PASAR") typeText = "TP Market";
                 if (typeText === "STOP_LOSS_MARKET") typeText = "SL Market";
@@ -575,7 +617,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 const sideClass = side === "BUY" ? "val-profit" : "val-loss";
 
-                // Gunakan StopPrice jika ordernya berjenis trigger jaring (TP/SL)
                 const basePrice = parseFloat(order.price || 0);
                 const stopPrice = parseFloat(order.stopPrice || 0);
                 const finalPrice = basePrice > 0 ? basePrice : stopPrice;
@@ -605,13 +646,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Fungsi Pengubah Data Ringkasan Atas (Stats Card)
+    // ==========================================
+    // HELPER & UTILITY FUNCTIONS
+    // ==========================================
+    function formatDate(timestamp) {
+        const date = new Date(timestamp);
+        return date.toLocaleDateString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+    }
+
+    function formatPrice(price, symbol) {
+        const val = parseFloat(price);
+        if (symbol && (symbol.startsWith("BTC") || symbol.startsWith("ETH"))) {
+            return val.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+        }
+        return val.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+    }
+
     function updateOverview(totalPnl, totalMargin, totalPositions) {
         const pnlElement = document.getElementById('total-pnl');
         const marginElement = document.getElementById('total-margin');
         const positionsElement = document.getElementById('total-positions');
 
-        // Render PNL dengan perubahan warna dinamis
         pnlElement.innerText = `${totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(4)} USDT`;
         if (totalPnl > 0) {
             pnlElement.className = "stat-val val-profit";
@@ -621,20 +680,15 @@ document.addEventListener("DOMContentLoaded", () => {
             pnlElement.className = "stat-val";
         }
 
-        // Render Margin & Jumlah Posisi
         marginElement.innerText = `${totalMargin.toFixed(2)} USDT`;
         positionsElement.innerText = `${totalPositions} Posisi`;
     }
 
-    // Fungsi Mengubah Status & Animasi di Header
     function setSyncStatus(text) {
         document.getElementById('status-text').innerText = text;
     }
 
-    // Inisialisasi awal saat halaman terbuka
-    fetchPositions();
-
-    // Jalankan Sinkronisasi Otomatis setiap 10 detik (10.000 ms)
+    // Interval otomatis per 10 detik
     setInterval(() => {
         if (activeTab === 'position') {
             fetchPositions();
@@ -642,29 +696,6 @@ document.addEventListener("DOMContentLoaded", () => {
             fetchGridOrders();
         }
     }, 10000);
-
-    // Fungsi untuk menyimpan lisensi dari kolom input ke dalam memory browser
-function simpanLisensi() {
-    const inputVal = document.getElementById("input-lisensi").value.trim();
-    
-    if (!inputVal) {
-        alert("Harap masukkan kunci lisensi Anda terlebih dahulu!");
-        return;
-    }
-    
-    // Simpan ke localStorage browser
-    localStorage.setItem("user_api_license", inputVal);
-    LISENSI_SAYA = inputVal;
-    
-    alert("Kunci lisensi berhasil diterapkan! Menghubungkan ulang...");
-    
-    // Refresh data dashboard secara instan sesuai tab yang aktif saat ini
-    if (activeTab === 'position') {
-        fetchPositions();
-    } else {
-        fetchGridOrders();
-    }
-}
 </script>
 
 </body>
