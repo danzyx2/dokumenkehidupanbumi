@@ -301,6 +301,16 @@
         </div>
     </header>
 
+<div style="background: var(--bg-card); border: 1px solid var(--border); padding: 16px; border-radius: 12px; margin-bottom: 24px; display: flex; gap: 12px; align-items: center;">
+    <div style="flex: 1;">
+        <label style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px; font-weight: 600;">MASUKKAN KUNCI LISENSI PREMIUM ANDA:</label>
+        <input type="password" id="input-lisensi" placeholder="Contoh: KunciPremium_Anda" style="width: 100%; background: var(--bg-main); border: 1px solid var(--border); padding: 10px 14px; border-radius: 6px; color: var(--text-primary); font-family: inherit; font-size: 14px;">
+    </div>
+    <button onclick="simpanLisensi()" style="background: var(--accent); color: var(--bg-main); border: none; padding: 12px 24px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 14px; margin-top: 18px; transition: opacity 0.2s;">
+        Simpan & Hubungkan
+    </button>
+</div>
+    
     <!-- Baris Widget Statistik Finansial -->
     <div class="stats-grid">
         <div class="stat-card">
@@ -393,6 +403,17 @@
     // MASUKKAN URL CLOUDFLARE WORKER ANDA DI SINI
     // ==========================================
     const PROXY_URL = "https://bingx-proxy.paku683.workers.dev/"; 
+
+// Otomatis mengambil kunci yang pernah disimpan di browser, jika belum ada kosongkan dulu
+let LISENSI_SAYA = localStorage.getItem("user_api_license") || "";
+let activeTab = "position";
+
+// Masukkan otomatis kunci ke kolom input jika sebelumnya sudah pernah disimpan
+document.addEventListener("DOMContentLoaded", () => {
+    if (LISENSI_SAYA) {
+        document.getElementById("input-lisensi").value = LISENSI_SAYA;
+    }
+}); 
 
     let activeTab = "position";
 
@@ -621,6 +642,29 @@
             fetchGridOrders();
         }
     }, 10000);
+
+    // Fungsi untuk menyimpan lisensi dari kolom input ke dalam memory browser
+function simpanLisensi() {
+    const inputVal = document.getElementById("input-lisensi").value.trim();
+    
+    if (!inputVal) {
+        alert("Harap masukkan kunci lisensi Anda terlebih dahulu!");
+        return;
+    }
+    
+    // Simpan ke localStorage browser
+    localStorage.setItem("user_api_license", inputVal);
+    LISENSI_SAYA = inputVal;
+    
+    alert("Kunci lisensi berhasil diterapkan! Menghubungkan ulang...");
+    
+    // Refresh data dashboard secara instan sesuai tab yang aktif saat ini
+    if (activeTab === 'position') {
+        fetchPositions();
+    } else {
+        fetchGridOrders();
+    }
+}
 </script>
 
 </body>
