@@ -417,7 +417,29 @@
 </div>
     
     <!-- Baris Widget Statistik Finansial -->
+    <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 12px; border-radius: 12px; margin-bottom: 24px; display: flex; gap: 10px;">
+    <button id="btn-acc-real" onclick="switchAccountType('real')" style="flex: 1; padding: 10px; background: var(--accent); color: var(--bg-main); border: none; border-radius: 6px; font-weight: 700; cursor: pointer;">
+        🟢 AKUN REAL
+    </button>
+    <button id="btn-acc-demo" onclick="switchAccountType('demo')" style="flex: 1; padding: 10px; background: var(--border); color: var(--text-secondary); border: none; border-radius: 6px; font-weight: 700; cursor: pointer;">
+        🟡 AKUN DEMO / VST
+    </button>
+</div>
+
+<div style="background: var(--bg-card); border: 1px solid var(--border); padding: 12px; border-radius: 12px; margin-bottom: 24px;">
+    <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px 0;">⏱️ Filter Pelacakan Bot:</p>
+    <p id="bot-start-time-text" style="font-size: 11px; color: var(--text-secondary); margin: 0;">Menghitung data...</p>
+</div>
+    
     <div class="stats-grid">
+        <div class="stat-card">
+    <div class="stat-label">Winrate Bot (Sejak 1 Juli)</div>
+    <div class="stat-val" id="stat-winrate" style="color: var(--accent-green);">0.00%</div>
+</div>
+<div class="stat-card">
+    <div class="stat-label">Total Keuntungan Selesai (Realized PNL)</div>
+    <div class="stat-val" id="stat-realized-pnl">0.00 USDT</div>
+</div>
         <div class="stat-card">
             <div class="stat-label">Total Keuntungan Berjalan (Unrealized PNL)</div>
             <div class="stat-val" id="total-pnl">0.00 USDT</div>
@@ -605,6 +627,7 @@
                 method: "GET",
                 headers: {
                     "X-Premium-Key": LISENSI_SAYA
+                    "X-Account-Type": CURRENT_ACCOUNT_TYPE
                 }
             });
             
@@ -777,7 +800,82 @@
         });
     }
 
+// Variabel kontrol akun dan pengunci tanggal 1 Juli 2026
+let CURRENT_ACCOUNT_TYPE = localStorage.getItem("user_account_type") || "real";
+const BOT_START_TIMESTAMP = new Date("2026-07-01T00:00:00+07:00").getTime();
 
+// Daftarkan fungsi pemicu awal saat halaman dimuat
+document.addEventListener("DOMContentLoaded", () => {
+    updateAccountTabUI();
+    updateBotTimeUI();
+    fetchWinrate();
+});
+
+function switchAccountType(type) {
+    CURRENT_ACCOUNT_TYPE = type;
+    localStorage.setItem("user_account_type", type);
+    updateAccountTabUI();
+    alert(`Berhasil pindah ke AKUN ${type.toUpperCase()}! Memperbarui data...`);
+    
+    if (activeTab === 'position') { fetchPositions(); } else { fetchGridOrders(); }
+    fetchWinrate();
+}
+
+function updateAccountTabUI() {
+    const realBtn = document.getElementById('btn-acc-real');
+    const demoBtn = document.getElementById('btn-acc-demo');
+    if (CURRENT_ACCOUNT_TYPE === 'real') {
+        realBtn.style.background = "var(--accent)"; realBtn.style.color = "var(--bg-main)";
+        demoBtn.style.background = "var(--border)"; demoBtn.style.color = "var(--text-secondary)";
+    } else {
+        demoBtn.style.background = "var(--accent)"; demoBtn.style.color = "var(--bg-main)";
+        realBtn.style.background = "var(--border)"; realBtn.style.color = "var(--text-secondary)";
+    }
+}
+
+function updateBotTimeUI() {
+    const textElem = document.getElementById('bot-start-time-text');
+    if (textElem) {
+        const date = new Date(BOT_START_TIMESTAMP);
+        textElem.innerText = "Mengunci data sejak: " + date.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) + " (00:00 WIB)";
+    }
+}
+
+// Fungsi utama menarik riwayat trade dan menyaring transaksi sejak 1 Juli 2026
+async function fetchWinrate() {
+    try {
+        const response = await fetch(`${PROXY_URL}?type=winrate`, {
+            method: "GET",
+            headers: {
+                "X-Premium-Key": LISENSI_SAYA,
+                "X-Account-Type": CURRENT_ACCOUNT_TYPE
+            }
+        });
+        const resData = await response.json();
+        if (resData.code === 0 && Array.isArray(resData.data)) {
+            let totalTrades = 0, winTrades = 0, totalRealizedPnL = 0;
+
+            resData.data.forEach(trade => {
+                const tradeTime = parseInt(trade.time || trade.updateTime || 0);
+                
+                // Menyaring trade: Hanya memproses data yang terjadi mulai dari 1 Juli 2026
+                if (tradeTime >= BOT_START_TIMESTAMP) {
+                    totalTrades++;
+                    const pnl = parseFloat(trade.realizedPnl || 0);
+                    totalRealizedPnL += pnl;
+                    if (pnl > 0) winTrades++;
+                }
+            });
+
+            const winrate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : "0.00";
+            document.getElementById('stat-winrate').innerText = `${winrate}% (${winTrades}/${totalTrades} Trade)`;
+            
+            const pnlElem = document.getElementById('stat-realized-pnl');
+            pnlElem.innerText = `${totalRealizedPnL >= 0 ? '+' : ''}${totalRealizedPnL.toFixed(4)} USDT`;
+            pnlElem.className = totalRealizedPnL >= 0 ? "stat-val val-profit" : "stat-val val-loss";
+        }
+    } catch (error) { console.error("Gagal memuat statistik winrate:", error); }
+}
     
     function formatPrice(price, symbol) {
         const val = parseFloat(price);
