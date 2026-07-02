@@ -785,38 +785,54 @@
     }
 
     async function fetchWinrate() {
-        try {
-            const response = await fetch(`${PROXY_URL}?type=winrate`, {
-                method: "GET",
-                headers: {
-                    "X-Premium-Key": LISENSI_SAYA,
-                    "X-Account-Type": CURRENT_ACCOUNT_TYPE
+    try {
+        // Jika Anda ingin mengunci ke koin tertentu, ganti type=winrate menjadi type=winrate&symbol=BTC-USDT
+        const response = await fetch(`${PROXY_URL}?type=winrate`, {
+            method: "GET",
+            headers: {
+                "X-Premium-Key": LISENSI_SAYA,
+                "X-Account-Type": CURRENT_ACCOUNT_TYPE
+            }
+        });
+        const resData = await response.json();
+        
+        // Log untuk memantau apa isi respons asli dari BingX di Console Browser
+        console.log("Respon Riwayat Trading:", resData);
+
+        if (resData.code === 0 && Array.isArray(resData.data)) {
+            let totalTrades = 0, winTrades = 0, totalRealizedPnL = 0;
+
+            resData.data.forEach(trade => {
+                let tradeTime = parseInt(trade.time || trade.updateTime || 0);
+                
+                if (tradeTime.toString().length === 10) {
+                    tradeTime = tradeTime * 1000;
+                }
+
+                // Hitung data jika BOT_START_TIMESTAMP diatur ke 0 atau melewati filter waktu
+                if (BOT_START_TIMESTAMP === 0 || tradeTime >= BOT_START_TIMESTAMP) {
+                    totalTrades++;
+                    const pnl = parseFloat(trade.realizedPnl || 0);
+                    totalRealizedPnL += pnl;
+                    if (pnl > 0) winTrades++;
                 }
             });
-            const resData = await response.json();
-            if (resData.code === 0 && Array.isArray(resData.data)) {
-                let totalTrades = 0, winTrades = 0, totalRealizedPnL = 0;
 
-                resData.data.forEach(trade => {
-                    const tradeTime = parseInt(trade.time || trade.updateTime || 0);
-                    if (tradeTime >= BOT_START_TIMESTAMP) {
-                        totalTrades++;
-                        const pnl = parseFloat(trade.realizedPnl || 0);
-                        totalRealizedPnL += pnl;
-                        if (pnl > 0) winTrades++;
-                    }
-                });
-
-                const winrate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : "0.00";
-                document.getElementById('stat-winrate').innerText = `${winrate}% (${winTrades}/${totalTrades} Trade)`;
-                
-                const pnlElem = document.getElementById('stat-realized-pnl');
-                pnlElem.innerText = `${totalRealizedPnL >= 0 ? '+' : ''}${totalRealizedPnL.toFixed(4)} USDT`;
-                pnlElem.className = totalRealizedPnL >= 0 ? "stat-val val-profit" : "stat-val val-loss";
-            }
-        } catch (error) { console.error("Gagal memuat statistik winrate:", error); }
+            const winrate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : "0.00";
+            document.getElementById('stat-winrate').innerText = `${winrate}% (${winTrades}/${totalTrades} Trade)`;
+            
+            const pnlElem = document.getElementById('stat-realized-pnl');
+            pnlElem.innerText = `${totalRealizedPnL >= 0 ? '+' : ''}${totalRealizedPnL.toFixed(4)} USDT`;
+            pnlElem.className = totalRealizedPnL >= 0 ? "stat-val val-profit" : "stat-val val-loss";
+        } else {
+            // Jika resData.data kosong atau error dari API
+            document.getElementById('stat-winrate').innerText = "0.00% (0 Trade)";
+            document.getElementById('stat-realized-pnl').innerText = "0.0000 USDT";
+        }
+    } catch (error) { 
+        console.error("Gagal memuat statistik winrate:", error); 
     }
-
+}
     // ==========================================
     // HELPER & UTILITY FUNCTIONS
     // ==========================================
