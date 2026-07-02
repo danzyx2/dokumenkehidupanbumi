@@ -531,32 +531,38 @@
     // ==========================================
     const PROXY_URL = "https://bingx-proxy.paku683.workers.dev/"; 
 
-    // Ambil lisensi dari localStorage, jika belum ada kosongkan
+    // Ambil lisensi & tipe akun dari localStorage
     let LISENSI_SAYA = localStorage.getItem("user_api_license") || "";
-    let activeTab = "position"; // Deklarasi cukup SATU KALI di sini
+    let CURRENT_ACCOUNT_TYPE = localStorage.getItem("user_account_type") || "real";
+    const BOT_START_TIMESTAMP = new Date("2026-07-01T00:00:00+07:00").getTime();
+    let activeTab = "position"; 
 
-    // Jalankan setup saat elemen HTML selesai dimuat oleh browser
-    // Jalankan setup saat elemen HTML selesai dimuat oleh browser
+    // GABUNGKAN SEMUA SETUP AWAL DI SINI
     document.addEventListener("DOMContentLoaded", () => {
-        // Cek apakah pengunjung sudah pernah menyetujui disclaimer
+        // 1. Cek Disclaimer
         const isDisclaimed = localStorage.getItem("disclaimer_agreed");
         if (!isDisclaimed) {
             document.getElementById("disclaimer-modal").classList.add("show");
         }
 
-        // Isi kolom input otomatis jika lisensi sudah tersimpan
+        // 2. Isi Kolom Input Lisensi
         if (LISENSI_SAYA) {
             const inputElem = document.getElementById("input-lisensi");
             if (inputElem) inputElem.value = LISENSI_SAYA;
         }
-        // Jalankan fetch pertama kali setelah halaman siap
+
+        // 3. Sinkronisasi Tampilan UI & Waktu Bot
+        updateAccountTabUI();
+        updateBotTimeUI();
+
+        // 4. Jalankan Fetch Pertama Kali
         fetchPositions();
+        fetchWinrate();
     });
 
-    // Fungsi untuk menutup disclaimer dan menyimpan statusnya di browser
+    // Fungsi menutup disclaimer
     function tutupDisclaimer() {
         document.getElementById("disclaimer-modal").classList.remove("show");
-        // Simpan ke localStorage agar tidak muncul terus setiap kali refresh
         localStorage.setItem("disclaimer_agreed", "true");
     }
 
@@ -564,33 +570,55 @@
     // ACTION FUNCTIONS
     // ==========================================
     
-    // Fungsi untuk menyimpan lisensi dari kolom input ke browser
     function simpanLisensi() {
         const inputVal = document.getElementById("input-lisensi").value.trim();
-        
         if (!inputVal) {
             alert("Harap masukkan kunci lisensi Anda terlebih dahulu!");
             return;
         }
-        
-        // Simpan ke localStorage browser
         localStorage.setItem("user_api_license", inputVal);
         LISENSI_SAYA = inputVal;
-        
         alert("Kunci lisensi berhasil diterapkan! Menghubungkan ulang...");
         
-        // Refresh data secara instan sesuai tab aktif
-        if (activeTab === 'position') {
-            fetchPositions();
+        if (activeTab === 'position') { fetchPositions(); } else { fetchGridOrders(); }
+        fetchWinrate();
+    }
+
+    // KENDALI SWAP TOMBOL REAL / DEMO (Sekarang Pasti Bisa Dipencet)
+    function switchAccountType(type) {
+        CURRENT_ACCOUNT_TYPE = type;
+        localStorage.setItem("user_account_type", type);
+        updateAccountTabUI();
+        alert(`Berhasil pindah ke AKUN ${type.toUpperCase()}! Memperbarui data...`);
+        
+        if (activeTab === 'position') { fetchPositions(); } else { fetchGridOrders(); }
+        fetchWinrate();
+    }
+
+    function updateAccountTabUI() {
+        const realBtn = document.getElementById('btn-acc-real');
+        const demoBtn = document.getElementById('btn-acc-demo');
+        if (!realBtn || !demoBtn) return;
+
+        if (CURRENT_ACCOUNT_TYPE === 'real') {
+            realBtn.style.background = "var(--accent)"; realBtn.style.color = "var(--bg-main)";
+            demoBtn.style.background = "var(--border)"; demoBtn.style.color = "var(--text-secondary)";
         } else {
-            fetchGridOrders();
+            demoBtn.style.background = "var(--accent)"; demoBtn.style.color = "var(--bg-main)";
+            realBtn.style.background = "var(--border)"; realBtn.style.color = "var(--text-secondary)";
         }
     }
 
-    // Pengendali Perpindahan Tab Navigasi
+    function updateBotTimeUI() {
+        const textElem = document.getElementById('bot-start-time-text');
+        if (textElem) {
+            const date = new Date(BOT_START_TIMESTAMP);
+            textElem.innerText = "Mengunci data sejak: " + date.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) + " (00:00 WIB)";
+        }
+    }
+
     function switchTab(targetTab) {
         activeTab = targetTab;
-        
         const btnPosisi = document.getElementById('btn-posisi');
         const btnJaring = document.getElementById('btn-jaring');
         const panelPosisi = document.getElementById('panel-posisi');
@@ -612,21 +640,17 @@
     }
 
     // ==========================================
-    // CORE FETCH DATA (WITH LICENSE HEADER)
+    // CORE FETCH DATA
     // ==========================================
 
-    // 1. Ambil & Gambar Data Posisi Aktif
     async function fetchPositions() {
         if (activeTab !== 'position') return;
-        
         try {
             setSyncStatus("Menghubungkan...");
-            
-            // Menyuntikkan header lisensi ke Cloudflare Worker
             const response = await fetch(`${PROXY_URL}?type=position`, {
                 method: "GET",
                 headers: {
-                    "X-Premium-Key": LISENSI_SAYA
+                    "X-Premium-Key": LISENSI_SAYA,
                     "X-Account-Type": CURRENT_ACCOUNT_TYPE
                 }
             });
@@ -634,7 +658,6 @@
             const resData = await response.json();
             const tbody = document.getElementById('data-posisi');
 
-            // Tangani jika respon API gagal atau ditolak Worker (401/403/dll)
             if (!response.ok) {
                 tbody.innerHTML = `<tr><td colspan="7" class="loading-state"><p style="color: var(--accent-red); font-weight: bold;">Error ${response.status}: ${resData.error || 'Akses Ditolak'}</p><p class="text-muted">${resData.message || 'Periksa kembali lisensi Anda.'}</p></td></tr>`;
                 setSyncStatus(resData.error || "Gagal sinkronisasi");
@@ -648,16 +671,12 @@
                 return;
             }
 
-            let htmlContent = "";
-            let overallPnl = 0;
-            let overallMargin = 0;
-            let activeCount = 0;
+            let htmlContent = ""; let overallPnl = 0; let overallMargin = 0; let activeCount = 0;
 
             resData.data.forEach(pos => {
                 const amt = parseFloat(pos.positionAmt || 0);
                 if (amt !== 0) {
                     activeCount++;
-                    
                     const side = (pos.positionSide || "LONG").toUpperCase();
                     const isLong = side === "LONG" || side === "PANJANG";
                     const badgeClass = isLong ? 'badge-long' : 'badge-short';
@@ -666,11 +685,10 @@
                     const entryPrice = parseFloat(pos.entryPrice || 0);
                     const markPrice = parseFloat(pos.markPrice || pos.isolatedPrice || 0);
                     const margin = parseFloat(pos.margin || pos.initialMargin || 0);
-                    
                     const pnl = parseFloat(pos.unrealizedProfit || 0);
+                    
                     overallPnl += pnl;
                     overallMargin += margin;
-
                     const pnlClass = pnl >= 0 ? "val-profit" : "val-loss";
                     const pnlSign = pnl >= 0 ? "+" : "";
 
@@ -690,54 +708,37 @@
                 }
             });
 
-            if (activeCount === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="loading-state"><p>Tidak ada posisi aktif.</p></td></tr>`;
-            } else {
-                tbody.innerHTML = htmlContent;
-            }
-
+            tbody.innerHTML = activeCount === 0 ? `<tr><td colspan="7" class="loading-state"><p>Tidak ada posisi aktif.</p></td></tr>` : htmlContent;
             updateOverview(overallPnl, overallMargin, activeCount);
             setSyncStatus("Selesai sinkronisasi");
-
         } catch (error) {
             setSyncStatus("Gagal mengambil posisi");
             console.error(error);
         }
     }
 
-    // 2. Ambil & Gambar Data Jaring / Antrean Orders
     async function fetchGridOrders() {
         if (activeTab !== 'orders') return;
-
         try {
             setSyncStatus("Menghubungkan...");
-            
-            // Menyuntikkan header lisensi ke Cloudflare Worker
             const response = await fetch(`${PROXY_URL}?type=orders`, {
                 method: "GET",
                 headers: {
-                    "X-Premium-Key": LISENSI_SAYA
+                    "X-Premium-Key": LISENSI_SAYA,
+                    "X-Account-Type": CURRENT_ACCOUNT_TYPE
                 }
             });
             
             const resData = await response.json();
             const tbody = document.getElementById('data-jaring');
 
-            // Tangani jika respon API gagal atau ditolak Worker
             if (!response.ok) {
                 tbody.innerHTML = `<tr><td colspan="6" class="loading-state"><p style="color: var(--accent-red); font-weight: bold;">Error ${response.status}: ${resData.error || 'Akses Ditolak'}</p><p class="text-muted">${resData.message || 'Periksa kembali lisensi Anda.'}</p></td></tr>`;
                 setSyncStatus(resData.error || "Gagal sinkronisasi");
                 return;
             }
 
-            let dataArray = [];
-            if (resData.data && resData.data.orders) {
-                dataArray = resData.data.orders;
-            } else if (Array.isArray(resData.data)) {
-                dataArray = resData.data;
-            } else if (Array.isArray(resData)) {
-                dataArray = resData;
-            }
+            let dataArray = resData.data?.orders || (Array.isArray(resData.data) ? resData.data : (Array.isArray(resData) ? resData : []));
 
             if (dataArray.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="loading-state"><p>Tidak ada antrean jaring (Open Orders) aktif.</p></td></tr>`;
@@ -748,15 +749,11 @@
             let htmlContent = "";
             dataArray.forEach(order => {
                 const symbol = order.symbol || "-";
-                
                 let typeText = order.type || "LIMIT";
-                if (typeText === "TAKE_PROFIT_MARKET" || typeText === "AMBIL_KEUNTUNGAN_PASAR") typeText = "TP Market";
+                if (typeText === "TAKE_PROFIT_MARKET") typeText = "TP Market";
                 if (typeText === "STOP_LOSS_MARKET") typeText = "SL Market";
 
                 let side = (order.side || "BUY").toUpperCase();
-                if (side === "JUAL") side = "SELL";
-                if (side === "BELI") side = "BUY";
-                
                 const sideClass = side === "BUY" ? "val-profit" : "val-loss";
 
                 const basePrice = parseFloat(order.price || 0);
@@ -769,7 +766,7 @@
 
                 htmlContent += `
                     <tr>
-                        <td><strong>${symbol}</strong> <span class="text-muted">${order.leverage || ''}</span></td>
+                        <td><strong>${symbol}</strong></td>
                         <td><span class="${sideClass}" style="font-weight: 700;">${typeText} / ${side}</span></td>
                         <td>$${formatPrice(finalPrice, symbol)}</td>
                         <td>${qty}</td>
@@ -781,11 +778,43 @@
 
             tbody.innerHTML = htmlContent;
             setSyncStatus("Selesai sinkronisasi");
-
         } catch (error) {
             setSyncStatus("Gagal mengambil jaring");
             console.error(error);
         }
+    }
+
+    async function fetchWinrate() {
+        try {
+            const response = await fetch(`${PROXY_URL}?type=winrate`, {
+                method: "GET",
+                headers: {
+                    "X-Premium-Key": LISENSI_SAYA,
+                    "X-Account-Type": CURRENT_ACCOUNT_TYPE
+                }
+            });
+            const resData = await response.json();
+            if (resData.code === 0 && Array.isArray(resData.data)) {
+                let totalTrades = 0, winTrades = 0, totalRealizedPnL = 0;
+
+                resData.data.forEach(trade => {
+                    const tradeTime = parseInt(trade.time || trade.updateTime || 0);
+                    if (tradeTime >= BOT_START_TIMESTAMP) {
+                        totalTrades++;
+                        const pnl = parseFloat(trade.realizedPnl || 0);
+                        totalRealizedPnL += pnl;
+                        if (pnl > 0) winTrades++;
+                    }
+                });
+
+                const winrate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : "0.00";
+                document.getElementById('stat-winrate').innerText = `${winrate}% (${winTrades}/${totalTrades} Trade)`;
+                
+                const pnlElem = document.getElementById('stat-realized-pnl');
+                pnlElem.innerText = `${totalRealizedPnL >= 0 ? '+' : ''}${totalRealizedPnL.toFixed(4)} USDT`;
+                pnlElem.className = totalRealizedPnL >= 0 ? "stat-val val-profit" : "stat-val val-loss";
+            }
+        } catch (error) { console.error("Gagal memuat statistik winrate:", error); }
     }
 
     // ==========================================
@@ -793,90 +822,9 @@
     // ==========================================
     function formatDate(timestamp) {
         const date = new Date(timestamp);
-        return date.toLocaleDateString('id-ID', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
+        return date.toLocaleDateString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
 
-// Variabel kontrol akun dan pengunci tanggal 1 Juli 2026
-let CURRENT_ACCOUNT_TYPE = localStorage.getItem("user_account_type") || "real";
-const BOT_START_TIMESTAMP = new Date("2026-07-01T00:00:00+07:00").getTime();
-
-// Daftarkan fungsi pemicu awal saat halaman dimuat
-document.addEventListener("DOMContentLoaded", () => {
-    updateAccountTabUI();
-    updateBotTimeUI();
-    fetchWinrate();
-});
-
-function switchAccountType(type) {
-    CURRENT_ACCOUNT_TYPE = type;
-    localStorage.setItem("user_account_type", type);
-    updateAccountTabUI();
-    alert(`Berhasil pindah ke AKUN ${type.toUpperCase()}! Memperbarui data...`);
-    
-    if (activeTab === 'position') { fetchPositions(); } else { fetchGridOrders(); }
-    fetchWinrate();
-}
-
-function updateAccountTabUI() {
-    const realBtn = document.getElementById('btn-acc-real');
-    const demoBtn = document.getElementById('btn-acc-demo');
-    if (CURRENT_ACCOUNT_TYPE === 'real') {
-        realBtn.style.background = "var(--accent)"; realBtn.style.color = "var(--bg-main)";
-        demoBtn.style.background = "var(--border)"; demoBtn.style.color = "var(--text-secondary)";
-    } else {
-        demoBtn.style.background = "var(--accent)"; demoBtn.style.color = "var(--bg-main)";
-        realBtn.style.background = "var(--border)"; realBtn.style.color = "var(--text-secondary)";
-    }
-}
-
-function updateBotTimeUI() {
-    const textElem = document.getElementById('bot-start-time-text');
-    if (textElem) {
-        const date = new Date(BOT_START_TIMESTAMP);
-        textElem.innerText = "Mengunci data sejak: " + date.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) + " (00:00 WIB)";
-    }
-}
-
-// Fungsi utama menarik riwayat trade dan menyaring transaksi sejak 1 Juli 2026
-async function fetchWinrate() {
-    try {
-        const response = await fetch(`${PROXY_URL}?type=winrate`, {
-            method: "GET",
-            headers: {
-                "X-Premium-Key": LISENSI_SAYA,
-                "X-Account-Type": CURRENT_ACCOUNT_TYPE
-            }
-        });
-        const resData = await response.json();
-        if (resData.code === 0 && Array.isArray(resData.data)) {
-            let totalTrades = 0, winTrades = 0, totalRealizedPnL = 0;
-
-            resData.data.forEach(trade => {
-                const tradeTime = parseInt(trade.time || trade.updateTime || 0);
-                
-                // Menyaring trade: Hanya memproses data yang terjadi mulai dari 1 Juli 2026
-                if (tradeTime >= BOT_START_TIMESTAMP) {
-                    totalTrades++;
-                    const pnl = parseFloat(trade.realizedPnl || 0);
-                    totalRealizedPnL += pnl;
-                    if (pnl > 0) winTrades++;
-                }
-            });
-
-            const winrate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : "0.00";
-            document.getElementById('stat-winrate').innerText = `${winrate}% (${winTrades}/${totalTrades} Trade)`;
-            
-            const pnlElem = document.getElementById('stat-realized-pnl');
-            pnlElem.innerText = `${totalRealizedPnL >= 0 ? '+' : ''}${totalRealizedPnL.toFixed(4)} USDT`;
-            pnlElem.className = totalRealizedPnL >= 0 ? "stat-val val-profit" : "stat-val val-loss";
-        }
-    } catch (error) { console.error("Gagal memuat statistik winrate:", error); }
-}
-    
     function formatPrice(price, symbol) {
         const val = parseFloat(price);
         if (symbol && (symbol.startsWith("BTC") || symbol.startsWith("ETH"))) {
@@ -891,14 +839,7 @@ async function fetchWinrate() {
         const positionsElement = document.getElementById('total-positions');
 
         pnlElement.innerText = `${totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(4)} USDT`;
-        if (totalPnl > 0) {
-            pnlElement.className = "stat-val val-profit";
-        } else if (totalPnl < 0) {
-            pnlElement.className = "stat-val val-loss";
-        } else {
-            pnlElement.className = "stat-val";
-        }
-
+        pnlElement.className = totalPnl > 0 ? "stat-val val-profit" : (totalPnl < 0 ? "stat-val val-loss" : "stat-val");
         marginElement.innerText = `${totalMargin.toFixed(2)} USDT`;
         positionsElement.innerText = `${totalPositions} Posisi`;
     }
@@ -907,13 +848,10 @@ async function fetchWinrate() {
         document.getElementById('status-text').innerText = text;
     }
 
-    // Interval otomatis per 10 detik
+    // Interval Loop 10 Detik otomatis diperbarui semuanya
     setInterval(() => {
-        if (activeTab === 'position') {
-            fetchPositions();
-        } else {
-            fetchGridOrders();
-        }
+        if (activeTab === 'position') { fetchPositions(); } else { fetchGridOrders(); }
+        fetchWinrate();
     }, 10000);
 </script>
 
