@@ -734,19 +734,13 @@
     // ==========================================
 
     function downloadPDF() {
-        // Karena ini contoh front-end, kita buat file dummy (blob) atau alert
-        // Jika ada link PDF asli, ganti window.open('link_pdf_anda.pdf')
-        const dummyText = "Ini adalah Panduan Penggunaan Bot Trading SMC.\n\n1. Atur Lisensi di Dashboard.\n2. Mulai dengan mode VST (Demo).\n3. Pahami risiko trading.";
-        const blob = new Blob([dummyText], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = "STRATEGI_BOT.pdf"; // Diganti .pdf jika menggunakan file PDF sungguhan
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+        function downloadPDF() {
+        // GANTI NAMA FILE ATAU LINK PDF DI BAWAH INI
+        const linkFilePDF = "STRATEGI_BOT.pdf";
+        
+        window.open(linkFilePDF, "_blank");
     }
+
 
     function bukaBuyModal() {
         document.getElementById("buy-modal").classList.add("show");
