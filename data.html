@@ -1,174 +1,724 @@
+
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Link & Text Vault Online (Supabase via Cloudflare Proxy)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Body styling */
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #0c0d0c, #2e322f);
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Background image */
-        body::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('ramadhan.png') no-repeat center center/cover;
-            z-index: -1;
-            filter: blur(8px);
-        }
-
-        /* Login container */
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Title styling */
-        h2 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        /* Input field styling */
-        .input-field {
-            width: 87%;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .input-field label {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            color: #000000;
-            pointer-events: none;
-            transition: all 0.2s ease;
-        }
-
-        .input-field input {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            border: 2px solid #fff;
-            color: #fff;
-            border-radius: 5px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-field input:focus {
-            border-color: #6eff7a;
-        }
-
-        .input-field input:focus + label,
-        .input-field input:valid + label {
-            top: 0;
-            font-size: 12px;
-            color: #6eff7a;
-        }
-
-        /* Button styling */
-        button {
-            background-color: #6eff7a;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            color: #4e4c4c;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #4CAF50;
-        }
-
-        /* Error message styling */
-        #pesan-erreur {
-            color: red;
-            font-size: 140px;
-            margin-top: 15px;
-        }
-
-        /* Responsive styles */
-        @media (max-width: 600px) {
-            .login-container {
-                width: 90%;
-                padding: 25px;
-            }
-
-            h2 {
-                font-size: 1.8rem;
-            }
-
-            .input-field input {
-                padding: 10px;
-                font-size: 14px;
-            }
-
-            button {
-                font-size: 16px;
-                padding: 12px;
-            }
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 9999px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.7); }
     </style>
 </head>
-<body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="form-login">
-            <div class="input-field">
-                <input type="password" id="password" required>
-                <label for="password">Password</label>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full transition-colors duration-200 flex flex-col font-sans">
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="max-w-4xl mx-auto w-full px-4 py-6 flex-1 flex flex-col">
+
+        <!-- HEADER BAR -->
+        <header class="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                    <i class="fa-solid fa-vault text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl leading-tight bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">LinkVault Proxy</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Cloudflare Worker & Supabase Storage</p>
+                </div>
             </div>
-            <button id="btn-login">Masuk</button>
-        </form>
-        <div id="pesan-erreur"></div>
+
+            <div class="flex items-center gap-2">
+                <!-- Settings Modal Button (Pengaturan Worker URL) -->
+                <button onclick="openSettingsModal()" class="p-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Pengaturan API Worker">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+
+                <!-- Dark Mode Toggle Button -->
+                <button onclick="toggleDarkMode()" class="p-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Ganti Tema">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- SECTION 1: LOGIN / USER SELECTION (Auto-skipped jika tersimpan) -->
+        <div id="loginSection" class="my-auto max-w-md mx-auto w-full bg-white dark:bg-slate-800 p-6 md:p-8 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 text-center">
+            <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-user-lock"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Buka Ruang Simpan</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Masukkan nama pengguna Anda. Sesi akan otomatis tersimpan di perangkat ini agar Anda tidak perlu login berulang kali.</p>
+
+            <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label for="usernameInput" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 text-left">Nama Pengguna (Username)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                            <i class="fa-solid fa-at"></i>
+                        </span>
+                        <input type="text" id="usernameInput" required placeholder="Contoh: adit, budi, dev_123" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-1">
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="rememberMeCheckbox" checked class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                        <span>Ingat Saya di Perangkat Ini</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition duration-200 flex items-center justify-center gap-2">
+                    <span>Masuk ke Vault</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+            
+            <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-400 flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                <span>API Key Supabase Aman di Cloudflare Worker</span>
+            </div>
+        </div>
+
+        <!-- SECTION 2: MAIN DASHBOARD -->
+        <div id="mainSection" class="hidden flex-1 flex flex-col gap-6">
+
+            <!-- User Info Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700/80">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center font-bold text-lg uppercase shadow-sm" id="userAvatar">
+                        U
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 font-medium">Sesi Pengguna:</div>
+                        <div class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">
+                            <span id="displayUser"></span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400">
+                                Sesi Aktif
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="logoutUser()" class="px-3 py-2 text-xs font-semibold rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Keluar / Ganti User</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Form Tambah Link / Teks -->
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700/80 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-emerald-500"></i>
+                        <span>Tambah Data Baru</span>
+                    </h3>
+                    <span id="statusBadge" class="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Cloudflare Worker Proxy</span>
+                    </span>
+                </div>
+
+                <form onsubmit="handleAddLinkSubmit(event)" class="space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="md:col-span-2">
+                            <input type="text" id="judulLink" required placeholder="Judul (Contoh: Video TikTok / Kode Script / Catatan)" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <select id="kategoriLink" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <option value="link">🔗 Tautan / Link Web</option>
+                                <option value="code">💻 Kode Script</option>
+                                <option value="text">📝 Catatan / Teks</option>
+                                <option value="media">🎬 Media / Video</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <textarea id="urlLink" required rows="3" placeholder="Masukkan URL lengkap (https://...) atau teks / kode script yang ingin disimpan..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500 custom-scrollbar"></textarea>
+                    </div>
+
+                    <div class="flex justify-end gap-2 pt-1">
+                        <button type="submit" id="btnSave" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-emerald-500/20 transition flex items-center gap-2">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Simpan ke Supabase</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- SEARCH, FILTER & REFRESH BAR -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                <!-- Search Input -->
+                <div class="relative flex-1">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </span>
+                    <input type="text" id="searchInput" oninput="renderLinks()" placeholder="Cari berdasarkan judul atau isi..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <!-- Category Filter Pills -->
+                    <div class="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 custom-scrollbar">
+                        <button onclick="setFilterCategory('all')" id="filter-all" class="filter-pill active px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition bg-emerald-600 text-white">
+                            Semua
+                        </button>
+                        <button onclick="setFilterCategory('link')" id="filter-link" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                            🔗 Link
+                        </button>
+                        <button onclick="setFilterCategory('code')" id="filter-code" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                            💻 Kode
+                        </button>
+                        <button onclick="setFilterCategory('text')" id="filter-text" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                            📝 Catatan
+                        </button>
+                    </div>
+
+                    <!-- Refresh Button -->
+                    <button onclick="fetchLinksFromSupabase()" class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Muat Ulang Data">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CONTAINER DAFTAR ITEM -->
+            <div id="daftarLink" class="space-y-3 pb-12">
+                <!-- Data cards generated by JS -->
+            </div>
+
+        </div>
+
     </div>
 
-    <script>
-        const formLogin = document.getElementById('form-login');
-        const passwordInput = document.getElementById('password');
-        const pesanErreur = document.getElementById('pesan-erreur');
-        const passwordBenar = 'rahasia'; // ganti dengan password yang diinginkan
+    <!-- MODAL SETTINGS (CLOUDFLARE WORKER URL) -->
+    <div id="settingsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 max-w-md w-full rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-emerald-500"></i>
+                    <span>Pengaturan API Cloudflare Worker</span>
+                </h3>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-        formLogin.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const password = passwordInput.value.trim();
-            if (password === passwordBenar) {
-                window.location.href = 'contact.html'; // ganti dengan halaman tujuan
-            } else {
-                pesanErreur.innerText = 'Password salah!';
+            <div class="space-y-3">
+                <p class="text-xs text-slate-500 dark:text-slate-400">
+                    Masukkan URL Cloudflare Worker Anda. Worker ini berfungsi menghubungkan frontend ke database Supabase tanpa mengekspos API Key.
+                </p>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Worker Proxy URL:</label>
+                    <input type="text" id="workerUrlInput" placeholder="https://link-proxy.username.workers.dev" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-2">
+                <button onclick="closeSettingsModal()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-xl transition">
+                    Batal
+                </button>
+                <button onclick="saveWorkerSettings()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-md shadow-emerald-500/20 transition">
+                    Simpan URL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KONFIRMASI HAPUS -->
+    <div id="deleteModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 max-w-sm w-full rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-6 text-center space-y-4">
+            <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Hapus Data Ini?</h3>
+            <p id="deleteModalMessage" class="text-xs text-slate-500 dark:text-slate-400">Tindakan ini akan menghapus data di Supabase secara permanen.</p>
+
+            <div class="flex items-center gap-2 pt-2">
+                <button onclick="closeDeleteModal()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-xl transition">
+                    Batal
+                </button>
+                <button id="btnConfirmDelete" class="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-xl shadow-md shadow-rose-500/20 transition">
+                    Ya, Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN LOGIC -->
+    <script>
+        // DEFAULT WORKER PROXY URL (Dapat disesuaikan di UI Pengaturan)
+        let WORKER_URL = localStorage.getItem('vault_worker_url') || "https://link-proxy.username.workers.dev";
+        
+        let currentUser = "";
+        let allLinks = [];
+        let currentFilterCategory = "all";
+        let isDarkMode = false;
+        let pendingDeleteId = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Check Dark Mode
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                toggleDarkMode(true);
             }
+
+            // Inisialisasi Input URL Settings
+            document.getElementById('workerUrlInput').value = WORKER_URL;
+
+            // CEK SESI USER TERSIMPAN DI LOCAL STORAGE
+            const savedUser = localStorage.getItem('vault_active_user');
+            const urlParams = new URLSearchParams(window.location.search);
+            const userFromUrl = urlParams.get('user');
+
+            if (userFromUrl) {
+                currentUser = userFromUrl.trim();
+                localStorage.setItem('vault_active_user', currentUser);
+                showMainDashboard();
+            } else if (savedUser) {
+                currentUser = savedUser;
+                showMainDashboard();
+            }
+
+            // Auto category selection
+            const urlInput = document.getElementById('urlLink');
+            urlInput.addEventListener('input', (e) => {
+                const val = e.target.value.trim();
+                const katSelect = document.getElementById('kategoriLink');
+                if (/^https?:\/\//i.test(val)) {
+                    if (val.includes('youtube.com') || val.includes('youtu.be') || val.includes('tiktok.com')) {
+                        katSelect.value = 'media';
+                    } else {
+                        katSelect.value = 'link';
+                    }
+                } else if (val.includes('function') || val.includes('const ') || val.includes('{') || val.includes('<script')) {
+                    katSelect.value = 'code';
+                }
+            });
         });
+
+        // HANDLE LOGIN SUBMIT
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const inputVal = document.getElementById('usernameInput').value.trim();
+            const rememberMe = document.getElementById('rememberMeCheckbox').checked;
+
+            if (!inputVal) return showToast('Silakan masukkan nama pengguna!', 'warning');
+
+            currentUser = inputVal;
+
+            if (rememberMe) {
+                localStorage.setItem('vault_active_user', currentUser);
+            } else {
+                sessionStorage.setItem('vault_active_user', currentUser);
+            }
+
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.set('user', currentUser);
+            window.history.pushState({}, '', newUrl);
+
+            showMainDashboard();
+        }
+
+        function showMainDashboard() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('mainSection').classList.remove('hidden');
+            
+            document.getElementById('displayUser').textContent = currentUser;
+            document.getElementById('userAvatar').textContent = currentUser.charAt(0).toUpperCase();
+
+            fetchLinksFromSupabase();
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('vault_active_user');
+            sessionStorage.removeItem('vault_active_user');
+            
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.delete('user');
+            window.history.pushState({}, '', newUrl);
+
+            location.reload();
+        }
+
+        // FETCH DATA VIA CLOUDFLARE WORKER -> SUPABASE
+        async function fetchLinksFromSupabase() {
+            const container = document.getElementById('daftarLink');
+            container.innerHTML = `
+                <div class="text-center py-12 px-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <i class="fa-solid fa-spinner fa-spin text-emerald-500 text-2xl mb-2"></i>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Menghubungi Cloudflare Proxy & Supabase...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${WORKER_URL}/links?user=${encodeURIComponent(currentUser)}`);
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+                const data = await response.json();
+                allLinks = Array.isArray(data) ? data : [];
+                renderLinks();
+            } catch (err) {
+                console.error("Fetch error:", err);
+                container.innerHTML = `
+                    <div class="text-center py-12 px-4 bg-white dark:bg-slate-800 rounded-2xl border border-rose-200 dark:border-rose-900/50">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-500 text-2xl mb-2"></i>
+                        <p class="text-sm font-semibold text-rose-600 dark:text-rose-400">Gagal mengambil data dari Supabase</p>
+                        <p class="text-xs text-slate-400 mt-1">Pastikan Cloudflare Worker URL sudah dikonfigurasi dengan benar.</p>
+                        <button onclick="openSettingsModal()" class="mt-3 px-3 py-1.5 bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 text-xs rounded-lg font-semibold">
+                            Cek Pengaturan Worker URL
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // TAMBAH DATA BARU (POST)
+        async function handleAddLinkSubmit(e) {
+            e.preventDefault();
+            const judul = document.getElementById('judulLink').value.trim();
+            const url = document.getElementById('urlLink').value.trim();
+            const kategori = document.getElementById('kategoriLink').value;
+
+            if (!judul || !url) return showToast('Judul dan Isi wajib diisi!', 'warning');
+
+            const btnSave = document.getElementById('btnSave');
+            btnSave.disabled = true;
+            btnSave.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Menyimpan...</span>`;
+
+            try {
+                const payload = {
+                    owner: currentUser,
+                    judul: judul,
+                    url: url,
+                    kategori: kategori,
+                    pinned: false
+                };
+
+                const res = await fetch(`${WORKER_URL}/links`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error("Gagal menyimpan data");
+
+                document.getElementById('judulLink').value = '';
+                document.getElementById('urlLink').value = '';
+                
+                showToast('Data berhasil disimpan ke Supabase!', 'success');
+                fetchLinksFromSupabase();
+            } catch (err) {
+                showToast('Gagal menyimpan: ' + err.message, 'error');
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerHTML = `<i class="fa-solid fa-floppy-disk"></i><span>Simpan ke Supabase</span>`;
+            }
+        }
+
+        // RENDER ITEM DAFTAR
+        function renderLinks() {
+            const container = document.getElementById('daftarLink');
+            const searchVal = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+
+            let filtered = allLinks.filter(item => {
+                const matchCategory = (currentFilterCategory === 'all') || (item.kategori === currentFilterCategory);
+                const matchSearch = (item.judul || '').toLowerCase().includes(searchVal) || (item.url || '').toLowerCase().includes(searchVal);
+                return matchCategory && matchSearch;
+            });
+
+            // Sort: Pinned first, then newest
+            filtered.sort((a, b) => {
+                if (a.pinned && !b.pinned) return -1;
+                if (!a.pinned && b.pinned) return 1;
+                return (b.id || 0) - (a.id || 0);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 px-4 bg-white dark:bg-slate-800 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
+                        <div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-400 flex items-center justify-center mx-auto mb-3 text-lg">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-700 dark:text-slate-300 text-sm">Tidak Ada Data Tersimpan</h4>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
+                            ${searchVal ? 'Tidak ada hasil yang cocok dengan kata kunci.' : 'Belum ada data tersimpan di Supabase untuk user ini.'}
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = `bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 border ${item.pinned ? 'border-amber-400 dark:border-amber-500/60 ring-1 ring-amber-400/20' : 'border-slate-200/80 dark:border-slate-700/80'} shadow-sm transition hover:shadow-md space-y-3 relative`;
+
+                const isUrl = /^https?:\/\//i.test(item.url);
+                const categoryBadge = getCategoryBadgeHTML(item.kategori || 'link');
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            ${categoryBadge}
+                            ${item.pinned ? '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center gap-1"><i class="fa-solid fa-thumbtack"></i> Pinned</span>' : ''}
+                        </div>
+                        <button onclick="togglePin('${item.id}', ${!item.pinned})" class="text-slate-400 hover:text-amber-500 transition p-1" title="Pin Item">
+                            <i class="fa-solid fa-thumbtack ${item.pinned ? 'text-amber-500 rotate-45' : ''}"></i>
+                        </button>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-slate-800 dark:text-slate-100 text-base leading-snug break-words">${escapeHtml(item.judul)}</h4>
+                        <div class="mt-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-xs font-mono text-slate-600 dark:text-slate-300 break-all max-h-36 overflow-y-auto custom-scrollbar whitespace-pre-wrap">${escapeHtml(item.url)}</div>
+                    </div>
+
+                    <div class="flex items-center justify-end flex-wrap gap-2 pt-1 border-t border-slate-100 dark:border-slate-700/50">
+                        ${isUrl ? `
+                            <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 text-emerald-600 dark:text-emerald-400 font-semibold text-xs transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                <span>Buka Web</span>
+                            </a>
+                        ` : ''}
+
+                        <button onclick="salinTeks('${escapeJsString(item.url)}', this)" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>Salin</span>
+                        </button>
+
+                        <button onclick="openDeleteModal('${item.id}', '${escapeJsString(item.judul)}')" class="px-2.5 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 text-xs transition" title="Hapus Data">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // TOGGLE PIN (PATCH/UPDATE VIA WORKER)
+        async function togglePin(id, status) {
+            try {
+                const res = await fetch(`${WORKER_URL}/links?id=${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pinned: status })
+                });
+
+                if (!res.ok) throw new Error("Gagal update pin");
+
+                const idx = allLinks.findIndex(x => x.id == id);
+                if (idx !== -1) allLinks[idx].pinned = status;
+                renderLinks();
+
+                showToast(status ? 'Disematkan ke atas' : 'Sematkan dilepas', 'info');
+            } catch (err) {
+                showToast('Gagal mengubah pin', 'error');
+            }
+        }
+
+        // DELETE DATA VIA WORKER
+        function openDeleteModal(id, title) {
+            pendingDeleteId = id;
+            document.getElementById('deleteModalMessage').textContent = `Apakah Anda yakin ingin menghapus "${title}" dari Supabase?`;
+            document.getElementById('deleteModal').classList.remove('hidden');
+
+            document.getElementById('btnConfirmDelete').onclick = async () => {
+                await executeDelete();
+            };
+        }
+
+        function closeDeleteModal() {
+            pendingDeleteId = null;
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
+
+        async function executeDelete() {
+            if (!pendingDeleteId) return;
+            try {
+                const res = await fetch(`${WORKER_URL}/links?id=${pendingDeleteId}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error("Gagal menghapus");
+
+                showToast('Data berhasil dihapus', 'success');
+                fetchLinksFromSupabase();
+            } catch (err) {
+                showToast('Gagal menghapus data: ' + err.message, 'error');
+            } finally {
+                closeDeleteModal();
+            }
+        }
+
+        // SALIN TEKS
+        function salinTeks(teks, btnElement) {
+            const originalHTML = btnElement.innerHTML;
+            const notifySuccess = () => {
+                btnElement.innerHTML = `<i class="fa-solid fa-check"></i><span>Tersalin!</span>`;
+                btnElement.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+                btnElement.classList.add('bg-slate-800', 'text-white');
+
+                showToast('Teks tersalin ke clipboard!', 'success');
+
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHTML;
+                    btnElement.classList.remove('bg-slate-800');
+                    btnElement.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+                }, 1500);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(teks).then(notifySuccess).catch(() => fallbackCopy(teks, notifySuccess));
+            } else {
+                fallbackCopy(teks, notifySuccess);
+            }
+        }
+
+        function fallbackCopy(teks, callback) {
+            try {
+                const textarea = document.createElement("textarea");
+                textarea.value = teks;
+                textarea.style.position = "fixed";
+                textarea.style.left = "-9999px";
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                callback();
+            } catch (err) {
+                showToast("Gagal menyalin", "error");
+            }
+        }
+
+        // SETTINGS MODAL (WORKER URL)
+        function openSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.add('hidden');
+        }
+
+        function saveWorkerSettings() {
+            const inputVal = document.getElementById('workerUrlInput').value.trim();
+            if (!inputVal) return showToast('URL Cloudflare Worker tidak boleh kosong!', 'warning');
+
+            WORKER_URL = inputVal.replace(/\/$/, ""); // Hilangkan trailing slash
+            localStorage.setItem('vault_worker_url', WORKER_URL);
+            
+            showToast('URL Cloudflare Worker diperbarui!', 'success');
+            closeSettingsModal();
+
+            if (currentUser) {
+                fetchLinksFromSupabase();
+            }
+        }
+
+        // FILTER & BADGES
+        function setFilterCategory(cat) {
+            currentFilterCategory = cat;
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.className = 'filter-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700';
+            });
+
+            const activeBtn = document.getElementById(`filter-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = 'filter-pill active px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition bg-emerald-600 text-white shadow-sm';
+            }
+            renderLinks();
+        }
+
+        function getCategoryBadgeHTML(kat) {
+            switch(kat) {
+                case 'code':
+                    return `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 flex items-center gap-1"><i class="fa-solid fa-code"></i> Kode</span>`;
+                case 'text':
+                    return `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-file-lines"></i> Catatan</span>`;
+                case 'media':
+                    return `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-400 flex items-center gap-1"><i class="fa-solid fa-film"></i> Media</span>`;
+                default:
+                    return `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 flex items-center gap-1"><i class="fa-solid fa-link"></i> Link</span>`;
+            }
+        }
+
+        function toggleDarkMode(forceDark = false) {
+            isDarkMode = forceDark ? true : !isDarkMode;
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+
+            if (isDarkMode) {
+                html.classList.add('dark');
+                icon.className = 'fa-solid fa-sun text-amber-400';
+            } else {
+                html.classList.remove('dark');
+                icon.className = 'fa-solid fa-moon text-slate-600';
+            }
+        }
+
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+
+            let bgColor = 'bg-slate-800 text-white';
+            let icon = 'fa-circle-info';
+
+            if (type === 'success') {
+                bgColor = 'bg-emerald-600 text-white';
+                icon = 'fa-circle-check';
+            } else if (type === 'error') {
+                bgColor = 'bg-rose-600 text-white';
+                icon = 'fa-circle-xmark';
+            } else if (type === 'warning') {
+                bgColor = 'bg-amber-500 text-white';
+                icon = 'fa-triangle-exclamation';
+            }
+
+            toast.className = `${bgColor} px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 text-xs font-semibold transform translate-y-2 opacity-0 transition duration-300 pointer-events-auto`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i><span>${escapeHtml(msg)}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        function escapeJsString(str) {
+            if (!str) return '';
+            return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+        }
     </script>
 </body>
 </html>
+
