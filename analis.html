@@ -1,0 +1,764 @@
+
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Teknikal Kripto Real-time</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0b0e14',
+                        cardbg: '#151d2a',
+                        bordercolor: '#222f43',
+                        buygreen: '#22c55e',
+                        sellred: '#ef4444',
+                        holdyellow: '#f59e0b'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- TradingView Lightweight Charts CDN -->
+    <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0e14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222f43;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="bg-darkbg text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Header -->
+    <header class="border-b border-bordercolor bg-cardbg/80 backdrop-blur sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-blue-600/20 text-blue-500 rounded-lg">
+                    <i data-lucide="line-chart" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-wide flex items-center gap-2">
+                        Dashboard Analisis Teknikal Kripto
+                        <span class="text-xs font-normal px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">Algorithmic</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Analisis Kuantitatif Real-time via Binance API</p>
+                </div>
+            </div>
+
+            <!-- Controls & Status -->
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <!-- Pair Selector -->
+                <select id="pairSelect" class="bg-darkbg border border-bordercolor rounded-lg px-3 py-1.5 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
+                    <option value="BTCUSDT">BTC/USDT</option>
+                    <option value="ETHUSDT">ETH/USDT</option>
+                    <option value="SOLUSDT">SOL/USDT</option>
+                    <option value="BNBUSDT">BNB/USDT</option>
+                </select>
+
+                <!-- Timeframe Selector -->
+                <select id="intervalSelect" class="bg-darkbg border border-bordercolor rounded-lg px-3 py-1.5 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
+                    <option value="5m">5 Menit</option>
+                    <option value="15m" selected>15 Menit</option>
+                    <option value="1h">1 Jam</option>
+                    <option value="4h">4 Jam</option>
+                </select>
+
+                <!-- Connection Indicator -->
+                <div class="flex items-center gap-2 bg-darkbg border border-bordercolor px-3 py-1.5 rounded-lg text-xs">
+                    <span id="wsStatusDot" class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse"></span>
+                    <span id="wsStatusText" class="text-slate-400 font-medium">Menghubungkan...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto w-full p-4 space-y-4 flex-1">
+
+        <!-- Metrics & Signals Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+
+            <!-- Card 1: Main Signal Recommendation (Span 2) -->
+            <div id="signalCard" class="lg:col-span-2 bg-cardbg border border-bordercolor rounded-xl p-4 flex flex-col justify-between relative overflow-hidden transition-all duration-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Rekomendasi Utama</span>
+                        <h2 id="signalTitle" class="text-2xl font-black mt-1 tracking-tight text-slate-300">MEMUAT...</h2>
+                    </div>
+                    <div id="signalIconContainer" class="p-3 rounded-xl bg-slate-800 text-slate-400">
+                        <i data-lucide="minus-circle" class="w-8 h-8"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <p id="signalReason" class="text-xs text-slate-400 leading-relaxed">Menghitung indikator teknikal...</p>
+                </div>
+                <!-- Dynamic background glow -->
+                <div id="signalGlow" class="absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-20 bg-slate-500"></div>
+            </div>
+
+            <!-- Card 2: Last Price -->
+            <div class="bg-cardbg border border-bordercolor rounded-xl p-4 flex flex-col justify-between">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Harga Terakhir</span>
+                    <i data-lucide="dollar-sign" class="w-4 h-4 text-slate-400"></i>
+                </div>
+                <div class="my-2">
+                    <div id="priceDisplay" class="text-2xl font-bold tracking-tight text-slate-100">$0.00</div>
+                    <div id="priceChange" class="text-xs font-semibold mt-1 text-slate-400">0.00%</div>
+                </div>
+                <div class="text-[10px] text-slate-500 flex justify-between">
+                    <span>H: <span id="highDisplay">-</span></span>
+                    <span>L: <span id="lowDisplay">-</span></span>
+                </div>
+            </div>
+
+            <!-- Card 3: OBV Status -->
+            <div class="bg-cardbg border border-bordercolor rounded-xl p-4 flex flex-col justify-between">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Tren OBV</span>
+                    <i data-lucide="bar-chart-3" class="w-4 h-4 text-slate-400"></i>
+                </div>
+                <div class="my-2">
+                    <div id="obvBadge" class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                        NETRAL
+                    </div>
+                    <div id="obvVal" class="text-xs text-slate-400 font-mono mt-2 truncate">Nilai: -</div>
+                </div>
+                <p class="text-[10px] text-slate-500">On-Balance Volume (Volume Accumulation)</p>
+            </div>
+
+            <!-- Card 4: A/D Line Status -->
+            <div class="bg-cardbg border border-bordercolor rounded-xl p-4 flex flex-col justify-between">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Tren A/D Line</span>
+                    <i data-lucide="activity" class="w-4 h-4 text-slate-400"></i>
+                </div>
+                <div class="my-2">
+                    <div id="adBadge" class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                        NETRAL
+                    </div>
+                    <div id="adVal" class="text-xs text-slate-400 font-mono mt-2 truncate">Nilai: -</div>
+                </div>
+                <p class="text-[10px] text-slate-500">Accumulation / Distribution Line</p>
+            </div>
+
+            <!-- Card 5: RSI & EMA Filters -->
+            <div class="bg-cardbg border border-bordercolor rounded-xl p-4 flex flex-col justify-between">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">RSI & EMA 200</span>
+                    <i data-lucide="sliders" class="w-4 h-4 text-slate-400"></i>
+                </div>
+                <div class="my-1 space-y-1">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-slate-400">RSI (14):</span>
+                        <span id="rsiVal" class="text-xs font-bold font-mono text-slate-200">-</span>
+                    </div>
+                    <!-- RSI Progress Bar -->
+                    <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                        <div id="rsiBar" class="bg-blue-500 h-1.5 rounded-full transition-all duration-300" style="width: 50%"></div>
+                    </div>
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="text-xs text-slate-400">EMA 200:</span>
+                        <span id="emaStatus" class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">-</span>
+                    </div>
+                </div>
+                <p class="text-[10px] text-slate-500">Filter Sinyal Pendukung Trend</p>
+            </div>
+
+        </div>
+
+        <!-- Interactive Charts Layout -->
+        <div class="space-y-3">
+            <!-- Price & EMA 200 Chart -->
+            <div class="bg-cardbg border border-bordercolor rounded-xl p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="candlestick-chart" class="w-4 h-4 text-blue-400"></i>
+                        <h3 class="text-sm font-bold text-slate-200">Grafik Harga Candle & Filter EMA 200</h3>
+                    </div>
+                    <span class="text-xs text-slate-500">Kuning: EMA 200</span>
+                </div>
+                <div id="priceChartContainer" class="w-full h-[320px] rounded-lg overflow-hidden"></div>
+            </div>
+
+            <!-- OBV & A/D Line Chart -->
+            <div class="bg-cardbg border border-bordercolor rounded-xl p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i>
+                        <h3 class="text-sm font-bold text-slate-200">On-Balance Volume (OBV) vs A/D Line</h3>
+                    </div>
+                    <div class="flex items-center gap-3 text-xs">
+                        <span class="flex items-center gap-1 text-blue-400"><span class="w-2.5 h-0.5 bg-blue-500 inline-block"></span> OBV (Kiri)</span>
+                        <span class="flex items-center gap-1 text-purple-400"><span class="w-2.5 h-0.5 bg-purple-500 inline-block"></span> A/D Line (Kanan)</span>
+                    </div>
+                </div>
+                <div id="obvChartContainer" class="w-full h-[180px] rounded-lg overflow-hidden"></div>
+            </div>
+
+            <!-- RSI Chart -->
+            <div class="bg-cardbg border border-bordercolor rounded-xl p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="gauge" class="w-4 h-4 text-pink-400"></i>
+                        <h3 class="text-sm font-bold text-slate-200">Relative Strength Index (RSI 14)</h3>
+                    </div>
+                    <span class="text-xs text-slate-500">Garis Merah: 70 (Overbought) | Garis Hijau: 30 (Oversold)</span>
+                </div>
+                <div id="rsiChartContainer" class="w-full h-[140px] rounded-lg overflow-hidden"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-bordercolor bg-cardbg/50 px-4 py-3 mt-auto text-center text-xs text-slate-500">
+        Dashboard Algoritma Trading Kripto &copy; 2026. Data bersumber langsung dari Binance WebSocket API.
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // App State Variables
+        let currentSymbol = 'BTCUSDT';
+        let currentInterval = '15m';
+        let candleData = [];
+        let ws = null;
+
+        // Chart References
+        let chartPrice, seriesCandle, seriesEMA200;
+        let chartOBV, seriesOBV, seriesAD;
+        let chartRSI, seriesRSI, seriesOverbought, seriesOversold;
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- MATH & TECHNICAL INDICATOR FUNCTIONS ---
+
+        // 1. Calculate Exponential Moving Average (EMA)
+        function calculateEMA(period, prices) {
+            const ema = new Array(prices.length).fill(null);
+            if (prices.length < period) return ema;
+
+            // Seed initial SMA
+            let sum = 0;
+            for (let i = 0; i < period; i++) sum += prices[i];
+            ema[period - 1] = sum / period;
+
+            const k = 2 / (period + 1);
+            for (let i = period; i < prices.length; i++) {
+                ema[i] = (prices[i] * k) + (ema[i - 1] * (1 - k));
+            }
+            return ema;
+        }
+
+        // 2. Calculate On-Balance Volume (OBV)
+        function calculateOBV(candles) {
+            const obv = [0];
+            for (let i = 1; i < candles.length; i++) {
+                const prevClose = candles[i - 1].close;
+                const currClose = candles[i].close;
+                const vol = candles[i].volume;
+
+                if (currClose > prevClose) {
+                    obv.push(obv[i - 1] + vol);
+                } else if (currClose < prevClose) {
+                    obv.push(obv[i - 1] - vol);
+                } else {
+                    obv.push(obv[i - 1]);
+                }
+            }
+            return obv;
+        }
+
+        // 3. Calculate Accumulation/Distribution (A/D) Line
+        function calculateAD(candles) {
+            const ad = [];
+            let currentAD = 0;
+            for (let i = 0; i < candles.length; i++) {
+                const { high, low, close, volume } = candles[i];
+                let mfm = 0;
+                if (high !== low) {
+                    mfm = ((close - low) - (high - close)) / (high - low);
+                }
+                currentAD += mfm * volume;
+                ad.push(currentAD);
+            }
+            return ad;
+        }
+
+        // 4. Calculate RSI (14)
+        function calculateRSI(candles, period = 14) {
+            const rsi = new Array(candles.length).fill(null);
+            if (candles.length <= period) return rsi;
+
+            let gains = 0, losses = 0;
+            for (let i = 1; i <= period; i++) {
+                const diff = candles[i].close - candles[i - 1].close;
+                if (diff >= 0) gains += diff;
+                else losses -= diff;
+            }
+
+            let avgGain = gains / period;
+            let avgLoss = losses / period;
+
+            rsi[period] = avgLoss === 0 ? 100 : 100 - (100 / (1 + (avgGain / avgLoss)));
+
+            for (let i = period + 1; i < candles.length; i++) {
+                const diff = candles[i].close - candles[i - 1].close;
+                const gain = diff > 0 ? diff : 0;
+                const loss = diff < 0 ? -diff : 0;
+
+                avgGain = (avgGain * (period - 1) + gain) / period;
+                avgLoss = (avgLoss * (period - 1) + loss) / period;
+
+                if (avgLoss === 0) {
+                    rsi[i] = 100;
+                } else {
+                    const rs = avgGain / avgLoss;
+                    rsi[i] = 100 - (100 / (1 + rs));
+                }
+            }
+            return rsi;
+        }
+
+        // Helper: Determine Trend for OBV or A/D Line (EMA 5 vs EMA 20 Crossover)
+        function getIndicatorTrend(values) {
+            if (values.length < 20) return 'NETRAL';
+            const emaShort = calculateEMA(5, values);
+            const emaLong = calculateEMA(20, values);
+            
+            const lastShort = emaShort[emaShort.length - 1];
+            const lastLong = emaLong[emaLong.length - 1];
+            const prevShort = emaShort[emaShort.length - 2];
+            const prevLong = emaLong[emaLong.length - 2];
+
+            if (lastShort > lastLong) return 'NAIK';
+            if (lastShort < lastLong) return 'TURUN';
+            return 'NETRAL';
+        }
+
+        // --- CHART INITIALIZATION ---
+        function initCharts() {
+            const themeOptions = {
+                layout: {
+                    textColor: '#94a3b8',
+                    background: { type: 'solid', color: '#151d2a' }
+                },
+                grid: {
+                    vertLines: { color: '#1e293b' },
+                    horzLines: { color: '#1e293b' }
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                },
+                timeScale: {
+                    borderColor: '#222f43',
+                    timeVisible: true,
+                    secondsVisible: false,
+                },
+            };
+
+            // 1. Price Chart
+            const priceElem = document.getElementById('priceChartContainer');
+            priceElem.innerHTML = '';
+            chartPrice = LightweightCharts.createChart(priceElem, {
+                ...themeOptions,
+                rightPriceScale: { borderColor: '#222f43' },
+            });
+            seriesCandle = chartPrice.addCandlestickSeries({
+                upColor: '#22c55e',
+                downColor: '#ef4444',
+                borderVisible: false,
+                wickUpColor: '#22c55e',
+                wickDownColor: '#ef4444'
+            });
+            seriesEMA200 = chartPrice.addLineSeries({
+                color: '#f59e0b',
+                lineWidth: 2,
+                title: 'EMA 200'
+            });
+
+            // 2. OBV & A/D Chart
+            const obvElem = document.getElementById('obvChartContainer');
+            obvElem.innerHTML = '';
+            chartOBV = LightweightCharts.createChart(obvElem, {
+                ...themeOptions,
+                leftPriceScale: { visible: true, borderColor: '#222f43' },
+                rightPriceScale: { visible: true, borderColor: '#222f43' },
+            });
+            seriesOBV = chartOBV.addLineSeries({
+                priceScaleId: 'left',
+                color: '#3b82f6',
+                lineWidth: 2,
+                title: 'OBV'
+            });
+            seriesAD = chartOBV.addLineSeries({
+                priceScaleId: 'right',
+                color: '#a855f7',
+                lineWidth: 2,
+                title: 'A/D Line'
+            });
+
+            // 3. RSI Chart
+            const rsiElem = document.getElementById('rsiChartContainer');
+            rsiElem.innerHTML = '';
+            chartRSI = LightweightCharts.createChart(rsiElem, {
+                ...themeOptions,
+                rightPriceScale: { borderColor: '#222f43' },
+            });
+            seriesRSI = chartRSI.addLineSeries({
+                color: '#ec4899',
+                lineWidth: 2,
+                title: 'RSI'
+            });
+
+            // Sync logical visible ranges across all 3 charts
+            let isSyncing = false;
+            function syncCharts(sourceChart, targetCharts) {
+                sourceChart.timeScale().subscribeVisibleLogicalRangeChange(range => {
+                    if (isSyncing || !range) return;
+                    isSyncing = true;
+                    targetCharts.forEach(c => c.timeScale().setVisibleLogicalRange(range));
+                    isSyncing = false;
+                });
+            }
+            syncCharts(chartPrice, [chartOBV, chartRSI]);
+            syncCharts(chartOBV, [chartPrice, chartRSI]);
+            syncCharts(chartRSI, [chartPrice, chartOBV]);
+
+            // Handle Window Resize
+            window.addEventListener('resize', () => {
+                chartPrice.applyOptions({ width: priceElem.clientWidth });
+                chartOBV.applyOptions({ width: obvElem.clientWidth });
+                chartRSI.applyOptions({ width: rsiElem.clientWidth });
+            });
+        }
+
+        // --- FETCH HISTORICAL KLINES FROM BINANCE ---
+        async function fetchHistoricalData() {
+            try {
+                updateWSStatus('Connecting', 'Mengambil data histori...');
+                // Direct Binance REST API call (limit = 300 to ensure enough data for EMA 200)
+                const url = `https://data-api.binance.vision/api/v3/klines?symbol=${currentSymbol}&interval=${currentInterval}&limit=300`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Gagal mengambil data dari Binance API');
+                
+                const rawData = await res.json();
+                candleData = rawData.map(d => ({
+                    time: Math.floor(d[0] / 1000), // UNIX timestamp in seconds
+                    open: parseFloat(d[1]),
+                    high: parseFloat(d[2]),
+                    low: parseFloat(d[3]),
+                    close: parseFloat(d[4]),
+                    volume: parseFloat(d[5])
+                }));
+
+                recalculateAndRenderAll();
+                connectWebSocket();
+            } catch (err) {
+                console.error(err);
+                updateWSStatus('Error', 'Gagal memuat data');
+            }
+        }
+
+        // --- RECALCULATE INDICATORS & UPDATE UI ---
+        function recalculateAndRenderAll() {
+            if (candleData.length === 0) return;
+
+            const closes = candleData.map(c => c.close);
+            const times = candleData.map(c => c.time);
+
+            // 1. Calculate Indicators
+            const ema200Values = calculateEMA(200, closes);
+            const obvValues = calculateOBV(candleData);
+            const adValues = calculateAD(candleData);
+            const rsiValues = calculateRSI(candleData, 14);
+
+            // 2. Prepare Data for Lightweight Charts
+            const candleSeriesData = candleData.map(c => ({
+                time: c.time,
+                open: c.open,
+                high: c.high,
+                low: c.low,
+                close: c.close
+            }));
+
+            const ema200SeriesData = [];
+            const obvSeriesData = [];
+            const adSeriesData = [];
+            const rsiSeriesData = [];
+
+            for (let i = 0; i < candleData.length; i++) {
+                const t = candleData[i].time;
+                if (ema200Values[i] !== null) ema200SeriesData.push({ time: t, value: ema200Values[i] });
+                if (obvValues[i] !== undefined) obvSeriesData.push({ time: t, value: obvValues[i] });
+                if (adValues[i] !== undefined) adSeriesData.push({ time: t, value: adValues[i] });
+                if (rsiValues[i] !== null) rsiSeriesData.push({ time: t, value: rsiValues[i] });
+            }
+
+            // Set Chart Series Data
+            seriesCandle.setData(candleSeriesData);
+            seriesEMA200.setData(ema200SeriesData);
+            seriesOBV.setData(obvSeriesData);
+            seriesAD.setData(adSeriesData);
+            seriesRSI.setData(rsiSeriesData);
+
+            // Add static threshold lines for RSI (70 & 30)
+            seriesRSI.createPriceLine({ price: 70, color: '#ef4444', lineWidth: 1, lineStyle: 2, title: '70 OB' });
+            seriesRSI.createPriceLine({ price: 30, color: '#22c55e', lineWidth: 1, lineStyle: 2, title: '30 OS' });
+
+            // 3. Evaluate Latest Signals
+            const lastIdx = candleData.length - 1;
+            const lastCandle = candleData[lastIdx];
+            const lastPrice = lastCandle.close;
+            const lastEMA200 = ema200Values[lastIdx];
+            const lastRSI = rsiValues[lastIdx] || 50;
+            const lastOBV = obvValues[lastIdx];
+            const lastAD = adValues[lastIdx];
+
+            const obvTrend = getIndicatorTrend(obvValues);
+            const adTrend = getIndicatorTrend(adValues);
+            const isPriceAboveEMA = lastEMA200 !== null ? lastPrice > lastEMA200 : false;
+
+            // Update UI Cards
+            updateDashboardUI({
+                lastCandle,
+                lastPrice,
+                lastEMA200,
+                lastRSI,
+                lastOBV,
+                lastAD,
+                obvTrend,
+                adTrend,
+                isPriceAboveEMA
+            });
+        }
+
+        // --- TRADING RECOMMENDATION ENGINE & UI UPDATE ---
+        function updateDashboardUI(data) {
+            const {
+                lastCandle, lastPrice, lastEMA200, lastRSI, lastOBV, lastAD,
+                obvTrend, adTrend, isPriceAboveEMA
+            } = data;
+
+            // 1. Format Last Price
+            document.getElementById('priceDisplay').textContent = `$${lastPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+            document.getElementById('highDisplay').textContent = `$${lastCandle.high.toFixed(2)}`;
+            document.getElementById('lowDisplay').textContent = `$${lastCandle.low.toFixed(2)}`;
+
+            // Calculate candle % change
+            const priceChangePct = ((lastCandle.close - lastCandle.open) / lastCandle.open) * 100;
+            const priceChangeElem = document.getElementById('priceChange');
+            priceChangeElem.textContent = `${priceChangePct >= 0 ? '+' : ''}${priceChangePct.toFixed(2)}%`;
+            priceChangeElem.className = `text-xs font-semibold mt-1 ${priceChangePct >= 0 ? 'text-green-500' : 'text-red-500'}`;
+
+            // 2. OBV Card UI
+            const obvBadge = document.getElementById('obvBadge');
+            document.getElementById('obvVal').textContent = `Nilai: ${Math.round(lastOBV).toLocaleString('id-ID')}`;
+            if (obvTrend === 'NAIK') {
+                obvBadge.className = 'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-green-500/10 text-green-400 border border-green-500/20';
+                obvBadge.textContent = '▲ NAIK (Bullish)';
+            } else if (obvTrend === 'TURUN') {
+                obvBadge.className = 'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20';
+                obvBadge.textContent = '▼ TURUN (Bearish)';
+            } else {
+                obvBadge.className = 'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700';
+                obvBadge.textContent = 'NETRAL';
+            }
+
+            // 3. A/D Line Card UI
+            const adBadge = document.getElementById('adBadge');
+            document.getElementById('adVal').textContent = `Nilai: ${Math.round(lastAD).toLocaleString('id-ID')}`;
+            if (adTrend === 'NAIK') {
+                adBadge.className = 'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-green-500/10 text-green-400 border border-green-500/20';
+                adBadge.textContent = '▲ NAIK (Bullish)';
+            } else if (adTrend === 'TURUN') {
+                adBadge.className = 'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20';
+                adBadge.textContent = '▼ TURUN (Bearish)';
+            } else {
+                adBadge.className = 'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700';
+                adBadge.textContent = 'NETRAL';
+            }
+
+            // 4. RSI & EMA Status UI
+            document.getElementById('rsiVal').textContent = lastRSI ? lastRSI.toFixed(1) : '-';
+            document.getElementById('rsiBar').style.width = `${Math.min(Math.max(lastRSI, 0), 100)}%`;
+
+            const emaStatusElem = document.getElementById('emaStatus');
+            if (lastEMA200 === null) {
+                emaStatusElem.textContent = 'Memuat EMA...';
+                emaStatusElem.className = 'text-[11px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
+            } else if (isPriceAboveEMA) {
+                emaStatusElem.textContent = 'Diatas EMA 200 (Bullish)';
+                emaStatusElem.className = 'text-[11px] font-bold px-1.5 py-0.5 rounded bg-green-500/10 text-green-400 border border-green-500/20';
+            } else {
+                emaStatusElem.textContent = 'Dibawah EMA 200 (Bearish)';
+                emaStatusElem.className = 'text-[11px] font-bold px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20';
+            }
+
+            // 5. MAIN RECOMMENDATION LOGIC (BUY / SELL / HOLD)
+            const signalCard = document.getElementById('signalCard');
+            const signalTitle = document.getElementById('signalTitle');
+            const signalReason = document.getElementById('signalReason');
+            const signalIconContainer = document.getElementById('signalIconContainer');
+            const signalGlow = document.getElementById('signalGlow');
+
+            // Logic Rules:
+            // BUY: OBV & A/D both trending UP, RSI < 70, Price > EMA 200
+            // SELL: OBV & A/D both trending DOWN, RSI > 30, Price < EMA 200
+            // HOLD / NEUTRAL: Mixed or Overbought/Oversold extreme condition
+            
+            if (obvTrend === 'NAIK' && adTrend === 'NAIK' && lastRSI < 70 && isPriceAboveEMA) {
+                // --- BUY SIGNAL ---
+                signalTitle.textContent = 'BUY (BELI)';
+                signalTitle.className = 'text-2xl font-black mt-1 tracking-tight text-buygreen';
+                signalReason.textContent = 'Konfirmasi Bullish: Tren OBV & A/D keduanya naik, harga di atas EMA 200, dan RSI belum overbought (<70).';
+                signalCard.className = 'lg:col-span-2 bg-cardbg border-2 border-buygreen/50 rounded-xl p-4 flex flex-col justify-between relative overflow-hidden transition-all duration-300';
+                signalIconContainer.className = 'p-3 rounded-xl bg-buygreen/20 text-buygreen';
+                signalIconContainer.innerHTML = '<i data-lucide="arrow-big-up-dash" class="w-8 h-8"></i>';
+                signalGlow.className = 'absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30 bg-buygreen';
+            } 
+            else if (obvTrend === 'TURUN' && adTrend === 'TURUN' && lastRSI > 30 && !isPriceAboveEMA) {
+                // --- SELL SIGNAL ---
+                signalTitle.textContent = 'SELL (JUAL)';
+                signalTitle.className = 'text-2xl font-black mt-1 tracking-tight text-sellred';
+                signalReason.textContent = 'Konfirmasi Bearish: Tren OBV & A/D keduanya turun, harga di bawah EMA 200, dan RSI belum oversold (>30).';
+                signalCard.className = 'lg:col-span-2 bg-cardbg border-2 border-sellred/50 rounded-xl p-4 flex flex-col justify-between relative overflow-hidden transition-all duration-300';
+                signalIconContainer.className = 'p-3 rounded-xl bg-sellred/20 text-sellred';
+                signalIconContainer.innerHTML = '<i data-lucide="arrow-big-down-dash" class="w-8 h-8"></i>';
+                signalGlow.className = 'absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30 bg-sellred';
+            } 
+            else {
+                // --- HOLD / NEUTRAL SIGNAL ---
+                signalTitle.textContent = 'HOLD / NEUTRAL';
+                signalTitle.className = 'text-2xl font-black mt-1 tracking-tight text-holdyellow';
+                
+                let reasonText = 'Sinyal bercampur atau pasar konsolidasi: ';
+                if (lastRSI >= 70) reasonText += 'RSI Overbought (Jenuh Beli). ';
+                else if (lastRSI <= 30) reasonText += 'RSI Oversold (Jenuh Jual). ';
+                else if (obvTrend !== adTrend) reasonText += 'Divergens/ketidakcocokan antara indikator OBV dan A/D. ';
+                else if (!isPriceAboveEMA && obvTrend === 'NAIK') reasonText += 'Trend volume naik tapi harga masih terhalang di bawah EMA 200. ';
+                else reasonText += 'Menunggu konfirmasi tren yang lebih jelas.';
+
+                signalReason.textContent = reasonText;
+                signalCard.className = 'lg:col-span-2 bg-cardbg border border-holdyellow/40 rounded-xl p-4 flex flex-col justify-between relative overflow-hidden transition-all duration-300';
+                signalIconContainer.className = 'p-3 rounded-xl bg-holdyellow/20 text-holdyellow';
+                signalIconContainer.innerHTML = '<i data-lucide="pause-circle" class="w-8 h-8"></i>';
+                signalGlow.className = 'absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-20 bg-holdyellow';
+            }
+
+            lucide.createIcons();
+        }
+
+        // --- BINANCE WEBSOCKET INTEGRATION ---
+        function connectWebSocket() {
+            if (ws) {
+                ws.close();
+            }
+
+            const streamSymbol = currentSymbol.toLowerCase();
+            const streamUrl = `wss://stream.binance.com:9443/ws/${streamSymbol}@kline_${currentInterval}`;
+
+            ws = new WebSocket(streamUrl);
+
+            ws.onopen = () => {
+                updateWSStatus('Live', 'Terhubung (Live Websocket)');
+            };
+
+            ws.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                if (!message.k) return;
+
+                const k = message.k;
+                const newCandle = {
+                    time: Math.floor(k.t / 1000),
+                    open: parseFloat(k.o),
+                    high: parseFloat(k.h),
+                    low: parseFloat(k.l),
+                    close: parseFloat(k.c),
+                    volume: parseFloat(k.v)
+                };
+
+                const isClosed = k.x; // Is candle closed?
+
+                if (candleData.length > 0) {
+                    const lastIdx = candleData.length - 1;
+                    if (candleData[lastIdx].time === newCandle.time) {
+                        // Update existing current candle
+                        candleData[lastIdx] = newCandle;
+                    } else if (newCandle.time > candleData[lastIdx].time) {
+                        // Push new candle
+                        candleData.push(newCandle);
+                        if (candleData.length > 300) candleData.shift(); // Keep maximum 300 candles
+                    }
+                }
+
+                recalculateAndRenderAll();
+            };
+
+            ws.onerror = (err) => {
+                console.error('WebSocket Error:', err);
+                updateWSStatus('Error', 'WebSocket Terputus');
+            };
+
+            ws.onclose = () => {
+                updateWSStatus('Disconnected', 'Terputus (Reconnecting...)');
+                // Reconnect after 3 seconds
+                setTimeout(connectWebSocket, 3000);
+            };
+        }
+
+        function updateWSStatus(status, text) {
+            const dot = document.getElementById('wsStatusDot');
+            const textElem = document.getElementById('wsStatusText');
+            textElem.textContent = text;
+
+            if (status === 'Live') {
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse';
+            } else if (status === 'Connecting') {
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse';
+            } else {
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-red-500';
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+        document.getElementById('pairSelect').addEventListener('change', (e) => {
+            currentSymbol = e.target.value;
+            fetchHistoricalData();
+        });
+
+        document.getElementById('intervalSelect').addEventListener('change', (e) => {
+            currentInterval = e.target.value;
+            fetchHistoricalData();
+        });
+
+        // --- APPLICATION INIT ---
+        window.onload = () => {
+            initCharts();
+            fetchHistoricalData();
+        };
+    </script>
+</body>
+</html>
+
+
