@@ -409,10 +409,11 @@
         </div>
       </form>
 
-      <div class="auth-toggle">
-        <span id="toggle-text" style="color:var(--text-muted); font-weight:normal;">Pendatang baru di bumi? </span>
-        <span id="btn-toggle-auth">Mulai perjalananmu</span>
-      </div>
+      <!-- KODE BARU (Sudah diperbaiki) -->
+<div class="auth-toggle" id="auth-toggle-box" style="cursor: pointer; padding: 8px; display: inline-block; width: 100%;">
+  <span id="toggle-text" style="color:var(--text-muted); font-weight:normal;">Pendatang baru di bumi? </span>
+  <span id="btn-toggle-auth" style="color: var(--secondary-color); font-weight: 600; text-decoration: underline;">Mulai perjalananmu</span>
+</div>
     </div>
 
     <!-- FORM BUAT POSTINGAN -->
@@ -506,23 +507,27 @@
 
     // Toggle Mode Register / Login
     // Toggle Mode Register / Login
-    btnToggleAuth.addEventListener('click', () => {
-      isRegisterMode = !isRegisterMode;
-      authError.classList.add('hidden');
-      authForm.reset();
+    // Ambil pembungkus utama agar seluruh area teks bisa diklik
+const authToggleBox = document.getElementById('auth-toggle-box');
 
-      if (isRegisterMode) {
-        authTitle.innerText = 'Daftar Penduduk Bumi';
-        btnAuthSubmit.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
-        toggleText.innerText = 'Sudah memiliki akses? ';
-        btnToggleAuth.innerText = 'Masuk di sini';
-      } else {
-        authTitle.innerText = 'Masuk ke Duniamu';
-        btnAuthSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right"></i>';
-        toggleText.innerText = 'Pendatang baru di bumi? ';
-        btnToggleAuth.innerText = 'Mulai perjalananmu';
-      }
-    });
+// Toggle Mode Register / Login
+authToggleBox.addEventListener('click', () => {
+  isRegisterMode = !isRegisterMode;
+  authError.classList.add('hidden');
+  authForm.reset();
+
+  if (isRegisterMode) {
+    authTitle.innerText = 'Daftar Penduduk Bumi';
+    btnAuthSubmit.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
+    toggleText.innerText = 'Sudah memiliki akses? ';
+    btnToggleAuth.innerText = 'Masuk di sini';
+  } else {
+    authTitle.innerText = 'Masuk ke Duniamu';
+    btnAuthSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right"></i>';
+    toggleText.innerText = 'Pendatang baru di bumi? ';
+    btnToggleAuth.innerText = 'Mulai perjalananmu';
+  }
+});
 
     // Handle Submit Auth Form
     authForm.addEventListener('submit', async (e) => {
