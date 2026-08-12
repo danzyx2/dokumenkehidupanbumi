@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kehidupan Bumi - Daftar Akun</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-color: #2b7a0b;
+      --primary-hover: #1f5c07;
+      --secondary-color: #0081C9;
+      --bg-color: #f0f7f4;
+      --surface-color: #ffffff;
+      --text-main: #2c3e50;
+      --text-muted: #7f8c8d;
+      --border-color: #e2e8f0;
+      --danger: #e74c3c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-color);
+      background-image: linear-gradient(135deg, #f0f7f4 0%, #e0f2f1 100%);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 15px;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+    .container { width: 100%; max-width: 440px; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+
+    .brand i { font-size: 2rem; color: var(--primary-color); }
+    h1 { font-size: 1.6rem; color: var(--primary-color); font-weight: 700; }
+
+    .card {
+      background-color: var(--surface-color);
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+      border: 1px solid var(--border-color);
+    }
+
+    .form-group { margin-bottom: 16px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: var(--text-main); }
+    .input-wrapper { position: relative; }
+    .input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px 14px 12px 40px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.2s ease;
+      background-color: #f8fafc;
+    }
+
+    input:focus {
+      border-color: var(--primary-color);
+      background-color: #fff;
+      box-shadow: 0 0 0 4px rgba(43, 122, 11, 0.1);
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      font-size: 0.95rem;
+      width: 100%;
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover { background-color: var(--primary-hover); }
+
+    .auth-toggle {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .auth-toggle a {
+      color: var(--secondary-color);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .hidden { display: none !important; }
+    .error-message { background-color: #fef2f2; color: var(--danger); font-size: 0.85rem; padding: 10px; border-radius: 8px; margin-top: 12px; border: 1px solid #fecaca; display: flex; align-items: center; gap: 8px; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div class="container">
+    <a href="index.html" class="brand">
+      <i class="fa-solid fa-earth-asia"></i>
+      <h1>Kehidupan Bumi</h1>
+    </a>
+
+    <div class="card">
+      <h2 style="margin-bottom: 20px; text-align:center;">Daftar Penduduk Bumi</h2>
+      
+      <form id="register-form">
+        <div class="form-group">
+          <label for="input-username">Username</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="input-username" placeholder="Pilih username unik" required autocomplete="off">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="input-password">Kata Sandi</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="input-password" placeholder="Buat kata sandi baru" required>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-register-submit">
+          Bergabung <i class="fa-solid fa-user-plus"></i>
+        </button>
+
+        <div id="auth-error" class="error-message hidden">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="auth-error-text"></span>
+        </div>
+      </form>
+
+      <div class="auth-toggle">
+        <span>Sudah memiliki akses? </span>
+        <a href="index.html">Masuk di sini</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://cerita-dunia-7fd8.paku683.workers.dev'; 
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsb2J0d3p1dXFqaHJxd3FuZXp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxMzAyODUsImV4cCI6MjEwMDcwNjI4NX0.cTaIAhvHxgqg1AZTGKqV63ZaUBUj8DO6_Z9rOO8u_QE';
+    
+    let supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const INTERNAL_DOMAIN = "@app.internal";
+
+    const registerForm = document.getElementById('register-form');
+    const inputUsername = document.getElementById('input-username');
+    const inputPassword = document.getElementById('input-password');
+    const btnRegisterSubmit = document.getElementById('btn-register-submit');
+    const authError = document.getElementById('auth-error');
+    const authErrorText = document.getElementById('auth-error-text');
+
+    function showError(msg) {
+      authErrorText.innerText = msg;
+      authError.classList.remove('hidden');
+    }
+
+    registerForm.onsubmit = async function(e) {
+      e.preventDefault();
+      authError.classList.add('hidden');
+
+      const username = inputUsername.value.trim();
+      const password = inputPassword.value;
+      const internalEmail = `${username.toLowerCase()}${INTERNAL_DOMAIN}`;
+
+      btnRegisterSubmit.disabled = true;
+      btnRegisterSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+
+      try {
+        // Step 1: Register ke Auth Supabase
+        const { data, error: authErr } = await supabase.auth.signUp({
+          email: internalEmail,
+          password: password
+        });
+
+        if (authErr) {
+          if (authErr.message.includes("already registered")) {
+            throw new Error("Username sudah terdaftar. Silakan pilih username lain.");
+          }
+          throw authErr;
+        }
+
+        // Step 2: Simpan Username ke public.profiles
+        if (data.user) {
+          const { error: profileErr } = await supabase
+            .from('profiles')
+            .insert([{ id: data.user.id, username: username }]);
+
+          if (profileErr) {
+            if (profileErr.code === '23505') {
+              throw new Error("Username sudah terdaftar. Gunakan nama lain.");
+            }
+            throw profileErr;
+          }
+        }
+
+        alert("Pendaftaran berhasil! Silakan masuk dengan akun baru Anda.");
+        window.location.href = "index.html"; // Pindah otomatis ke halaman login
+      } catch (err) {
+        showError(err.message);
+      } finally {
+        btnRegisterSubmit.disabled = false;
+        btnRegisterSubmit.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
+      }
+    };
+  </script>
+</body>
+</html>
