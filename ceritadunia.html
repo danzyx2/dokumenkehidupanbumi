@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kehidupan Bumi - Jelajahi Kisah Kita</title>
   
+  <!-- Google Fonts: Poppins untuk Heading, Inter untuk Body -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome untuk Ikon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
+    /* Reset & Base Styles */
     :root {
-      --primary-color: #2b7a0b;
+      --primary-color: #2b7a0b; /* Hijau Bumi */
       --primary-hover: #1f5c07;
-      --secondary-color: #0081C9;
+      --secondary-color: #0081C9; /* Biru Laut */
       --bg-color: #f0f7f4;
       --surface-color: #ffffff;
       --text-main: #2c3e50;
@@ -23,7 +27,11 @@
       --danger: #e74c3c;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: var(--bg-color);
@@ -36,9 +44,16 @@
       min-height: 100vh;
     }
 
-    h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
-    .container { width: 100%; max-width: 640px; }
+    h1, h2, h3, h4 {
+      font-family: 'Poppins', sans-serif;
+    }
 
+    .container {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    /* Header Styles */
     header {
       background-color: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(10px);
@@ -55,10 +70,26 @@
       border: 1px solid rgba(255,255,255,0.5);
     }
 
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand i { font-size: 1.8rem; color: var(--primary-color); }
-    h1 { font-size: 1.4rem; color: var(--primary-color); font-weight: 700; letter-spacing: -0.5px; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
 
+    .brand i {
+      font-size: 1.8rem;
+      color: var(--primary-color);
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      color: var(--primary-color);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    /* Cards */
     .card {
       background-color: var(--surface-color);
       padding: 24px;
@@ -68,12 +99,33 @@
       border: 1px solid var(--border-color);
     }
 
-    .form-group { margin-bottom: 16px; }
-    label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: var(--text-main); }
-    .input-wrapper { position: relative; }
-    .input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 16px;
+    }
 
-    input[type="text"], input[type="password"] {
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
       padding: 12px 14px 12px 40px;
       border: 1px solid var(--border-color);
@@ -121,61 +173,196 @@
       gap: 8px;
     }
 
-    button:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-    button.btn-secondary { background-color: #f1f5f9; color: var(--text-main); }
-    button.btn-secondary:hover { background-color: #e2e8f0; }
+    button:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
 
-    .auth-toggle-box {
+    button.btn-secondary {
+      background-color: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    button.btn-secondary:hover {
+      background-color: #e2e8f0;
+    }
+
+    .auth-toggle {
       margin-top: 20px;
       font-size: 0.9rem;
       text-align: center;
       color: var(--text-muted);
-      cursor: pointer;
-      user-select: none;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background-color 0.2s;
     }
 
-    .auth-toggle-box:hover {
-      background-color: #f1f8f4;
-    }
-
-    .auth-toggle-box span.link {
+    .auth-toggle span {
       color: var(--secondary-color);
+      cursor: pointer;
       font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .auth-toggle span:hover {
       text-decoration: underline;
     }
 
-    .create-post-wrapper { display: flex; gap: 12px; }
-    .user-avatar { width: 44px; height: 44px; border-radius: 50%; background-color: var(--border-color); object-fit: cover; flex-shrink: 0; }
-    .post-form-inner { flex: 1; }
+    /* Create Post Section */
+    .create-post-wrapper {
+      display: flex;
+      gap: 12px;
+    }
 
-    .feed-header { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; color: var(--primary-color); }
-    .post-item { border-bottom: 1px solid var(--border-color); padding: 20px 0; display: flex; gap: 12px; }
-    .post-body { flex: 1; }
-    .post-header { display: flex; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
-    .post-author { font-weight: 700; color: var(--text-main); font-size: 0.95rem; }
-    .post-username { color: var(--text-muted); font-size: 0.85rem; }
-    .post-time { font-size: 0.8rem; color: var(--text-muted); }
-    .post-time::before { content: '•'; margin-right: 6px; }
-    .post-content { line-height: 1.6; color: #1c2833; white-space: pre-wrap; font-size: 0.95rem; }
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: var(--border-color);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
 
-    .hidden { display: none !important; }
-    .error-message { background-color: #fef2f2; color: var(--danger); font-size: 0.85rem; padding: 10px; border-radius: 8px; margin-top: 12px; border: 1px solid #fecaca; display: flex; align-items: center; gap: 8px; }
+    .post-form-inner {
+      flex: 1;
+    }
 
-    #user-section { display: flex; align-items: center; gap: 12px; }
-    .header-profile { display: flex; align-items: center; gap: 8px; background: #f1f8f4; padding: 6px 12px; border-radius: 20px; border: 1px solid #c8e6c9; }
-    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-    .empty-state i { font-size: 3rem; color: #c8e6c9; margin-bottom: 10px; }
+    /* Feed Styles */
+    .feed-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+
+    .post-item {
+      border-bottom: 1px solid var(--border-color);
+      padding: 20px 0;
+      display: flex;
+      gap: 12px;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .post-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .post-body {
+      flex: 1;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .post-author {
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+
+    .post-username {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .post-time {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .post-time::before {
+      content: '•';
+      margin-right: 6px;
+    }
+
+    .post-content {
+      line-height: 1.6;
+      color: #1c2833;
+      white-space: pre-wrap;
+      font-size: 0.95rem;
+    }
+
+    /* Helper Classes */
+    .hidden {
+      display: none !important;
+    }
+
+    .error-message {
+      background-color: #fef2f2;
+      color: var(--danger);
+      font-size: 0.85rem;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 12px;
+      border: 1px solid #fecaca;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* User Section in Header */
+    #user-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f1f8f4;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #c8e6c9;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: #c8e6c9;
+      margin-bottom: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      header {
+        padding: 12px 15px;
+      }
+      h1 {
+        font-size: 1.2rem;
+      }
+      .card {
+        padding: 16px;
+      }
+      .header-profile span {
+        display: none; /* Sembunyikan username di header hp agar tidak sempit */
+      }
+    }
   </style>
 
+  <!-- Supabase JS Client via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
   <div class="container">
     
+    <!-- HEADER -->
     <header>
       <a href="#" class="brand">
         <i class="fa-solid fa-earth-asia"></i>
@@ -192,7 +379,7 @@
       </div>
     </header>
 
-    <!-- FORM AUTENTIKASI -->
+    <!-- FORM AUTENTIKASI (REGISTER / LOGIN) -->
     <div id="auth-card" class="card">
       <h2 id="auth-title" style="margin-bottom: 20px; text-align:center;">Masuk ke Duniamu</h2>
       
@@ -222,11 +409,11 @@
         </div>
       </form>
 
-      <!-- TOMBOL TOGGLE REGISTER / LOGIN -->
-      <div class="auth-toggle-box" id="auth-toggle-box">
-        <span id="toggle-text">Pendatang baru di bumi? </span>
-        <span id="btn-toggle-auth" class="link">Mulai perjalananmu</span>
-      </div>
+      <!-- KODE BARU (Sudah diperbaiki) -->
+<div class="auth-toggle" id="auth-toggle-box" style="cursor: pointer; padding: 8px; display: inline-block; width: 100%;">
+  <span id="toggle-text" style="color:var(--text-muted); font-weight:normal;">Pendatang baru di bumi? </span>
+  <span id="btn-toggle-auth" style="color: var(--secondary-color); font-weight: 600; text-decoration: underline;">Mulai perjalananmu</span>
+</div>
     </div>
 
     <!-- FORM BUAT POSTINGAN -->
@@ -254,6 +441,7 @@
         <i class="fa-solid fa-leaf"></i> Kisah Terkini
       </h3>
       <div id="feed-container">
+        <!-- Loader Skeleton/Text -->
         <div class="empty-state">
           <i class="fa-solid fa-earth-americas fa-spin" style="--fa-animation-duration: 3s;"></i>
           <p>Menjelajahi bumi mencari kisah...</p>
@@ -263,34 +451,36 @@
 
   </div>
 
+  <!-- INLINE JAVASCRIPT LOGIC -->
   <script>
-    // 1. Inisialisasi Supabase
+    // 1. Konfigurasi Supabase Client
+    // PENTING: Ganti dengan URL & Anon Key Supabase Anda
     const SUPABASE_URL = 'https://cerita-dunia-7fd8.paku683.workers.dev'; 
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsb2J0d3p1dXFqaHJxd3FuZXp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxMzAyODUsImV4cCI6MjEwMDcwNjI4NX0.cTaIAhvHxgqg1AZTGKqV63ZaUBUj8DO6_Z9rOO8u_QE';
     
+    // Fallback UI jika Supabase belum dikonfigurasi dengan benar
     let supabase;
     try {
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     } catch(e) {
-      console.error("Inisialisasi Supabase Gagal:", e);
+        console.warn("Supabase tidak valid, pastikan URL dan KEY diganti.");
     }
 
     const INTERNAL_DOMAIN = "@app.internal";
-    let isRegisterMode = false;
+    let currentUsername = "";
 
     // DOM Elements
+    const authCard = document.getElementById('auth-card');
     const authTitle = document.getElementById('auth-title');
     const authForm = document.getElementById('auth-form');
     const inputUsername = document.getElementById('input-username');
     const inputPassword = document.getElementById('input-password');
     const btnAuthSubmit = document.getElementById('btn-auth-submit');
-    const toggleText = document.getElementById('toggle-text');
     const btnToggleAuth = document.getElementById('btn-toggle-auth');
-    const authToggleBox = document.getElementById('auth-toggle-box');
+    const toggleText = document.getElementById('toggle-text');
     const authError = document.getElementById('auth-error');
     const authErrorText = document.getElementById('auth-error-text');
 
-    const authCard = document.getElementById('auth-card');
     const userSection = document.getElementById('user-section');
     const displayUsername = document.getElementById('display-username');
     const btnLogout = document.getElementById('btn-logout');
@@ -302,50 +492,48 @@
     const inputPostContent = document.getElementById('input-post-content');
     const feedContainer = document.getElementById('feed-container');
 
-    // 2. LOGIKA TOGGLE FORM (Langsung aktif)
-    authToggleBox.onclick = function() {
-      isRegisterMode = !isRegisterMode;
-      authError.classList.add('hidden');
-      authForm.reset();
+    let isRegisterMode = false;
 
-      if (isRegisterMode) {
-        authTitle.innerText = 'Daftar Penduduk Bumi';
-        btnAuthSubmit.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
-        toggleText.innerText = 'Sudah memiliki akses? ';
-        btnToggleAuth.innerText = 'Masuk di sini';
-      } else {
-        authTitle.innerText = 'Masuk ke Duniamu';
-        btnAuthSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right"></i>';
-        toggleText.innerText = 'Pendatang baru di bumi? ';
-        btnToggleAuth.innerText = 'Mulai perjalananmu';
-      }
-    };
-
-    // Helper Avatar & Time
+    // Helper: Generate Avatar URL (Menggunakan UI-Avatars)
     function getAvatarUrl(name) {
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2b7a0b&color=fff&bold=true`;
     }
 
+    // Helper: Format Waktu (Relatif atau Lokal)
     function formatTime(dateString) {
       const date = new Date(dateString);
       return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
     }
 
-    function showError(msg) {
-      authErrorText.innerText = msg;
-      authError.classList.remove('hidden');
-    }
+    // Toggle Mode Register / Login
+    // Toggle Mode Register / Login
+    // Ambil pembungkus utama agar seluruh area teks bisa diklik
+const authToggleBox = document.getElementById('auth-toggle-box');
 
-    function escapeHtml(str) {
-      if(!str) return '';
-      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
+// Toggle Mode Register / Login
+authToggleBox.addEventListener('click', () => {
+  isRegisterMode = !isRegisterMode;
+  authError.classList.add('hidden');
+  authForm.reset();
 
-    // 3. Submit Auth
-    authForm.onsubmit = async function(e) {
+  if (isRegisterMode) {
+    authTitle.innerText = 'Daftar Penduduk Bumi';
+    btnAuthSubmit.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
+    toggleText.innerText = 'Sudah memiliki akses? ';
+    btnToggleAuth.innerText = 'Masuk di sini';
+  } else {
+    authTitle.innerText = 'Masuk ke Duniamu';
+    btnAuthSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right"></i>';
+    toggleText.innerText = 'Pendatang baru di bumi? ';
+    btnToggleAuth.innerText = 'Mulai perjalananmu';
+  }
+});
+
+    // Handle Submit Auth Form
+    authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if(!supabase) return showError("Client Supabase belum siap.");
-
+      if(!supabase) return showError("Supabase Client belum dikonfigurasi di script.");
+      
       authError.classList.add('hidden');
       const username = inputUsername.value.trim();
       const password = inputPassword.value;
@@ -356,21 +544,19 @@
 
       try {
         if (isRegisterMode) {
-          // Register
           const { data, error: authErr } = await supabase.auth.signUp({ email: internalEmail, password: password });
           if (authErr) throw authErr;
 
           if (data.user) {
             const { error: profileErr } = await supabase.from('profiles').insert([{ id: data.user.id, username: username }]);
             if (profileErr) {
-              if (profileErr.code === '23505') throw new Error("Username sudah terdaftar.");
+              if (profileErr.code === '23505') throw new Error("Username sudah terdaftar. Gunakan nama lain.");
               throw profileErr;
             }
           }
           alert("Pendaftaran berhasil! Silakan masuk.");
-          authToggleBox.click(); // Pindah ke form login
+          btnToggleAuth.click(); 
         } else {
-          // Login
           const { data, error: loginErr } = await supabase.auth.signInWithPassword({ email: internalEmail, password: password });
           if (loginErr) throw new Error("Username atau kata sandi tidak cocok.");
           checkUserSession();
@@ -381,10 +567,22 @@
         btnAuthSubmit.disabled = false;
         btnAuthSubmit.innerHTML = isRegisterMode ? 'Bergabung <i class="fa-solid fa-user-plus"></i>' : 'Masuk <i class="fa-solid fa-arrow-right"></i>';
       }
-    };
+    });
 
-    // 4. Submit Post
-    postForm.onsubmit = async function(e) {
+    function showError(msg) {
+        authErrorText.innerText = msg;
+        authError.classList.remove('hidden');
+    }
+
+    // Handle Logout
+    btnLogout.addEventListener('click', async () => {
+      if(!supabase) return;
+      await supabase.auth.signOut();
+      checkUserSession();
+    });
+
+    // Handle Create Post
+    postForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       if(!supabase) return;
 
@@ -393,6 +591,7 @@
 
       const submitBtn = postForm.querySelector('button');
       submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
 
       try {
         const { data: { user } } = await supabase.auth.getUser();
@@ -402,15 +601,16 @@
         if (error) throw error;
 
         inputPostContent.value = '';
-        fetchFeed();
+        fetchFeed(); 
       } catch (err) {
-        alert("Gagal posting: " + err.message);
+        alert("Gagal membagikan kisah: " + err.message);
       } finally {
         submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Bagikan';
       }
-    };
+    });
 
-    // 5. Fetch Feed
+    // Fetch Feed Postingan
     async function fetchFeed() {
       if(!supabase) return;
 
@@ -423,15 +623,21 @@
         if (error) throw error;
 
         if (!data || data.length === 0) {
-          feedContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-wind"></i><p>Belum ada kisah yang dibagikan.</p></div>`;
+          feedContainer.innerHTML = `
+            <div class="empty-state">
+                <i class="fa-solid fa-wind"></i>
+                <p>Belum ada kisah yang dibagikan.</p>
+            </div>`;
           return;
         }
 
         feedContainer.innerHTML = data.map(post => {
           const authorName = post.profiles?.username || 'Anonim';
+          const avatarUrl = getAvatarUrl(authorName);
+          
           return `
             <div class="post-item">
-              <img src="${getAvatarUrl(authorName)}" class="user-avatar" alt="${authorName}">
+              <img src="${avatarUrl}" class="user-avatar" alt="${authorName}">
               <div class="post-body">
                 <div class="post-header">
                   <span class="post-author">${escapeHtml(authorName)}</span>
@@ -444,14 +650,14 @@
           `;
         }).join('');
       } catch (err) {
-        feedContainer.innerHTML = `<div class="error-message"><i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat kisah.</div>`;
+        feedContainer.innerHTML = `<div class="error-message"><i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat kisah dari server.</div>`;
       }
     }
 
-    // 6. Cek Sesi User
+    // Cek Sesi Pengguna
     async function checkUserSession() {
       if(!supabase) return;
-
+      
       const { data: { user } } = await supabase.auth.getUser();
 
       if (user) {
@@ -461,9 +667,10 @@
           .eq('id', user.id)
           .single();
 
-        const currentUsername = profile?.username || 'user';
+        currentUsername = profile?.username || 'user';
         displayUsername.innerText = `@${currentUsername}`;
         
+        // Update Avatars
         const avatarUrl = getAvatarUrl(currentUsername);
         headerAvatar.src = avatarUrl;
         postAvatar.src = avatarUrl;
@@ -478,16 +685,17 @@
       }
     }
 
-    // Logout
-    btnLogout.onclick = async function() {
-      if(!supabase) return;
-      await supabase.auth.signOut();
-      checkUserSession();
-    };
+    // Helper: Cegah XSS
+    function escapeHtml(str) {
+      if(!str) return '';
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
 
-    // Init
-    checkUserSession();
-    fetchFeed();
+    // Inisialisasi
+    window.addEventListener('DOMContentLoaded', () => {
+        checkUserSession();
+        fetchFeed();
+    });
   </script>
 </body>
 </html>
