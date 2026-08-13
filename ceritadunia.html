@@ -379,7 +379,7 @@
       </div>
     </header>
 
-    <!-- FORM AUTENTIKASI (REGISTER / LOGIN) -->
+    <!-- FORM LOGIN -->
     <div id="auth-card" class="card">
       <h2 id="auth-title" style="margin-bottom: 20px; text-align:center;">Masuk ke Duniamu</h2>
       
@@ -403,17 +403,17 @@
         <button type="submit" id="btn-auth-submit" style="width: 100%; margin-top: 10px;">
           Masuk <i class="fa-solid fa-arrow-right"></i>
         </button>
+
         <div id="auth-error" class="error-message hidden">
           <i class="fa-solid fa-circle-exclamation"></i>
           <span id="auth-error-text"></span>
         </div>
       </form>
 
-      <!-- KODE BARU (Sudah diperbaiki) -->
-<div class="auth-toggle" id="auth-toggle-box" style="cursor: pointer; padding: 8px; display: inline-block; width: 100%;">
-  <span id="toggle-text" style="color:var(--text-muted); font-weight:normal;">Pendatang baru di bumi? </span>
-  <a href="register.html" style="color:var(--secondary-color); font-weight:600;">Daftar sekarang</a>
-</div>
+      <div class="auth-toggle" style="padding: 8px; display: inline-block; width: 100%;">
+        <span style="color:var(--text-muted); font-weight:normal;">Pendatang baru di bumi? </span>
+        <a href="register.html" style="color:var(--secondary-color); font-weight:600;">Daftar sekarang</a>
+      </div>
     </div>
 
     <!-- FORM BUAT POSTINGAN -->
@@ -441,7 +441,6 @@
         <i class="fa-solid fa-leaf"></i> Kisah Terkini
       </h3>
       <div id="feed-container">
-        <!-- Loader Skeleton/Text -->
         <div class="empty-state">
           <i class="fa-solid fa-earth-americas fa-spin" style="--fa-animation-duration: 3s;"></i>
           <p>Menjelajahi bumi mencari kisah...</p>
@@ -451,33 +450,17 @@
 
   </div>
 
-  <!-- INLINE JAVASCRIPT LOGIC -->
+  <!-- INLINE JAVASCRIPT LOGIC (CUSTOM WORKER ROUTER) -->
   <script>
-    // 1. Konfigurasi Supabase Client
-    // PENTING: Ganti dengan URL & Anon Key Supabase Anda
-    const SUPABASE_URL = 'https://cerita-dunia-7fd8.paku683.workers.dev'; 
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsb2J0d3p1dXFqaHJxd3FuZXp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxMzAyODUsImV4cCI6MjEwMDcwNjI4NX0.cTaIAhvHxgqg1AZTGKqV63ZaUBUj8DO6_Z9rOO8u_QE';
-    
-    // Fallback UI jika Supabase belum dikonfigurasi dengan benar
-    let supabase;
-    try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } catch(e) {
-        console.warn("Supabase tidak valid, pastikan URL dan KEY diganti.");
-    }
-
-    const INTERNAL_DOMAIN = "@app.internal";
-    let currentUsername = "";
+    // URL CLOUDFLARE WORKER
+    const WORKER_URL = "https://cerita-dunia-7fd8.paku683.workers.dev";
 
     // DOM Elements
     const authCard = document.getElementById('auth-card');
-    const authTitle = document.getElementById('auth-title');
     const authForm = document.getElementById('auth-form');
     const inputUsername = document.getElementById('input-username');
     const inputPassword = document.getElementById('input-password');
     const btnAuthSubmit = document.getElementById('btn-auth-submit');
-    const btnToggleAuth = document.getElementById('btn-toggle-auth');
-    const toggleText = document.getElementById('toggle-text');
     const authError = document.getElementById('auth-error');
     const authErrorText = document.getElementById('auth-error-text');
 
@@ -492,147 +475,124 @@
     const inputPostContent = document.getElementById('input-post-content');
     const feedContainer = document.getElementById('feed-container');
 
-    let isRegisterMode = false;
-
-    // Helper: Generate Avatar URL (Menggunakan UI-Avatars)
+    // Helper: Avatar Generator
     function getAvatarUrl(name) {
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2b7a0b&color=fff&bold=true`;
     }
 
-    // Helper: Format Waktu (Relatif atau Lokal)
+    // Helper: Format Waktu
     function formatTime(dateString) {
+      if(!dateString) return 'Baru saja';
       const date = new Date(dateString);
       return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
     }
 
-    // Toggle Mode Register / Login
-    // Toggle Mode Register / Login
-    // Ambil pembungkus utama agar seluruh area teks bisa diklik
-const authToggleBox = document.getElementById('auth-toggle-box');
+    // Helper: Prevent XSS
+    function escapeHtml(str) {
+      if(!str) return '';
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
 
-// Toggle Mode Register / Login
-authToggleBox.addEventListener('click', () => {
-  isRegisterMode = !isRegisterMode;
-  authError.classList.add('hidden');
-  authForm.reset();
+    function showError(msg) {
+      authErrorText.innerText = msg;
+      authError.classList.remove('hidden');
+    }
 
-  if (isRegisterMode) {
-    authTitle.innerText = 'Daftar Penduduk Bumi';
-    btnAuthSubmit.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
-    toggleText.innerText = 'Sudah memiliki akses? ';
-    btnToggleAuth.innerText = 'Masuk di sini';
-  } else {
-    authTitle.innerText = 'Masuk ke Duniamu';
-    btnAuthSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right"></i>';
-    toggleText.innerText = 'Pendatang baru di bumi? ';
-    btnToggleAuth.innerText = 'Mulai perjalananmu';
-  }
-});
-
-    // Handle Submit Auth Form
+    // 1. PROCESS LOGIN VIA WORKER
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if(!supabase) return showError("Supabase Client belum dikonfigurasi di script.");
-      
       authError.classList.add('hidden');
+
       const username = inputUsername.value.trim();
       const password = inputPassword.value;
-      const internalEmail = `${username.toLowerCase()}${INTERNAL_DOMAIN}`;
 
       btnAuthSubmit.disabled = true;
       btnAuthSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
 
       try {
-        if (isRegisterMode) {
-          const { data, error: authErr } = await supabase.auth.signUp({ email: internalEmail, password: password });
-          if (authErr) throw authErr;
+        const response = await fetch(`${WORKER_URL}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: username, password: password })
+        });
 
-          if (data.user) {
-            const { error: profileErr } = await supabase.from('profiles').insert([{ id: data.user.id, username: username }]);
-            if (profileErr) {
-              if (profileErr.code === '23505') throw new Error("Username sudah terdaftar. Gunakan nama lain.");
-              throw profileErr;
-            }
-          }
-          alert("Pendaftaran berhasil! Silakan masuk.");
-          btnToggleAuth.click(); 
-        } else {
-          const { data, error: loginErr } = await supabase.auth.signInWithPassword({ email: internalEmail, password: password });
-          if (loginErr) throw new Error("Username atau kata sandi tidak cocok.");
-          checkUserSession();
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Login gagal.");
         }
+
+        // Simpan username di LocalStorage browser
+        localStorage.setItem('loggedInUser', result.user.username);
+        checkUserSession();
+
       } catch (err) {
         showError(err.message);
       } finally {
         btnAuthSubmit.disabled = false;
-        btnAuthSubmit.innerHTML = isRegisterMode ? 'Bergabung <i class="fa-solid fa-user-plus"></i>' : 'Masuk <i class="fa-solid fa-arrow-right"></i>';
+        btnAuthSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right"></i>';
       }
     });
 
-    function showError(msg) {
-        authErrorText.innerText = msg;
-        authError.classList.remove('hidden');
-    }
-
-    // Handle Logout
-    btnLogout.addEventListener('click', async () => {
-      if(!supabase) return;
-      await supabase.auth.signOut();
+    // 2. LOGOUT
+    btnLogout.addEventListener('click', () => {
+      localStorage.removeItem('loggedInUser');
       checkUserSession();
     });
 
-    // Handle Create Post
+    // 3. TAMBAH POSTINGAN
     postForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if(!supabase) return;
-
       const content = inputPostContent.value.trim();
-      if (!content) return;
+      const loggedUser = localStorage.getItem('loggedInUser');
+
+      if (!content || !loggedUser) return;
 
       const submitBtn = postForm.querySelector('button');
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
 
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) throw new Error("Silakan login dahulu.");
+        const response = await fetch(`${WORKER_URL}/posts`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: loggedUser, content: content })
+        });
 
-        const { error } = await supabase.from('posts').insert([{ user_id: user.id, content: content }]);
-        if (error) throw error;
+        if (!response.ok) {
+          throw new Error("Gagal mengirim postingan.");
+        }
 
         inputPostContent.value = '';
-        fetchFeed(); 
+        fetchFeed();
+
       } catch (err) {
-        alert("Gagal membagikan kisah: " + err.message);
+        alert(err.message);
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Bagikan';
       }
     });
 
-    // Fetch Feed Postingan
+    // 4. FETCH FEED POSTINGAN
     async function fetchFeed() {
-      if(!supabase) return;
-
       try {
-        const { data, error } = await supabase
-          .from('posts')
-          .select(`id, content, created_at, profiles ( username )`)
-          .order('created_at', { ascending: false });
+        const response = await fetch(`${WORKER_URL}/posts`);
+        const data = await response.json();
 
-        if (error) throw error;
+        if (!response.ok) throw new Error("Gagal memuat feed.");
 
         if (!data || data.length === 0) {
           feedContainer.innerHTML = `
             <div class="empty-state">
-                <i class="fa-solid fa-wind"></i>
-                <p>Belum ada kisah yang dibagikan.</p>
+              <i class="fa-solid fa-wind"></i>
+              <p>Belum ada kisah yang dibagikan.</p>
             </div>`;
           return;
         }
 
         feedContainer.innerHTML = data.map(post => {
-          const authorName = post.profiles?.username || 'Anonim';
+          const authorName = post.username || 'Anonim';
           const avatarUrl = getAvatarUrl(authorName);
           
           return `
@@ -649,29 +609,20 @@ authToggleBox.addEventListener('click', () => {
             </div>
           `;
         }).join('');
+
       } catch (err) {
-        feedContainer.innerHTML = `<div class="error-message"><i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat kisah dari server.</div>`;
+        feedContainer.innerHTML = `<div class="error-message"><i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat kisah.</div>`;
       }
     }
 
-    // Cek Sesi Pengguna
-    async function checkUserSession() {
-      if(!supabase) return;
-      
-      const { data: { user } } = await supabase.auth.getUser();
+    // 5. CEK SESI LOGIN
+    function checkUserSession() {
+      const loggedUser = localStorage.getItem('loggedInUser');
 
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('username')
-          .eq('id', user.id)
-          .single();
-
-        currentUsername = profile?.username || 'user';
-        displayUsername.innerText = `@${currentUsername}`;
+      if (loggedUser) {
+        displayUsername.innerText = `@${loggedUser}`;
         
-        // Update Avatars
-        const avatarUrl = getAvatarUrl(currentUsername);
+        const avatarUrl = getAvatarUrl(loggedUser);
         headerAvatar.src = avatarUrl;
         postAvatar.src = avatarUrl;
 
@@ -685,16 +636,10 @@ authToggleBox.addEventListener('click', () => {
       }
     }
 
-    // Helper: Cegah XSS
-    function escapeHtml(str) {
-      if(!str) return '';
-      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
-
-    // Inisialisasi
+    // Init
     window.addEventListener('DOMContentLoaded', () => {
-        checkUserSession();
-        fetchFeed();
+      checkUserSession();
+      fetchFeed();
     });
   </script>
 </body>
