@@ -541,6 +541,7 @@
     });
 
     // 3. TAMBAH POSTINGAN
+    // 3. TAMBAH POSTINGAN
     postForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const content = inputPostContent.value.trim();
@@ -559,15 +560,18 @@
           body: JSON.stringify({ username: loggedUser, content: content })
         });
 
+        const result = await response.json();
+
         if (!response.ok) {
-          throw new Error("Gagal mengirim postingan.");
+          // Menampilkan error spesifik dari Supabase / Worker
+          throw new Error(result.error || "Gagal mengirim postingan.");
         }
 
         inputPostContent.value = '';
-        fetchFeed();
+        fetchFeed(); // Memuat ulang feed secara otomatis
 
       } catch (err) {
-        alert(err.message);
+        alert("Gagal posting: " + err.message);
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Bagikan';
