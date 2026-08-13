@@ -4,41 +4,201 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daftar - Kehidupan Bumi</title>
+  
+  <!-- Font Awesome untuk ikon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Inter untuk tampilan yang bersih dan modern -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS dari CDN untuk styling yang cepat dan spesial -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            earth: {
+              50: '#f2f9f4',
+              100: '#e1f3e6',
+              200: '#c4e7cf',
+              300: '#99d4ac',
+              400: '#67ba81',
+              500: '#429e61',
+              600: '#2f7e4a',
+              700: '#2b7a0b', /* Warna utama Anda */
+              800: '#21562b',
+              900: '#1b4724',
+            }
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { font-family: sans-serif; background: #f0f7f4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-    .card { background: white; padding: 28px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); width: 100%; max-width: 380px; }
-    h2 { text-align: center; color: #2b7a0b; margin-top: 0; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
-    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-    button { width: 100%; padding: 12px; background: #2b7a0b; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    button:hover { background: #1f5c07; }
-    .error { color: #e74c3c; font-size: 13px; margin-top: 10px; text-align: center; }
-    .footer { text-align: center; margin-top: 15px; font-size: 14px; color: #666; }
-    .footer a { color: #0081C9; text-decoration: underline; font-weight: bold; }
+    /* Styling tambahan untuk menyempurnakan tampilan */
+    body {
+      background-color: #f0fdf4; /* Fallback jika gradien gagal */
+      background-image: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animasi latar belakang - Blob dekoratif */
+    .bg-shape {
+      position: absolute;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.6;
+    }
+    .bg-shape-1 {
+      top: -10%; left: -10%; width: 400px; height: 400px;
+      background: #86efac; animation: blob 7s infinite alternate;
+    }
+    .bg-shape-2 {
+      bottom: -10%; right: -10%; width: 500px; height: 500px;
+      background: #4ade80; animation: blob 8s infinite alternate-reverse;
+    }
+    .bg-shape-3 {
+      top: 40%; left: 60%; width: 300px; height: 300px;
+      background: #2b7a0b; opacity: 0.3; animation: blob 9s infinite;
+    }
+
+    /* Efek Glassmorphism pada Card */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 25px 50px -12px rgba(43, 122, 11, 0.15), 0 0 0 1px rgba(255,255,255,0.2) inset;
+    }
+
+    /* Styling input khusus saat fokus */
+    .custom-input:focus {
+      outline: none;
+      border-color: #2b7a0b;
+      box-shadow: 0 0 0 3px rgba(43, 122, 11, 0.2);
+    }
   </style>
 </head>
-<body>
+<body class="text-gray-800 antialiased selection:bg-earth-300 selection:text-earth-900">
 
-  <div class="card">
-    <h2>Daftar Penduduk Bumi</h2>
-    <form id="regForm">
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" id="username" required autocomplete="off" placeholder="Masukkan username">
+  <div class="bg-shape bg-shape-1"></div>
+  <div class="bg-shape bg-shape-2"></div>
+  <div class="bg-shape bg-shape-3"></div>
+
+  <main class="w-full max-w-md px-6 z-10 animate-fade-in">
+    <!-- Komponen Card Glassmorphism -->
+    <div class="glass-card rounded-2xl overflow-hidden p-8 sm:p-10 relative">
+      
+      <!-- Aksen dekoratif di atas card -->
+      <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-earth-400 via-earth-700 to-earth-900"></div>
+
+      <!-- Header Card -->
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-earth-100 text-earth-700 mb-4 shadow-sm border border-earth-200">
+          <i class="fa-solid fa-leaf text-3xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Daftar Penduduk Bumi</h2>
+        <p class="text-sm text-gray-500 mt-2">Mulai perjalanan pelestarian Anda bersama kami.</p>
       </div>
-      <div class="form-group">
-        <label>Kata Sandi</label>
-        <input type="password" id="password" required placeholder="Masukkan kata sandi">
+
+      <!-- Form Pendaftaran -->
+      <form id="regForm" class="space-y-5">
+        
+        <!-- Grup Input: Username -->
+        <div class="form-group space-y-1.5">
+          <label for="username" class="block text-sm font-semibold text-gray-700">Username</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+              <i class="fa-solid fa-user text-sm"></i>
+            </div>
+            <input 
+              type="text" 
+              id="username" 
+              required 
+              autocomplete="off" 
+              placeholder="Pilih nama yang unik"
+              class="custom-input w-full pl-10 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl text-gray-900 text-sm transition-all duration-200 ease-in-out placeholder-gray-400"
+            >
+          </div>
+        </div>
+
+        <!-- Grup Input: Kata Sandi -->
+        <div class="form-group space-y-1.5">
+          <label for="password" class="block text-sm font-semibold text-gray-700">Kata Sandi</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+              <i class="fa-solid fa-lock text-sm"></i>
+            </div>
+            <input 
+              type="password" 
+              id="password" 
+              required 
+              placeholder="Minimal 8 karakter"
+              class="custom-input w-full pl-10 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl text-gray-900 text-sm transition-all duration-200 ease-in-out placeholder-gray-400"
+            >
+          </div>
+        </div>
+
+        <!-- Area Pesan Error (Tersembunyi secara default) -->
+        <div id="errMsg" class="error hidden text-red-500 text-sm font-medium text-center bg-red-50 py-2 px-3 rounded-lg border border-red-100"></div>
+
+        <!-- Tombol Submit -->
+        <button 
+          type="submit" 
+          id="btnSubmit"
+          class="w-full py-3.5 px-4 mt-2 bg-gradient-to-r from-earth-600 to-earth-800 hover:from-earth-500 hover:to-earth-700 text-white font-bold rounded-xl shadow-lg hover:shadow-earth-700/30 transform hover:-translate-y-0.5 transition-all duration-200 ease-in-out flex items-center justify-center gap-2 focus:ring-4 focus:ring-earth-200 outline-none disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+        >
+          <span>Bergabung</span>
+          <i class="fa-solid fa-user-plus text-sm"></i>
+        </button>
+
+      </form>
+
+      <!-- Footer Card -->
+      <div class="footer mt-8 pt-6 border-t border-gray-100 text-center">
+        <p class="text-sm text-gray-600">
+          Sudah memiliki akses? 
+          <a href="ceritadunia.html" class="text-earth-700 hover:text-earth-900 font-semibold hover:underline decoration-2 underline-offset-4 transition-colors">
+            Masuk di sini
+          </a>
+        </p>
       </div>
-      <button type="submit" id="btnSubmit">Bergabung <i class="fa-solid fa-user-plus"></i></button>
-      <div id="errMsg" class="error"></div>
-    </form>
-    <div class="footer">
-      Sudah memiliki akses? <a href="ceritadunia.html">Masuk di sini</a>
     </div>
-  </div>
+    
+    <!-- Hak Cipta kecil di bawah card -->
+    <p class="text-center text-xs text-earth-800/60 mt-6 font-medium">
+      &copy; 2026 Kehidupan Bumi. Semua hak dilindungi.
+    </p>
+  </main>
 
   <script>
     // URL WORKER CLOUDFLARE KAMU
@@ -52,9 +212,16 @@
       const btn = document.getElementById('btnSubmit');
       const err = document.getElementById('errMsg');
 
+      // Reset tampilan error
       err.innerText = "";
+      err.classList.add('hidden'); // Sembunyikan elemen pesan error di Tailwind
+      
+      // State loading pada tombol
       btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+      btn.innerHTML = `
+        <i class="fa-solid fa-circle-notch fa-spin"></i> 
+        <span>Mempersiapkan...</span>
+      `;
 
       try {
         // Panggil endpoint /register persis seperti proyek lama
@@ -70,14 +237,29 @@
           throw new Error(result.error || "Gagal mendaftar.");
         }
 
-        alert("Pendaftaran berhasil! Silakan masuk.");
+        // Tampilkan notifikasi sukses yang lebih menarik alih-alih alert bawaan jika memungkinkan
+        // Namun demi kesederhanaan dan agar sesuai struktur asli, kita tetap gunakan alert
+        alert("Pendaftaran berhasil! Selamat datang di Kehidupan Bumi. Silakan masuk.");
         window.location.href = "ceritadunia.html";
 
       } catch (error) {
+        // Tampilkan pesan error
         err.innerText = error.message;
+        err.classList.remove('hidden'); // Tampilkan elemen pesan error
+        
+        // Efek goyang (shake) saat error
+        const card = document.querySelector('.glass-card');
+        card.classList.add('animate-pulse');
+        setTimeout(() => card.classList.remove('animate-pulse'), 500);
+        
       } finally {
+        // Kembalikan tombol ke keadaan semula jika gagal
+        // Jika sukses, halaman akan dialihkan sehingga baris ini tidak terlihat
         btn.disabled = false;
-        btn.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
+        btn.innerHTML = `
+          <span>Bergabung</span>
+          <i class="fa-solid fa-user-plus text-sm"></i>
+        `;
       }
     };
   </script>
