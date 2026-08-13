@@ -37,7 +37,7 @@
       min-height: 100vh;
     }
 
-    h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+    h1, h2 { font-family: 'Poppins', sans-serif; }
     .container { width: 100%; max-width: 440px; }
 
     .brand {
@@ -116,7 +116,18 @@
     }
 
     .hidden { display: none !important; }
-    .error-message { background-color: #fef2f2; color: var(--danger); font-size: 0.85rem; padding: 10px; border-radius: 8px; margin-top: 12px; border: 1px solid #fecaca; display: flex; align-items: center; gap: 8px; }
+    .error-message { 
+      background-color: #fef2f2; 
+      color: var(--danger); 
+      font-size: 0.85rem; 
+      padding: 10px; 
+      border-radius: 8px; 
+      margin-top: 12px; 
+      border: 1px solid #fecaca; 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+    }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -124,7 +135,7 @@
 <body>
 
   <div class="container">
-    <a href="index.html" class="brand">
+    <a href="ceritadunia.html" class="brand">
       <i class="fa-solid fa-earth-asia"></i>
       <h1>Kehidupan Bumi</h1>
     </a>
@@ -167,11 +178,11 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://cerita-dunia-7fd8.paku683.workers.dev'; 
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsb2J0d3p1dXFqaHJxd3FuZXp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxMzAyODUsImV4cCI6MjEwMDcwNjI4NX0.cTaIAhvHxgqg1AZTGKqV63ZaUBUj8DO6_Z9rOO8u_QE';
-    
-    let supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const INTERNAL_DOMAIN = "@app.internal";
+    // 1. URL mengarah ke Cloudflare Worker (API Key aman tersimpan di Worker)
+    const WORKER_URL = 'https://cerita-dunia-7fd8.paku683.workers.dev';
+    const DUMMY_KEY = 'public-key';
+
+    const supabase = window.supabase.createClient(WORKER_URL, DUMMY_KEY);
 
     const registerForm = document.getElementById('register-form');
     const inputUsername = document.getElementById('input-username');
@@ -191,43 +202,34 @@
 
       const username = inputUsername.value.trim();
       const password = inputPassword.value;
-      const internalEmail = `${username.toLowerCase()}${INTERNAL_DOMAIN}`;
 
       btnRegisterSubmit.disabled = true;
       btnRegisterSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
 
       try {
-        // Step 1: Register ke Auth Supabase
-        const { data, error: authErr } = await supabase.auth.signUp({
-          email: internalEmail,
-          password: password
-        });
+        // Cek dulu apakah username sudah dipakai di tabel 'users'
+        const { data: existingUser } = await supabase
+          .from('users')
+          .select('username')
+          .eq('username', username)
+          .maybeSingle();
 
-        if (authErr) {
-          if (authErr.message.includes("already registered")) {
-            throw new Error("Username sudah terdaftar. Silakan pilih username lain.");
-          }
-          throw authErr;
+        if (existingUser) {
+          throw new Error("Username sudah terdaftar! Silakan gunakan nama lain.");
         }
 
-        // Step 2: Simpan Username ke public.profiles
-        if (data.user) {
-          const { error: profileErr } = await supabase
-            .from('profiles')
-            .insert([{ id: data.user.id, username: username }]);
+        // Simpan langsung ke tabel 'users' biasa
+        const { error } = await supabase
+          .from('users')
+          .insert([{ username: username, password: password }]);
 
-          if (profileErr) {
-            if (profileErr.code === '23505') {
-              throw new Error("Username sudah terdaftar. Gunakan nama lain.");
-            }
-            throw profileErr;
-          }
-        }
+        if (error) throw error;
 
         alert("Pendaftaran berhasil! Silakan masuk dengan akun baru Anda.");
-        window.location.href = "ceritadunia.html"; // Pindah otomatis ke halaman login
+        window.location.href = "ceritadunia.html"; // Pindah ke halaman login
+
       } catch (err) {
-        showError(err.message);
+        showError(err.message || "Terjadi kesalahan saat pendaftaran.");
       } finally {
         btnRegisterSubmit.disabled = false;
         btnRegisterSubmit.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
