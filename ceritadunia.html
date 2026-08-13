@@ -13,421 +13,208 @@
   <!-- FontAwesome untuk Ikon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            earth: {
+              50: '#f2f9f4',
+              100: '#e1f3e6',
+              200: '#c4e7cf',
+              300: '#99d4ac',
+              400: '#67ba81',
+              500: '#429e61',
+              600: '#2f7e4a',
+              700: '#2b7a0b', /* Primary Hijau */
+              800: '#21562b',
+              900: '#1b4724',
+            },
+            ocean: {
+              500: '#0081C9', /* Aksen Biru */
+            }
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+            'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(15px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    /* Reset & Base Styles */
-    :root {
-      --primary-color: #2b7a0b; /* Hijau Bumi */
-      --primary-hover: #1f5c07;
-      --secondary-color: #0081C9; /* Biru Laut */
-      --bg-color: #f0f7f4;
-      --surface-color: #ffffff;
-      --text-main: #2c3e50;
-      --text-muted: #7f8c8d;
-      --border-color: #e2e8f0;
-      --danger: #e74c3c;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      background: var(--bg-color);
-      background-image: linear-gradient(135deg, #f0f7f4 0%, #e0f2f1 100%);
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      justify-content: center;
-      padding: 20px 15px;
+      background-color: #f0fdf4;
+      background-image: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
       min-height: 100vh;
-    }
-
-    h1, h2, h3, h4 {
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 640px;
-    }
-
-    /* Header Styles */
-    header {
-      background-color: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      padding: 15px 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-      margin-bottom: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 20px;
-      z-index: 100;
-      border: 1px solid rgba(255,255,255,0.5);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-
-    .brand i {
-      font-size: 1.8rem;
-      color: var(--primary-color);
-    }
-
-    h1 {
-      font-size: 1.4rem;
-      color: var(--primary-color);
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    /* Cards */
-    .card {
-      background-color: var(--surface-color);
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
-      margin-bottom: 24px;
-      border: 1px solid var(--border-color);
-    }
-
-    /* Form Styles */
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--text-main);
-    }
-
-    .input-wrapper {
       position: relative;
+      overflow-x: hidden;
     }
 
-    .input-wrapper i {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
+    /* Latar Belakang Dekoratif */
+    .bg-shape {
+      position: fixed;
+      filter: blur(90px);
+      z-index: -1;
+      opacity: 0.5;
+    }
+    .bg-shape-1 {
+      top: -10%; left: -10%; width: 500px; height: 500px;
+      background: #86efac; animation: blob 7s infinite alternate;
+    }
+    .bg-shape-2 {
+      bottom: -20%; right: -10%; width: 600px; height: 600px;
+      background: #4ade80; animation: blob 8s infinite alternate-reverse;
     }
 
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 12px 14px 12px 40px;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      font-size: 1rem;
-      outline: none;
-      transition: all 0.2s ease;
-      background-color: #f8fafc;
-    }
-
-    textarea {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      font-size: 1rem;
-      outline: none;
-      transition: all 0.2s ease;
-      background-color: #f8fafc;
-      resize: vertical;
-      min-height: 100px;
-      font-family: 'Inter', sans-serif;
-    }
-
-    input:focus, textarea:focus {
-      border-color: var(--primary-color);
-      background-color: #fff;
-      box-shadow: 0 0 0 4px rgba(43, 122, 11, 0.1);
-    }
-
-    button {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    button:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-
-    button.btn-secondary {
-      background-color: #f1f5f9;
-      color: var(--text-main);
-    }
-
-    button.btn-secondary:hover {
-      background-color: #e2e8f0;
-    }
-
-    .auth-toggle {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      text-align: center;
-      color: var(--text-muted);
-    }
-
-    .auth-toggle span {
-      color: var(--secondary-color);
-      cursor: pointer;
-      font-weight: 600;
-      transition: color 0.2s;
-    }
-
-    .auth-toggle span:hover {
-      text-decoration: underline;
-    }
-
-    /* Create Post Section */
-    .create-post-wrapper {
-      display: flex;
-      gap: 12px;
-    }
-
-    .user-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background-color: var(--border-color);
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-
-    .post-form-inner {
-      flex: 1;
-    }
-
-    /* Feed Styles */
-    .feed-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-      color: var(--primary-color);
-    }
-
-    .post-item {
-      border-bottom: 1px solid var(--border-color);
-      padding: 20px 0;
-      display: flex;
-      gap: 12px;
-      animation: fadeIn 0.4s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .post-item:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .post-body {
-      flex: 1;
-    }
-
-    .post-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 6px;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .post-author {
-      font-weight: 700;
-      color: var(--text-main);
-      font-size: 0.95rem;
-    }
-
-    .post-username {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    .post-time {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .post-time::before {
-      content: '•';
-      margin-right: 6px;
-    }
-
-    .post-content {
-      line-height: 1.6;
-      color: #1c2833;
-      white-space: pre-wrap;
-      font-size: 0.95rem;
-    }
-
-    /* Helper Classes */
-    .hidden {
-      display: none !important;
-    }
-
-    .error-message {
-      background-color: #fef2f2;
-      color: var(--danger);
-      font-size: 0.85rem;
-      padding: 10px;
-      border-radius: 8px;
-      margin-top: 12px;
-      border: 1px solid #fecaca;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* User Section in Header */
-    #user-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .header-profile {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #f1f8f4;
-      padding: 6px 12px;
-      border-radius: 20px;
-      border: 1px solid #c8e6c9;
+    /* Efek Glassmorphism */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 10px 40px -10px rgba(43, 122, 11, 0.1);
     }
     
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-muted);
+    .glass-header {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     }
 
-    .empty-state i {
-      font-size: 3rem;
-      color: #c8e6c9;
-      margin-bottom: 10px;
-    }
+    /* Kustomisasi Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #99d4ac; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #67ba81; }
 
-    /* Responsive */
-    @media (max-width: 480px) {
-      header {
-        padding: 12px 15px;
-      }
-      h1 {
-        font-size: 1.2rem;
-      }
-      .card {
-        padding: 16px;
-      }
-      .header-profile span {
-        display: none; /* Sembunyikan username di header hp agar tidak sempit */
-      }
+    /* Utilitas Input Focus */
+    .input-focus-ring:focus-within {
+      border-color: #2b7a0b;
+      box-shadow: 0 0 0 3px rgba(43, 122, 11, 0.15);
     }
   </style>
 
   <!-- Supabase JS Client via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
+<body class="text-gray-800 antialiased selection:bg-earth-300 selection:text-earth-900">
 
-  <div class="container">
-    
-    <!-- HEADER -->
-    <header>
-      <a href="#" class="brand">
-        <i class="fa-solid fa-earth-asia"></i>
-        <h1>Kehidupan Bumi</h1>
-      </a>
-      <div id="user-section" class="hidden">
-        <div class="header-profile">
-          <img id="header-avatar" class="user-avatar" style="width:28px; height:28px;" src="" alt="Avatar">
-          <span id="display-username" style="font-weight:600; font-size:0.9rem; color:var(--primary-color);">@username</span>
+  <div class="bg-shape bg-shape-1"></div>
+  <div class="bg-shape bg-shape-2"></div>
+
+  <!-- HEADER -->
+  <header class="glass-header sticky top-0 z-50 px-4 py-3 sm:px-6 shadow-sm">
+    <div class="max-w-2xl mx-auto flex justify-between items-center">
+      <a href="#" class="flex items-center gap-2.5 text-earth-700 hover:text-earth-800 transition-colors group">
+        <div class="bg-earth-100 p-2 rounded-xl group-hover:scale-105 transition-transform duration-300">
+          <i class="fa-solid fa-earth-asia text-xl"></i>
         </div>
-        <button id="btn-logout" class="btn-secondary" title="Keluar">
+        <h1 class="font-display font-bold text-xl tracking-tight hidden sm:block">Kehidupan Bumi</h1>
+      </a>
+      
+      <!-- Bagian Profil Pengguna (Disembunyikan jika belum login) -->
+      <div id="user-section" class="hidden flex items-center gap-3 animate-fade-in-up">
+        <div class="flex items-center gap-2 bg-earth-50/80 border border-earth-100 py-1.5 px-3 rounded-full">
+          <img id="header-avatar" class="w-7 h-7 rounded-full border border-earth-200" src="" alt="Avatar">
+          <span id="display-username" class="font-semibold text-sm text-earth-800 truncate max-w-[100px] sm:max-w-[150px]"></span>
+        </div>
+        <button id="btn-logout" class="w-9 h-9 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600 transition-colors shadow-sm" title="Keluar">
           <i class="fa-solid fa-right-from-bracket"></i>
         </button>
       </div>
-    </header>
+    </div>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-4 py-8 w-full flex flex-col gap-6 z-10 relative">
 
     <!-- FORM LOGIN -->
-    <div id="auth-card" class="card">
-      <h2 id="auth-title" style="margin-bottom: 20px; text-align:center;">Masuk ke Duniamu</h2>
+    <div id="auth-card" class="glass-card rounded-2xl p-6 sm:p-8 animate-fade-in-up relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-earth-400 to-earth-700"></div>
       
-      <form id="auth-form">
-        <div class="form-group">
-          <label for="input-username">Username</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" id="input-username" placeholder="Masukkan username" required autocomplete="off">
+      <div class="text-center mb-6">
+        <h2 class="font-display font-bold text-2xl text-gray-900">Masuk ke Duniamu</h2>
+        <p class="text-gray-500 text-sm mt-1">Bagikan kisah pelestarian alam Anda.</p>
+      </div>
+      
+      <form id="auth-form" class="space-y-4">
+        <!-- Input Username -->
+        <div class="space-y-1">
+          <label for="input-username" class="block text-sm font-semibold text-gray-700">Username</label>
+          <div class="relative input-focus-ring bg-white border border-gray-200 rounded-xl transition-all duration-200">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+              <i class="fa-solid fa-user text-sm"></i>
+            </div>
+            <input type="text" id="input-username" placeholder="Masukkan username" required autocomplete="off" class="w-full pl-10 pr-4 py-3 bg-transparent outline-none text-sm text-gray-900 rounded-xl">
           </div>
         </div>
         
-        <div class="form-group">
-          <label for="input-password">Kata Sandi</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" id="input-password" placeholder="Masukkan kata sandi" required>
+        <!-- Input Password -->
+        <div class="space-y-1">
+          <label for="input-password" class="block text-sm font-semibold text-gray-700">Kata Sandi</label>
+          <div class="relative input-focus-ring bg-white border border-gray-200 rounded-xl transition-all duration-200">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+              <i class="fa-solid fa-lock text-sm"></i>
+            </div>
+            <input type="password" id="input-password" placeholder="Masukkan kata sandi" required class="w-full pl-10 pr-4 py-3 bg-transparent outline-none text-sm text-gray-900 rounded-xl">
           </div>
         </div>
 
-        <button type="submit" id="btn-auth-submit" style="width: 100%; margin-top: 10px;">
-          Masuk <i class="fa-solid fa-arrow-right"></i>
-        </button>
-
-        <div id="auth-error" class="error-message hidden">
+        <!-- Pesan Error Login -->
+        <div id="auth-error" class="hidden bg-red-50 text-red-500 text-sm p-3 rounded-lg border border-red-100 flex items-center gap-2">
           <i class="fa-solid fa-circle-exclamation"></i>
           <span id="auth-error-text"></span>
         </div>
+
+        <button type="submit" id="btn-auth-submit" class="w-full py-3 mt-2 bg-earth-700 hover:bg-earth-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+          <span>Masuk</span>
+          <i class="fa-solid fa-arrow-right text-sm"></i>
+        </button>
       </form>
 
-      <div class="auth-toggle" style="padding: 8px; display: inline-block; width: 100%;">
-        <span style="color:var(--text-muted); font-weight:normal;">Pendatang baru di bumi? </span>
-        <a href="register.html" style="color:var(--secondary-color); font-weight:600;">Daftar sekarang</a>
+      <div class="mt-6 text-center text-sm text-gray-500">
+        Pendatang baru di bumi? 
+        <a href="register.html" class="text-ocean-500 font-semibold hover:underline decoration-2 underline-offset-2">Daftar sekarang</a>
       </div>
     </div>
 
-    <!-- FORM BUAT POSTINGAN -->
-    <div id="create-post-card" class="card hidden">
+    <!-- FORM BUAT POSTINGAN (Hidden by default) -->
+    <div id="create-post-card" class="glass-card rounded-2xl p-5 sm:p-6 hidden animate-fade-in-up" style="animation-delay: 0.1s;">
       <form id="post-form">
-        <div class="create-post-wrapper">
-          <img id="post-avatar" class="user-avatar" src="" alt="Avatar">
-          <div class="post-form-inner">
-            <div class="form-group" style="margin-bottom: 12px;">
-              <textarea id="input-post-content" placeholder="Ceritakan kisah bumimu hari ini..." required></textarea>
+        <div class="flex gap-3 sm:gap-4">
+          <img id="post-avatar" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border border-gray-200 flex-shrink-0 mt-1" src="" alt="Avatar">
+          <div class="flex-1 space-y-3">
+            <div class="relative input-focus-ring bg-white/60 border border-gray-200 rounded-xl overflow-hidden transition-all duration-200">
+              <textarea id="input-post-content" placeholder="Ceritakan kisah bumimu hari ini..." required class="w-full p-4 bg-transparent outline-none resize-none min-h-[100px] text-gray-800 text-sm sm:text-base placeholder-gray-400"></textarea>
             </div>
-            <div style="text-align: right;">
-              <button type="submit">
-                <i class="fa-solid fa-paper-plane"></i> Bagikan
+            
+            <!-- Notifikasi Postingan -->
+            <div id="post-notification" class="hidden text-sm p-2.5 rounded-lg flex items-center gap-2 transition-all"></div>
+
+            <div class="flex justify-end">
+              <button type="submit" id="btn-post-submit" class="py-2.5 px-6 bg-earth-600 hover:bg-earth-700 text-white font-medium rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed text-sm">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Bagikan Kisah</span>
               </button>
             </div>
           </div>
@@ -436,26 +223,71 @@
     </div>
 
     <!-- FEED POSTINGAN -->
-    <div class="card">
-      <h3 class="feed-header">
-        <i class="fa-solid fa-leaf"></i> Kisah Terkini
-      </h3>
-      <div id="feed-container">
-        <div class="empty-state">
-          <i class="fa-solid fa-earth-americas fa-spin" style="--fa-animation-duration: 3s;"></i>
-          <p>Menjelajahi bumi mencari kisah...</p>
+    <div class="glass-card rounded-2xl p-5 sm:p-6 animate-fade-in-up flex flex-col" style="animation-delay: 0.2s; min-height: 400px;">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <h3 class="font-display font-bold text-lg text-earth-800 flex items-center gap-2">
+          <i class="fa-solid fa-leaf text-earth-500"></i> Kisah Terkini
+        </h3>
+        
+        <!-- FITUR PENCARIAN -->
+        <div class="relative w-full sm:w-64 input-focus-ring bg-white border border-gray-200 rounded-full transition-all duration-200">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+          </div>
+          <input type="text" id="search-input" placeholder="Cari kisah atau nama..." class="w-full pl-10 pr-4 py-2 bg-transparent outline-none text-sm text-gray-700 rounded-full">
+        </div>
+      </div>
+
+      <div id="feed-container" class="flex-1 space-y-5 flex flex-col">
+        <!-- State Loading Awal -->
+        <div class="flex-1 flex flex-col items-center justify-center text-center text-earth-600/60 py-12">
+          <i class="fa-solid fa-earth-americas text-4xl mb-4 animate-spin-slow" style="animation-duration: 4s;"></i>
+          <p class="font-medium text-sm">Menjelajahi bumi mencari kisah...</p>
         </div>
       </div>
     </div>
 
-  </div>
+    <!-- MODAL BACA KISAH LENGKAP -->
+    <div id="post-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-6">
+      <!-- Backdrop Background -->
+      <div id="modal-backdrop" class="absolute inset-0 bg-earth-900/30 backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
+      
+      <!-- Modal Content Box -->
+      <div id="modal-content" class="glass-card relative w-full max-w-2xl rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto transform scale-95 opacity-0 transition-all duration-300 z-10 flex flex-col gap-5 shadow-2xl">
+        
+        <!-- Tombol Tutup -->
+        <button id="btn-close-modal" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-earth-50 text-earth-600 hover:bg-red-50 hover:text-red-500 transition-colors shadow-sm">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+        
+        <!-- Header Modal (Profil Pengguna) -->
+        <div class="flex items-center gap-4 border-b border-gray-200/60 pb-5 pr-10">
+          <img id="modal-avatar" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-earth-200 object-cover shadow-sm" src="" alt="Avatar">
+          <div>
+            <h4 id="modal-author" class="font-bold text-gray-900 text-lg sm:text-xl"></h4>
+            <div class="flex items-center flex-wrap gap-x-2 gap-y-1 text-sm text-gray-500 mt-0.5">
+              <span id="modal-username" class="font-medium"></span>
+              <span class="text-gray-300 hidden sm:inline">•</span>
+              <span id="modal-time" class="text-earth-600/80 bg-earth-50 px-2 py-0.5 rounded-md text-xs font-medium"></span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Isi Kisah Lengkap -->
+        <div class="text-gray-800 whitespace-pre-wrap leading-relaxed text-base sm:text-lg" id="modal-body-content">
+          <!-- Konten diinjeksi via JS -->
+        </div>
+      </div>
+    </div>
 
-  <!-- INLINE JAVASCRIPT LOGIC (CUSTOM WORKER ROUTER) -->
+  </main>
+
   <script>
     // URL CLOUDFLARE WORKER
     const WORKER_URL = "https://cerita-dunia-7fd8.paku683.workers.dev";
 
-    // DOM Elements
+    // DOM Elements - Auth
     const authCard = document.getElementById('auth-card');
     const authForm = document.getElementById('auth-form');
     const inputUsername = document.getElementById('input-username');
@@ -464,27 +296,52 @@
     const authError = document.getElementById('auth-error');
     const authErrorText = document.getElementById('auth-error-text');
 
+    // DOM Elements - User UI
     const userSection = document.getElementById('user-section');
     const displayUsername = document.getElementById('display-username');
     const btnLogout = document.getElementById('btn-logout');
     const headerAvatar = document.getElementById('header-avatar');
     const postAvatar = document.getElementById('post-avatar');
 
+    // DOM Elements - Post & Feed
     const createPostCard = document.getElementById('create-post-card');
     const postForm = document.getElementById('post-form');
     const inputPostContent = document.getElementById('input-post-content');
+    const btnPostSubmit = document.getElementById('btn-post-submit');
+    const postNotification = document.getElementById('post-notification');
     const feedContainer = document.getElementById('feed-container');
+    const searchInput = document.getElementById('search-input');
+
+    // DOM Elements - Modal
+    const postModal = document.getElementById('post-modal');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const modalContent = document.getElementById('modal-content');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+
+    // State Global
+    let allPosts = []; // Menyimpan semua data post untuk fitur pencarian
+    let currentDisplayedPosts = []; // Menyimpan post yang sedang ditampilkan di layar
 
     // Helper: Avatar Generator
     function getAvatarUrl(name) {
-      return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2b7a0b&color=fff&bold=true`;
+      return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2b7a0b&color=fff&bold=true&rounded=true`;
     }
 
-    // Helper: Format Waktu
+    // Helper: Format Waktu (Relatif)
     function formatTime(dateString) {
       if(!dateString) return 'Baru saja';
       const date = new Date(dateString);
-      return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      const now = new Date();
+      const diffMs = now - date;
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMins / 60);
+      const diffDays = Math.floor(diffHours / 24);
+
+      if (diffMins < 1) return 'Baru saja';
+      if (diffMins < 60) return `${diffMins} mnt lalu`;
+      if (diffHours < 24) return `${diffHours} jam lalu`;
+      if (diffDays < 7) return `${diffDays} hr lalu`;
+      return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
     }
 
     // Helper: Prevent XSS
@@ -493,12 +350,27 @@
       return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    function showError(msg) {
+    // Tampilkan pesan form login
+    function showAuthError(msg) {
       authErrorText.innerText = msg;
       authError.classList.remove('hidden');
     }
 
-    // 1. PROCESS LOGIN VIA WORKER
+    // Tampilkan notifikasi (menggantikan alert)
+    function showNotification(el, message, type = 'error') {
+      el.innerHTML = `<i class="fa-solid fa-circle-${type === 'error' ? 'exclamation' : 'check'}"></i> <span>${message}</span>`;
+      el.className = `text-sm p-2.5 rounded-lg flex items-center gap-2 transition-all ${
+        type === 'error' ? 'bg-red-50 text-red-500 border border-red-100' : 'bg-green-50 text-green-600 border border-green-100'
+      }`;
+      el.classList.remove('hidden');
+      
+      // Sembunyikan otomatis setelah 4 detik
+      setTimeout(() => {
+        el.classList.add('hidden');
+      }, 4000);
+    }
+
+    // 1. PROCESS LOGIN
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       authError.classList.add('hidden');
@@ -507,7 +379,7 @@
       const password = inputPassword.value;
 
       btnAuthSubmit.disabled = true;
-      btnAuthSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+      btnAuthSubmit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Memproses...</span>';
 
       try {
         const response = await fetch(`${WORKER_URL}/login`, {
@@ -519,18 +391,22 @@
         const result = await response.json();
 
         if (!response.ok) {
-          throw new Error(result.error || "Login gagal.");
+          throw new Error(result.error || "Login gagal. Periksa username dan sandi.");
         }
 
-        // Simpan username di LocalStorage browser
+        // Simpan sesi
         localStorage.setItem('loggedInUser', result.user.username);
+        inputPassword.value = ''; // bersihkan password
         checkUserSession();
 
       } catch (err) {
-        showError(err.message);
+        showAuthError(err.message);
+        // Animasi shake saat error
+        authCard.classList.add('animate-pulse');
+        setTimeout(() => authCard.classList.remove('animate-pulse'), 500);
       } finally {
         btnAuthSubmit.disabled = false;
-        btnAuthSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right"></i>';
+        btnAuthSubmit.innerHTML = '<span>Masuk</span> <i class="fa-solid fa-arrow-right text-sm"></i>';
       }
     });
 
@@ -541,7 +417,6 @@
     });
 
     // 3. TAMBAH POSTINGAN
-    // 3. TAMBAH POSTINGAN
     postForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const content = inputPostContent.value.trim();
@@ -549,9 +424,9 @@
 
       if (!content || !loggedUser) return;
 
-      const submitBtn = postForm.querySelector('button');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+      btnPostSubmit.disabled = true;
+      btnPostSubmit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Mengirim...</span>';
+      postNotification.classList.add('hidden');
 
       try {
         const response = await fetch(`${WORKER_URL}/posts`, {
@@ -563,18 +438,18 @@
         const result = await response.json();
 
         if (!response.ok) {
-          // Menampilkan error spesifik dari Supabase / Worker
-          throw new Error(result.error || "Gagal mengirim postingan.");
+          throw new Error(result.error || "Gagal mengirim kisah.");
         }
 
         inputPostContent.value = '';
-        fetchFeed(); // Memuat ulang feed secara otomatis
+        showNotification(postNotification, "Kisah berhasil dibagikan!", "success");
+        fetchFeed(); // Refresh feed
 
       } catch (err) {
-        alert("Gagal posting: " + err.message);
+        showNotification(postNotification, err.message, "error");
       } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Bagikan';
+        btnPostSubmit.disabled = false;
+        btnPostSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> <span>Bagikan Kisah</span>';
       }
     });
 
@@ -585,41 +460,143 @@
         const data = await response.json();
 
         if (!response.ok) throw new Error("Gagal memuat feed.");
-
-        if (!data || data.length === 0) {
-          feedContainer.innerHTML = `
-            <div class="empty-state">
-              <i class="fa-solid fa-wind"></i>
-              <p>Belum ada kisah yang dibagikan.</p>
-            </div>`;
-          return;
-        }
-
-        feedContainer.innerHTML = data.map(post => {
-          const authorName = post.username || 'Anonim';
-          const avatarUrl = getAvatarUrl(authorName);
-          
-          return `
-            <div class="post-item">
-              <img src="${avatarUrl}" class="user-avatar" alt="${authorName}">
-              <div class="post-body">
-                <div class="post-header">
-                  <span class="post-author">${escapeHtml(authorName)}</span>
-                  <span class="post-username">@${escapeHtml(authorName.toLowerCase())}</span>
-                  <span class="post-time">${formatTime(post.created_at)}</span>
-                </div>
-                <div class="post-content">${escapeHtml(post.content)}</div>
-              </div>
-            </div>
-          `;
-        }).join('');
+        
+        allPosts = data; // Simpan ke variabel global untuk pencarian
+        renderFeed(allPosts); // Render data
 
       } catch (err) {
-        feedContainer.innerHTML = `<div class="error-message"><i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat kisah.</div>`;
+        feedContainer.innerHTML = `
+          <div class="bg-red-50 text-red-500 p-4 rounded-xl text-center border border-red-100 mt-4">
+            <i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
+            <p class="text-sm font-medium">Koneksi ke bumi terputus. Gagal memuat kisah.</p>
+          </div>`;
       }
     }
 
-    // 5. CEK SESI LOGIN
+    // RENDER FEED (Memisahkan fungsi render agar bisa dipakai oleh fitur pencarian)
+    function renderFeed(postsToRender) {
+      currentDisplayedPosts = postsToRender; // Simpan referensi array saat ini untuk indeks klik modal
+
+      if (!postsToRender || postsToRender.length === 0) {
+        const isEmptySearch = searchInput.value.trim().length > 0;
+        const msg = isEmptySearch ? "Tidak ada kisah yang cocok dengan pencarian." : "Bumi masih sunyi. Belum ada kisah yang dibagikan.";
+        const icon = isEmptySearch ? "fa-magnifying-glass-location" : "fa-wind";
+        
+        feedContainer.innerHTML = `
+          <div class="flex-1 flex flex-col items-center justify-center text-center text-gray-400 py-12">
+            <i class="fa-solid ${icon} text-4xl mb-3 opacity-50"></i>
+            <p class="text-sm font-medium px-4">${msg}</p>
+          </div>`;
+        return;
+      }
+
+      feedContainer.innerHTML = postsToRender.map((post, index) => {
+        const authorName = post.username || 'Anonim';
+        const avatarUrl = getAvatarUrl(authorName);
+        // Animasi cascade saat muncul
+        const delay = Math.min(index * 0.05, 0.5); 
+        
+        return `
+          <div onclick="openPostModal(${index})" class="bg-white border border-gray-100 rounded-xl p-4 sm:p-5 shadow-sm hover:shadow-lg transition-all cursor-pointer hover:border-earth-300 animate-fade-in-up group relative overflow-hidden" style="animation-delay: ${delay}s">
+            <div class="flex gap-3 sm:gap-4">
+              <img src="${avatarUrl}" class="w-10 h-10 rounded-full border border-gray-100 flex-shrink-0" alt="${authorName}">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center flex-wrap gap-x-2 gap-y-0.5 mb-1.5">
+                  <h4 class="font-bold text-gray-900 text-sm truncate max-w-full group-hover:text-earth-700 transition-colors">${escapeHtml(authorName)}</h4>
+                  <span class="text-gray-400 text-xs truncate">@${escapeHtml(authorName.toLowerCase().replace(/\s/g, ''))}</span>
+                  <span class="text-gray-300 text-xs hidden sm:inline">•</span>
+                  <span class="text-earth-600/70 text-xs whitespace-nowrap"><i class="fa-regular fa-clock mr-1"></i>${formatTime(post.created_at)}</span>
+                </div>
+                <!-- Menambahkan line-clamp-3 agar kisah terpotong rapi di feed -->
+                <p class="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words line-clamp-3">${escapeHtml(post.content)}</p>
+                
+                <!-- Indikator klik -->
+                <div class="mt-3 text-earth-600 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1.5 -translate-x-2 group-hover:translate-x-0">
+                  Baca selengkapnya <i class="fa-solid fa-arrow-right-long text-xs"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // FITUR BACA KISAH (MODAL)
+    window.openPostModal = function(index) {
+      const post = currentDisplayedPosts[index];
+      if(!post) return;
+
+      const authorName = post.username || 'Anonim';
+      
+      // Set isi modal
+      document.getElementById('modal-avatar').src = getAvatarUrl(authorName);
+      document.getElementById('modal-author').innerText = authorName;
+      document.getElementById('modal-username').innerText = `@${authorName.toLowerCase().replace(/\s/g, '')}`;
+      document.getElementById('modal-time').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>${formatTime(post.created_at)}`;
+      
+      // Karena kita sudah pakai escapeHtml, kita bisa aman pakai innerHTML untuk spasi/enter
+      document.getElementById('modal-body-content').innerHTML = escapeHtml(post.content);
+
+      // Tampilkan Modal
+      postModal.classList.remove('hidden');
+      
+      // Animasi Fade & Scale
+      setTimeout(() => {
+        modalBackdrop.classList.remove('opacity-0');
+        modalBackdrop.classList.add('opacity-100');
+        modalContent.classList.remove('scale-95', 'opacity-0');
+        modalContent.classList.add('scale-100', 'opacity-100');
+      }, 10); // Jeda kecil untuk trigger reflow
+
+      // Cegah scroll pada body saat modal terbuka
+      document.body.style.overflow = 'hidden';
+    };
+
+    function closePostModal() {
+      // Hilangkan opacity dan kecilkan
+      modalBackdrop.classList.remove('opacity-100');
+      modalBackdrop.classList.add('opacity-0');
+      modalContent.classList.remove('scale-100', 'opacity-100');
+      modalContent.classList.add('scale-95', 'opacity-0');
+
+      // Sembunyikan sepenuhnya setelah animasi selesai
+      setTimeout(() => {
+        postModal.classList.add('hidden');
+        document.body.style.overflow = ''; // Kembalikan scroll
+      }, 300);
+    }
+
+    // Event Listener Tutup Modal
+    btnCloseModal.addEventListener('click', closePostModal);
+    modalBackdrop.addEventListener('click', closePostModal);
+    
+    // Tutup Modal jika menekan tombol Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !postModal.classList.contains('hidden')) {
+        closePostModal();
+      }
+    });
+
+    // 5. FITUR PENCARIAN REAL-TIME
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      
+      if (query === '') {
+        renderFeed(allPosts); // Tampilkan semua jika kosong
+        return;
+      }
+
+      // Filter berdasarkan isi konten atau nama pembuat
+      const filteredPosts = allPosts.filter(post => {
+        const contentMatch = post.content ? post.content.toLowerCase().includes(query) : false;
+        const nameMatch = post.username ? post.username.toLowerCase().includes(query) : false;
+        return contentMatch || nameMatch;
+      });
+
+      renderFeed(filteredPosts);
+    });
+
+    // 6. CEK SESI LOGIN
     function checkUserSession() {
       const loggedUser = localStorage.getItem('loggedInUser');
 
@@ -637,6 +614,7 @@
         authCard.classList.remove('hidden');
         userSection.classList.add('hidden');
         createPostCard.classList.add('hidden');
+        authError.classList.add('hidden'); // Reset pesan error login
       }
     }
 
