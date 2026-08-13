@@ -3,236 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kehidupan Bumi - Daftar Akun</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <title>Daftar - Kehidupan Bumi</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
-    :root {
-      --primary-color: #2b7a0b;
-      --primary-hover: #1f5c07;
-      --secondary-color: #0081C9;
-      --bg-color: #f0f7f4;
-      --surface-color: #ffffff;
-      --text-main: #2c3e50;
-      --text-muted: #7f8c8d;
-      --border-color: #e2e8f0;
-      --danger: #e74c3c;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--bg-color);
-      background-image: linear-gradient(135deg, #f0f7f4 0%, #e0f2f1 100%);
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px 15px;
-      min-height: 100vh;
-    }
-
-    h1, h2 { font-family: 'Poppins', sans-serif; }
-    .container { width: 100%; max-width: 440px; }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      text-decoration: none;
-      margin-bottom: 20px;
-    }
-
-    .brand i { font-size: 2rem; color: var(--primary-color); }
-    h1 { font-size: 1.6rem; color: var(--primary-color); font-weight: 700; }
-
-    .card {
-      background-color: var(--surface-color);
-      padding: 28px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
-      border: 1px solid var(--border-color);
-    }
-
-    .form-group { margin-bottom: 16px; }
-    label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: var(--text-main); }
-    .input-wrapper { position: relative; }
-    .input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 12px 14px 12px 40px;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      font-size: 1rem;
-      outline: none;
-      transition: all 0.2s ease;
-      background-color: #f8fafc;
-    }
-
-    input:focus {
-      border-color: var(--primary-color);
-      background-color: #fff;
-      box-shadow: 0 0 0 4px rgba(43, 122, 11, 0.1);
-    }
-
-    button {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      font-size: 0.95rem;
-      width: 100%;
-      margin-top: 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    button:hover { background-color: var(--primary-hover); }
-
-    .auth-toggle {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      text-align: center;
-      color: var(--text-muted);
-    }
-
-    .auth-toggle a {
-      color: var(--secondary-color);
-      font-weight: 600;
-      text-decoration: underline;
-    }
-
-    .hidden { display: none !important; }
-    .error-message { 
-      background-color: #fef2f2; 
-      color: var(--danger); 
-      font-size: 0.85rem; 
-      padding: 10px; 
-      border-radius: 8px; 
-      margin-top: 12px; 
-      border: 1px solid #fecaca; 
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-    }
+    body { font-family: sans-serif; background: #f0f7f4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .card { background: white; padding: 28px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); width: 100%; max-width: 380px; }
+    h2 { text-align: center; color: #2b7a0b; margin-top: 0; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
+    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+    button { width: 100%; padding: 12px; background: #2b7a0b; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    button:hover { background: #1f5c07; }
+    .error { color: #e74c3c; font-size: 13px; margin-top: 10px; text-align: center; }
+    .footer { text-align: center; margin-top: 15px; font-size: 14px; color: #666; }
+    .footer a { color: #0081C9; text-decoration: underline; font-weight: bold; }
   </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-  <div class="container">
-    <a href="ceritadunia.html" class="brand">
-      <i class="fa-solid fa-earth-asia"></i>
-      <h1>Kehidupan Bumi</h1>
-    </a>
-
-    <div class="card">
-      <h2 style="margin-bottom: 20px; text-align:center;">Daftar Penduduk Bumi</h2>
-      
-      <form id="register-form">
-        <div class="form-group">
-          <label for="input-username">Username</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" id="input-username" placeholder="Pilih username unik" required autocomplete="off">
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="input-password">Kata Sandi</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" id="input-password" placeholder="Buat kata sandi baru" required>
-          </div>
-        </div>
-
-        <button type="submit" id="btn-register-submit">
-          Bergabung <i class="fa-solid fa-user-plus"></i>
-        </button>
-
-        <div id="auth-error" class="error-message hidden">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          <span id="auth-error-text"></span>
-        </div>
-      </form>
-
-      <div class="auth-toggle">
-        <span>Sudah memiliki akses? </span>
-        <a href="ceritadunia.html">Masuk di sini</a>
+  <div class="card">
+    <h2>Daftar Penduduk Bumi</h2>
+    <form id="regForm">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="username" required autocomplete="off" placeholder="Masukkan username">
       </div>
+      <div class="form-group">
+        <label>Kata Sandi</label>
+        <input type="password" id="password" required placeholder="Masukkan kata sandi">
+      </div>
+      <button type="submit" id="btnSubmit">Bergabung <i class="fa-solid fa-user-plus"></i></button>
+      <div id="errMsg" class="error"></div>
+    </form>
+    <div class="footer">
+      Sudah memiliki akses? <a href="ceritadunia.html">Masuk di sini</a>
     </div>
   </div>
 
   <script>
-    // 1. URL mengarah ke Cloudflare Worker (API Key aman tersimpan di Worker)
-    const WORKER_URL = 'https://cerita-dunia-7fd8.paku683.workers.dev';
-    const DUMMY_KEY = 'public-key';
+    // URL WORKER CLOUDFLARE KAMU
+    const WORKER_URL = "https://cerita-dunia-7fd8.paku683.workers.dev";
 
-    const supabase = window.supabase.createClient(WORKER_URL, DUMMY_KEY);
-
-    const registerForm = document.getElementById('register-form');
-    const inputUsername = document.getElementById('input-username');
-    const inputPassword = document.getElementById('input-password');
-    const btnRegisterSubmit = document.getElementById('btn-register-submit');
-    const authError = document.getElementById('auth-error');
-    const authErrorText = document.getElementById('auth-error-text');
-
-    function showError(msg) {
-      authErrorText.innerText = msg;
-      authError.classList.remove('hidden');
-    }
-
-    registerForm.onsubmit = async function(e) {
+    document.getElementById('regForm').onsubmit = async function(e) {
       e.preventDefault();
-      authError.classList.add('hidden');
+      
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+      const btn = document.getElementById('btnSubmit');
+      const err = document.getElementById('errMsg');
 
-      const username = inputUsername.value.trim();
-      const password = inputPassword.value;
-
-      btnRegisterSubmit.disabled = true;
-      btnRegisterSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+      err.innerText = "";
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
 
       try {
-        // Cek dulu apakah username sudah dipakai di tabel 'users'
-        const { data: existingUser } = await supabase
-          .from('users')
-          .select('username')
-          .eq('username', username)
-          .maybeSingle();
+        // Panggil endpoint /register persis seperti proyek lama
+        const response = await fetch(`${WORKER_URL}/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: user, password: pass })
+        });
 
-        if (existingUser) {
-          throw new Error("Username sudah terdaftar! Silakan gunakan nama lain.");
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Gagal mendaftar.");
         }
 
-        // Simpan langsung ke tabel 'users' biasa
-        const { error } = await supabase
-          .from('users')
-          .insert([{ username: username, password: password }]);
+        alert("Pendaftaran berhasil! Silakan masuk.");
+        window.location.href = "ceritadunia.html";
 
-        if (error) throw error;
-
-        alert("Pendaftaran berhasil! Silakan masuk dengan akun baru Anda.");
-        window.location.href = "ceritadunia.html"; // Pindah ke halaman login
-
-      } catch (err) {
-        showError(err.message || "Terjadi kesalahan saat pendaftaran.");
+      } catch (error) {
+        err.innerText = error.message;
       } finally {
-        btnRegisterSubmit.disabled = false;
-        btnRegisterSubmit.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
+        btn.disabled = false;
+        btn.innerHTML = 'Bergabung <i class="fa-solid fa-user-plus"></i>';
       }
     };
   </script>
