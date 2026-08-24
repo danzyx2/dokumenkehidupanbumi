@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilik Baca - Kehidupan Bumi</title>
+  
+  <!-- Google Fonts: Inter untuk UI, Lora untuk Teks Bacaan -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome untuk Ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Lora', 'serif'], // Digunakan khusus untuk konten cerita
+          },
+          colors: {
+            // Palet warna yang nyaman untuk mata (Kertas & Tinta)
+            paper: {
+              light: '#FDFBF7',
+              dark: '#121212',
+            },
+            ink: {
+              light: '#2D3748',
+              dark: '#E2E8F0',
+            },
+            accent: {
+              500: '#2b7a0b', // Hijau alam
+              600: '#21562b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 
+     * KUNCI OPTIMASI PERFORMA: content-visibility
+     * Mencegah browser merender elemen yang tidak terlihat di layar.
+     * Sangat penting untuk mencegah lag pada halaman dengan banyak teks panjang.
+     */
+    .story-card {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 300px; /* Perkiraan tinggi awal untuk mencegah layout shift drastis */
+    }
+
+    /* Tipografi khusus area bacaan */
+    .prose-reading {
+      font-size: 1.125rem; /* 18px */
+      line-height: 1.8;
+      letter-spacing: -0.01em;
+    }
+    
+    @media (min-width: 768px) {
+      .prose-reading {
+        font-size: 1.25rem; /* 20px - ukuran optimal untuk membaca di desktop */
+        line-height: 1.9;
+      }
+    }
+
+    /* Kustomisasi Scrollbar Minimalis */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* Efek Glassmorphism Header */
+    .glass-header {
+      background: rgba(253, 251, 247, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .dark .glass-header {
+      background: rgba(18, 18, 18, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-paper-light dark:bg-paper-dark text-ink-light dark:text-ink-dark antialiased transition-colors duration-300 selection:bg-accent-500/30 selection:text-current">
+
+  <header class="glass-header sticky top-0 z-50 transition-colors duration-300">
+    <div class="max-w-3xl mx-auto px-4 py-3 sm:px-6 flex justify-between items-center h-16">
+      
+      <!-- Logo / Judul -->
+      <a href="#" class="flex items-center gap-2 group">
+        <div class="text-accent-500 group-hover:scale-110 transition-transform duration-300">
+          <i class="fa-solid fa-book-open-reader text-2xl"></i>
+        </div>
+        <h1 class="font-sans font-bold text-lg sm:text-xl tracking-tight text-gray-900 dark:text-gray-100 hidden sm:block">
+          Bilik Baca Bumi
+        </h1>
+      </a>
+      
+      <!-- Kontrol & Aksi -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        
+        <!-- Tombol Bagikan Kisah (Menuju Register) -->
+        <a href="register.html" class="flex items-center gap-2 text-sm sm:text-base font-medium px-4 py-2 rounded-full bg-accent-500 hover:bg-accent-600 text-white shadow-sm hover:shadow-md transition-all">
+          <i class="fa-solid fa-pen-nib"></i>
+          <span class="hidden sm:inline">Bagikan Kisahmu</span>
+          <span class="sm:hidden">Tulis</span>
+        </a>
+
+        <!-- Pemisah Vertikal -->
+        <div class="w-px h-6 bg-gray-300 dark:bg-gray-700 hidden sm:block"></div>
+
+        <!-- Toggle Mode Gelap -->
+        <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="Toggle Dark Mode">
+          <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full flex flex-col gap-12 z-10 relative">
+    
+    <!-- Header Halaman -->
+    <div class="text-center space-y-3 mb-4 animate-fade-in">
+      <p class="text-accent-500 font-medium tracking-wider text-sm uppercase">Jelajahi</p>
+      <h2 class="font-serif font-bold text-3xl sm:text-4xl lg:text-5xl text-gray-900 dark:text-gray-100">Kumpulan Kisah Kehidupan</h2>
+      <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Ruang tenang untuk membaca pengalaman, pandangan, dan cerita tentang perjalanan menjaga bumi kita.</p>
+    </div>
+
+    <!-- Fitur Pencarian -->
+    <div class="max-w-xl mx-auto w-full mb-8 relative group transition-all">
+      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-accent-500 transition-colors">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      <input type="text" id="search-input" placeholder="Cari kisah atau nama penulis..." class="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-800 rounded-full focus:outline-none focus:border-accent-500 dark:focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-all text-sm sm:text-base text-gray-900 dark:text-gray-100 shadow-sm placeholder-gray-400">
+    </div>
+
+    <!-- Container Utama Kisah -->
+    <div id="feed-container" class="flex flex-col gap-12 sm:gap-16">
+      
+      <!-- Skeleton Loading (Ditampilkan saat fetch data) -->
+      <div id="loading-indicator" class="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500">
+        <i class="fa-solid fa-book-journal-whills text-4xl mb-4 animate-pulse"></i>
+        <p class="text-sm font-medium animate-pulse">Membuka lembaran kisah...</p>
+      </div>
+
+    </div>
+
+    <!-- Tombol Kembali ke Atas -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 w-12 h-12 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full shadow-lg flex items-center justify-center opacity-0 translate-y-10 pointer-events-none transition-all duration-300 hover:scale-110 z-50">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+  </main>
+
+  <script>
+    // --- 1. PENGATURAN TEMA (MODE GELAP/TERANG) ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const htmlElement = document.documentElement;
+
+    // Cek preferensi tersimpan atau preferensi sistem
+    function initializeTheme() {
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlElement.classList.add('dark');
+        updateThemeIcon(true);
+      } else {
+        htmlElement.classList.remove('dark');
+        updateThemeIcon(false);
+      }
+    }
+
+    function updateThemeIcon(isDark) {
+      if (isDark) {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun', 'text-yellow-400');
+      } else {
+        themeIcon.classList.remove('fa-sun', 'text-yellow-400');
+        themeIcon.classList.add('fa-moon');
+      }
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = htmlElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateThemeIcon(isDark);
+    });
+
+    // Inisialisasi tema saat dimuat
+    initializeTheme();
+
+    // --- 2. FITUR BACK TO TOP ---
+    const backToTopBtn = document.getElementById('back-to-top');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 500) {
+        backToTopBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+        backToTopBtn.classList.add('opacity-100', 'translate-y-0');
+      } else {
+        backToTopBtn.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+        backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // --- 3. PENGAMBILAN DATA DAN RENDER CERITA ---
+    const WORKER_URL = "https://cerita-dunia-7fd8.paku683.workers.dev";
+    const feedContainer = document.getElementById('feed-container');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const searchInput = document.getElementById('search-input');
+    
+    // State Global untuk menyimpan semua cerita
+    let allPosts = [];
+
+    // Helper: Avatar Generator (Minimalis untuk mode baca)
+    function getAvatarUrl(name) {
+      return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&bold=true&rounded=true&size=128`;
+    }
+
+    // Helper: Format Tanggal Membaca (Misal: 24 Agustus 2026)
+    function formatDate(dateString) {
+      if(!dateString) return '';
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString('id-ID', options);
+    }
+
+    // Helper: Keamanan XSS
+    function escapeHtml(str) {
+      if(!str) return '';
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Helper: Mengubah URL menjadi Tautan yang bisa diklik (Opsional, tapi bagus untuk bacaan)
+    function linkify(text) {
+      const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+      return text.replace(urlRegex, function(url) {
+        return `<a href="${url}" target="_blank" class="text-accent-500 hover:underline break-words">${url}</a>`;
+      });
+    }
+
+    async function fetchAndRenderStories() {
+      try {
+        const response = await fetch(`${WORKER_URL}/posts`);
+        allPosts = await response.json();
+
+        if (!response.ok) throw new Error("Gagal mengambil data dari server.");
+        
+        // Sembunyikan loading
+        loadingIndicator.classList.add('hidden');
+
+        // Render cerita awal (semua data)
+        renderPosts(allPosts);
+
+      } catch (error) {
+        loadingIndicator.innerHTML = `
+          <div class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-6 rounded-xl text-center border border-red-100 dark:border-red-900/50 max-w-md mx-auto">
+            <i class="fa-solid fa-triangle-exclamation text-3xl mb-3"></i>
+            <p class="font-medium text-sm sm:text-base">Maaf, kami kesulitan mengambil kisah saat ini.</p>
+            <p class="text-xs sm:text-sm mt-2 opacity-80">${error.message}</p>
+            <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-red-100 dark:bg-red-900/40 hover:bg-red-200 dark:hover:bg-red-900/60 rounded-lg text-sm font-semibold transition-colors">Coba Lagi</button>
+          </div>
+        `;
+      }
+    }
+
+    // Fungsi Terpisah untuk Merender Array Postingan
+    function renderPosts(postsToRender) {
+      if (!postsToRender || postsToRender.length === 0) {
+        const isSearching = searchInput.value.trim() !== '';
+        const msg = isSearching ? "Tidak ada kisah yang cocok dengan pencarian Anda." : "Belum ada kisah yang dibagikan. Jadilah yang pertama menulis!";
+        
+        feedContainer.innerHTML = `
+          <div class="text-center text-gray-500 dark:text-gray-400 py-10">
+            <i class="fa-solid ${isSearching ? 'fa-magnifying-glass-minus' : 'fa-feather'} text-3xl mb-4 opacity-50"></i>
+            <p>${msg}</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Kita menggunakan string concatenation untuk performa terbaik
+      let htmlContent = '';
+      
+      postsToRender.forEach((post) => {
+        const authorName = post.username || 'Pencinta Alam Rahasia';
+        let safeContent = escapeHtml(post.content);
+        
+        // Mengganti baris baru (\n) dengan tag paragraf (<p>)
+        const paragraphs = safeContent.split('\n')
+          .map(p => p.trim())
+          .filter(p => p.length > 0)
+          .map(p => `<p class="mb-4 sm:mb-6 last:mb-0">${linkify(p)}</p>`)
+          .join('');
+
+        htmlContent += `
+          <article class="story-card border-b border-gray-200 dark:border-gray-800 pb-12 sm:pb-16 last:border-0 relative">
+            
+            <!-- Meta Informasi Penulis -->
+            <div class="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <img src="${getAvatarUrl(authorName)}" alt="${authorName}" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-sm" loading="lazy">
+              <div>
+                <h3 class="font-sans font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base">${escapeHtml(authorName)}</h3>
+                <time class="font-sans text-xs sm:text-sm text-gray-500 dark:text-gray-400 block mt-0.5">
+                  ${formatDate(post.created_at)}
+                </time>
+              </div>
+            </div>
+
+            <!-- Konten Cerita (Tipografi Lora) -->
+            <div class="font-serif prose-reading text-gray-800 dark:text-gray-200 break-words">
+              ${paragraphs}
+            </div>
+            
+            <!-- Pemisah opsional di akhir cerita -->
+            <div class="mt-8 flex justify-center">
+               <span class="text-gray-300 dark:text-gray-700 tracking-[0.5em] select-none text-xl">•••</span>
+            </div>
+          </article>
+        `;
+      });
+
+      // Masukkan semua HTML sekaligus
+      feedContainer.innerHTML = htmlContent;
+    }
+
+    // --- 4. FITUR PENCARIAN REAL-TIME ---
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      
+      if (query === '') {
+        renderPosts(allPosts);
+        return;
+      }
+
+      // Filter berdasarkan isi konten atau nama penulis
+      const filteredPosts = allPosts.filter(post => {
+        const contentMatch = post.content ? post.content.toLowerCase().includes(query) : false;
+        const nameMatch = post.username ? post.username.toLowerCase().includes(query) : false;
+        return contentMatch || nameMatch;
+      });
+
+      renderPosts(filteredPosts);
+    });
+
+    // Jalankan fungsi saat DOM siap
+    window.addEventListener('DOMContentLoaded', fetchAndRenderStories);
+
+  </script>
+</body>
+</html>
