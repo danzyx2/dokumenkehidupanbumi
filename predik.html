@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediction & Winrate Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen p-4 md:p-8">
+
+  <div class="max-w-4xl mx-auto space-y-6">
+    <!-- HEADER -->
+    <header class="flex justify-between items-center bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
+      <div>
+        <h1 class="text-2xl font-bold text-white">📈 Daily Market Probabilities</h1>
+        <p class="text-sm text-gray-400 mt-1">Track Record & Analisa Harian</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <!-- TOMBOL SETTING URL WORKER -->
+        <button onclick="openSettingsModal()" class="text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 px-3 py-2 rounded-lg flex items-center gap-1">
+          ⚙️ Setting URL
+        </button>
+        <!-- TOMBOL LOGIN ADMIN -->
+        <button onclick="promptAdminLogin()" class="text-xs bg-blue-700 hover:bg-blue-600 text-white px-3 py-2 rounded-lg">
+          🔒 Login Admin
+        </button>
+      </div>
+    </header>
+
+    <!-- METRIK WINRATE (PUBLIK) -->
+    <div class="grid grid-cols-3 gap-4 text-center">
+      <div class="bg-gray-800 p-4 rounded-xl border border-gray-700">
+        <p class="text-sm text-gray-400">Total Prediksi</p>
+        <p id="total-pred" class="text-2xl font-bold text-white">0</p>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-xl border border-gray-700">
+        <p class="text-sm text-gray-400">Winrate (Akurasi)</p>
+        <p id="winrate" class="text-2xl font-bold text-blue-400">0%</p>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-xl border border-gray-700">
+        <p class="text-sm text-gray-400">Benar / Salah</p>
+        <p class="text-2xl font-bold"><span id="benar-count" class="text-green-400">0</span> / <span id="salah-count" class="text-red-400">0</span></p>
+      </div>
+    </div>
+
+    <!-- PANEL ADMIN (TERSEMBUNYI SEBELUM LOGIN) -->
+    <div id="admin-panel" class="hidden bg-blue-900/20 border border-blue-800 p-6 rounded-xl space-y-4">
+      <div class="flex justify-between items-center border-b border-blue-800 pb-2">
+        <h2 class="text-lg font-bold text-blue-400">Admin Panel: Buat Prediksi Baru</h2>
+        <button onclick="logoutAdmin()" class="text-xs bg-red-600/30 text-red-400 border border-red-600/50 px-2 py-1 rounded">Logout</button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Tanggal Spesifik</label>
+          <input type="date" id="input-date" class="w-full bg-gray-800 text-white border border-gray-700 rounded p-2 focus:outline-none focus:border-blue-500">
+        </div>
+        <div class="flex gap-4">
+          <div class="w-1/2">
+            <label class="block text-sm text-green-400 mb-1">Prob. Hijau (%)</label>
+            <input type="number" id="input-green" class="w-full bg-gray-800 text-green-400 font-bold border border-gray-700 rounded p-2">
+          </div>
+          <div class="w-1/2">
+            <label class="block text-sm text-red-400 mb-1">Prob. Merah (%)</label>
+            <input type="number" id="input-red" class="w-full bg-gray-800 text-red-400 font-bold border border-gray-700 rounded p-2">
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <label class="block text-sm text-gray-400 mb-2">Alasan (Ceklis yang sesuai):</label>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm" id="reasons-container">
+          <label class="flex items-center gap-2"><input type="checkbox" value="Breakout Support/Resisten" class="reason-cb"> Breakout Supp/Res</label>
+          <label class="flex items-center gap-2"><input type="checkbox" value="SMC / FVG Terisi" class="reason-cb"> SMC / FVG Terisi</label>
+          <label class="flex items-center gap-2"><input type="checkbox" value="News / Data Ekonomi" class="reason-cb"> News / Data Ekonomi</label>
+          <label class="flex items-center gap-2"><input type="checkbox" value="RSI Divergence" class="reason-cb"> RSI Divergence</label>
+          <label class="flex items-center gap-2"><input type="checkbox" value="Volume Spike" class="reason-cb"> Volume Spike</label>
+          <label class="flex items-center gap-2"><input type="checkbox" value="Trend Crossover (EMA)" class="reason-cb"> Trend Crossover</label>
+        </div>
+      </div>
+      <button onclick="submitPrediction()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-lg">Simpan Prediksi</button>
+    </div>
+
+    <!-- DAFTAR PREDIKSI & KONFIRMASI -->
+    <div class="bg-gray-800 rounded-xl shadow-lg border border-gray-700 overflow-hidden">
+      <div class="p-4 border-b border-gray-700">
+        <h2 class="font-bold text-white">📋 Riwayat Prediksi Harian</h2>
+      </div>
+      <div class="p-4 space-y-4" id="predictions-list">
+        <p class="text-center text-gray-500">Memuat data...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL SETTING URL WORKER -->
+  <div id="settings-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+    <div class="bg-gray-800 border border-gray-700 rounded-xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-gray-700 pb-3">
+        <h3 class="font-bold text-white text-lg">⚙️ Konfigurasi URL Worker</h3>
+        <button onclick="closeSettingsModal()" class="text-gray-400 hover:text-white">&times;</button>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-2">Masukkan URL Endpoint Cloudflare Worker Anda:</label>
+        <input type="text" id="modal-worker-url" placeholder="https://nama-worker.subdomain.workers.dev" 
+               class="w-full bg-gray-900 text-white border border-gray-700 rounded p-2.5 text-sm focus:outline-none focus:border-blue-500">
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeSettingsModal()" class="px-4 py-2 text-xs bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-300">Batal</button>
+        <button onclick="saveWorkerUrlFromModal()" class="px-4 py-2 text-xs bg-blue-600 hover:bg-blue-500 rounded-lg text-white font-bold">Simpan URL</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // KONFIGURASI SUPABASE
+    // ==========================================
+    const SUPABASE_URL = 'https://blobtwzuuqjhrqwqnezx.supabase.co'; // Ganti dengan URL Supabase Anda
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsb2J0d3p1dXFqaHJxd3FuZXp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxMzAyODUsImV4cCI6MjEwMDcwNjI4NX0.cTaIAhvHxgqg1AZTGKqV63ZaUBUj8DO6_Z9rOO8u_QE'; // Ganti dengan Anon Key Supabase Anda
+
+    let adminPassword = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadData();
+    });
+
+    // Kontrol Modal Setting
+    function openSettingsModal() {
+      const savedUrl = localStorage.getItem('workerUrl') || '';
+      document.getElementById('modal-worker-url').value = savedUrl;
+      document.getElementById('settings-modal').classList.remove('hidden');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settings-modal').classList.add('hidden');
+    }
+
+    function saveWorkerUrlFromModal() {
+      const url = document.getElementById('modal-worker-url').value.trim();
+      if (!url) {
+        alert("URL tidak boleh kosong!");
+        return;
+      }
+      localStorage.setItem('workerUrl', url);
+      alert("URL Cloudflare Worker berhasil disimpan!");
+      closeSettingsModal();
+    }
+
+    function getCleanWorkerUrl() {
+      let url = localStorage.getItem('workerUrl');
+      if (!url) return null;
+      return url.trim().replace(/\/+$/, '');
+    }
+
+    // 2. Fetch Data LANGSUNG dari Supabase (Publik)
+    async function loadData() {
+      try {
+        const baseUrl = SUPABASE_URL.replace(/\/+$/, '');
+        const res = await fetch(`${baseUrl}/rest/v1/predictions?order=target_date.desc`, {
+          method: 'GET',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!res.ok) throw new Error("Gagal mengambil data dari database.");
+        const data = await res.json();
+        
+        let total = 0, benar = 0, salah = 0;
+        let htmlList = '';
+
+        data.forEach(item => {
+          if (item.status === 'BENAR') benar++;
+          if (item.status === 'SALAH') salah++;
+          if (item.status !== 'PENDING') total++;
+
+          const reasonsHtml = item.reasons.map(r => `<span class="bg-gray-700 px-2 py-0.5 rounded text-[10px] text-gray-300">${r}</span>`).join(' ');
+          
+          let statusBadge = `<span class="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-xs font-bold">MENUNGGU HASIL</span>`;
+          if (item.status === 'BENAR') statusBadge = `<span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs font-bold">✅ PREDIKSI BENAR</span>`;
+          if (item.status === 'SALAH') statusBadge = `<span class="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs font-bold">❌ PREDIKSI SALAH</span>`;
+
+          let actionButtons = '';
+          if (adminPassword && item.status === 'PENDING') {
+            actionButtons = `
+              <div class="mt-3 flex gap-2">
+                <button onclick="updateStatus('${item.id}', 'BENAR')" class="text-xs bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded">Set Benar</button>
+                <button onclick="updateStatus('${item.id}', 'SALAH')" class="text-xs bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded">Set Salah</button>
+              </div>
+            `;
+          }
+
+          htmlList += `
+            <div class="border border-gray-700 bg-gray-900/50 p-4 rounded-lg">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <p class="font-bold text-white text-sm">📅 ${item.target_date}</p>
+                  <div class="flex gap-4 mt-2">
+                    <p class="text-sm font-bold text-green-400">Hijau: ${item.green_prob}%</p>
+                    <p class="text-sm font-bold text-red-400">Merah: ${item.red_prob}%</p>
+                  </div>
+                </div>
+                <div>${statusBadge}</div>
+              </div>
+              <div class="mt-2 flex flex-wrap gap-1">${reasonsHtml}</div>
+              ${actionButtons}
+            </div>
+          `;
+        });
+
+        const winrate = total > 0 ? ((benar / total) * 100).toFixed(1) : 0;
+        document.getElementById('total-pred').innerText = data.length;
+        document.getElementById('winrate').innerText = `${winrate}%`;
+        document.getElementById('benar-count').innerText = benar;
+        document.getElementById('salah-count').innerText = salah;
+        document.getElementById('predictions-list').innerHTML = htmlList || '<p class="text-center text-gray-500">Belum ada data prediksi.</p>';
+
+      } catch (err) {
+        document.getElementById('predictions-list').innerHTML = `<p class="text-center text-red-400">${err.message}</p>`;
+      }
+    }
+
+    // 3. Login Admin
+    // 3. Login Admin (Tervalidasi oleh Worker)
+    async function promptAdminLogin() {
+      const workerUrl = getCleanWorkerUrl();
+      if (!workerUrl) {
+        alert("Silakan atur URL Cloudflare Worker terlebih dahulu melalui tombol '⚙️ Setting URL' di pojok kanan atas!");
+        openSettingsModal();
+        return;
+      }
+
+      const pwd = prompt("Masukkan Password Admin:");
+      if (!pwd) return;
+
+      try {
+        // Cek password ke endpoint khusus verifikasi
+        const res = await fetch(`${workerUrl}/api/verify`, {
+          method: 'GET',
+          headers: { 
+            'X-Admin-Password': pwd 
+          }
+        });
+
+        if (res.status === 401) {
+          alert("❌ Password Admin Salah!");
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error("Terjadi kesalahan pada server worker.");
+        }
+
+        // Jika berhasil (status 200)
+        adminPassword = pwd;
+        document.getElementById('admin-panel').classList.remove('hidden');
+        loadData(); 
+        alert("✅ Mode Admin Aktif.");
+
+      } catch (err) {
+        alert("Gagal terhubung ke Cloudflare Worker: " + err.message);
+      }
+    }
+
+    function logoutAdmin() {
+      adminPassword = null;
+      document.getElementById('admin-panel').classList.add('hidden');
+      loadData();
+      alert("Berhasil Logout dari Admin.");
+    }
+
+    // 4. Submit Prediksi Baru
+    async function submitPrediction() {
+      const workerUrl = getCleanWorkerUrl();
+      if (!workerUrl) return alert("URL Worker belum diatur!");
+
+      const date = document.getElementById('input-date').value;
+      const green = parseInt(document.getElementById('input-green').value);
+      const red = parseInt(document.getElementById('input-red').value);
+      
+      const checkedBoxes = document.querySelectorAll('.reason-cb:checked');
+      const reasons = Array.from(checkedBoxes).map(cb => cb.value);
+
+      if (!date || isNaN(green) || isNaN(red) || reasons.length === 0) {
+        return alert("Harap lengkapi tanggal, probabilitas, dan minimal 1 alasan.");
+      }
+
+      try {
+        const res = await fetch(`${workerUrl}/api/predictions`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
+          body: JSON.stringify([{ target_date: date, green_prob: green, red_prob: red, reasons: reasons }])
+        });
+
+        if (res.ok) {
+          alert("Prediksi berhasil disimpan!");
+          loadData(); 
+        } else {
+          alert("Gagal: " + await res.text());
+        }
+      } catch (err) {
+        alert("Error Koneksi ke Worker: " + err.message);
+      }
+    }
+
+    // 5. Konfirmasi Status
+    async function updateStatus(id, newStatus) {
+      const workerUrl = getCleanWorkerUrl();
+      if (!workerUrl) return alert("URL Worker belum diatur!");
+
+      if (!confirm(`Tandai prediksi ini sebagai ${newStatus}?`)) return;
+
+      try {
+        const res = await fetch(`${workerUrl}/api/predictions/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
+          body: JSON.stringify({ status: newStatus })
+        });
+
+        if (res.ok) {
+          loadData(); 
+        } else {
+          alert("Gagal update: " + await res.text());
+        }
+      } catch (err) {
+        alert("Error Koneksi ke Worker: " + err.message);
+      }
+    }
+  </script>
+</body>
+</html>
