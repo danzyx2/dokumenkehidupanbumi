@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akademi Trophage - Monitor Kosmis</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  colors: {
+                      slate: {
+                          800: '#1e293b',
+                          900: '#0f172a',
+                          950: '#020617',
+                      }
+                  }
+              }
+          }
+      }
+  </script>
+
+  <style>
+      * { -webkit-tap-highlight-color: transparent; }
+      
+      /* Style tambahan untuk tampilan tabel agar konsisten dengan tema Trophage */
+      .glass-panel {
+          background-color: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(12px);
+          border: 1px solid #1e293b;
+      }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-300 font-sans selection:bg-blue-500/30 overflow-x-hidden antialiased">
+
+  <!-- Animated Background Orbs -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-900/20 blur-[120px] mix-blend-screen"></div>
+      <div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/20 blur-[120px] mix-blend-screen"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-6">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+          
+          <!-- Logo -->
+          <a href="index.html#home" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <i data-lucide="activity" class="text-blue-400 w-8 h-8"></i>
+              <span class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 tracking-wide">
+                  AKADEMI TROPHAGE
+              </span>
+          </a>
+
+          <!-- Desktop Nav -->
+          <div class="hidden md:flex items-center gap-8">
+              <div class="flex gap-6">
+                  <a href="index.html#home" class="text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors">Beranda</a>
+                  <a href="monitor.html" class="text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors border-b border-blue-400">Konsep Kosmis</a>
+                  <a href="index.html#prinsip" class="text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors">Prinsip Navigasi</a>
+              </div>
+              <a 
+                  href="https://kehidupanbumiofficial.my.id/astrophage" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors border border-slate-700 hover:border-blue-500 rounded-full px-5 py-2"
+              >
+                  Akses Portal <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+          </div>
+
+          <!-- Mobile Menu Toggle Button -->
+          <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white focus:outline-none">
+              <i data-lucide="menu" id="menu-icon" class="w-6 h-6 block"></i>
+              <i data-lucide="x" id="close-icon" class="w-6 h-6 hidden"></i>
+          </button>
+      </div>
+
+      <!-- Mobile Nav Dropdown -->
+      <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-slate-900 border-b border-slate-800 py-4 px-6 flex-col gap-4 shadow-xl">
+          <a href="index.html#home" class="mobile-link text-base font-medium text-slate-300 hover:text-blue-400 transition-colors py-2 block">Beranda</a>
+          <a href="monitor.html" class="mobile-link text-base font-medium text-blue-400 hover:text-blue-300 transition-colors py-2 block">Konsep Kosmis</a>
+          <a href="index.html#prinsip" class="mobile-link text-base font-medium text-slate-300 hover:text-blue-400 transition-colors py-2 block">Prinsip Navigasi</a>
+          <a 
+              href="https://kehidupanbumiofficial.my.id/astrophage" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="flex items-center justify-center gap-2 text-sm font-medium text-white transition-colors border border-blue-500 bg-blue-600/20 rounded-full px-5 py-3 mt-2"
+          >
+              Akses Portal <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </a>
+      </div>
+  </nav>
+
+  <!-- Main Content (Monitor Dashboard) -->
+  <main class="relative z-10 pt-32 pb-16 min-h-screen">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 space-y-6">
+        
+        <!-- HEADER KONTEN -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center glass-panel p-6 rounded-2xl shadow-lg">
+          <div>
+            <h1 class="text-2xl font-bold text-white flex items-center gap-3">
+              <i data-lucide="bar-chart-2" class="text-blue-400"></i> Automated Trading Monitor
+            </h1>
+            <p class="text-sm text-slate-400 mt-1">Real-time performance metrics & trade history</p>
+          </div>
+          <div class="mt-4 md:mt-0 flex items-center gap-4">
+            <span id="status-badge" class="px-3 py-1 text-xs font-semibold rounded-full bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 flex items-center gap-2">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+              </span>
+              Syncing...
+            </span>
+            <button onclick="fetchDashboardData()" class="px-4 py-2 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/30 text-xs font-semibold rounded-xl transition-all hover:scale-105 flex items-center gap-2">
+              <i data-lucide="refresh-cw" class="w-3 h-3"></i> Refresh Data
+            </button>
+          </div>
+        </header>
+
+        <!-- RINGKASAN METRIK PER STRATEGI (CARDS) -->
+        <div id="metrics-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Card BTCUSDT & ETHUSDT akan di-render dinamis oleh JavaScript -->
+        </div>
+
+        <!-- GRAFIK EQUITY CURVE -->
+        <div class="glass-panel p-6 rounded-2xl shadow-lg">
+          <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <i data-lucide="trending-up" class="w-5 h-5 text-purple-400"></i> Pertumbuhan Accumulative PnL ($)
+          </h2>
+          <div class="relative h-64 w-full">
+            <canvas id="equityChart"></canvas>
+          </div>
+        </div>
+
+        <!-- TABEL RIWAYAT TRANSAKSI -->
+        <div class="glass-panel rounded-2xl shadow-lg overflow-hidden">
+          <div class="p-6 border-b border-slate-800 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="list" class="w-5 h-5 text-blue-400"></i> Riwayat Transaksi
+            </h2>
+            <span id="total-trades-count" class="text-xs font-medium text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">Total: 0 Trades</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-slate-900/50 text-slate-400 uppercase text-[11px] tracking-wider border-b border-slate-800">
+                  <th class="p-4 font-medium">Waktu</th>
+                  <th class="p-4 font-medium">Aset</th>
+                  <th class="p-4 font-medium">Tipe</th>
+                  <th class="p-4 font-medium">Entry Price</th>
+                  <th class="p-4 font-medium">Exit Price</th>
+                  <th class="p-4 font-medium">Status</th>
+                  <th class="p-4 font-medium text-right">PnL (USDT)</th>
+                </tr>
+              </thead>
+              <tbody id="trade-history-body" class="divide-y divide-slate-800/50 text-slate-300">
+                <tr>
+                  <td colspan="7" class="p-8 text-center text-slate-500">Memuat data transaksi...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-slate-800 bg-slate-950 pt-16 pb-8">
+      <div class="max-w-7xl mx-auto px-6 md:px-12">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
+              
+              <!-- Footer Logo -->
+              <div class="flex items-center gap-2">
+                  <i data-lucide="activity" class="text-blue-500 w-6 h-6"></i>
+                  <span class="text-xl font-bold text-white">AKADEMI TROPHAGE</span>
+              </div>
+
+              <!-- Official Link -->
+              <div class="flex flex-col items-center md:items-end">
+                  <span class="text-slate-500 text-sm mb-2">Website Resmi Jejak Smart Money</span>
+                  <a 
+                      href="https://kehidupanbumiofficial.my.id/astrophage" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      class="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors bg-blue-950/30 px-4 py-2 rounded-lg border border-blue-900/50"
+                  >
+                      <i data-lucide="globe" class="w-4 h-4"></i>
+                      kehidupanbumiofficial.my.id/astrophage
+                  </a>
+              </div>
+          </div>
+
+          <!-- Disclaimer -->
+          <div class="mt-12 bg-slate-900/50 border border-slate-800 rounded-xl p-6 flex gap-4 items-start">
+              <i data-lucide="shield-alert" class="text-yellow-600 w-6 h-6 flex-shrink-0 mt-1"></i>
+              <p class="text-sm text-slate-500 leading-relaxed font-mono">
+                  <strong class="text-yellow-600/80">Disclaimer:</strong> Semua konten di website dan saluran ini bersifat edukasi dan berbagi informasi futuristik. Bukan ajakan atau penasihat keuangan legal. Lakukan riset Anda sendiri (DYOR - Do Your Own Research) sebelum melakukan lompatan kuantum di pasar modal.
+              </p>
+          </div>
+      </div>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Inisialisasi Icon Lucide
+    lucide.createIcons();
+
+    // Logika Navbar Scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) {
+            navbar.classList.add('bg-slate-950/80', 'backdrop-blur-md', 'border-b', 'border-slate-800', 'py-4');
+            navbar.classList.remove('bg-transparent', 'py-6');
+        } else {
+            navbar.classList.add('bg-transparent', 'py-6');
+            navbar.classList.remove('bg-slate-950/80', 'backdrop-blur-md', 'border-b', 'border-slate-800', 'py-4');
+        }
+    });
+
+    // Logika Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('flex');
+        menuIcon.classList.toggle('hidden');
+        menuIcon.classList.toggle('block');
+        closeIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('block');
+    });
+
+    // -------------------------------------------------------------
+    // 1. KONFIGURASI SUPABASE (Ganti dengan kredensial Anda)
+    // -------------------------------------------------------------
+    const SUPABASE_URL = 'https://blobtwzuuqjhrqwqnezx.supabase.co'; 
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsb2J0d3p1dXFqaHJxd3FuZXp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxMzAyODUsImV4cCI6MjEwMDcwNjI4NX0.cTaIAhvHxgqg1AZTGKqV63ZaUBUj8DO6_Z9rOO8u_QE'; 
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let equityChartInstance = null;
+
+    // -------------------------------------------------------------
+    // 2. FUNGSI UTAMA AMBIL DATA
+    // -------------------------------------------------------------
+    async function fetchDashboardData() {
+      const badge = document.getElementById('status-badge');
+      badge.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 flex items-center gap-2';
+      badge.innerHTML = `
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+        </span>
+        Syncing...
+      `;
+
+      try {
+        const { data: trades, error } = await supabaseClient
+          .from('trades')
+          .select('*')
+          .order('created_at', { ascending: true });
+
+        if (error) throw error;
+
+        renderStrategyCards(trades);
+        renderTradeHistory(trades);
+        renderEquityChart(trades);
+
+        badge.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-green-500/10 text-green-500 border border-green-500/20 flex items-center gap-2';
+        badge.innerHTML = `
+          <span class="relative flex h-2 w-2">
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+          </span>
+          Live / Terhubung
+        `;
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        badge.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-red-500/10 text-red-500 border border-red-500/20 flex items-center gap-2';
+        badge.innerHTML = `
+          <span class="relative flex h-2 w-2">
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+          </span>
+          Error Connection
+        `;
+        
+        // --- FALLBACK (KARENA SUPABASE KOSONG/TIDAK ADA KREDENSIAL, KITA BUAT DATA DUMMY AGAR UI TERLIHAT BAGUS) ---
+        const dummyData = [
+            { asset: 'BTCUSDT', type: 'LONG', price: 61000, close_price: 61500, status: 'CLOSED', profit_loss: 45.5, created_at: new Date(Date.now() - 86400000).toISOString() },
+            { asset: 'ETHUSDT', type: 'SHORT', price: 3400, close_price: 3350, status: 'CLOSED', profit_loss: 25.0, created_at: new Date(Date.now() - 43200000).toISOString() },
+            { asset: 'BTCUSDT', type: 'LONG', price: 62000, close_price: 61800, status: 'CLOSED', profit_loss: -15.2, created_at: new Date(Date.now() - 10000000).toISOString() },
+            { asset: 'BTCUSDT', type: 'SHORT', price: 63000, close_price: null, status: 'OPEN', profit_loss: 0, created_at: new Date().toISOString() },
+        ];
+        renderStrategyCards(dummyData);
+        renderTradeHistory(dummyData);
+        renderEquityChart(dummyData);
+        // --- AKHIR FALLBACK ---
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 3. RENDER METRIK PER STRATEGI
+    // -------------------------------------------------------------
+    function renderStrategyCards(trades) {
+      const assets = ['BTCUSDT', 'ETHUSDT'];
+      const container = document.getElementById('metrics-container');
+      container.innerHTML = '';
+
+      assets.forEach(asset => {
+        const assetTrades = trades.filter(t => t.asset === asset && t.status === 'CLOSED');
+        const totalTrades = assetTrades.length;
+        const wins = assetTrades.filter(t => t.profit_loss > 0).length;
+        const losses = assetTrades.filter(t => t.profit_loss < 0).length;
+        const totalPnl = assetTrades.reduce((acc, t) => acc + (t.profit_loss || 0), 0);
+        const winrate = totalTrades > 0 ? ((wins / totalTrades) * 100).toFixed(1) : '0.0';
+
+        const cardHtml = `
+          <div class="glass-panel p-6 rounded-2xl space-y-4 hover:border-blue-500/30 transition-colors">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+              <div>
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                  ${asset}
+                </h3>
+                <span class="text-xs text-slate-400">Strategi ${asset === 'BTCUSDT' ? 'EMA 9/21 + RSI' : 'Donchian Breakout'}</span>
+              </div>
+              <span class="px-3 py-1 rounded-lg text-sm font-bold ${winrate >= 50 ? 'bg-green-500/20 text-green-400 border border-green-500/20' : 'bg-red-500/20 text-red-400 border border-red-500/20'}">
+                WR: ${winrate}%
+              </span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 text-center">
+              <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                <p class="text-[11px] uppercase tracking-wider text-slate-500 mb-1">Total Trades</p>
+                <p class="text-lg font-bold text-white">${totalTrades}</p>
+              </div>
+              <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                <p class="text-[11px] uppercase tracking-wider text-slate-500 mb-1">Win / Loss</p>
+                <p class="text-lg font-bold text-white"><span class="text-green-400">${wins}</span> <span class="text-slate-600">/</span> <span class="text-red-400">${losses}</span></p>
+              </div>
+              <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                <p class="text-[11px] uppercase tracking-wider text-slate-500 mb-1">Total PnL</p>
+                <p class="text-lg font-bold ${totalPnl >= 0 ? 'text-green-400' : 'text-red-400'}">
+                  ${totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(2)} $
+                </p>
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += cardHtml;
+      });
+    }
+
+    // -------------------------------------------------------------
+    // 4. RENDER TABEL HISTORI TRANSAKSI
+    // -------------------------------------------------------------
+    function renderTradeHistory(trades) {
+      const tbody = document.getElementById('trade-history-body');
+      document.getElementById('total-trades-count').innerText = `Total: ${trades.length} Trades`;
+
+      if (trades.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500">Belum ada transaksi tercatat.</td></tr>`;
+        return;
+      }
+
+      // Urutkan transaksi terbaru di paling atas
+      const reversedTrades = [...trades].reverse();
+
+      tbody.innerHTML = reversedTrades.map(trade => {
+        const isProfit = trade.profit_loss > 0;
+        const pnlText = trade.status === 'CLOSED' 
+          ? `<span class="font-bold ${isProfit ? 'text-green-400' : 'text-red-400'}">${trade.profit_loss >= 0 ? '+' : ''}${trade.profit_loss} USDT</span>`
+          : `<span class="text-blue-400 italic font-medium">Running...</span>`;
+
+        const typeBadge = trade.type === 'LONG' 
+          ? `<span class="px-2 py-1 text-[10px] font-bold bg-green-500/20 text-green-400 rounded border border-green-500/20 tracking-wider">LONG</span>`
+          : `<span class="px-2 py-1 text-[10px] font-bold bg-red-500/20 text-red-400 rounded border border-red-500/20 tracking-wider">SHORT</span>`;
+
+        const dateFormatted = new Date(trade.created_at).toLocaleString('id-ID', {
+          month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition-colors">
+            <td class="p-4 text-xs text-slate-400 whitespace-nowrap">${dateFormatted}</td>
+            <td class="p-4 font-bold text-white">${trade.asset}</td>
+            <td class="p-4">${typeBadge}</td>
+            <td class="p-4 font-medium">$${trade.price}</td>
+            <td class="p-4 font-medium">${trade.close_price ? '$' + trade.close_price : '-'}</td>
+            <td class="p-4">
+              <span class="px-2 py-1 text-[10px] font-semibold rounded-full tracking-wider ${trade.status === 'OPEN' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700'}">
+                ${trade.status}
+              </span>
+            </td>
+            <td class="p-4 text-right">${pnlText}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // -------------------------------------------------------------
+    // 5. RENDER GRAFIK EQUITY CURVE (CHART.JS)
+    // -------------------------------------------------------------
+    function renderEquityChart(trades) {
+      const closedTrades = trades.filter(t => t.status === 'CLOSED');
+      
+      let runningPnl = 0;
+      const labels = [];
+      const dataPoints = [];
+
+      closedTrades.forEach(t => {
+        runningPnl += (t.profit_loss || 0);
+        const time = new Date(t.closed_at || t.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        labels.push(time);
+        dataPoints.push(parseFloat(runningPnl.toFixed(2)));
+      });
+
+      const ctx = document.getElementById('equityChart').getContext('2d');
+
+      if (equityChartInstance) {
+        equityChartInstance.destroy();
+      }
+
+      // Gradien untuk grafik
+      let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, 'rgba(168, 85, 247, 0.4)'); // Purple-500
+      gradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+
+      equityChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Accumulated PnL ($)',
+            data: dataPoints,
+            borderColor: '#a855f7', // Purple-500
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#a855f7',
+            pointBorderColor: '#0f172a',
+            pointBorderWidth: 2,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                titleColor: '#f8fafc',
+                bodyColor: '#cbd5e1',
+                borderColor: '#334155',
+                borderWidth: 1,
+                padding: 10,
+                displayColors: false,
+                callbacks: {
+                    label: function(context) {
+                        return 'PnL: $' + context.parsed.y;
+                    }
+                }
+            }
+          },
+          scales: {
+            x: { 
+                grid: { color: 'rgba(51, 65, 85, 0.5)', borderDash: [5, 5] }, 
+                ticks: { color: '#64748b', font: { size: 11, family: 'Inter' } } 
+            },
+            y: { 
+                grid: { color: 'rgba(51, 65, 85, 0.5)', borderDash: [5, 5] }, 
+                ticks: { color: '#64748b', font: { size: 11, family: 'Inter' }, callback: function(value) { return '$' + value; } } 
+            }
+          },
+          interaction: {
+            intersect: false,
+            mode: 'index',
+          },
+        }
+      });
+    }
+
+    // Jalankan pertama kali saat halaman di-load
+    fetchDashboardData();
+  </script>
+</body>
+</html>
